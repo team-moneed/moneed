@@ -1,7 +1,11 @@
+import NavigationBar from "../NavigationBar"
+import SearchBar from "../Search/SearchBar"
+
 const Header = () => {
     return (
         <>
-            헤더
+            <NavigationBar></NavigationBar>
+            <SearchBar></SearchBar>
         </>
     )
 }

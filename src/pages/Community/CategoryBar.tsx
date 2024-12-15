@@ -1,26 +1,39 @@
-import { useState } from "react";
 import Chip from "../../components/Chip";
-import { STOCKS } from "../../config/Stocksetting";
+import { CATEGORIES } from "../../config/Categorysetting";
+import { useNavigate } from "react-router-dom";
+import useCategoryStore from "../../store/useCategoryStore";
 
-const CategoryBar = () => {
+const CategoryBar = ({ selectedCategory, setSelectedCategory }) => {
 
-    const [selectedStock, setSelectedStock] = useState(STOCKS[0].stockname);
+    //선택한 카테고리만 보이게
+    const { selectedCategories } = useCategoryStore();
+
+    let navigate = useNavigate();
+    const movetoSelectCategory = () => {
+        navigate(`/selectCategory`);
+    }
+
+
     return (
-        <div>
-            <button>+</button>
+        <>
             <div className="relative">
                 <div className="flex gap-4 mb-6 overflow-x-auto whitespace-nowrap">
-                    {STOCKS.map(({ stockname, value }) => (
+                    <Chip
+                        label="+"
+                        onClick={movetoSelectCategory}
+                    ></Chip>
+                    {CATEGORIES.map(({ category }) => (
                         <Chip
-                            key={value}
-                            label={stockname}
-                            active={selectedStock === stockname}
-                            onClick={() => setSelectedStock(stockname)}
+                            key={category}
+                            label={category}
+                            active={selectedCategory === category}
+                            className="py-[12px] px-[24px] "
+                            onClick={() => setSelectedCategory(category)}
                         />
                     ))}
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

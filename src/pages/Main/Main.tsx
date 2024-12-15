@@ -5,13 +5,13 @@ const Main = () => {
     return (
         <div className="p-6">
             <div className="mb-8">
-                <h2 className="text-2xl font-semibold mb-4">24시간 내 인기콘텐츠</h2>
-                <MainShortforms />
+                <h2 className="text-2xl font-semibold mb-4">top3</h2>
+                <StockRank />
             </div>
 
             <div className="mb-8">
-                <h2 className="text-2xl font-semibold mb-4">주요 종목</h2>
-                <StockRank />
+                <h2 className="text-2xl font-semibold mb-4">24시간 내 인기콘텐츠</h2>
+                <MainShortforms />
             </div>
 
         </div>
