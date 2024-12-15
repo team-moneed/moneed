@@ -1,15 +1,17 @@
 import { useState } from "react";
 import Chip from "../../components/Chip";
-import { CATEGORIES } from "../../config/StockRanksetting";
+import { GROUPS } from "../../config/GroupSetting";
+
 
 const StockRank = () => {
-    const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0].category);
+    const [selectedGroup, setSelectedGroup] = useState(GROUPS[0].group);
 
     const Stocks = [
         {
             name: "테슬라",
             englishName: "Tesla",
             category: "유틸리티",
+            group: "해외",
             stock: "+3.5",
             image: "/images/tesla.png",
             priceKRW: "4,200,000",
@@ -20,6 +22,7 @@ const StockRank = () => {
             englishName: "SK Hynix",
             category: "에너지",
             stock: "-5",
+            group: "국내",
             image: "/images/sk-hynix.png",
             priceKRW: "140,000",
             priceUSD: "110"
@@ -28,6 +31,7 @@ const StockRank = () => {
             name: "애플",
             englishName: "Apple",
             category: "에너지",
+            group: "해외",
             stock: "+4.8",
             image: "/images/apple.png",
             priceKRW: "1,500,000",
@@ -38,31 +42,33 @@ const StockRank = () => {
             englishName: "Kakao",
             category: "게임",
             stock: "-4.8",
+            group: "국내",
             image: "/images/apple.png",
             priceKRW: "100,000",
             priceUSD: "80"
         },
     ];
 
-    const filteredStocks = Stocks.filter((stock) => stock.category === selectedCategory);
+    const filteredGroup = Stocks.filter((stock) => stock.group === selectedGroup);
 
     return (
         <div className="p-6">
             <div className="relative">
                 <div className="flex gap-4 mb-6 overflow-x-auto whitespace-nowrap">
-                    {CATEGORIES.map(({ category, value }) => (
+                    {GROUPS.map(({ group }) => (
                         <Chip
-                            key={value}
-                            label={category}
-                            active={selectedCategory === category}
-                            onClick={() => setSelectedCategory(category)}
+                            className="py-[12px] px-[24px] "
+                            key={group}
+                            label={group}
+                            active={selectedGroup === group}
+                            onClick={() => setSelectedGroup(group)}
                         />
                     ))}
                 </div>
             </div>
 
             <div className="flex flex-col gap-4">
-                {filteredStocks.map((stock) => (
+                {filteredGroup.map((stock) => (
                     <div
                         key={stock.name}
                         className="rounded-lg p-4 bg-white flex items-center">
