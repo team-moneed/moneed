@@ -7,7 +7,7 @@ import { CATEGORIES } from "../../config/Categorysetting";
 
 const SearchBar = () => {
 
-    const categoryList = CATEGORIES.map((category) => category.category)
+    const categoryBar = CATEGORIES.map((category) => category.category)
 
     const { searchKeyword, setSearchKeyword } = useSearchStore();
 
@@ -16,7 +16,7 @@ const SearchBar = () => {
         setSearchKeyword(keyword)
         navigate(`/community`, {
             state: {
-                isCategorySearch: categoryList.includes(searchKeyword.trim())
+                isCategorySearch: categoryBar.includes(searchKeyword.trim())
             },
         });
     };

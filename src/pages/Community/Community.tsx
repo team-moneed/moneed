@@ -1,28 +1,22 @@
 import { useEffect, useState } from "react";
 import { CATEGORIES } from "../../config/Categorysetting";
-import { useLocation } from 'react-router-dom';
-import Vote from "../Vote/Vote";
-import CategoryBar from "./CategoryBar";
+import { useParams } from 'react-router-dom';
 import Posts from "./Posts";
 import useSearchStore from "../../store/useSearchStore";
+import Vote from "../../components/Vote";
+import CategoryBar from "../../components/CategoryBar";
 
 const Community = () => {
+    const { searchKeyword } = useSearchStore();
+    const { category } = useParams();
 
-    const { searchKeyword, setSearchKeyword } = useSearchStore();
-    console.log('searchKeyword', searchKeyword)
-
-    const { state } = useLocation();
-
-    const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0].category);
+    const [selectedCategory, setSelectedCategory] = useState(category || "전체");
 
     useEffect(() => {
-        if (searchKeyword) {
-            if (state?.isCategorySearch === true) {
-                const decodedCategory = decodeURIComponent(searchKeyword.trim());
-                setSelectedCategory(decodedCategory);
-            }
+        if (category) {
+            setSelectedCategory(category);
         }
-    }, [searchKeyword]);
+    }, [category]);
 
     const allPosts = [
         {
@@ -99,56 +93,22 @@ const Community = () => {
             isliked: false,
             comments: []
         }
-    ]
+    ];
 
-    let filteredPosts
-
-    if (searchKeyword) {
-        if (selectedCategory) {
-            if (state?.isCategorySearch === true) {
-                selectedCategory === "전체"
-                    ? filteredPosts = allPosts
-                    : filteredPosts = allPosts.filter(post => post.category === selectedCategory)
-            }
-            else {
-                selectedCategory === "전체" ?
-                    filteredPosts = allPosts.filter(post => (post.content.includes(searchKeyword)
-                        || post.title.includes(searchKeyword)))
-                    : filteredPosts = allPosts.filter(post => (post.content.includes(searchKeyword)
-                        || post.title.includes(searchKeyword)) &&
-                        (post.category === selectedCategory))
-            }
-        }
-        else {
-            if (state?.isCategorySearch === true) {
-                selectedCategory === "전체"
-                    ? filteredPosts = allPosts
-                    : filteredPosts = allPosts.filter(post => (post.content.includes(searchKeyword)
-                        || post.title.includes(searchKeyword)))
-            }
-            else {
-                filteredPosts = allPosts.filter(post => post.content.includes(searchKeyword)
-                    || post.title.includes(searchKeyword))
-            }
-        }
-
-    } else {
-        selectedCategory === "전체"
-            ? filteredPosts = allPosts
-            : filteredPosts = allPosts.filter(post => post.category === selectedCategory)
-    }
-
+    const filteredPosts = selectedCategory === "전체"
+        ? allPosts
+        : allPosts.filter(post => post.category === selectedCategory);
 
     return (
         <div>
-            <CategoryBar selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}></CategoryBar>
+            <CategoryBar selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
             <div>
                 <h2>----투표투표------</h2>
-                <Vote></Vote>
+                <Vote />
             </div>
             <div>
                 <h2>----게시글------</h2>
-                <Posts posts={filteredPosts}></Posts>
+                <Posts posts={filteredPosts} />
             </div>
         </div>
     );

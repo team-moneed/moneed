@@ -1,9 +1,21 @@
-import Card from "../../components/Card";
+import Card from "./Card";
+import { useParams } from 'react-router-dom';
+import { useState } from "react";
 
 const Vote = () => {
+    const { category } = useParams();
+
+    //카테고리에 해당하는 투표 결과 가져오는 api 
+    const [votes, setVotes] = useState({
+        raise: 0,
+        lower: 0
+    });
+
+    const [isVoted, setIsVoted] = useState(false);
 
     const handleRaise = () => {
         console.log('오른다')
+        setIsVoted(true)
     }
 
     const handleLower = () => {
@@ -12,6 +24,9 @@ const Vote = () => {
 
     return (
         <>
+            <div>
+                {category}
+            </div>
             <Card
                 onClick={handleRaise}
                 title="오른다"
@@ -24,6 +39,7 @@ const Vote = () => {
                 title="내린다"
                 cardImgages={"png"}>
             </Card>
+            {isVoted && <div>투표완</div>}
         </>
     );
 };

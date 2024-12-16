@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Chip from "../../components/Chip";
+import StockInfoBox from "../../components/StockInfoBox";
 import { GROUPS } from "../../config/GroupSetting";
 
 
@@ -12,7 +13,7 @@ const StockRank = () => {
             englishName: "Tesla",
             category: "유틸리티",
             group: "해외",
-            stock: "+3.5",
+            rate: "+3.5",
             image: "/images/tesla.png",
             priceKRW: "4,200,000",
             priceUSD: "3,500"
@@ -21,7 +22,7 @@ const StockRank = () => {
             name: "하이닉스",
             englishName: "SK Hynix",
             category: "에너지",
-            stock: "-5",
+            rate: "-5",
             group: "국내",
             image: "/images/sk-hynix.png",
             priceKRW: "140,000",
@@ -32,7 +33,7 @@ const StockRank = () => {
             englishName: "Apple",
             category: "에너지",
             group: "해외",
-            stock: "+4.8",
+            rate: "+4.8",
             image: "/images/apple.png",
             priceKRW: "1,500,000",
             priceUSD: "1,150"
@@ -41,7 +42,7 @@ const StockRank = () => {
             name: "카카오",
             englishName: "Kakao",
             category: "게임",
-            stock: "-4.8",
+            rate: "-4.8",
             group: "국내",
             image: "/images/apple.png",
             priceKRW: "100,000",
@@ -69,28 +70,14 @@ const StockRank = () => {
 
             <div className="flex flex-col gap-4">
                 {filteredGroup.map((stock) => (
-                    <div
-                        key={stock.name}
-                        className="rounded-lg p-4 bg-white flex items-center">
-                        <img
-                            src={stock.image}
-                            alt={stock.name}
-                            className="w-12 h-12 object-cover rounded-full mr-4"
-                        />
-                        <div className="flex-1">
-                            <div className="flex justify-between items-center">
-                                <h3 className="text-lg font-semibold">{stock.name} <span className="text-sm text-gray-500">{stock.englishName}</span></h3>
-                                <p
-                                    className={`text-xl font-bold ${stock.stock.includes("+") ? "text-green-500" : "text-red-500"}`}>
-                                    {stock.stock}%
-                                </p>
-                            </div>
-                            <div className="flex justify-between items-center mt-2">
-                                <span className="text-gray-600">₩ {stock.priceKRW}</span>
-                                <span className="text-gray-600">${stock.priceUSD}</span>
-                            </div>
-                        </div>
-                    </div>
+                    <StockInfoBox
+                        infoBoxImgages={stock.image}
+                        name={stock.name}
+                        priceKRW={stock.priceKRW}
+                        priceUSD={stock.priceUSD}
+                        rate={stock.rate}
+                        englishName={stock.englishName}
+                    ></StockInfoBox>
                 ))}
             </div>
         </div>

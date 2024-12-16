@@ -1,7 +1,9 @@
-import Chip from "../../components/Chip";
-import { CATEGORIES } from "../../config/Categorysetting";
+
 import { useNavigate } from "react-router-dom";
-import useCategoryStore from "../../store/useCategoryStore";
+
+import { CATEGORIES } from "../config/Categorysetting";
+import useCategoryStore from "../store/useCategoryStore";
+import Chip from "./Chip";
 
 const CategoryBar = ({ selectedCategory, setSelectedCategory }) => {
 
@@ -13,6 +15,9 @@ const CategoryBar = ({ selectedCategory, setSelectedCategory }) => {
         navigate(`/selectCategory`);
     }
 
+    const movetoCategory = (category) => {
+        navigate(`/community/${category}`);
+    }
 
     return (
         <>
@@ -22,13 +27,14 @@ const CategoryBar = ({ selectedCategory, setSelectedCategory }) => {
                         label="+"
                         onClick={movetoSelectCategory}
                     ></Chip>
-                    {CATEGORIES.map(({ category }) => (
+                    {CATEGORIES.map(({ category, categoryId }) => (
                         <Chip
                             key={category}
                             label={category}
                             active={selectedCategory === category}
                             className="py-[12px] px-[24px] "
-                            onClick={() => setSelectedCategory(category)}
+                            // onClick={() => setSelectedCategory(category)}
+                            onClick={() => movetoCategory(category)}
                         />
                     ))}
                 </div>
