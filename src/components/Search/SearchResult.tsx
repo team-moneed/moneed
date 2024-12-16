@@ -6,21 +6,18 @@ const SearchResult = () => {
 
     const { searchKeyword, setSearchKeyword } = useSearchStore();
 
-    const categoryList = CATEGORIES.map((category) => category.category)
+    const categoryBar = CATEGORIES.map((category) => category.category)
 
     let navigate = useNavigate();
     const handlemoveKeywordPosts = (keyword) => {
         setSearchKeyword(keyword)
-        navigate(`/community`, {
-            state: {
-                isCategorySearch: categoryList.includes(searchKeyword.trim())
-            },
-        });
+        navigate(`/community/${keyword}`);
+        setSearchKeyword("")
     }
 
     return (
         <>
-            {categoryList.includes(searchKeyword.trim()) &&
+            {categoryBar.includes(searchKeyword.trim()) &&
                 <>
                     <div>
                         {searchKeyword}

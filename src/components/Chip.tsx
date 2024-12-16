@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 type ChipType = {
     className?: string;
     active?: boolean;
@@ -5,9 +7,10 @@ type ChipType = {
     onClick?: () => void;
     disabled?: boolean;
     icon?: string;
+    children?: ReactNode
 };
 
-const Chip = ({ className, active, label, onClick, disabled, icon }: ChipType) => {
+const Chip = ({ className, active, label, onClick, disabled, icon, children }: ChipType) => {
     return (
         <button
             type="button"
@@ -21,6 +24,9 @@ const Chip = ({ className, active, label, onClick, disabled, icon }: ChipType) =
                 icon
             )}
             {label}
+            <div>
+                {children}
+            </div>
         </button>
     );
 };

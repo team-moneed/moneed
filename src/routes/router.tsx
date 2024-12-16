@@ -19,6 +19,10 @@ const router = createBrowserRouter([
                 element: <Community />,
             },
             {
+                path: "/community/:category",
+                element: <Community />,
+            },
+            {
                 path: "/comment/:postId",
                 element: <Comments />,
             },
