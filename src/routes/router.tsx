@@ -6,6 +6,8 @@ import Comments from "../pages/Community/Comments";
 import Community from "../pages/Community/Community";
 import Main from "../pages/Main/Main";
 import Mypage from "../pages/Mypage/Mypage";
+import MyPost from "../pages/Mypage/MyPost";
+import MyProfile from "../pages/Mypage/MyProfile";
 
 const router = createBrowserRouter([
     {
@@ -39,6 +41,15 @@ const router = createBrowserRouter([
                 path: "/mypage",
                 element: <Mypage />,
             },
+
+            {
+                path: "myprofile",
+                element: <MyProfile />,
+            },
+            {
+                path: "mypost",
+                element: <MyPost />,
+            }
         ],
     },
 ]);
