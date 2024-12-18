@@ -14,6 +14,11 @@ const NavigationBar = () => {
                         커뮤니티
                     </div>
                 </Link>
+                <Link to="/mypage">
+                    <div>
+                        마이페이지
+                    </div>
+                </Link>
             </div>
         </>
     );

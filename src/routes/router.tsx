@@ -5,6 +5,7 @@ import SelectLevel from "../components/create/SelectLevel";
 import Comments from "../pages/Community/Comments";
 import Community from "../pages/Community/Community";
 import Main from "../pages/Main/Main";
+import Mypage from "../pages/Mypage/Mypage";
 
 const router = createBrowserRouter([
     {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
             {
                 path: "/posts/:searchKeyword",
                 element: <Community />,
+            },
+            {
+                path: "/mypage",
+                element: <Mypage />,
             },
         ],
     },
