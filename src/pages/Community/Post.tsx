@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import EmblaCarousel from '../../components/Carousel/EmblaCarousel'
 import { EmblaOptionsType } from 'embla-carousel'
 
-const Post = ({ userName, content, isliked, postId, category, postImages }) => {
+const Post = ({ userName, content, isliked, postId, stocktype, postImages, isImgShow, likes }) => {
 
     const OPTIONS: EmblaOptionsType = {
         slidesToScroll: 1,
@@ -16,10 +16,11 @@ const Post = ({ userName, content, isliked, postId, category, postImages }) => {
         containScroll: 'trimSnaps',
     }
 
+
     let navigate = useNavigate();
     const movetoDetail = (postId) => {
         navigate(`/comment/${postId}`, {
-            state: { userName, content, isliked, postId, category, postImages },
+            state: { userName, content, isliked, postId, stocktype, postImages },
         });
     }
 
@@ -33,15 +34,16 @@ const Post = ({ userName, content, isliked, postId, category, postImages }) => {
             <div>
                 {userName}
             </div>
-            <div>
+            {isImgShow && <div>
                 <EmblaCarousel slides={postImages} options={OPTIONS} />
-            </div>
+            </div>}
             <div>
                 content : {content}
             </div>
             <div>
                 {isliked ? <Icon iconName={heartIcon} width={20} height={20} onClick={toggleLike}></Icon> :
                     <Icon iconName={redHeartIcon} width={20} height={20} onClick={toggleLike}></Icon>}
+                {likes}
             </div>
             <div>
                 <Icon iconName={commentIcon} width={20} height={20} onClick={() => movetoDetail(postId)} />

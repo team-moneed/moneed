@@ -1,4 +1,4 @@
-import { CATEGORIES } from "../../config/Categorysetting";
+import { STOCKTYPES } from "../../config/StockTypesetting";
 import useSearchStore from "../../store/useSearchStore";
 import { useNavigate } from "react-router-dom";
 
@@ -6,7 +6,7 @@ const SearchResult = () => {
 
     const { searchKeyword, setSearchKeyword } = useSearchStore();
 
-    const categoryBar = CATEGORIES.map((category) => category.category)
+    const StockTypeBar = STOCKTYPES.map((stocktype) => stocktype.stocktype)
 
     let navigate = useNavigate();
     const handlemoveKeywordPosts = (keyword) => {
@@ -17,7 +17,7 @@ const SearchResult = () => {
 
     return (
         <>
-            {categoryBar.includes(searchKeyword.trim()) &&
+            {StockTypeBar.includes(searchKeyword.trim()) &&
                 <>
                     <div>
                         {searchKeyword}

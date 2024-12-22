@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useState } from "react";
 
 const Vote = () => {
-    const { category } = useParams();
+    const { stocktype } = useParams();
 
     //카테고리에 해당하는 투표 결과 가져오는 api 
     const [votes, setVotes] = useState({
@@ -25,7 +25,7 @@ const Vote = () => {
     return (
         <>
             <div>
-                {category}
+                {stocktype}
             </div>
             <Card
                 onClick={handleRaise}

@@ -1,9 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import SelectCategory from "../components/create/SelectCategory";
-import SelectLevel from "../components/create/SelectLevel";
+import SelectStockType from "../components/create/SelectStockType";
+
 import Comments from "../pages/Community/Comments";
 import Community from "../pages/Community/Community";
+import WritePost from "../pages/Community/WritePost";
 import Main from "../pages/Main/Main";
 import Mypage from "../pages/Mypage/Mypage";
 import MyPost from "../pages/Mypage/MyPost";
@@ -22,7 +23,11 @@ const router = createBrowserRouter([
                 element: <Community />,
             },
             {
-                path: "/community/:category",
+                path: "/writepost",
+                element: <WritePost />,
+            },
+            {
+                path: "/community/:stocktype",
                 element: <Community />,
             },
             {
@@ -30,8 +35,8 @@ const router = createBrowserRouter([
                 element: <Comments />,
             },
             {
-                path: "/selectCategory",
-                element: <SelectCategory />,
+                path: "/selectStockType",
+                element: <SelectStockType />,
             },
             {
                 path: "/posts/:searchKeyword",
