@@ -3,11 +3,11 @@ import Button from "../Button";
 import Input from "../Input";
 import SearchResult from "./SearchResult";
 import { useNavigate } from "react-router-dom";
-import { CATEGORIES } from "../../config/Categorysetting";
+import { STOCKTYPES } from "../../config/StockTypesetting";
 
 const SearchBar = () => {
 
-    const categoryBar = CATEGORIES.map((category) => category.category)
+    const StockTypeBar = STOCKTYPES.map((stocktype) => stocktype.stocktype)
 
     const { searchKeyword, setSearchKeyword } = useSearchStore();
 
@@ -16,7 +16,7 @@ const SearchBar = () => {
         setSearchKeyword(keyword)
         navigate(`/community`, {
             state: {
-                isCategorySearch: categoryBar.includes(searchKeyword.trim())
+                isStockTypeSearch: StockTypeBar.includes(searchKeyword.trim())
             },
         });
     };

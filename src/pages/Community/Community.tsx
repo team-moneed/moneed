@@ -1,22 +1,30 @@
 import { useEffect, useState } from "react";
-import { CATEGORIES } from "../../config/Categorysetting";
+import { STOCKTYPES } from "../../config/StockTypesetting";
 import { useParams } from 'react-router-dom';
 import Posts from "./Posts";
 import useSearchStore from "../../store/useSearchStore";
 import Vote from "../../components/Vote";
-import CategoryBar from "../../components/CategoryBar";
+import StockTypeBar from "../../components/StockTypeBar";
+import TopCategory from "./TopCategory";
+import Button from "../../components/Button";
+import { useNavigate } from "react-router-dom";
 
 const Community = () => {
     const { searchKeyword } = useSearchStore();
-    const { category } = useParams();
+    const { stocktype } = useParams();
 
-    const [selectedCategory, setSelectedCategory] = useState(category || "전체");
+    const [selectedStockType, setSelectedStockType] = useState(stocktype || "전체");
 
     useEffect(() => {
-        if (category) {
-            setSelectedCategory(category);
+        if (stocktype) {
+            setSelectedStockType(stocktype);
         }
-    }, [category]);
+    }, [stocktype]);
+
+    let navigate = useNavigate();
+    const movetoWritePost = () => {
+        navigate(`/writepost`)
+    }
 
     const allPosts = [
         {
@@ -31,7 +39,8 @@ const Community = () => {
             userName: "사용자1",
             createdAt: "2024-12-10T10:00:00Z",
             likes: 10,
-            category: "테슬라",
+            stocktype: "테슬라",
+            category: "금융",
             isliked: true,
             comments: [
                 {
@@ -65,7 +74,7 @@ const Community = () => {
             postId: 2,
             title: "2",
             postImages: [
-                'https://via.placeholder.com/600x350/ff7f7f/333333',
+                'https://via.placeholder.com/600x350/7f7fff/333333',
                 'https://via.placeholder.com/600x350/7f7fff/333333',
                 'https://via.placeholder.com/600x350/7fff7f/333333'
             ],
@@ -73,7 +82,8 @@ const Community = () => {
             userName: "사용자5",
             createdAt: "2024-12-09T09:00:00Z",
             likes: 7,
-            category: "애플",
+            stocktype: "애플",
+            category: "정보기술",
             isliked: false,
             comments: []
         },
@@ -89,28 +99,45 @@ const Community = () => {
             userName: "사용자6",
             createdAt: "2024-12-09T09:00:00Z",
             likes: 7,
-            category: "테슬라",
+            stocktype: "테슬라",
+            category: "금융",
             isliked: false,
             comments: []
         }
     ];
 
-    const filteredPosts = selectedCategory === "전체"
+    const filteredPosts = selectedStockType === "전체"
         ? allPosts
-        : allPosts.filter(post => post.category === selectedCategory);
+        : allPosts.filter(post => post.stocktype === selectedStockType);
 
     return (
-        <div>
-            <CategoryBar selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+        <>
+            <Button onClick={movetoWritePost}>게시글작성</Button>
             <div>
-                <h2>----투표투표------</h2>
-                <Vote />
+                <StockTypeBar selectedStockType={selectedStockType} setSelectedStockType={setSelectedStockType} />
+                {selectedStockType === "전체" ? (
+                    <div>
+                        <h2>Top 5 게시글</h2>
+                        <Posts posts={allPosts} displayMode="slider" imgFirst={true} />
+                        <div>
+                            <h2>실시간 인기 카테고리</h2>
+                            <TopCategory></TopCategory>
+                        </div>
+                        <div>
+                            <h2>투표</h2>
+                            <Vote></Vote>
+                        </div>
+                        <h2>전체 인기 급상승 게시글</h2>
+                        <Posts posts={allPosts} displayMode="list" imgFirst={true} isImgShow={true} />
+                    </div>
+                ) : (
+                    <div>
+                        <h2>카테고리: {selectedStockType}</h2>
+                        <Posts posts={filteredPosts} displayMode="list" imgFirst={false} isImgShow={true} />
+                    </div>
+                )}
             </div>
-            <div>
-                <h2>----게시글------</h2>
-                <Posts posts={filteredPosts} />
-            </div>
-        </div>
+        </>
     );
 };
 
