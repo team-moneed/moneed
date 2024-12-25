@@ -1,4 +1,3 @@
-import AlignCarousel from "../../components/Carousel/AlignCarousel";
 import Post from "./Post";
 
 const Posts = ({ posts, imgFirst, displayMode, isImgShow }) => {
@@ -38,7 +37,7 @@ const Posts = ({ posts, imgFirst, displayMode, isImgShow }) => {
         <div className="mt-4">
             {displayMode === "slider" && postElements.length > 0 && (
                 <div className="mb-8">
-                    <AlignCarousel slides={slides} options={ALIGNOPTIONS} type="image" />
+
                 </div>
             )}
 

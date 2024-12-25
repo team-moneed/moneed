@@ -1,15 +1,23 @@
 import { Outlet } from "react-router";
 import Footer from "./components/Layout/Footer";
 import Header from "./components/Layout/Header";
+import Lnb from "./components/Layout/Lnb";
+import MobileNav from "./components/Layout/MobileNav";
 
 
 function App() {
 
   return (
     <>
-      <Header />
-      <Outlet />
-      <Footer />
+      <div className="flex">
+        <Lnb />
+        <div className="flex-1">
+          <Header />
+          <Outlet />
+          <Footer />
+        </div>
+        <MobileNav />
+      </div>
     </>
   )
 }

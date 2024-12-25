@@ -1,4 +1,4 @@
-import StockInfoBox from "../../components/StockInfoBox";
+import StockInfoBox from "../../components/Community/StockInfoBox";
 
 const TopCategory = () => {
 

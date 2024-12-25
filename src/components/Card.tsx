@@ -17,21 +17,23 @@ const Card = ({ cardImgages, title, content, date, children, className = "", onC
     return (
         <div
             onClick={onClick}
-            className={`rounded-lg overflow-hidden shadow-md border p-4 cursor-pointer transition-all duration-200 ease-in-out hover:shadow-lg ${className}`}
+            className={`cursor-pointer ${className}`}
         >
             {images.map((cardImgage, index) => (
-                <img
-                    key={index}
-                    src={cardImgage}
-                    alt={`Card image ${index + 1}`}
-                    className="w-full h-32 object-cover rounded-lg mb-4"
-                />
+                <div className="aspect-[350/228] lg:aspect-[303/195] rounded-[1.6rem] overflow-hidden">
+                    <img
+                        key={index}
+                        src={cardImgage}
+                        alt={`Card image ${index + 1}`}
+                        className="w-full h-full object-cover"
+                    />
+                </div>
             ))}
 
-            <div>
-                {title && <h3 className="text-lg font-bold mb-2">{title}</h3>}
-                {content && <p className="text-gray-600 text-sm mb-2">{content}</p>}
-                {date && <p className="text-gray-400 text-xs">{date}</p>}
+            <div className="flex gap-[1.2rem] flex-col mt-[1.2rem]">
+                {date && <p className="text-[var(--moneed-gray-7)] text-[1.2rem] leading-[135%]">{date}</p>}
+                {title && <h3 className="text-[1.8rem] text-[var(--moneed-black)] font-semibold leading-[135%] line-clamp-2">{title}</h3>}
+                {content && <p className="text-[var(--moneed-gray-7)] text-[1.4rem] leading-[142%] line-clamp-2">{content}</p>}
             </div>
 
             {children}
