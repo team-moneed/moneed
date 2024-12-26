@@ -14,7 +14,7 @@ const Chip = ({ className, active, label, onClick, disabled, icon, children }: C
     return (
         <button
             type="button"
-            className={`rounded-[48px] border-[1px] ${active ? "bg-blue-500 text-white" : "bg-white text-black"
+            className={`rounded-[1.2rem] px-[1.6rem] py-[.7rem] flex items-center text-[1.4rem] font-semibold ${active ? "bg-[var(--moneed-black)] text-white" : "bg-[var(--moneed-gray-4)] text-[var(--moneed-black)]"
                 } ${className}`}
             onClick={onClick}
             disabled={disabled}>
@@ -24,9 +24,9 @@ const Chip = ({ className, active, label, onClick, disabled, icon, children }: C
                 icon
             )}
             {label}
-            <div>
+            <span className="text-[1.4rem] font-semibold">
                 {children}
-            </div>
+            </span>
         </button>
     );
 };

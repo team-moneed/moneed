@@ -1,8 +1,9 @@
-import AlignCarousel from "../../components/Carousel/AlignCarousel";
+import VideoCarousel from "../../components/Carousel/VideoCarousel";
+
 
 const MainShortforms = () => {
 
-    const ALIGNOPTIONS = {
+    const VIDEOOPTIONS = {
         slidesToScroll: 1,
         loop: true,
         align: "start",
@@ -36,11 +37,28 @@ const MainShortforms = () => {
             title: "동영상 5",
             createdAt: "2024-12-09T09:00:00Z",
         },
+        {
+            videoUrl: "",
+            title: "동영상 6",
+            createdAt: "2024-12-09T09:00:00Z",
+        },
+        {
+            videoUrl: "",
+            title: "동영상 7",
+            createdAt: "2024-12-09T09:00:00Z",
+        },
+        {
+            videoUrl: "",
+            title: "동영상 8",
+            createdAt: "2024-12-09T09:00:00Z",
+        },
     ];
 
     return (
         <>
-            <AlignCarousel slides={videoSlides} type="video" options={ALIGNOPTIONS} slidesToShow={3} />
+            <div className="mt-[1rem]">
+                <VideoCarousel slides={videoSlides} type="video" options={VIDEOOPTIONS} />
+            </div>
         </>
     );
 };
