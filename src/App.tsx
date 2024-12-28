@@ -9,15 +9,12 @@ function App() {
 
   return (
     <>
-      <div className="flex">
-        <Lnb />
-        <div className="flex-1">
-          <Header />
-          <Outlet />
-          <Footer />
-        </div>
-        <MobileNav />
+      <div className="flex-1">
+        <Header />
+        <Outlet />
+        <Footer />
       </div>
+      <MobileNav></MobileNav>
     </>
   )
 }

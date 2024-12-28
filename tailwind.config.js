@@ -6,5 +6,6 @@ export default {
   plugins: [
     require('tailwind-scrollbar-hide'), 
     require('@tailwindcss/aspect-ratio'),
+    require('tailwind-scrollbar'),
   ],
 };

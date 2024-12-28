@@ -1,6 +1,5 @@
 const MainPostBox = ({ postId, userName, content, title, createdAt }) => {
 
-    console.log(title)
     return (
         <>
             <div className="border border-solid border-[var(--moneed-gray-5)] p-[1.8rem] rounded-[1.8rem]">

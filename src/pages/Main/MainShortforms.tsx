@@ -57,7 +57,7 @@ const MainShortforms = () => {
     return (
         <>
             <div className="mt-[1rem]">
-                <VideoCarousel slides={videoSlides} type="video" options={VIDEOOPTIONS} />
+                <VideoCarousel slides={videoSlides} options={VIDEOOPTIONS} />
             </div>
         </>
     );

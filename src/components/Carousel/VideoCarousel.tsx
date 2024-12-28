@@ -14,18 +14,24 @@ const VideoCarousel = (props: PropType) => {
         slidesToShow,
     })
     return (
-        <div className="flex flex-col items-start gap-[1rem] self-stretch pb-[1.2rem] overflow-hidden" ref={emblaRef}>
-            <div className="flex gap-[1.3rem] lg:gap-[1.4rem] items-center self-stretch" >
-                {slides.map((slide, index) => (
-                    <div className="rounded-[0.8rem] aspect-[108/192] lg:aspect-[162/288] shrink-0 overflow-hidden">
-                        <video
-                            controls
-                            className="w-full h-full object-cover"
+        <div className="w-full max-w-6xl mx-auto px-4">
+            <div className="overflow-hidden" ref={emblaRef}>
+                <div className="flex">
+                    {slides.map((slide, index) => (
+                        <div
+                            className="min-w-[100%] md:min-w-[50%] lg:min-w-[33.333%] shrink-0 pl-4 first:pl-0"
+                            key={index}
+                            style={{ aspectRatio: '9/16' }}
                         >
-                            <source src={slide.videoUrl} type="video/mp4" />
-                        </video>
-                    </div>
-                ))}
+                            <video
+                                controls
+                                className="w-full h-full object-cover"
+                            >
+                                <source src={slide.videoUrl} type="video/mp4" />
+                            </video>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     )

@@ -4,7 +4,7 @@ import TopStockRank from './TopStockRank';
 
 const Main = () => {
     return (
-        <div className="px-[2rem] max-w-[94rem] mx-auto">
+        <div className="px-[2rem] max-w-[128rem] mx-auto">
             <div className="mt-[.7rem] lg:mt-4 aspect-[350/106] rounded-[.8rem] overflow-hidden lg:aspect-[941/151]">
                 <img src="/src/assets/temp/main-bn-m.png" alt="" className="w-full h-full object-cover lg:hidden" />
                 <img src="/src/assets/temp/main-bn-pc.png" alt="" className="hidden w-full h-full object-cover lg:block" />
