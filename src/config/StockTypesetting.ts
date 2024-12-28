@@ -5,4 +5,5 @@ export const STOCKTYPES = [
     { stocktype: "테슬라", value: "tesla" ,stockimg : tesla,StockTypeId:2},
     { stocktype: "애플", value: "appke",StockTypeId:3 },
     { stocktype: "카카오", value: "kakao", StockTypeId:6},
+    { stocktype: "마이크로소프트", value: "microsoft", StockTypeId:5},
   ];

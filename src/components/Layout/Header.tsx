@@ -6,9 +6,21 @@ const Header = () => {
         <>
             <div className="flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-[2rem]">
                 <Link to="/">
-                    <div className="lg:hidden w-[2.8rem] h-[2.8rem] bg-[var(--moneed-black)] rounded-full flex items-center justify-center">
-                        <img className="w-[1.4rem] h-[1.2rem]" src="/src/assets/icon/icon-logo.svg" alt="" />
+                    <div className="flex">
+                        <div className="lg:hidden w-[2.8rem] h-[2.8rem] bg-[var(--moneed-black)] rounded-full flex items-center justify-center">
+                            <img className="w-[1.4rem] h-[1.2rem]" src="/src/assets/icon/icon-logo.svg" alt="" />
+                        </div>
+                        <span className="font-[600] leading-[140%] text-[1.8rem] ml-[.8rem]">moneed</span>
                     </div>
+                </Link>
+                <Link
+                    to="/community"
+                >
+                    <span
+                        className="text-[1.4rem] font-semibold w-[8.4rem] ml-[.4rem]"
+                    >
+                        커뮤니티
+                    </span>
                 </Link>
                 <div className="flex items-center gap-[2.4rem] ml-auto">
                     <img className="w-[2.4rem] h-[2.4rem]" src="/src/assets/icon/icon-alarm.svg" alt="" />

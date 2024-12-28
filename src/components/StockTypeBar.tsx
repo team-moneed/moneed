@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 
 import { STOCKTYPES } from "../config/StockTypesetting";
@@ -20,26 +19,23 @@ const StockTypeBar = ({ selectedStockType, setSelectedStockType }) => {
     }
 
     return (
-        <>
-            <div className="relative">
-                <div className="flex gap-4 mb-6 overflow-x-auto whitespace-nowrap">
+        <div className="relative">
+            <div className="flex gap-4 mb-6 overflow-x-auto whitespace-nowrap">
+                <Chip
+                    label="+"
+                    onClick={movetoSelectStockType}
+                />
+                {STOCKTYPES.map(({ stocktype, StockTypeId }) => (
                     <Chip
-                        label="+"
-                        onClick={movetoSelectStockType}
-                    ></Chip>
-                    {STOCKTYPES.map(({ stocktype, StockTypeId }) => (
-                        <Chip
-                            key={stocktype}
-                            label={stocktype}
-                            active={selectedStockType === stocktype}
-                            className="py-[12px] px-[24px] "
-                            // onClick={() => setSelectedStockType(stocktype)}
-                            onClick={() => movetoStockType(stocktype)}
-                        />
-                    ))}
-                </div>
+                        key={StockTypeId}
+                        label={stocktype}
+                        active={selectedStockType === stocktype}
+                        className="py-[12px] px-[24px]"
+                        onClick={() => movetoStockType(stocktype)}
+                    />
+                ))}
             </div>
-        </>
+        </div>
     );
 };
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import Button from '../../components/Button';
-import EmblaCarousel from '../../components/Carousel/EmblaCarousel';
+import ImageCarousel from '../../components/Carousel/ImageCarousel';
 import Input from '../../components/Input';
 import Comment from './Comment';
 import { EmblaOptionsType } from 'embla-carousel'
@@ -73,7 +73,7 @@ const Comments = () => {
                     <p>User:</p> {state?.userName}
                 </p>
                 <div>
-                    <EmblaCarousel slides={state?.postImages} options={OPTIONS} />
+                    <ImageCarousel slides={state?.postImages} options={OPTIONS} />
                 </div>
                 <p>{state?.content}</p>
             </div>

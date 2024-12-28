@@ -9,6 +9,7 @@
     --moneed-red:#F60007;
     --moneed-bred-light:#FFF4F4;
     --moneed-black:#171717;
+    --moneed-black-3:#F9FAFC;
     --moneed-shade-bg:#EFEFF3;
     --moneed-gray-9:#454954;
     --moneed-gray-8:#5E6167;
@@ -19,6 +20,7 @@
     --moneed-gray-3:#FBFBFB;
     --moneed-gray-2:#FBFBFB;
     --moneed-gray-1:#FDFDFE;
+    --moneed-white:#FFFFFF;
 }
 html {font-size:10px !important}
 body,
