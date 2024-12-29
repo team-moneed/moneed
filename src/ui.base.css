@@ -2,6 +2,7 @@
 :root{
     --moneed-brand-color:#25C5AD;
     --moneed-brand-point:#00ECC9;
+    --moneed-navy:#46467F;
     --moneed-blue:#266DF1;
     --moneed-blue-light:#EEF7FF;
     --moneed-green:#1BCB1B;
@@ -32,3 +33,6 @@ input {font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSy
 body,
 html,
 #root {height:100%}
+@media (max-width:374px) {
+    html {font-size:2.66vw !important;}
+}

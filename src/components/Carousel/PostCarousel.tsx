@@ -1,31 +1,54 @@
 import { EmblaOptionsType } from 'embla-carousel'
 import useEmblaCarousel from 'embla-carousel-react'
+import { usePrevNextButtons, PrevButton, NextButton } from './CarouselArrowButton' // 버튼 관련 훅과 컴포넌트 import
 import TopPostBox from '../Community/TopPostBox'
 
 type PropType = {
-    slides: []
+    slides: {
+        postId: string
+        userName: string
+        content: string
+        title: string
+        createdAt: string
+    }[]
     options?: EmblaOptionsType
 }
 
 const PostCarousel: React.FC<PropType> = ({ slides, options }) => {
-    const [emblaRef] = useEmblaCarousel(options)
+    const [emblaRef, emblaApi] = useEmblaCarousel(options)
+    const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } =
+        usePrevNextButtons(emblaApi)
 
     return (
-        <div className=" w-full overflow-hidden" ref={emblaRef}>
-            <div className="flex gap-[1.6rem]">
-                {slides.map((slide, index) => (
-                    <div className="flex-shrink-0 w-[calc(85%_-_1.6rem)] lg:w-[calc(60%_-_1.6rem)]">
-                        <TopPostBox
+        <div className="relative w-full">
+            <div className="w-full overflow-hidden px-[2rem]" ref={emblaRef}>
+                <div className="flex gap-[1.6rem]">
+                    {slides.map((slide, index) => (
+                        <div
                             key={slide.postId}
-                            postId={slide.postId}
-                            userName={slide.userName}
-                            content={slide.content}
-                            title={slide.title}
-                            createdAt={slide.createdAt}
-                        ></TopPostBox>
-                    </div>
-                ))}
+                            className="flex-shrink-0 w-[calc(85%_-_1.6rem)] lg:w-[calc(60%_-_1.6rem)]"
+                        >
+                            <TopPostBox
+                                postId={slide.postId}
+                                userName={slide.userName}
+                                content={slide.content}
+                                title={slide.title}
+                                createdAt={slide.createdAt}
+                            ></TopPostBox>
+                        </div>
+                    ))}
+                </div>
             </div>
+            {/* <PrevButton
+                onClick={onPrevButtonClick}
+                disabled={prevBtnDisabled}
+                className="absolute top-1/2 left-2 transform -translate-y-1/2 z-10"
+            /> */}
+            <NextButton
+                onClick={onNextButtonClick}
+                disabled={nextBtnDisabled}
+                className="hidden lg:absolute lg:block top-1/2 right-2 transform -translate-y-1/2 z-10 p-[1.2rem] rounded-[2rem] bg-[var(--moneed-gray-5)]"
+            />
         </div>
     )
 }

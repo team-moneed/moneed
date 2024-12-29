@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import PostCarousel from "../../components/Carousel/PostCarousel";
 import useMoveScroll from "../../hook/usemoveScroll";
 import StockInfoBox from "../../components/Community/StockInfoBox";
+import CompanyInfoBox from "../../components/Community/CompanyInfoBox";
 
 
 const Community = () => {
@@ -224,7 +225,7 @@ const Community = () => {
                                 <button onClick={moveToHotPosts} className="text-[1.4rem] leading-[140%] font-[400] text-[var(--moneed-gray-7)]">인기 급상승 게시글</button>
                             </div>
                             <div ref={top5Ref} className="mt-[3.6rem]">
-                                <div className="flex items-baseline gap-[.8rem] mb-[1.8rem]">
+                                <div className="flex items-baseline gap-[.8rem] mb-[1.6rem]">
                                     <h2 className="text-[2.2rem] leading-[145%] font-[700] text-[var(--moneed-black)] lg:text-[2.4rem] lg:leading-[140%]">
                                         Top 5
                                     </h2>
@@ -255,6 +256,9 @@ const Community = () => {
                                     </span>
                                 </div>
                             </div>
+                            <div className="bg-[var(--moneed-navy)] h-[12rem] rounded-[.8rem]">
+                                <span className="text-[2rem] leading-[145%] font-[700] text-[var(--moneed-white)]">comming soon</span>
+                            </div>
                             <div ref={hotPostsRef} className="mt-[2.8rem]">
                                 <div className="flex items-baseline gap-[.8rem] mb-[1.8rem]">
                                     <h2 className="text-[2.2rem] leading-[145%] font-[700] text-[var(--moneed-black)] lg:text-[2.4rem] lg:leading-[140%]">
@@ -266,7 +270,30 @@ const Community = () => {
                         </div>
                     ) : (
                         <div>
-                            <StockInfoBox />
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-[.6rem] gap-x-[1.6rem] mt-4 md:gap-y-[1.2rem] mb-[.6rem]">
+                                <CompanyInfoBox />
+                                <StockInfoBox />
+                            </div>
+                            <div className="mt-[2.8rem]">
+                                <div className="flex items-baseline gap-[.8rem] mb-[1.8rem]">
+                                    <h2 className="text-[2.2rem] leading-[145%] font-[700] text-[var(--moneed-black)] lg:text-[2.4rem] lg:leading-[140%]">
+                                        투표
+                                    </h2>
+                                    <span className="text-[var(--moneed-gray-7)] text-[1.2rem] font-[400] leading-[135%]">
+                                        12월 17일 8시 기준
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="bg-[var(--moneed-navy)] h-[12rem] rounded-[.8rem]">
+                                <span className="text-[2rem] leading-[145%] font-[700] text-[var(--moneed-white)]">유나이티드헬스 그룹 오른다? 내린다?</span>
+                            </div>
+                            <div className="mt-[2.8rem]">
+                                <div className="flex items-baseline gap-[.8rem] mb-[1rem]">
+                                    <h2 className="text-[2.2rem] leading-[145%] font-[700] text-[var(--moneed-black)] lg:text-[2.4rem] lg:leading-[140%]">
+                                        게시글
+                                    </h2>
+                                </div>
+                            </div>
                             <Posts posts={filteredPosts} />
                         </div>
                     )}
