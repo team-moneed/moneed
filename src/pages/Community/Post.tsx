@@ -32,7 +32,7 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
 
     return (
         <>
-            <div className="border border-solid border-[var(--moneed-gray-5)] rounded-[1.8rem] mb-[1.6rem]">
+            <div className="border border-solid border-[var(--moneed-gray-5)] rounded-[1.8rem] mb-[1.6rem] " onClick={() => movetoDetail(postId)}>
                 <div className="pl-[1.8rem] pb-[1.3rem] pr-[1.2rem] pt-[1.4rem]">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-[.6rem]">
@@ -64,9 +64,9 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                 <div className="flex pl-[1.6rem] pb-[1.6rem] pr-[1.2rem] pt-[.4rem]">
                     {isliked ? <Icon iconName={heartIcon} width={18} height={18} onClick={toggleLike}></Icon> :
                         <Icon iconName={redHeartIcon} width={18} height={18} onClick={toggleLike}></Icon>}
-                    <span className="mr-[1rem] text-[1.6rem] font-[400] leading-[140%]">6</span>
-                    <Icon iconName={commentIcon} width={20} height={20} onClick={() => movetoDetail(postId)} />
-                    <span className="mr-[1rem] text-[1.6rem] font-[400] leading-[140%]">8 </span>
+                    <span className="mr-[1rem] text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-gray-8)]">6</span>
+                    <Icon iconName={commentIcon} width={20} height={20} />
+                    <span className="mr-[1rem] text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-gray-8)]">8 </span>
                     <Icon iconName={sharingIcon} width={20} height={20} />
                 </div>
 
