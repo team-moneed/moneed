@@ -1,6 +1,6 @@
 import { EmblaOptionsType } from 'embla-carousel'
 import useEmblaCarousel from 'embla-carousel-react'
-import { usePrevNextButtons, PrevButton, NextButton } from './CarouselArrowButton' // 버튼 관련 훅과 컴포넌트 import
+import { usePrevNextButtons, PrevButton, NextButton } from './CarouselArrowButton'
 import TopPostBox from '../Community/TopPostBox'
 
 type PropType = {
@@ -20,9 +20,9 @@ const PostCarousel: React.FC<PropType> = ({ slides, options }) => {
         usePrevNextButtons(emblaApi)
 
     return (
-        <div className="relative w-full">
-            <div className="w-full overflow-hidden px-[2rem]" ref={emblaRef}>
-                <div className="flex gap-[1.6rem]">
+        <div className="relative">
+            <div className="w-full overflow-hidden pr-[2rem]" ref={emblaRef}>
+                <div className="flex gap-[1.6rem] lg:pr-[2rem]">
                     {slides.map((slide, index) => (
                         <div
                             key={slide.postId}

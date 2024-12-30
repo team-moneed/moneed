@@ -13,7 +13,7 @@ const MobileNav = () => {
                     홈페이지
                 </MobileNavLink>
                 <MobileNavLink
-                    to="/"
+                    to="/shortform"
                     icon="/src/assets/icon/icon-m-nav-2.svg"
                     activeIcon="/src/assets/icon/icon-lnb-2-on.svg"
                 >

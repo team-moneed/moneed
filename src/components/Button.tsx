@@ -1,6 +1,7 @@
 type Props = {
     theme: "primary";
     children: React.ReactNode;
+    textcolor: "primary";
     className?: string;
     onClick?: () => void;
     disabled?: boolean;
@@ -10,13 +11,22 @@ type Props = {
 const Button = ({
     type = "button",
     theme,
+    textcolor,
     children,
     className,
     onClick,
     disabled = false,
 }: Props) => {
     const buttonTheme = {
-        primary: "--moneed-brand-color",
+        primary: "--moneed-black",
+        secondary: "--moneed-white",
+        ghost: "--moneed-white",
+    };
+
+    const textTheme = {
+        primary: "--moneed-white",
+        secondary: "--moneed-gray-9",
+        ghost: "--moneed-gray-7",
     };
 
     return (
@@ -24,7 +34,8 @@ const Button = ({
             type={type}
             onClick={onClick}
             className={
-                `bg-[var(${buttonTheme[theme]})] ${disabled && "pointer-events-none cursor-not-allowed bg-gray-400 text-gray-700"} ` +
+                `bg-[var(${buttonTheme[theme]})] text-[var(${textTheme[textcolor]})]
+                ${disabled && "pointer-events-none cursor-not-allowed bg-[var(--moneed-gray-4)] text-[var(--moneed-gray-6)]"} ` +
                 className
             }
         >
