@@ -6,7 +6,6 @@ type ChipType = {
     label: string;
     onClick?: () => void;
     disabled?: boolean;
-    icon?: string;
     children?: ReactNode
 };
 
@@ -18,11 +17,6 @@ const Chip = ({ className, active, label, onClick, disabled, icon, children }: C
                 } ${className}`}
             onClick={onClick}
             disabled={disabled}>
-            {icon ? (
-                <img src={icon} alt="icon" className="w-[20px] h-[20px]" />
-            ) : (
-                icon
-            )}
             {label}
             <span className="text-[1.4rem] font-semibold">
                 {children}

@@ -1,5 +1,8 @@
 import { EmblaOptionsType } from 'embla-carousel'
 import useEmblaCarousel from 'embla-carousel-react'
+import { usePrevNextButtons, PrevButton, NextButton } from './CarouselArrowButton'
+import { useNavigate } from "react-router-dom";
+
 type PropType = {
     slides: { imgUrl?: string, videoUrl?: string, title: string, userName: string, createdAt: string }[]
     options?: EmblaOptionsType
@@ -7,25 +10,35 @@ type PropType = {
 }
 const VideoCarousel = (props: PropType) => {
     const { slides, options, slidesToShow } = props
-    const [emblaRef] = useEmblaCarousel({
+    const [emblaRef, emblaApi] = useEmblaCarousel({
         ...options,
-        loop: true,
+        loop: false,
         wrapAround: true,
         slidesToShow,
     })
+    const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } =
+        usePrevNextButtons(emblaApi)
+
+    let navigate = useNavigate();
+
+    const movetoshortformDetail = () => {
+        navigate(`/shortformdetail`);
+    }
+
     return (
-        <div className="w-full max-w-6xl mx-auto px-4">
-            <div className="overflow-hidden" ref={emblaRef}>
-                <div className="flex">
+        <div className="relative w-full">
+            <div className="w-full overflow-hidden " ref={emblaRef}>
+                <div className="flex gap-[.8rem]">
                     {slides.map((slide, index) => (
                         <div
-                            className="min-w-[100%] md:min-w-[50%] lg:min-w-[33.333%] shrink-0 pl-4 first:pl-0"
+                            className="w-[calc(30%_-_1.6rem)] lg:w-[calc(20%_-_1.6rem)] shrink-0"
                             key={index}
                             style={{ aspectRatio: '9/16' }}
+                            onClick={movetoshortformDetail}
                         >
                             <video
                                 controls
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-cover rounded-[.8rem]"
                             >
                                 <source src={slide.videoUrl} type="video/mp4" />
                             </video>
@@ -33,6 +46,11 @@ const VideoCarousel = (props: PropType) => {
                     ))}
                 </div>
             </div>
+            <NextButton
+                onClick={onNextButtonClick}
+                disabled={nextBtnDisabled}
+                className="hidden lg:absolute lg:block top-1/2 right-2 transform -translate-y-1/2 z-10 p-[1.2rem] rounded-[2rem] bg-[var(--moneed-gray-5)]"
+            />
         </div>
     )
 }

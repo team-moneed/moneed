@@ -5,14 +5,14 @@ import ReactDOM from 'react-dom';
 type ModalProps = {
     children: ReactNode;
     leftButtontext?: string;
-    rightbuttontext: string;
+    rightButtontext?: string;
     leftButtonevent?: () => void;
     rightbuttonevent: () => void;
     leftvisible?: boolean;
     rightvisible?: boolean;
 }
 
-const Modal = ({ leftButtontext, rightbuttontext, leftButtonevent, rightbuttonevent, leftvisible = true, rightvisible = true, children }: ModalProps) => {
+const Modal = ({ leftButtontext, rightButtontext, leftButtonevent, rightbuttonevent, leftvisible = true, rightvisible = true, children }: ModalProps) => {
 
     useEffect(() => {
         document.body.style.overflow = "hidden";
@@ -25,19 +25,20 @@ const Modal = ({ leftButtontext, rightbuttontext, leftButtonevent, rightbuttonev
     return ReactDOM.createPortal(
         <>
             <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-                <div className="bg-white w-full max-w-md p-6 rounded shadow-lg relative">
-                    <div className="text-center mb-8">
+                <div className="bg-white w-full max-w-md p-[2.4rem] rounded-[.8rem] shadow-lg relative">
+                    <div className="text-[1.4rem] text-center text-[var(--moneed-black)] font-[600] leading-[140%]">
                         {children}
                     </div>
-                    <div className="flex justify-center space-x-4">
+                    <div className="mt-[2.4rem] flex justify-center gap-[3.9rem]">
                         {leftvisible && (
-                            <Button theme="primary" onClick={leftButtonevent}>
+                            <Button theme="secondary" textcolor="secondary" className="px-[2rem] py-[1.2rem]" onClick={leftButtonevent}>
                                 {leftButtontext}
                             </Button>
                         )}
-                        {rightvisible && <Button theme="primary" onClick={rightbuttonevent}>
-                            {rightbuttontext}
-                        </Button>}
+                        {rightvisible &&
+                            <Button theme="secondary" textcolor="secondary" className="px-[2rem] py-[1.2rem]" onClick={rightbuttonevent}>
+                                {rightButtontext}
+                            </Button>}
                     </div>
                 </div>
             </div>

@@ -11,6 +11,7 @@ import PostCarousel from "../../components/Carousel/PostCarousel";
 import useMoveScroll from "../../hook/usemoveScroll";
 import StockInfoBox from "../../components/Community/StockInfoBox";
 import CompanyInfoBox from "../../components/Community/CompanyInfoBox";
+import usescrollSpy from "../../hook/usescrollSpy";
 
 
 const Community = () => {
@@ -60,7 +61,7 @@ const Community = () => {
             title: "2",
             postImages: [
             ],
-            content: "2",
+            content: "2 주식으로 돈벌래돈벌꺼야!!테슬라 주식 언제 사테슬라 주식 언제 사테슬라 주식 언제 사테슬라 주식 언제 사테슬라 주식 언제 사테슬라 주식 언제 사테슬라 주식 언제 사언제사야이득이야? 알려줘알려줘알려주라고!!",
             userName: "사용자5",
             createdAt: "2024-12-09T09:00:00Z",
             likes: 7,
