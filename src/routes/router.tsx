@@ -11,6 +11,7 @@ import MyProfile from "../pages/Mypage/MyProfile";
 import ShortformList from "../pages/Shortform/ShortformList";
 import OnBoarding from "../pages/onBoarding/OnBoarding";
 import ShortformDetail from "../pages/Shortform/ShortformDetail";
+import Mycomment from "../pages/Mypage/Mycomment";
 
 const router = createBrowserRouter([
     {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
             {
                 path: "mypost",
                 element: <MyPost />,
+            },
+            {
+                path: "mycomment",
+                element: <Mycomment />,
             }
         ],
     },
