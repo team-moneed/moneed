@@ -21,7 +21,7 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
     let navigate = useNavigate();
     const movetoDetail = (postId) => {
         navigate(`/comment/${postId}`, {
-            state: { userName, content, isliked, postId, stocktype, postImages, createdAt, title },
+            state: { userName, content, isliked, postId, stocktype, postImages, createdAt, title, likes },
         });
     }
 

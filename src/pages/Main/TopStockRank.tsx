@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Chip from "../../components/Chip";
 import Button from "../../components/Button";
 import { useState } from "react";
-import MainPostBox from "../../components/Main/MainPostBox";
+import MainThumbnailCard from "../../components/Main/MainThumbnailCard";
 
 const TopStockRank = () => {
 
@@ -128,7 +128,7 @@ const TopStockRank = () => {
                 <div
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-[.6rem] gap-x-[1.6rem] mt-4 md:gap-y-[1.2rem]">
                     {filteredPosts.map((post) => (
-                        <MainPostBox
+                        <MainThumbnailCard
                             postId={post.postId}
                             userName={post.userName}
                             content={post.content}

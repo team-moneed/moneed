@@ -1,4 +1,4 @@
-const TopPostBox = ({ postId, userName, content, title, createdAt }) => {
+const CommunityThumbnailCard = ({ postId, userName, content, title, createdAt }) => {
     return (
         <div className="relative border border-solid border-[var(--moneed-gray-5)] px-[1.8rem] py-[1.6rem] rounded-[1.6rem] h-[18rem]">
 
@@ -26,4 +26,4 @@ const TopPostBox = ({ postId, userName, content, title, createdAt }) => {
     );
 };
 
-export default TopPostBox;
+export default CommunityThumbnailCard;
