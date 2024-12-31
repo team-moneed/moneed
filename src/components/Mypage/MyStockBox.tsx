@@ -32,7 +32,7 @@ const MyStockBox = ({ infoBoxImgages, name, priceUSD, rate, children, className,
                 </div>
                 <div className="flex items-center gap-[.6rem]">
                     <div className="text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-black)]">
-                        $504.99
+                        $504.99🇺🇸
                     </div>
                     <div className="text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-green)] rounded-[.8rem] p-[.4rem]">
                         16.3%

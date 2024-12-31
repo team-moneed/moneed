@@ -1,4 +1,4 @@
-const MainPostBox = ({ postId, userName, content, title, createdAt }) => {
+const MainThumbnailCard = ({ postId, userName, content, title, createdAt }) => {
 
     return (
         <>
@@ -26,4 +26,4 @@ const MainPostBox = ({ postId, userName, content, title, createdAt }) => {
     );
 };
 
-export default MainPostBox;
+export default MainThumbnailCard;

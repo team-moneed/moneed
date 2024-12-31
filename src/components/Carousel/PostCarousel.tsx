@@ -1,7 +1,7 @@
 import { EmblaOptionsType } from 'embla-carousel'
 import useEmblaCarousel from 'embla-carousel-react'
 import { usePrevNextButtons, PrevButton, NextButton } from './CarouselArrowButton'
-import TopPostBox from '../Community/TopPostBox'
+import CommunityThumbnailCard from '../Community/CommunityThumbnailCard'
 
 type PropType = {
     slides: {
@@ -28,13 +28,13 @@ const PostCarousel: React.FC<PropType> = ({ slides, options }) => {
                             key={slide.postId}
                             className="flex-shrink-0 w-[calc(85%_-_1.6rem)] lg:w-[calc(60%_-_1.6rem)]"
                         >
-                            <TopPostBox
+                            <CommunityThumbnailCard
                                 postId={slide.postId}
                                 userName={slide.userName}
                                 content={slide.content}
                                 title={slide.title}
                                 createdAt={slide.createdAt}
-                            ></TopPostBox>
+                            ></CommunityThumbnailCard>
                         </div>
                     ))}
                 </div>
