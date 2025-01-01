@@ -5,6 +5,8 @@ const MyProfile = () => {
 
     const [nickname, setNickname] = useState("");
 
+    const [showprofileImage, setshowprofileImage] = useState(false)
+
     const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNickname(e.target.value);
     };
@@ -13,11 +15,20 @@ const MyProfile = () => {
 
     }
 
+    const handleclickEditprofile = () => {
+        setshowprofileImage((prev) => !prev)
+    }
+
     return (
         <>
             <div className="px-[2rem] max-w-[128rem] mx-auto">
-                <div className="flex justify-center items-center rounded-full overflow-hidden aspect-[1/1] w-[14rem] mx-auto mt-[6rem]">
+                <div className="flex justify-center items-center rounded-full aspect-[1/1] w-[14rem] mx-auto mt-[6rem] relative">
                     <img src="/src/assets/temp/sample3.png" alt="" className="w-full h-full object-cover" />
+                    <div
+                        onClick={handleclickEditprofile}
+                        className="absolute bottom-[0rem] right-[0.5rem] bg-[var(--moneed-white)] border border-solid border-[var(--moneed-gray-5)] rounded-full p-[0.6rem] cursor-pointer ">
+                        <img src="/src/assets/icon/icon-edit-profile.svg" alt="" className="w-full h-full object-cover" />
+                    </div>
                 </div>
                 <div>
                     <div className="text-[1.6rem] font-[400] leading-[140%] text-[var(--moneed-black)] mt-[6.9rem]">닉네임</div>

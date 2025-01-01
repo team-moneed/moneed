@@ -9,7 +9,8 @@ function App() {
 
   const location = useLocation();
 
-  const hideFooterPaths = ["/selectStockType"];
+  const hideFooterPaths = ["/selectStockType", "/myprofile"];
+  const isWritePostPath = location.pathname.startsWith("/writepost");
 
   return (
     <>
@@ -17,7 +18,7 @@ function App() {
         <ScrollToTop />
         <Header />
         <Outlet />
-        {!hideFooterPaths.includes(location.pathname) && <Footer />}
+        {!hideFooterPaths.includes(location.pathname) && !isWritePostPath && <Footer />}
       </div>
       <MobileNav></MobileNav>
     </>
