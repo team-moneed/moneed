@@ -21,6 +21,7 @@ const Button = ({
         primary: "--moneed-black",
         secondary: "--moneed-white",
         ghost: "--moneed-white",
+        brand: "--moneed-brand-color",
     };
 
     const textTheme = {
