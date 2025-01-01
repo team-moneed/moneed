@@ -20,13 +20,13 @@ const PostCarousel: React.FC<PropType> = ({ slides, options }) => {
         usePrevNextButtons(emblaApi)
 
     return (
-        <div className="relative">
-            <div className="w-full overflow-hidden pr-[2rem]" ref={emblaRef}>
-                <div className="flex gap-[1.6rem] lg:pr-[2rem]">
+        <div className="relative lg:pr-[5.6rem]">
+            <div className="w-full overflow-hidden mask-right" ref={emblaRef}>
+                <div className="flex gap-[1.6rem]">
                     {slides.map((slide, index) => (
                         <div
                             key={slide.postId}
-                            className="flex-shrink-0 w-[calc(85%_-_1.6rem)] lg:w-[calc(60%_-_1.6rem)]"
+                            className="flex-shrink-0 w-[calc(85%_-_1.6rem)] lg:w-[calc(50%_+_.8rem)]"
                         >
                             <CommunityThumbnailCard
                                 postId={slide.postId}

@@ -1,6 +1,25 @@
 import MobileNavLink from "../MobileNavLink"
+import { useNavigate, useLocation } from "react-router-dom";
 
 const MobileNav = () => {
+
+    let navigate = useNavigate();
+    let location = useLocation();
+
+    const motetowritepost = () => {
+        const lastPathSegment = location.pathname.split("/").pop();
+
+        if (location.pathname.startsWith("/community/")) {
+            if (lastPathSegment && decodeURIComponent(lastPathSegment) !== '전체') {
+                navigate(`/writepost/${lastPathSegment}`);
+            } else {
+                navigate(`/writepost`);
+            }
+        } else {
+            navigate(`/writepost`);
+        }
+    };
+
     return (
         <>
             <div className="flex fixed bottom-0 left-0 right-0 z-[10] pt-[.6rem] pb-4 px-8 bg-[var(--moneed-gray-3)] lg:hidden">
@@ -8,7 +27,6 @@ const MobileNav = () => {
                     to="/"
                     icon="/src/assets/icon/icon-m-nav-1.svg"
                     activeIcon="/src/assets/icon/icon-lnb-1-on.svg"
-                    active={true}
                 >
                     홈페이지
                 </MobileNavLink>
@@ -36,6 +54,7 @@ const MobileNav = () => {
 
                 <button
                     type="button"
+                    onClick={motetowritepost}
                     className="aspect-[1/1] w-[5.2rem] bg-[var(--moneed-brand-color)] absolute bottom-[calc(100%+2rem)] flex items-center justify-center rounded-full right-[2rem]"
                 >
                     <img src="/src/assets/icon/icon-edit.svg" alt="" />

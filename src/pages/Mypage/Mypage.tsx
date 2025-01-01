@@ -92,6 +92,11 @@ const Mypage = () => {
         navigate(`/mycomment`);
     }
 
+    const movetocommunity = (stockname: string) => {
+        navigate(`/community/${stockname}`);
+    };
+
+
     return (
         <>
             <div className="px-[2rem] max-w-[128rem] mx-auto">
@@ -146,6 +151,7 @@ const Mypage = () => {
                                     priceUSD={stock.priceUSD}
                                     rate={stock.rate}
                                     englishName={stock.englishName}
+                                    onClick={() => movetocommunity(stock.name)}
                                 />
                             ))}
                         </div>

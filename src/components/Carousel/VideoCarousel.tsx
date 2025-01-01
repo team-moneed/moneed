@@ -26,8 +26,8 @@ const VideoCarousel = (props: PropType) => {
     }
 
     return (
-        <div className="relative w-full">
-            <div className="w-full overflow-hidden " ref={emblaRef}>
+        <div className="relative lg:pr-[5.6rem]">
+            <div className="w-full overflow-hidden mask-right" ref={emblaRef}>
                 <div className="flex gap-[.8rem]">
                     {slides.map((slide, index) => (
                         <div

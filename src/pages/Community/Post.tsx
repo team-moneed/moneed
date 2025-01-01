@@ -19,20 +19,22 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
 
 
     let navigate = useNavigate();
-    const movetoDetail = (postId) => {
+    const movetoDetail = (e, postId) => {
+        e.stopPropagation();
         navigate(`/comment/${postId}`, {
             state: { userName, content, isliked, postId, stocktype, postImages, createdAt, title, likes },
         });
     }
 
     //좋아요
-    const toggleLike = () => {
-
+    const toggleLike = (e) => {
+        e.stopPropagation();
     }
 
     return (
         <>
-            <div className="border border-solid border-[var(--moneed-gray-5)] rounded-[1.8rem] mb-[1.6rem] " onClick={() => movetoDetail(postId)}>
+            <div className="border border-solid border-[var(--moneed-gray-5)] rounded-[1.8rem] mb-[1.6rem] "
+                onClick={(e) => movetoDetail(e, postId)} >
                 <div className="pl-[1.8rem] pb-[1.3rem] pr-[1.2rem] pt-[1.4rem]">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-[.6rem]">
@@ -67,7 +69,7 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                     <span className="mr-[1rem] text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-gray-8)]">6</span>
                     <Icon iconName={commentIcon} width={20} height={20} />
                     <span className="mr-[1rem] text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-gray-8)]">8 </span>
-                    <Icon iconName={sharingIcon} width={20} height={20} />
+                    <Icon onClick={() => handleCopyClipBoard(`${baseUrl}${location.pathname}`)} iconName={sharingIcon} width={20} height={20} />
                 </div>
 
             </div>

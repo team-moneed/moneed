@@ -1,30 +1,88 @@
 import { useForm } from 'react-hook-form';
-import Button from "../../components/Button";
+import { useNavigate, useParams } from "react-router-dom";
 
 const WritePost = () => {
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, watch } = useForm();
+
+    const { stocktype } = useParams();
+    console.log('stockName', stocktype)
 
     const onSubmit = (data) => {
-        console.log("게시글 작성 완료", data);
+        const formData = { ...data, stocktype };
+        console.log("게시글 작성 완료", formData);
     };
+
+    const content = watch("content", "");
+
+    let navigate = useNavigate();
+    const movetoselectStocktype = () => {
+        navigate(`/searchstocktype`)
+    }
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <label>제목</label>
-                <input
-                    {...register("title", { required: "제목을 입력해주세요." })}
-                    type="text"
-                    placeholder="제목을 입력하세요"
-                />
-                <label>내용</label>
-                <input
-                    {...register("content", { required: "내용을 입력해주세요." })}
-                    type="text"
-                    placeholder="내용을 적어보세요."
-                />
-                <Button type="submit">제출</Button>
-            </form>
+            <div className="px-[2rem] max-w-[128rem] mx-auto">
+                <div className="flex items-center justify-between gap-[.6rem] mt-[1rem]">
+                    <div className="flex items-center gap-[.6rem]">
+                        <div className="rounded-full overflow-hidden aspect-[1/1] w-[3.2rem]">
+                            <img src="/src/assets/temp/sample3.png" alt="" className="w-full h-full object-cover" />
+                        </div>
+                        <span className="text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-black)]">
+                            일론머스크
+                        </span>
+                    </div>
+                    <button
+                        className="bg-[var(--moneed-shade-bg)] p-[.8rem] rounded-[.8rem] flex items-center gap-[0.6rem]"
+                        onClick={movetoselectStocktype}
+                    >
+                        <span className="text-[var(--moneed-black)]">
+                            {stocktype || "종목선택"}
+                        </span>
+                        <div className="overflow-hidden aspect-[1/1] w-[1.2rem]">
+                            <img src="/src/assets/icon/icon-arrow-down.svg" alt="" className="w-full h-full object-cover" />
+                        </div>
+                    </button>
+                </div>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <input
+                        {...register("title", { required: "제목을 입력해주세요." })}
+                        type="text"
+                        placeholder="제목을 입력해주세요"
+                        className="border-b border-[var(--moneed-gray-5)] w-full py-[1.6rem] text-[1.6rem] font-[400] leading-[140%] focus:outline-none placeholder:text-[var(--moneed-gray-7)]"
+                    />
+                    <textarea
+                        {...register("content", { required: "의견을 입력해주세요." })}
+                        type="text"
+                        placeholder="의견을 입력해주세요"
+                        className="w-full h-[30rem] py-[1.6rem] text-[1.6rem] font-[400] leading-[140%] placeholder:text-[var(--moneed-gray-7)] focus:outline-none"
+                    />
+                    <div className="flex items-center justify-between mt-[1.6rem]">
+                        <button
+                            className="rounded-full overflow-hidden aspect-[1/1] w-[3.6rem] cursor-pointer"
+                            type="submit"
+                        >
+                            <img
+                                src="/src/assets/icon/icon-gallery.svg"
+                                alt="gallery"
+                                className="w-full h-full object-cover p-[.6rem]"
+                            />
+                        </button>
+                        <div className="text-right text-[1.4rem] text-[var(--moneed-gray-7)] w-full mx-[1rem]">
+                            {content.length} / 1000자
+                        </div>
+                        <button
+                            className="rounded-full overflow-hidden aspect-[1/1] w-[3.6rem] bg-[var(--moneed-gray-6)] cursor-pointer hover:bg-[var(--moneed-brand-color)]"
+                            type="submit"
+                        >
+                            <img
+                                src="/src/assets/icon/icon-submit-post.svg"
+                                alt="submit"
+                                className="w-full h-full object-cover p-[.6rem]"
+                            />
+                        </button>
+                    </div>
+                </form>
+            </div >
         </>
     );
 };
