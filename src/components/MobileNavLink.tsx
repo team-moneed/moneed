@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 type MobileNavType = {
     className?: string;
@@ -10,7 +10,10 @@ type MobileNavType = {
     children?: ReactNode
 };
 
-const MobileNavLink = ({ className, active, icon, activeIcon, to, children }: MobileNavType) => {
+const MobileNavLink = ({ className, icon, activeIcon, to, children }: MobileNavType) => {
+    const location = useLocation();
+    const active = location.pathname === to;
+
     return (
         <Link to={to}
             className={`flex flex-col justify-center items-center gap-[.3rem] text-[1rem] flex-1 ${active ? "text-[var(--moneed-black)]" : "text-[var(--moneed-gray-6)]"

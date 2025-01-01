@@ -9,18 +9,16 @@ type MyStockProps = {
     children?: ReactNode;
     className?: string;
     englishName?: string;
+    onClick: () => void;
+    isSelectCategory: boolean
 };
 
-const MyStockBox = ({ infoBoxImgages, name, priceUSD, rate, children, className, englishName }: MyStockProps) => {
-    let navigate = useNavigate();
-    const movetocommunity = (stockname: string) => {
-        navigate(`/community/${stockname}`);
-    };
+const MyStockBox = ({ infoBoxImgages, name, priceUSD, rate, children, className, englishName, onClick, isSelectCategory = false }: MyStockProps) => {
 
     return (
         <>
             <div className="flex justify-between p-[.8rem] rounded-[.8rem] hover:bg-[var(--moneed-white)] cursor-pointer transition-colors`"
-                onClick={() => movetocommunity(name)}>
+                onClick={onClick}>
                 <div className="flex items-center gap-[.6rem]">
                     <div className="rounded-full overflow-hidden aspect-[1/1] w-[1.75rem]">
                         <img src="/src/assets/temp/sample3.png" alt="" className="w-full h-full object-cover" />
@@ -30,14 +28,14 @@ const MyStockBox = ({ infoBoxImgages, name, priceUSD, rate, children, className,
                     </div>
                     <h3 className="text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-black)]">유나이티드헬스</h3>
                 </div>
-                <div className="flex items-center gap-[.6rem]">
+                {!isSelectCategory && <div className="flex items-center gap-[.6rem]">
                     <div className="text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-black)]">
                         $504.99🇺🇸
                     </div>
                     <div className="text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-green)] rounded-[.8rem] p-[.4rem]">
                         16.3%
                     </div>
-                </div>
+                </div>}
             </div>
             {children}
         </>

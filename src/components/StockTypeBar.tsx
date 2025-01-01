@@ -20,7 +20,7 @@ const StockTypeBar = ({ selectedStockType, setSelectedStockType }) => {
 
     return (
         <div className="relative">
-            <div className="flex gap-4 mb-6 overflow-x-auto whitespace-nowrap">
+            <div className="flex gap-4 mb-6 overflow-x-auto whitespace-nowrap sm:scrollbar-hide">
                 <Chip
                     label="+"
                     onClick={movetoSelectStockType}

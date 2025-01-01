@@ -1,12 +1,15 @@
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import Footer from "./components/Layout/Footer";
 import Header from "./components/Layout/Header";
-import Lnb from "./components/Layout/Lnb";
 import MobileNav from "./components/Layout/MobileNav";
 import { ScrollToTop } from "./routes/ScrollToTop";
 
 
 function App() {
+
+  const location = useLocation();
+
+  const hideFooterPaths = ["/selectStockType"];
 
   return (
     <>
@@ -14,7 +17,7 @@ function App() {
         <ScrollToTop />
         <Header />
         <Outlet />
-        <Footer />
+        {!hideFooterPaths.includes(location.pathname) && <Footer />}
       </div>
       <MobileNav></MobileNav>
     </>

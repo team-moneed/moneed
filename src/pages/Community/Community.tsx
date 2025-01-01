@@ -11,7 +11,6 @@ import PostCarousel from "../../components/Carousel/PostCarousel";
 import useMoveScroll from "../../hook/usemoveScroll";
 import StockInfoBox from "../../components/Community/StockInfoBox";
 import CompanyInfoBox from "../../components/Community/CompanyInfoBox";
-import usescrollSpy from "../../hook/usescrollSpy";
 
 
 const Community = () => {
@@ -36,8 +35,6 @@ const Community = () => {
     const { onMoveToElement: moveToCategory } = useMoveScroll(categoryRef);
     const { onMoveToElement: moveToHotPosts } = useMoveScroll(hotPostsRef);
     const { onMoveToElement: moveToVote } = useMoveScroll(voteRef);
-
-    let navigate = useNavigate();
 
     const topPosts = [
         {
@@ -257,7 +254,7 @@ const Community = () => {
                                     </span>
                                 </div>
                             </div>
-                            <div className="bg-[var(--moneed-navy)] h-[12rem] rounded-[.8rem]">
+                            <div className="bg-[var(--moneed-navy)] h-[12rem] rounded-[.8rem] text-center  pt-[4rem]">
                                 <span className="text-[2rem] leading-[145%] font-[700] text-[var(--moneed-white)]">comming soon</span>
                             </div>
                             <div ref={hotPostsRef} className="mt-[2.8rem]">
@@ -285,8 +282,8 @@ const Community = () => {
                                     </span>
                                 </div>
                             </div>
-                            <div className="bg-[var(--moneed-navy)] h-[12rem] rounded-[.8rem]">
-                                <span className="text-[2rem] leading-[145%] font-[700] text-[var(--moneed-white)]">유나이티드헬스 그룹 오른다? 내린다?</span>
+                            <div className="bg-[var(--moneed-navy)] h-[12rem] rounded-[.8rem] text-center  pt-[4rem]">
+                                <span className="text-[2rem] leading-[145%] font-[700] text-[var(--moneed-white)]">comming soon</span>
                             </div>
                             <div className="mt-[2.8rem]">
                                 <div className="flex items-baseline gap-[.8rem] mb-[1rem]">
