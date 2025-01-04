@@ -13,6 +13,7 @@ import OnBoarding from "../pages/onBoarding/OnBoarding";
 import ShortformDetail from "../pages/Shortform/ShortformDetail";
 import Mycomment from "../pages/Mypage/Mycomment";
 import SearchStocktype from "../pages/Community/SearchStocktype";
+import EditPost from "../pages/Community/EditPost";
 
 const router = createBrowserRouter([
     {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
             {
                 path: "/writepost",
                 element: <WritePost />,
+            },
+            {
+                path: "/editpost/:stocktype",
+                element: <EditPost />,
             },
             {
                 path: "/community/:stocktype",

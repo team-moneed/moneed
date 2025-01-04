@@ -16,6 +16,9 @@ const Comments = () => {
     const { state } = useLocation();
     const [newComment, setNewComment] = useState("")
 
+    const [isEdit, setIsEdit] = useState(false)
+    const [editContent, setEditContent] = useState("");
+
     const OPTIONS: EmblaOptionsType = {
         slidesToScroll: 1,
         loop: true,
@@ -61,13 +64,32 @@ const Comments = () => {
         }
     ]
 
+    //댓글 추가/수정 창
     const handleWriteComment = (e) => {
-        setNewComment(e.target.value)
+        if (isEdit) {
+            setEditContent(e.target.value);
+        } else {
+            setNewComment(e.target.value);
+        }
+    };
+
+    //댓글 수정/삭제 후  제출
+    const handleSubmitComment = () => {
+        setNewComment("")
+        if (isEdit) {
+            console.log(editContent, "댓글 수정!")
+            setEditContent("")
+        } else {
+            console.log(newComment, "댓글 추가!")
+            setNewComment("")
+        }
     }
 
-    const handleAddComment = () => {
-        console.log(newComment, "댓글 추가!")
-        setNewComment("")
+
+    const handleEditComment = (content) => {
+        setIsEdit(true)
+        setEditContent(content)
+        console.log(content)
     }
 
     return (
@@ -89,7 +111,7 @@ const Comments = () => {
                                     {state.createdAt}
                                 </span>
                             </div>
-                            <div className="rounded-full overflow-hidden aspect-[1/1] w-[1.8rem]">
+                            <div className="rounded-full overflow-hidden aspect-[1/1] w-[2.4rem]">
                                 <img src="/src/assets/icon/icon-more.svg" alt=""
                                     className="w-full h-full object-cover" />
                             </div>
@@ -131,6 +153,9 @@ const Comments = () => {
                             depth={0}
                             createdAt={item.createdAt}
                             replies={item.replies}
+                            isEdit={isEdit}
+                            editContent={item.content}
+                            onEditComment={() => handleEditComment(item.content)}
                         >
                         </Comment>
                     ))}
@@ -142,11 +167,11 @@ const Comments = () => {
                         onChange={handleWriteComment}
                         className="bg-transparent text-[1.4rem] text-[var(--moneed-black)] placeholder:text-[var(--moneed-gray-7)] px-[1.8rem] py-[1.2rem] w-full focus:outline-none"
                         placeholder="의견을 공유해보세요.(최대 300자)"
-                        value={newComment}
+                        value={isEdit ? editContent : newComment}
                     />
                     <div
                         className="absolute right-[1rem] rounded-full aspect-[1/1] w-[3.6rem] bg-[var(--moneed-gray-6)] cursor-pointer hover:bg-[var(--moneed-brand-color)]"
-                        onClick={handleAddComment}
+                        onClick={handleSubmitComment}
                     >
                         <img src="/src/assets/icon/icon-submit-comment.svg" alt=""
                             className="p-[.6rem]" />

@@ -6,6 +6,9 @@ import sharingIcon from "../../assets/sharingIcon.svg";
 import { useNavigate } from "react-router-dom";
 import ImageCarousel from '../../components/Carousel/ImageCarousel'
 import { EmblaOptionsType } from 'embla-carousel'
+import { useState } from "react";
+import Dropdown from "../../components/Dropdown";
+import Modal from "../../components/Modal";
 
 const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes, createdAt, title }) => {
 
@@ -26,9 +29,44 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
         });
     }
 
+
+    const [isDropdownOpen, setIsdropdownOpen] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
     //좋아요
     const toggleLike = (e) => {
         e.stopPropagation();
+    }
+
+    const handleOpendropdown = (e) => {
+        e.stopPropagation();
+        setIsdropdownOpen(true)
+    }
+
+    //게시글 삭제할건지 묻는 모달 
+    const openpostDeletemodal = (e) => {
+        e.stopPropagation();
+        setIsModalOpen((prev) => !prev)
+        setIsdropdownOpen((prev) => !prev)
+    }
+
+    //게시글 삭제할건지 묻는 모달창 닫기
+    const closepostModal = (e) => {
+        e.stopPropagation();
+        setIsModalOpen(false)
+    }
+
+    //게시글 삭제 api 연동
+    const handledeletePost = (e) => {
+        e.stopPropagation();
+
+    }
+
+    const onEditPost = (e) => {
+        e.stopPropagation();
+        navigate(`/editpost/${stocktype}`, {
+            state: { userName, content, isliked, postId, stocktype, postImages, createdAt, title, likes },
+        });
     }
 
     return (
@@ -49,9 +87,27 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                                 {createdAt}
                             </span>
                         </div>
-                        <div className="rounded-full overflow-hidden aspect-[1/1] w-[1.8rem]">
+                        <div className="cursor-pointer rounded-full overflow-hidden aspect-[1/1] w-[2.4rem]"
+                            onClick={handleOpendropdown}>
                             <img src="/src/assets/icon/icon-more.svg" alt="" className="w-full h-full object-cover" />
                         </div>
+                        {isDropdownOpen && <Dropdown
+                            firsttext="게시글 수정"
+                            secondtext="게시글 삭제"
+                            secondevent={openpostDeletemodal}
+                            firstevent={onEditPost}
+                        ></Dropdown>}
+                        {isModalOpen && <Modal
+                            leftButtontext="취소하기"
+                            rightButtontext="삭제하기"
+                            leftButtonevent={closepostModal}
+                            rightbuttonevent={handledeletePost}
+                        >
+                            <div>
+                                삭제된 내용은 복구되지 않아요.<br />
+                                정말 삭제하실건가요?
+                            </div>
+                        </Modal>}
                     </div>
                     <p className="mt-[1.2rem] text-[1.6rem] font-bold leading-[135%] text-[var(--moneed-black)] line-clamp-1">
                         {title}

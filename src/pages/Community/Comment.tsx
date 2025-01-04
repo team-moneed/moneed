@@ -1,22 +1,34 @@
 import { useState } from "react";
+import Dropdown from "../../components/Dropdown";
+import Modal from "../../components/Modal";
 
-const Comment = ({ userName, content, createdAt, replies, depth = 0 }) => {
+const Comment = ({ userName, content, createdAt, replies, depth = 0, isEdit, editContent, onEditComment }) => {
 
-    const [newReply, setNewReply] = useState("")
-    const [isReply, setIsReply] = useState(false)
+    const [isDropdownOpen, setIsdropdownOpen] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
-    const handleWriteReply = (e) => {
-        setNewReply(e.target.value)
+    //댓글 수정/삭제 드롭다운 
+    const handleOpendropdown = (e) => {
+        e.stopPropagation();
+        setIsdropdownOpen((prev) => !prev)
     }
 
-    const handleAddReply = () => {
-        console.log(newReply, "대댓글 추가!")
-        setNewReply("")
+    //댓글 삭제할건지 묻는 모달 
+    const opencommentDeletemodal = () => {
+        setIsModalOpen((prev) => !prev)
+        setIsdropdownOpen((prev) => !prev)
     }
 
-    const handleOpenReply = () => {
-        setIsReply((prev) => !prev)
+    //댓글 삭제할건지 묻는 모달창 닫기
+    const closecommentModal = () => {
+        setIsModalOpen(false)
     }
+
+    //댓글 삭제 api 연동
+    const handledeleteComment = () => {
+
+    }
+
 
     return (
         <>
@@ -34,42 +46,32 @@ const Comment = ({ userName, content, createdAt, replies, depth = 0 }) => {
                         {createdAt}
                     </span>
                     <div className="text-[1.4rem] font-[400] leading-[140%]">
-                        댓글은 500자 Max입니다
+                        댓글은 500자 Max입니다-
                         좌측의 길이는 글을 쓸때 댓글 높이에 따라 짧아지고 길어집니다.
                         좌측의 길이는 글을 쓸때 댓글 높이에 따라 짧아지고 길어집니다.
                     </div>
                 </div>
-                <div className="rounded-full overflow-hidden aspect-[1/1] w-[1.8rem] shrink-0">
+                <div className="cursor-pointer rounded-full overflow-hidden aspect-[1/1] w-[2.4rem] shrink-0" onClick={handleOpendropdown}>
                     <img src="/src/assets/icon/icon-more.svg" alt="" className="w-full h-full object-cover" />
                 </div>
+                {isDropdownOpen && <Dropdown
+                    firsttext="댓글 수정"
+                    secondtext="댓글 삭제"
+                    secondevent={opencommentDeletemodal}
+                    firstevent={onEditComment}
+                ></Dropdown>}
+                {isModalOpen && <Modal
+                    leftButtontext="취소하기"
+                    rightButtontext="삭제하기"
+                    leftButtonevent={closecommentModal}
+                    rightbuttonevent={handledeleteComment}
+                >
+                    <div>
+                        삭제된 내용은 복구되지 않아요.<br />
+                        정말 삭제하실건가요?
+                    </div>
+                </Modal>}
             </div>
-            {/* <div>
-                <Icon iconName={commentIcon} width={20} height={20} onClick={handleOpenReply} />
-            </div>
-
-            {replies && replies.length > 0 && (
-                <div>
-                    {replies.map((reply) => (
-                        <Comment
-                            key={reply.commentId}
-                            userName={reply.userName}
-                            content={reply.content}
-                            replies={reply.replies}
-                            depth={depth + 1}
-                        />
-                    ))}
-                </div>
-            )}
-            {isReply &&
-                <><Input
-                    type="text"
-                    onChange={handleWriteReply}
-                    className="border-2"
-                    placeholder="대댓글 입력하세요."
-                    value={newReply}>
-                </Input>
-                    <Button type="submit" className="green" theme="primary" onClick={handleAddReply}>완료</Button>
-                </>} */}
         </>
     );
 };
