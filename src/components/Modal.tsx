@@ -31,12 +31,12 @@ const Modal = ({ leftButtontext, rightButtontext, leftButtonevent, rightbuttonev
                     </div>
                     <div className="mt-[2.4rem] flex justify-center gap-[3.9rem]">
                         {leftvisible && (
-                            <Button theme="secondary" textcolor="secondary" className="px-[2rem] py-[1.2rem]" onClick={leftButtonevent}>
+                            <Button theme="secondary" className="px-[2rem] py-[1.2rem] text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-gray-7)]" onClick={leftButtonevent}>
                                 {leftButtontext}
                             </Button>
                         )}
                         {rightvisible &&
-                            <Button theme="secondary" textcolor="secondary" className="px-[2rem] py-[1.2rem]" onClick={rightbuttonevent}>
+                            <Button theme="secondary" textcolor="secondary" className="px-[2rem] py-[1.2rem] text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-black)]" onClick={rightbuttonevent}>
                                 {rightButtontext}
                             </Button>}
                     </div>

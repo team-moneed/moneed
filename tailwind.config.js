@@ -5,6 +5,9 @@ export default {
       backgroundImage: {
         'mask-gradient-right': 'linear-gradient(to left, transparent, #000 4.8rem)',
       },
+      boxShadow: {
+        custom: '0px 0px 30px 0px rgba(107, 110, 116, 0.20)',
+      },
     },
   },
   plugins: [
