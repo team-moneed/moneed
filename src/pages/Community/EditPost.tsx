@@ -33,19 +33,11 @@ const EditPost = () => {
         <>
             <div className="px-[2rem] max-w-[128rem] mx-auto">
                 <div className="flex items-center justify-between gap-[.6rem] mt-[1rem]">
-                    <div className="flex items-center gap-[.6rem]">
-                        <div className="rounded-full overflow-hidden aspect-[1/1] w-[3.2rem]">
-                            <img src="/src/assets/temp/sample3.png" alt="" className="w-full h-full object-cover" />
-                        </div>
-                        <span className="text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-black)]">
-                            일론머스크
-                        </span>
-                    </div>
                     <button
-                        className="bg-[var(--moneed-shade-bg)] p-[.8rem] rounded-[.8rem] flex items-center gap-[0.6rem]"
+                        className="bg-[var(--moneed-shade-bg)] py-[1.2rem] px-[1.6rem] rounded-[.8rem] flex items-center gap-[0.6rem]"
                     >
-                        <span className="text-[var(--moneed-black)]">
-                            {stocktype}
+                        <span className={`text-[1.4rem] font-[400] ${stocktype ? 'text-[var(--moneed-black)]' : 'text-[var(--moneed-gray-7)]'}`}>
+                            {stocktype || "글을 쓸 커뮤니티 종목을 선택해주세요."}
                         </span>
                         <div className="overflow-hidden aspect-[1/1] w-[1.2rem]">
                             <img src="/src/assets/icon/icon-arrow-down.svg" alt="" className="w-full h-full object-cover" />
@@ -65,7 +57,7 @@ const EditPost = () => {
                         placeholder="의견을 입력해주세요"
                         className="w-full h-[30rem] py-[1.6rem] text-[1.6rem] font-[400] leading-[140%] placeholder:text-[var(--moneed-gray-7)] focus:outline-none"
                     />
-                    <div className="flex items-center justify-between mt-[1.6rem]">
+                    <div className="flex items-center justify-between mt-[1.6rem] fixed bottom-0 left-0 right-0 z-[20] h-[5.2rem] px-8 bg-white">
                         <button
                             className="rounded-full overflow-hidden aspect-[1/1] w-[3.6rem] cursor-pointer"
                             type="submit"
