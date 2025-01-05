@@ -216,19 +216,25 @@ const Comments = () => {
                     </div>
                 </div>
                 <div className="max-w-[128rem] mx-auto flex flex-col gap-[3.6rem]">
-                    {comments.map((item) => (
-                        <Comment
-                            userName={item.userName}
-                            content={item.content}
-                            depth={0}
-                            createdAt={item.createdAt}
-                            replies={item.replies}
-                            isEdit={isEdit}
-                            editContent={item.content}
-                            onEditComment={() => onEditComment(item.content)}
-                        >
-                        </Comment>
-                    ))}
+                    {comments.length == 0 ?
+                        <div>
+                            <div className="flex justify-center items-center mt-[2rem]">
+                                <img src="/src/assets/cta-2.svg" alt="" className="w-[29rem]" />
+                            </div>
+                        </div>
+                        : comments.map((item) => (
+                            <Comment
+                                userName={item.userName}
+                                content={item.content}
+                                depth={0}
+                                createdAt={item.createdAt}
+                                replies={item.replies}
+                                isEdit={isEdit}
+                                editContent={item.content}
+                                onEditComment={() => onEditComment(item.content)}
+                            >
+                            </Comment>
+                        ))}
                 </div>
                 <div
                     className="mt-[4rem] relative flex items-center bg-[var(--moneed-gray-4)] rounded-[1.2rem]">
