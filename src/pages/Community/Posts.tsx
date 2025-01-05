@@ -11,6 +11,7 @@ const Posts = ({ posts }) => {
                     content={post.content}
                     isliked={post.isliked}
                     comments={post.comments}
+                    stocktype={post.stocktype}
                     likes={post.likes}
                     postId={post.postId}
                     createdAt={post.createdAt}

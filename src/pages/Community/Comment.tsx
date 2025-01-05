@@ -1,11 +1,14 @@
 import { useState } from "react";
 import Dropdown from "../../components/Dropdown";
 import Modal from "../../components/Modal";
+import SnackBar from "../../components/SnackBar";
 
 const Comment = ({ userName, content, createdAt, replies, depth = 0, isEdit, editContent, onEditComment }) => {
 
     const [isDropdownOpen, setIsdropdownOpen] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [snackBarVisible, setSnackBarVisible] = useState(false);
+    const [snackBarMessage, setSnackBarMessage] = useState("");
 
     //댓글 수정/삭제 드롭다운 
     const handleOpendropdown = (e) => {
@@ -26,18 +29,24 @@ const Comment = ({ userName, content, createdAt, replies, depth = 0, isEdit, edi
 
     //댓글 삭제 api 연동
     const handledeleteComment = () => {
-
+        setSnackBarVisible(true)
+        setSnackBarMessage("댓글이 삭제되었습니다.")
+        setIsModalOpen(false)
     }
+
+    const closeDropdown = () => {
+        setIsdropdownOpen(false);
+    };
 
 
     return (
         <>
-            <div className="relative flex items-start gap-[.6rem]">
+            <div className="relative flex items-start gap-[.6rem] w-full">
                 <i className="absolute block w-[.1rem] top-0 bottom-0 left-[1.6rem] bg-[var(--moneed-gray-5)]"></i>
                 <div className="relative rounded-full overflow-hidden aspect-[1/1] w-[3.2rem] shrink-0">
                     <img src="/src/assets/temp/sample3.png" alt="" className="w-full h-full object-cover" />
                 </div>
-                <div>
+                <div className="flex-1">
                     <span className="text-[1.4rem] font-[700] leading-[140%] text-[var(--moneed-black)]">
                         {userName}
                     </span>
@@ -51,26 +60,37 @@ const Comment = ({ userName, content, createdAt, replies, depth = 0, isEdit, edi
                         좌측의 길이는 글을 쓸때 댓글 높이에 따라 짧아지고 길어집니다.
                     </div>
                 </div>
-                <div className="cursor-pointer rounded-full overflow-hidden aspect-[1/1] w-[2.4rem] shrink-0" onClick={handleOpendropdown}>
-                    <img src="/src/assets/icon/icon-more.svg" alt="" className="w-full h-full object-cover" />
-                </div>
-                {isDropdownOpen && <Dropdown
-                    firsttext="댓글 수정"
-                    secondtext="댓글 삭제"
-                    secondevent={opencommentDeletemodal}
-                    firstevent={onEditComment}
-                ></Dropdown>}
-                {isModalOpen && <Modal
-                    leftButtontext="취소하기"
-                    rightButtontext="삭제하기"
-                    leftButtonevent={closecommentModal}
-                    rightbuttonevent={handledeleteComment}
-                >
-                    <div>
-                        삭제된 내용은 복구되지 않아요.<br />
-                        정말 삭제하실건가요?
+                <div className="relative">
+                    <div className="relative cursor-pointer rounded-full overflow-hidden aspect-[1/1] w-[2.4rem] shrink-0 ml-auto" onClick={handleOpendropdown}>
+                        <img src="/src/assets/icon/icon-more.svg" alt="" className="w-full h-full object-cover" />
                     </div>
-                </Modal>}
+                    {isDropdownOpen && <Dropdown
+                        firsttext="댓글 수정"
+                        secondtext="댓글 삭제"
+                        secondevent={opencommentDeletemodal}
+                        firstevent={onEditComment}
+                        onClose={closeDropdown}
+                    ></Dropdown>}
+                    {isModalOpen && <Modal
+                        leftButtontext="취소하기"
+                        rightButtontext="삭제하기"
+                        leftButtonevent={closecommentModal}
+                        rightbuttonevent={handledeleteComment}
+                    >
+                        <div>
+                            삭제된 내용은 복구되지 않아요.<br />
+                            정말 삭제하실건가요?
+                        </div>
+                    </Modal>}
+                    {snackBarVisible && (
+                        <SnackBar
+                            message={snackBarMessage}
+                            setsnackbar={setSnackBarVisible}
+                            position="bottom"
+                            type="action"
+                        />
+                    )}
+                </div>
             </div>
         </>
     );

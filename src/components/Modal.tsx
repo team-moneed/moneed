@@ -10,9 +10,10 @@ type ModalProps = {
     rightbuttonevent: () => void;
     leftvisible?: boolean;
     rightvisible?: boolean;
+    onClose: () => void;
 }
 
-const Modal = ({ leftButtontext, rightButtontext, leftButtonevent, rightbuttonevent, leftvisible = true, rightvisible = true, children }: ModalProps) => {
+const Modal = ({ leftButtontext, rightButtontext, leftButtonevent, rightbuttonevent, leftvisible = true, rightvisible = true, children, onClose }: ModalProps) => {
 
     useEffect(() => {
         document.body.style.overflow = "hidden";
@@ -22,10 +23,22 @@ const Modal = ({ leftButtontext, rightButtontext, leftButtonevent, rightbuttonev
         };
     }, []);
 
+    const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        onClose();
+    };
+
+    const handleInsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+    };
+
     return ReactDOM.createPortal(
         <>
-            <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-                <div className="bg-white w-full max-w-md p-[2.4rem] rounded-[.8rem] shadow-lg relative">
+            <div
+                onClick={handleOutsideClick}
+                className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+                <div
+                    onClick={handleInsideClick}
+                    className="bg-white w-full max-w-md p-[2.4rem] rounded-[.8rem] shadow-lg relative">
                     <div className="text-[1.4rem] text-center text-[var(--moneed-black)] font-[600] leading-[140%]">
                         {children}
                     </div>

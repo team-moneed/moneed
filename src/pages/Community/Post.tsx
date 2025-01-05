@@ -20,14 +20,19 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
         containScroll: 'trimSnaps',
     }
 
-
     let navigate = useNavigate();
-    const movetoDetail = (e, postId) => {
-        e.stopPropagation();
-        navigate(`/comment/${postId}`, {
-            state: { userName, content, isliked, postId, stocktype, postImages, createdAt, title, likes },
-        });
-    }
+    const movetoDetail = (e, stocktype, postId) => {
+        if (isDropdownOpen) {
+            setIsdropdownOpen(false);
+            return;
+        }
+        else {
+            navigate(`/comment/${stocktype}/${postId}`, {
+                state: { userName, content, isliked, postId, stocktype, postImages, createdAt, title, likes },
+            });
+        }
+    };
+
 
 
     const [isDropdownOpen, setIsdropdownOpen] = useState(false)
@@ -36,11 +41,12 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
     //좋아요
     const toggleLike = (e) => {
         e.stopPropagation();
+        console.log('좋아요!')
     }
 
     const handleOpendropdown = (e) => {
         e.stopPropagation();
-        setIsdropdownOpen(true)
+        setIsdropdownOpen((true))
     }
 
     //게시글 삭제할건지 묻는 모달 
@@ -62,6 +68,10 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
 
     }
 
+    const closeDropdown = (e) => {
+        setIsdropdownOpen(false);
+    };
+
     const onEditPost = (e) => {
         e.stopPropagation();
         navigate(`/editpost/${stocktype}`, {
@@ -71,11 +81,14 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
 
     return (
         <>
-            <div className="border border-solid border-[var(--moneed-gray-5)] rounded-[1.8rem] mb-[1.6rem] "
-                onClick={(e) => movetoDetail(e, postId)} >
+            <div
+                className={`relative border border-solid border-[var(--moneed-gray-5)] rounded-[1.8rem] mb-[1.6rem] ${isDropdownOpen ? 'pointer-events-none' : ''
+                    }`}
+            >
+                <button type="button" onClick={(e) => movetoDetail(e, stocktype, postId)} className="absolute inset-0"></button>
                 <div className="pl-[1.8rem] pb-[1.3rem] pr-[1.2rem] pt-[1.4rem]">
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-[.6rem]">
+                        <div className="flex items-center gap-[.6rem] flex-1">
                             <div className="rounded-full overflow-hidden aspect-[1/1] w-[3.2rem]">
                                 <img src="/src/assets/temp/sample3.png" alt="" className="w-full h-full object-cover" />
                             </div>
@@ -87,27 +100,33 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                                 {createdAt}
                             </span>
                         </div>
-                        <div className="cursor-pointer rounded-full overflow-hidden aspect-[1/1] w-[2.4rem]"
-                            onClick={handleOpendropdown}>
-                            <img src="/src/assets/icon/icon-more.svg" alt="" className="w-full h-full object-cover" />
-                        </div>
-                        {isDropdownOpen && <Dropdown
-                            firsttext="게시글 수정"
-                            secondtext="게시글 삭제"
-                            secondevent={openpostDeletemodal}
-                            firstevent={onEditPost}
-                        ></Dropdown>}
-                        {isModalOpen && <Modal
-                            leftButtontext="취소하기"
-                            rightButtontext="삭제하기"
-                            leftButtonevent={closepostModal}
-                            rightbuttonevent={handledeletePost}
-                        >
-                            <div>
-                                삭제된 내용은 복구되지 않아요.<br />
-                                정말 삭제하실건가요?
+                        <div className="relative ml-auto shrink-0 z-[2]">
+                            <div className="cursor-pointer rounded-full overflow-hidden aspect-[1/1] w-[2.4rem]"
+                                onClick={handleOpendropdown}>
+                                <img src="/src/assets/icon/icon-more.svg" alt="" className="w-full h-full object-cover" />
                             </div>
-                        </Modal>}
+                            {isDropdownOpen &&
+                                <div className="relative z-[2] pointer-events-auto">
+                                    <Dropdown
+                                        firsttext="게시글 수정"
+                                        secondtext="게시글 삭제"
+                                        secondevent={openpostDeletemodal}
+                                        firstevent={onEditPost}
+                                        onClose={closeDropdown}
+                                    ></Dropdown>
+                                </div>}
+                            {isModalOpen && <Modal
+                                leftButtontext="취소하기"
+                                rightButtontext="삭제하기"
+                                leftButtonevent={closepostModal}
+                                rightbuttonevent={handledeletePost}
+                            >
+                                <div>
+                                    삭제된 내용은 복구되지 않아요.<br />
+                                    정말 삭제하실건가요?
+                                </div>
+                            </Modal>}
+                        </div>
                     </div>
                     <p className="mt-[1.2rem] text-[1.6rem] font-bold leading-[135%] text-[var(--moneed-black)] line-clamp-1">
                         {title}
@@ -120,12 +139,18 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                     </div>}
                 </div>
                 <div className="flex pl-[1.6rem] pb-[1.6rem] pr-[1.2rem] pt-[.4rem]">
-                    {isliked ? <Icon iconName={heartIcon} width={18} height={18} onClick={toggleLike}></Icon> :
-                        <Icon iconName={redHeartIcon} width={18} height={18} onClick={toggleLike}></Icon>}
-                    <span className="mr-[1rem] text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-gray-8)]">6</span>
-                    <Icon iconName={commentIcon} width={20} height={20} />
-                    <span className="mr-[1rem] text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-gray-8)]">8 </span>
-                    <Icon onClick={() => handleCopyClipBoard(`${baseUrl}${location.pathname}`)} iconName={sharingIcon} width={20} height={20} />
+                    <div className="relative z-[2]">
+                        {isliked ? <Icon iconName={heartIcon} width={18} height={18} onClick={toggleLike}></Icon> :
+                            <Icon iconName={redHeartIcon} width={18} height={18} onClick={toggleLike}></Icon>}
+                    </div>
+                    <span className="relative z-[2] mr-[1rem] text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-gray-8)]">6</span>
+                    <div className=" relative z-[2]">
+                        <Icon iconName={commentIcon} width={20} height={20} />
+                    </div>
+                    <span className="relative z-[2] mr-[1rem] text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-gray-8)]">8 </span>
+                    <div className=" relative z-[2]">
+                        <Icon onClick={() => handleCopyClipBoard(`${baseUrl}${location.pathname}`)} iconName={sharingIcon} width={20} height={20} />
+                    </div>
                 </div>
 
             </div>

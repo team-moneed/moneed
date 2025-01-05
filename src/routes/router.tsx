@@ -14,6 +14,7 @@ import ShortformDetail from "../pages/Shortform/ShortformDetail";
 import Mycomment from "../pages/Mypage/Mycomment";
 import SearchStocktype from "../pages/Community/SearchStocktype";
 import EditPost from "../pages/Community/EditPost";
+import WelcomePage from "../pages/onBoarding/WelcomePage";
 
 const router = createBrowserRouter([
     {
@@ -44,13 +45,10 @@ const router = createBrowserRouter([
                 element: <Community />,
             },
             {
-                path: "/comment/:postId",
+                path: "/comment/:stocktype/:postId",
                 element: <Comments />,
             },
-            {
-                path: "/selectStockType",
-                element: <SelectStockType />,
-            },
+
             {
                 path: "/posts/:searchKeyword",
                 element: <Community />,
@@ -78,6 +76,10 @@ const router = createBrowserRouter([
             {
                 path: "searchstocktype",
                 element: <SearchStocktype />,
+            },
+            {
+                path: "/welcome",
+                element: <WelcomePage />,
             },
         ],
     },

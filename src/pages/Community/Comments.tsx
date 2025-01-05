@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import ImageCarousel from '../../components/Carousel/ImageCarousel';
-import Input from '../../components/Input';
+import { useNavigate } from "react-router-dom";
 import Comment from './Comment';
 import { EmblaOptionsType } from 'embla-carousel'
 import commentIcon from "../../assets/commentIcon.svg";
@@ -9,6 +9,8 @@ import heartIcon from "../../assets/heartIcon.svg";
 import redHeartIcon from "../../assets/redHeartIcon.svg";
 import sharingIcon from "../../assets/sharingIcon.svg";
 import Icon from '../../components/Icon';
+import Dropdown from '../../components/Dropdown';
+import Modal from '../../components/Modal';
 
 const Comments = () => {
 
@@ -18,6 +20,11 @@ const Comments = () => {
 
     const [isEdit, setIsEdit] = useState(false)
     const [editContent, setEditContent] = useState("");
+
+    const [isDropdownOpen, setIsdropdownOpen] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    let navigate = useNavigate();
 
     const OPTIONS: EmblaOptionsType = {
         slidesToScroll: 1,
@@ -85,6 +92,33 @@ const Comments = () => {
         }
     }
 
+    const handleOpendropdown = (e) => {
+        e.stopPropagation();
+        setIsdropdownOpen(true)
+    }
+
+    //게시글 삭제할건지 묻는 모달 
+    const openpostDeletemodal = (e) => {
+        e.stopPropagation();
+        setIsModalOpen((prev) => !prev)
+        setIsdropdownOpen((prev) => !prev)
+    }
+
+    //게시글 삭제할건지 묻는 모달창 닫기
+    const closepostModal = (e) => {
+        e.stopPropagation();
+        setIsModalOpen(false)
+    }
+
+    //게시글 삭제 api 연동
+    const handledeletePost = (e) => {
+        e.stopPropagation();
+
+    }
+
+    const closeDropdown = (e) => {
+        setIsdropdownOpen(false);
+    };
 
     const handleEditComment = (content) => {
         setIsEdit(true)
@@ -92,9 +126,22 @@ const Comments = () => {
         console.log(content)
     }
 
+    const onEditPost = (e) => {
+
+        const { userName, content, isliked, postId, stocktype, postImages, createdAt, title, likes } = state;
+        e.stopPropagation();
+        navigate(`/editpost/${stocktype}`, {
+            state: { userName, content, isliked, postId, stocktype, postImages, createdAt, title, likes },
+        });
+    }
+
+    const onEditComment = (content) => {
+        handleEditComment(content)
+    }
+
     return (
         <>
-            <div className="px-[2rem] max-w-[128rem] mx-auto">
+            <div className="px-[2rem] max-w-[128rem] mx-auto" >
                 <div>
                     <div className="pb-[1.3rem] pt-[1.4rem]">
                         <div className="flex items-center justify-between">
@@ -111,9 +158,32 @@ const Comments = () => {
                                     {state.createdAt}
                                 </span>
                             </div>
-                            <div className="rounded-full overflow-hidden aspect-[1/1] w-[2.4rem]">
-                                <img src="/src/assets/icon/icon-more.svg" alt=""
-                                    className="w-full h-full object-cover" />
+                            <div className="relative ml-auto shrink-0 z-[2]">
+                                <div className="cursor-pointer rounded-full overflow-hidden aspect-[1/1] w-[2.4rem]"
+                                    onClick={handleOpendropdown}>
+                                    <img src="/src/assets/icon/icon-more.svg" alt="" className="w-full h-full object-cover" />
+                                </div>
+                                {isDropdownOpen &&
+                                    <div className="relative z-[2] pointer-events-auto">
+                                        <Dropdown
+                                            firsttext="게시글 수정"
+                                            secondtext="게시글 삭제"
+                                            secondevent={openpostDeletemodal}
+                                            firstevent={onEditPost}
+                                            onClose={closeDropdown}
+                                        ></Dropdown>
+                                    </div>}
+                                {isModalOpen && <Modal
+                                    leftButtontext="취소하기"
+                                    rightButtontext="삭제하기"
+                                    leftButtonevent={closepostModal}
+                                    rightbuttonevent={handledeletePost}
+                                >
+                                    <div>
+                                        삭제된 내용은 복구되지 않아요.<br />
+                                        정말 삭제하실건가요?
+                                    </div>
+                                </Modal>}
                             </div>
                         </div>
                         <p className="mt-[2.4rem] text-[1.6rem] font-[600] leading-[140%] text-[var(--moneed-black)]">
@@ -155,7 +225,7 @@ const Comments = () => {
                             replies={item.replies}
                             isEdit={isEdit}
                             editContent={item.content}
-                            onEditComment={() => handleEditComment(item.content)}
+                            onEditComment={() => onEditComment(item.content)}
                         >
                         </Comment>
                     ))}
