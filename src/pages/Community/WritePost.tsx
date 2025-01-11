@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from "react-router-dom";
+import UploadImage from '../../components/UploadImage';
 
 const WritePost = () => {
     const { register, handleSubmit, watch } = useForm();
@@ -18,6 +20,12 @@ const WritePost = () => {
     const movetoselectStocktype = () => {
         navigate(`/searchstocktype`)
     }
+
+    const [postImages, setpostImages] = useState<string[]>([]);
+    const [formimg, setFormImg] = useState<FormData | string[]>([]);
+    const handleFileUpload = (formData: FormData) => {
+        setFormImg(formData);
+    };
 
     return (
         <>
@@ -49,16 +57,18 @@ const WritePost = () => {
                         className="w-full h-[30rem] py-[1.6rem] text-[1.6rem] font-[400] leading-[140%] placeholder:text-[var(--moneed-gray-7)] focus:outline-none"
                     />
                     <div className="flex items-center justify-between mt-[1.6rem] fixed bottom-0 left-0 right-0 z-[20] h-[5.2rem] px-8 bg-white">
-                        <button
-                            className="rounded-full overflow-hidden aspect-[1/1] w-[3.6rem] cursor-pointer"
-                            type="submit"
-                        >
-                            <img
-                                src="/src/assets/icon/icon-gallery.svg"
-                                alt="gallery"
-                                className="w-full h-full object-cover p-[.6rem]"
-                            />
-                        </button>
+                        <UploadImage
+                            id="blog"
+                            onUploadFiles={handleFileUpload}
+                            multiple={true}
+                            uploadfileLength={4}
+                            imgpreviewWidth={60}
+                            imgpreviewHeight={60}
+                            imgClassName="object-cover w-full h-full"
+                            buttonpositionClassName="mr-0"
+                            buttonClassName="px-6 py-2 transition-colors rounded-xl hover:opacity-80 text-md font-bold bg-[#BFFF00]"
+                            imgUrl={postImages}
+                        ></UploadImage>
                         <div className="text-right text-[1.4rem] text-[var(--moneed-gray-7)] w-full mx-[1rem]">
                             {content.length} / 1000자
                         </div>
