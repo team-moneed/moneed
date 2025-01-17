@@ -22,10 +22,10 @@ function App() {
     <>
       <div className="flex-1">
         <ScrollToTop />
-        <div className="hidden lg:block">
+        <div className="hidden lg:block sticky top-0 z-10 bg-white">
           <Header />
         </div>
-        <div className="block lg:hidden">
+        <div className="block lg:hidden sticky top-0 z-10 bg-white">
           {(menuHeaderPaths.includes(location.pathname) || isWritePostPath || isEditPostPath || iscommentPath) ? <MenuHeader /> : <Header />}
         </div>
         <Outlet />

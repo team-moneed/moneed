@@ -1,3 +1,5 @@
+import DateFormatter from "../../util/Dateformatter";
+
 const MainThumbnailCard = ({ postId, userName, content, title, createdAt }) => {
 
     return (
@@ -11,9 +13,7 @@ const MainThumbnailCard = ({ postId, userName, content, title, createdAt }) => {
                         {userName}
                     </span>
                     <i className="w-[.2rem] h-[.2rem] rounded-full bg-[var(--moneed-gray-5)]"></i>
-                    <span className="text-[1.4rem] font-[400] leading-[142%] text-[var(--moneed-gray-7)]">
-                        {createdAt}
-                    </span>
+                    <DateFormatter createdAt={createdAt} />
                 </div>
                 <p className="mt-[1.2rem] text-[1.6rem] font-bold leading-[135%] text-[var(--moneed-black)] line-clamp-1">
                     {title}

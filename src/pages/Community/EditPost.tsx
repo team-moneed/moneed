@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useIsEditingStore } from '../../store/useIsEditingStore';
 
 const EditPost = () => {
     const { register, handleSubmit, watch, setValue } = useForm({
@@ -11,6 +12,22 @@ const EditPost = () => {
     });
 
     const { state } = useLocation();
+    const { stocktype } = useParams();
+    const { isEditing, setIsEditing } = useIsEditingStore();
+
+    const content = watch("content", "");
+    const initialContent = state?.content || "";
+
+    const title = watch("title", "");
+    const initialTitle = state?.title || "";
+
+    useEffect(() => {
+        if ((content && content !== initialContent) || (title && title !== initialTitle)) {
+            setIsEditing(true);
+        } else {
+            setIsEditing(false);
+        }
+    }, [content, title, initialContent, initialTitle, setIsEditing]);
 
     useEffect(() => {
         if (state) {
@@ -19,15 +36,10 @@ const EditPost = () => {
         }
     }, [state, setValue]);
 
-    const { stocktype } = useParams();
-    console.log('stockName', stocktype)
-
     const onSubmit = (data) => {
         const formData = { ...data, stocktype };
         console.log("게시글 수정 완료", formData);
     };
-
-    const content = watch("content", "");
 
     return (
         <>

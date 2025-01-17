@@ -11,6 +11,7 @@ import sharingIcon from "../../assets/sharingIcon.svg";
 import Icon from '../../components/Icon';
 import Dropdown from '../../components/Dropdown';
 import Modal from '../../components/Modal';
+import DateFormatter from '../../util/Dateformatter';
 
 const Comments = () => {
 
@@ -154,9 +155,7 @@ const Comments = () => {
                                     {state.userName}
                                 </span>
                                 <i className="w-[.2rem] h-[.2rem] rounded-full bg-[var(--moneed-gray-5)]"></i>
-                                <span className="text-[1.4rem] font-[400] leading-[142%] text-[var(--moneed-gray-7)]">
-                                    {state.createdAt}
-                                </span>
+                                <DateFormatter createdAt={state.createdAt} />
                             </div>
                             <div className="relative ml-auto shrink-0 z-[2]">
                                 <div className="cursor-pointer rounded-full overflow-hidden aspect-[1/1] w-[2.4rem]"

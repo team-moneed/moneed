@@ -15,10 +15,12 @@ import Mycomment from "../pages/Mypage/Mycomment";
 import SearchStocktype from "../pages/Community/SearchStocktype";
 import EditPost from "../pages/Community/EditPost";
 import WelcomePage from "../pages/onBoarding/WelcomePage";
+import ErrorPage from "../pages/ErrorPage";
 
 const router = createBrowserRouter([
     {
         element: <App />,
+        errorElement: <ErrorPage />,
         children: [
             {
                 path: "/",
@@ -48,7 +50,6 @@ const router = createBrowserRouter([
                 path: "/comment/:stocktype/:postId",
                 element: <Comments />,
             },
-
             {
                 path: "/posts/:searchKeyword",
                 element: <Community />,
@@ -62,19 +63,19 @@ const router = createBrowserRouter([
                 element: <Mypage />,
             },
             {
-                path: "myprofile",
+                path: "/myprofile",
                 element: <MyProfile />,
             },
             {
-                path: "mypost",
+                path: "/mypost",
                 element: <MyPost />,
             },
             {
-                path: "mycomment",
+                path: "/mycomment",
                 element: <Mycomment />,
             },
             {
-                path: "searchstocktype",
+                path: "/searchstocktype",
                 element: <SearchStocktype />,
             },
             {
@@ -86,14 +87,17 @@ const router = createBrowserRouter([
     {
         path: "/onboarding",
         element: <OnBoarding />,
+        errorElement: <ErrorPage />,
     },
     {
         path: "/shortformdetail",
         element: <ShortformDetail />,
+        errorElement: <ErrorPage />,
     },
     {
         path: "/selectStockType",
         element: <SelectStockType />,
+        errorElement: <ErrorPage />,
     },
 ]);
 
