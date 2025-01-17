@@ -91,6 +91,10 @@ const router = createBrowserRouter([
         path: "/shortformdetail",
         element: <ShortformDetail />,
     },
+    {
+        path: "/selectStockType",
+        element: <SelectStockType />,
+    },
 ]);
 
 export default router;
