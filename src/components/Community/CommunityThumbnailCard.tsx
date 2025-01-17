@@ -1,3 +1,5 @@
+import DateFormatter from "../../util/Dateformatter";
+
 const CommunityThumbnailCard = ({ postId, userName, content, title, createdAt }) => {
     return (
         <div className="relative border border-solid border-[var(--moneed-gray-5)] px-[1.8rem] py-[1.6rem] rounded-[1.6rem] h-[18rem]">
@@ -18,9 +20,7 @@ const CommunityThumbnailCard = ({ postId, userName, content, title, createdAt })
                     {userName}
                 </span>
                 <i className="w-[.2rem] h-[.2rem] rounded-full bg-[var(--moneed-gray-5)]"></i>
-                <span className="text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-gray-7)]">
-                    {createdAt}
-                </span>
+                <DateFormatter createdAt={createdAt} />
             </div>
         </div>
     );

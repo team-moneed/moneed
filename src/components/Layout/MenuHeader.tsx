@@ -1,17 +1,38 @@
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useIsEditingStore } from "../../store/useIsEditingStore";
+import Modal from "../Modal";
+
 
 const MenuHeader = () => {
-
     const navigate = useNavigate();
     const location = useLocation();
     const { stocktype } = useParams();
+    const { isEditing } = useIsEditingStore();
     const isWritePostPath = location.pathname.startsWith("/writepost");
     const isEditPostPath = location.pathname.startsWith("/editpost");
     const iscommentPath = location.pathname.startsWith("/comment");
+    const [showModal, setShowModal] = useState(false);
 
+    const handleBackButtonClick = () => {
+        if ((isWritePostPath || isEditPostPath) && isEditing) {
+            setShowModal(true);
+        } else {
+            navigate('/community');
+        }
+    };
+
+
+    const handleModalConfirm = () => {
+        setShowModal(false);
+        navigate(-1);
+    };
+
+    const handleModalCancel = () => {
+        setShowModal(false);
+    };
 
     const getHeaderTitle = () => {
-
         if (isWritePostPath) {
             return "게시판 글쓰기";
         }
@@ -19,7 +40,6 @@ const MenuHeader = () => {
         if (isEditPostPath) {
             return "게시글 수정";
         }
-
 
         if (iscommentPath && stocktype) {
             return `${decodeURIComponent(stocktype)} 커뮤니티`;
@@ -40,14 +60,41 @@ const MenuHeader = () => {
     };
 
     return (
-        <div className="flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-[2rem] sticky top-0 z-[10] bg-white">
-            <img className="cursor-pointer w-[2.4rem] h-[2.4rem]"
-                onClick={() => navigate(-1)}
-                src="/src/assets/icon/icon-arrow-back.svg" alt="" />
+        <div className="sticky top-0 z-[10] bg-white flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-[2rem] sticky top-0 z-[10] bg-white">
+            <img
+                className="cursor-pointer w-[2.4rem] h-[2.4rem]"
+                onClick={handleBackButtonClick}
+                src="/src/assets/icon/icon-arrow-back.svg"
+                alt=""
+            />
             <h1 className="text-[1.6rem] font-[600] text-[var(--moneed-gray-9)]">{getHeaderTitle()}</h1>
-            {(isWritePostPath || isEditPostPath) ? <img className="w-[2.4rem] h-[2.4rem] cursor-pointer" onClick={() => navigate("/")} src="/src/assets/icon/icon-exit.svg" alt="" /> :
+            {(isWritePostPath || isEditPostPath) ? (
+                <img
+                    className="w-[2.4rem] h-[2.4rem] cursor-pointer"
+                    onClick={() => navigate("/")}
+                    src="/src/assets/icon/icon-exit.svg"
+                    alt=""
+                />
+            ) : (
                 <img className="w-[2.4rem] h-[2.4rem]" src="/src/assets/icon/icon-alarm.svg" alt="" />
-            }
+            )}
+            {showModal && (
+                <Modal
+                    leftButtontext="이어서 하기"
+                    rightButtontext="나가기"
+                    leftButtonevent={handleModalCancel}
+                    rightbuttonevent={handleModalConfirm}
+                    onClose={handleModalCancel}
+                >
+                    {isEditPostPath ?
+                        <span>수정하던 글은 저장되지않아요.<br />
+                            다음에 수정할까요?
+                        </span> :
+                        <span>작성하던 글은 저장되지않아요.<br />
+                            다음에 작성할까요?
+                        </span>}
+                </Modal>
+            )}
         </div>
     );
 };

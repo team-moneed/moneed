@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from "react-router-dom";
 import UploadImage from '../../components/UploadImage';
+import { useIsEditingStore } from '../../store/useIsEditingStore';
 
 const WritePost = () => {
     const { register, handleSubmit, watch } = useForm();
@@ -14,7 +15,18 @@ const WritePost = () => {
         console.log("게시글 작성 완료", formData);
     };
 
+    const { isEditing, setIsEditing } = useIsEditingStore();
+
     const content = watch("content", "");
+    const title = watch("title", "");
+
+    useEffect(() => {
+        if (content || title) {
+            setIsEditing(true);
+        } else {
+            setIsEditing(false);
+        }
+    }, [content, title, setIsEditing]);
 
     let navigate = useNavigate();
     const movetoselectStocktype = () => {
