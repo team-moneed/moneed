@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import ImageCarousel from '../../components/Carousel/ImageCarousel';
 import { useNavigate } from "react-router-dom";
@@ -12,12 +12,15 @@ import Icon from '../../components/Icon';
 import Dropdown from '../../components/Dropdown';
 import Modal from '../../components/Modal';
 import DateFormatter from '../../util/Dateformatter';
+import { useIsEditingStore } from '../../store/useIsEditingStore';
 
 const Comments = () => {
 
     let { postId } = useParams();
+    const inputRef = useRef<HTMLInputElement>(null);;
     const { state } = useLocation();
     const [newComment, setNewComment] = useState("")
+    const { setIsEditing } = useIsEditingStore();
 
     const [isEdit, setIsEdit] = useState(false)
     const [editContent, setEditContent] = useState("");
@@ -26,6 +29,14 @@ const Comments = () => {
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     let navigate = useNavigate();
+
+    useEffect(() => {
+        if (editContent || newComment) {
+            setIsEditing(true);
+        } else {
+            setIsEditing(false);
+        }
+    }, [editContent, newComment, setIsEditing]);
 
     const OPTIONS: EmblaOptionsType = {
         slidesToScroll: 1,
@@ -78,6 +89,15 @@ const Comments = () => {
             setEditContent(e.target.value);
         } else {
             setNewComment(e.target.value);
+        }
+
+        if (inputRef.current) {
+            const rect = inputRef.current.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            window.scrollTo({
+                top: scrollTop + rect.top - window.innerHeight / 3,
+                behavior: 'smooth',
+            });
         }
     };
 
@@ -238,6 +258,7 @@ const Comments = () => {
                 <div
                     className="mt-[4rem] relative flex items-center bg-[var(--moneed-gray-4)] rounded-[1.2rem]">
                     <input
+                        ref={inputRef}
                         type="text"
                         onChange={handleWriteComment}
                         className="bg-transparent text-[1.4rem] text-[var(--moneed-black)] placeholder:text-[var(--moneed-gray-7)] px-[1.8rem] py-[1.2rem] w-full focus:outline-none"
