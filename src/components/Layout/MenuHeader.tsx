@@ -15,7 +15,7 @@ const MenuHeader = () => {
     const [showModal, setShowModal] = useState(false);
 
     const handleBackButtonClick = () => {
-        if ((isWritePostPath || isEditPostPath) && isEditing) {
+        if ((isWritePostPath || isEditPostPath || iscommentPath) && isEditing) {
             setShowModal(true);
         } else {
             navigate('/community');

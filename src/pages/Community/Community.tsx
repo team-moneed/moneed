@@ -187,7 +187,7 @@ const Community = () => {
             ],
             content: "4 테슬라 언제 오르지?",
             userName: "사용자5",
-            createdAt: "2024-12-09T09:00:00Z",
+            createdAt: "2025-01-18T09:00:00Z",
             likes: 7,
             stocktype: "테슬라",
             category: "금융",
