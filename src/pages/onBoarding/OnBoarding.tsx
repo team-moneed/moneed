@@ -1,6 +1,16 @@
 import Button from "../../components/Button";
 
 const OnBoarding = () => {
+
+    const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID;
+    const REDIRECT_URI = "";
+
+    const handleKakaoLogin = () => {
+        const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+        window.location.href = kakaoAuthUrl;
+    };
+
+
     return (
         <>
             <div className="relative h-[100vh] overflow-hidden px-[1.8rem] pt-8 bg-[url('/src/assets/line-bg.png')] bg-[length:8rem_8rem] lg:bg-[url('/src/assets/line-bg-pc.png')]">
@@ -19,7 +29,7 @@ const OnBoarding = () => {
                     </div>
                     <div className="z-[2] absolute bottom-[8rem] left-0 right-0 px-[2rem] lg:sticky lg:mt-[1.6rem] lg:px-0">
                         <Button type="submit" theme="primary" textcolor="primary"
-                            className="w-full flex items-center justify-center h-[5.6rem] gap-[1.8rem] text-[1.6rem]  px-[4rem] font-[700] leading-[140%] rounded-[1.6rem] lg:w-auto">
+                            className="w-full flex items-center justify-center h-[5.6rem] gap-[1.8rem] text-[1.6rem]  px-[4rem] font-[700] leading-[140%] rounded-[1.6rem] lg:w-auto" onClick={handleKakaoLogin}>
                             <img src="/src/assets/logo-kakao.svg" alt="" />
                             카카오로 시작하기
                         </Button>
