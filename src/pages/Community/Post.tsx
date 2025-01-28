@@ -10,6 +10,7 @@ import { useState } from "react";
 import Dropdown from "../../components/Dropdown";
 import Modal from "../../components/Modal";
 import DateFormatter from "../../util/Dateformatter";
+import SnackBar from "../../components/SnackBar";
 
 const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes, createdAt, title }) => {
 
@@ -28,7 +29,7 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
             return;
         }
         else {
-            navigate(`/comment/${stocktype}/${postId}`, {
+            navigate(`/post/${stocktype}/${postId}`, {
                 state: { userName, content, isliked, postId, stocktype, postImages, createdAt, title, likes },
             });
         }
@@ -38,6 +39,7 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
 
     const [isDropdownOpen, setIsdropdownOpen] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [deletePostsuccessSnackbarVisible, setdeletePostSuccessSnackbarVisible] = useState(false);
 
     //좋아요
     const toggleLike = (e) => {
@@ -65,8 +67,8 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
 
     //게시글 삭제 api 연동
     const handledeletePost = (e) => {
-        e.stopPropagation();
-
+        setdeletePostSuccessSnackbarVisible(true)
+        setIsModalOpen(false)
     }
 
     const closeDropdown = (e) => {
@@ -151,6 +153,14 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                         <Icon onClick={() => handleCopyClipBoard(`${baseUrl}${location.pathname}`)} iconName={sharingIcon} width={20} height={20} />
                     </div>
                 </div>
+                {deletePostsuccessSnackbarVisible && (
+                    <SnackBar
+                        message="게시글이 삭제되었습니다."
+                        setsnackbar={setdeletePostSuccessSnackbarVisible}
+                        position="bottom"
+                        type="cancel"
+                    />
+                )}
 
             </div>
         </>

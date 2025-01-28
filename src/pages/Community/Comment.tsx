@@ -7,8 +7,7 @@ const Comment = ({ userName, content, createdAt, replies, depth = 0, isEdit, edi
 
     const [isDropdownOpen, setIsdropdownOpen] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [snackBarVisible, setSnackBarVisible] = useState(false);
-    const [snackBarMessage, setSnackBarMessage] = useState("");
+    const [deleteCommentsuccessSnackbarVisible, setdeleteCommentSuccessSnackbarVisible] = useState(false);
 
     //댓글 수정/삭제 드롭다운 
     const handleOpendropdown = (e) => {
@@ -29,8 +28,7 @@ const Comment = ({ userName, content, createdAt, replies, depth = 0, isEdit, edi
 
     //댓글 삭제 api 연동
     const handledeleteComment = () => {
-        setSnackBarVisible(true)
-        setSnackBarMessage("댓글이 삭제되었습니다.")
+        setdeleteCommentSuccessSnackbarVisible(true)
         setIsModalOpen(false)
     }
 
@@ -82,10 +80,10 @@ const Comment = ({ userName, content, createdAt, replies, depth = 0, isEdit, edi
                             정말 삭제하실건가요?
                         </div>
                     </Modal>}
-                    {snackBarVisible && (
+                    {deleteCommentsuccessSnackbarVisible && (
                         <SnackBar
-                            message={snackBarMessage}
-                            setsnackbar={setSnackBarVisible}
+                            message="댓글이 삭제되었습니다."
+                            setsnackbar={setdeleteCommentSuccessSnackbarVisible}
                             position="bottom"
                             type="action"
                         />
