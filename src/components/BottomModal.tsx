@@ -50,7 +50,7 @@ const BottomModal = ({
             >
                 <div
                     onClick={handleInsideClick}
-                    className={`bg-white w-full h-[44rem] rounded-lg p-6 shadow-lg transform transition-transform duration-300 ${isVisible ? "translate-y-0" : "translate-y-full"
+                    className={`bg-white w-[50rem] h-[44rem] rounded-lg p-6 shadow-lg transform transition-transform duration-300 ${isVisible ? "translate-y-0" : "translate-y-full"
                         }`}
                 >
                     {imageSrc && (

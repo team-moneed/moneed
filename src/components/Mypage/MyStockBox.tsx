@@ -26,7 +26,7 @@ const MyStockBox = ({ infoBoxImgages, name, priceUSD, rate, children, className,
                     <div className="rounded-[.8rem] bg-[var(--moneed-gray-4)] py-[.2rem] px-[.4rem]">
                         <span className="text-[1.2rem] font-[400] leading-[135%] text-[var(--moneed-gray-9)]">appl</span>
                     </div>
-                    <h3 className="text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-black)]">유나이티드헬스</h3>
+                    <h3 className="text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-black)]">{name}</h3>
                 </div>
                 {!isSelectCategory && <div className="flex items-center gap-[.6rem]">
                     <div className="text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-black)]">
