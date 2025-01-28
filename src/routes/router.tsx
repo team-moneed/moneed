@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import SelectStockType from "../components/create/SelectStockType";
-import Comments from "../pages/Community/Comments";
+import PostDetail from "../pages/Community/PostDetail";
 import Community from "../pages/Community/Community";
 import WritePost from "../pages/Community/WritePost";
 import Main from "../pages/Main/Main";
@@ -47,8 +47,8 @@ const router = createBrowserRouter([
                 element: <Community />,
             },
             {
-                path: "/comment/:stocktype/:postId",
-                element: <Comments />,
+                path: "/post/:stocktype/:postId",
+                element: <PostDetail />,
             },
             {
                 path: "/posts/:searchKeyword",

@@ -1,31 +1,27 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useIsEditingStore } from "../../store/useIsEditingStore";
 import Modal from "../Modal";
-
 
 const MenuHeader = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { stocktype } = useParams();
-    const { isEditing } = useIsEditingStore();
     const isWritePostPath = location.pathname.startsWith("/writepost");
     const isEditPostPath = location.pathname.startsWith("/editpost");
-    const iscommentPath = location.pathname.startsWith("/comment");
+    const isPostDetailPath = location.pathname.startsWith("/post");
     const [showModal, setShowModal] = useState(false);
 
     const handleBackButtonClick = () => {
-        if ((isWritePostPath || isEditPostPath || iscommentPath) && isEditing) {
+        if ((isWritePostPath || isEditPostPath || isPostDetailPath)) {
             setShowModal(true);
         } else {
-            navigate('/community');
+            navigate('/mypage');
         }
     };
 
-
     const handleModalConfirm = () => {
-        setShowModal(false);
         navigate(-1);
+        setShowModal(false);
     };
 
     const handleModalCancel = () => {
@@ -41,7 +37,7 @@ const MenuHeader = () => {
             return "게시글 수정";
         }
 
-        if (iscommentPath && stocktype) {
+        if (isPostDetailPath && stocktype) {
             return `${decodeURIComponent(stocktype)} 커뮤니티`;
         }
 
@@ -86,13 +82,13 @@ const MenuHeader = () => {
                     rightbuttonevent={handleModalConfirm}
                     onClose={handleModalCancel}
                 >
-                    {isEditPostPath ?
-                        <span>수정하던 글은 저장되지않아요.<br />
-                            다음에 수정할까요?
-                        </span> :
-                        <span>작성하던 글은 저장되지않아요.<br />
-                            다음에 작성할까요?
-                        </span>}
+                    {isEditPostPath ? (
+                        <span>수정하던 글은 저장되지않아요.<br />다음에 수정할까요?</span>
+                    ) : isPostDetailPath ? (
+                        <span>작성하던 댓글은 저장되지않아요.<br />다음에 작성할까요?</span>
+                    ) : (
+                        <span>작성하던 글은 저장되지않아요.<br />다음에 작성할까요?</span>
+                    )}
                 </Modal>
             )}
         </div>

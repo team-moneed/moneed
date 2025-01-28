@@ -14,7 +14,7 @@ function App() {
 
   const isWritePostPath = location.pathname.startsWith("/writepost");
   const isEditPostPath = location.pathname.startsWith("/editpost");
-  const iscommentPath = location.pathname.startsWith("/comment");
+  const iscommentPath = location.pathname.startsWith("/post");
 
   const menuHeaderPaths = ["/selectStockType", "/mycomment", "/mypost", "/searchstocktype"];
 
