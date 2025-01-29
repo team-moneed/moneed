@@ -7,13 +7,13 @@ type ModalProps = {
     leftButtontext?: string;
     rightButtontext?: string;
     leftButtonevent?: () => void;
-    rightbuttonevent: () => void;
+    rightButtonevent: () => void;
     leftvisible?: boolean;
     rightvisible?: boolean;
     onClose: () => void;
 }
 
-const Modal = ({ leftButtontext, rightButtontext, leftButtonevent, rightbuttonevent, leftvisible = true, rightvisible = true, children, onClose }: ModalProps) => {
+const Modal = ({ leftButtontext, rightButtontext, leftButtonevent, rightButtonevent, leftvisible = true, rightvisible = true, children, onClose }: ModalProps) => {
 
     useEffect(() => {
         document.body.style.overflow = "hidden";
@@ -49,7 +49,7 @@ const Modal = ({ leftButtontext, rightButtontext, leftButtonevent, rightbuttonev
                             </Button>
                         )}
                         {rightvisible &&
-                            <Button theme="secondary" textcolor="secondary" className="px-[2rem] py-[1.2rem] text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-black)]" onClick={rightbuttonevent}>
+                            <Button theme="secondary" textcolor="secondary" className="px-[2rem] py-[1.2rem] text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-black)]" onClick={rightButtonevent}>
                                 {rightButtontext}
                             </Button>}
                     </div>

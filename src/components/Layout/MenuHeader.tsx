@@ -8,24 +8,26 @@ const MenuHeader = () => {
     const { stocktype } = useParams();
     const isWritePostPath = location.pathname.startsWith("/writepost");
     const isEditPostPath = location.pathname.startsWith("/editpost");
-    const isPostDetailPath = location.pathname.startsWith("/post");
+    const iscommentPath = location.pathname.startsWith("/comment");
     const [showModal, setShowModal] = useState(false);
 
+
+    // 뒤로가기 버튼 클릭 시 동작
     const handleBackButtonClick = () => {
-        if ((isWritePostPath || isEditPostPath || isPostDetailPath)) {
+        if ((isWritePostPath || isEditPostPath || iscommentPath)) {
             setShowModal(true);
         } else {
-            navigate('/mypage');
+            navigate(-1);  // 뒤로가기
         }
     };
 
     const handleModalConfirm = () => {
-        navigate(-1);
         setShowModal(false);
+        navigate(-1);  // 모달에서 나가기를 클릭 시 뒤로가기
     };
 
     const handleModalCancel = () => {
-        setShowModal(false);
+        setShowModal(false);  // 모달에서 이어서 하기 클릭 시 모달 닫기
     };
 
     const getHeaderTitle = () => {
@@ -37,7 +39,7 @@ const MenuHeader = () => {
             return "게시글 수정";
         }
 
-        if (isPostDetailPath && stocktype) {
+        if (iscommentPath && stocktype) {
             return `${decodeURIComponent(stocktype)} 커뮤니티`;
         }
 
@@ -56,7 +58,7 @@ const MenuHeader = () => {
     };
 
     return (
-        <div className="sticky top-0 z-[10] bg-white flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-[2rem] sticky top-0 z-[10] bg-white">
+        <div className="sticky top-0 z-[10] bg-white flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-[2rem]">
             <img
                 className="cursor-pointer w-[2.4rem] h-[2.4rem]"
                 onClick={handleBackButtonClick}
@@ -82,13 +84,13 @@ const MenuHeader = () => {
                     rightbuttonevent={handleModalConfirm}
                     onClose={handleModalCancel}
                 >
-                    {isEditPostPath ? (
-                        <span>수정하던 글은 저장되지않아요.<br />다음에 수정할까요?</span>
-                    ) : isPostDetailPath ? (
-                        <span>작성하던 댓글은 저장되지않아요.<br />다음에 작성할까요?</span>
-                    ) : (
-                        <span>작성하던 글은 저장되지않아요.<br />다음에 작성할까요?</span>
-                    )}
+                    {isEditPostPath ?
+                        <span>수정하던 글은 저장되지않아요.<br />
+                            다음에 수정할까요?
+                        </span> :
+                        <span>작성하던 글은 저장되지않아요.<br />
+                            다음에 작성할까요?
+                        </span>}
                 </Modal>
             )}
         </div>

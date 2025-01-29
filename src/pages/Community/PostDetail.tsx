@@ -10,9 +10,9 @@ import redHeartIcon from "../../assets/redHeartIcon.svg";
 import sharingIcon from "../../assets/sharingIcon.svg";
 import Icon from '../../components/Icon';
 import Dropdown from '../../components/Dropdown';
-import Modal from '../../components/Modal';
 import DateFormatter from '../../util/Dateformatter';
-import SnackBar from '../../components/SnackBar';
+import useSnackBarStore from '../../store/useSnackBarStore';
+import { useModal } from '../../context/ModalContext';
 
 const PostDetail = () => {
 
@@ -21,18 +21,14 @@ const PostDetail = () => {
     const { state } = useLocation();
     console.log('state', state)
     const [newComment, setNewComment] = useState("")
-    const [showModal, setShowModal] = useState(false);
 
     const [isEdit, setIsEdit] = useState(false)
     const [editContent, setEditContent] = useState("");
 
     const [isDropdownOpen, setIsdropdownOpen] = useState(false)
-    const [isModalOpen, setIsModalOpen] = useState(false)
 
-    const [writeCommentsuccessSnackbarVisible, setwriteCommentSuccessSnackbarVisible] = useState(false);
-    const [editCommentsuccessSnackbarVisible, seteditCommentSuccessSnackbarVisible] = useState(false);
-    const [deletePostsuccessSnackbarVisible, setdeletePostSuccessSnackbarVisible] = useState(false);
-
+    const { showSnackBar } = useSnackBarStore();
+    const { confirm } = useModal();
 
     let navigate = useNavigate();
 
@@ -104,12 +100,12 @@ const PostDetail = () => {
         setNewComment("")
         if (isEdit) {
             console.log(editContent, "댓글 수정!")
-            seteditCommentSuccessSnackbarVisible(true)
+            showSnackBar('댓글이 수정되었습니다.', 'action', 'bottom', '');
             setEditContent("")
             setIsEdit(false)
         } else {
             console.log(newComment, "댓글 추가!")
-            setwriteCommentSuccessSnackbarVisible(true)
+            showSnackBar('댓글이 작성되었습니다.', 'action', 'bottom', '');
             setNewComment("")
         }
     }
@@ -122,20 +118,21 @@ const PostDetail = () => {
     //게시글 삭제할건지 묻는 모달 
     const openpostDeletemodal = (e) => {
         e.stopPropagation();
-        setIsModalOpen((prev) => !prev)
+        const result = confirm(<span>
+            삭제된 내용은 복구되지 않아요.<br />
+            정말 삭제하실건가요?
+        </span>);
+        result.then((confirmed) => {
+            if (confirmed) {
+                handledeletePost(e);
+            }
+        });
         setIsdropdownOpen((prev) => !prev)
-    }
-
-    //게시글 삭제할건지 묻는 모달창 닫기
-    const closepostModal = (e) => {
-        e.stopPropagation();
-        setIsModalOpen(false)
     }
 
     //게시글 삭제 api 연동
     const handledeletePost = (e) => {
-        setIsModalOpen(false)
-        setdeletePostSuccessSnackbarVisible(true)
+        showSnackBar('게시글이 삭제되었습니다.', 'action', 'bottom', '');
         e.stopPropagation();
 
     }
@@ -201,17 +198,6 @@ const PostDetail = () => {
                                                 onClose={closeDropdown}
                                             ></Dropdown>
                                         </div>}
-                                    {isModalOpen && <Modal
-                                        leftButtontext="취소하기"
-                                        rightButtontext="삭제하기"
-                                        leftButtonevent={closepostModal}
-                                        rightbuttonevent={handledeletePost}
-                                    >
-                                        <div>
-                                            삭제된 내용은 복구되지 않아요.<br />
-                                            정말 삭제하실건가요?
-                                        </div>
-                                    </Modal>}
                                 </div>
                             </div>
                             <p className="mt-[2.4rem] text-[1.6rem] font-[600] leading-[140%] text-[var(--moneed-black)]">
@@ -285,30 +271,6 @@ const PostDetail = () => {
                         </div>
                     </div>
                 </div>
-                {writeCommentsuccessSnackbarVisible && (
-                    <SnackBar
-                        message="댓글이 작성되었습니다."
-                        setsnackbar={setwriteCommentSuccessSnackbarVisible}
-                        position="bottom"
-                        type="action"
-                    />
-                )}
-                {editCommentsuccessSnackbarVisible && (
-                    <SnackBar
-                        message="댓글이 수정되었습니다."
-                        setsnackbar={seteditCommentSuccessSnackbarVisible}
-                        position="bottom"
-                        type="action"
-                    />
-                )}
-                {deletePostsuccessSnackbarVisible && (
-                    <SnackBar
-                        message="게시글이 삭제되었습니다."
-                        setsnackbar={setdeletePostSuccessSnackbarVisible}
-                        position="bottom"
-                        type="action"
-                    />
-                )}
             </div>
         </>
     );

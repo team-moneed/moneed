@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import SnackBar from '../../components/SnackBar';
+import useSnackBarStore from '../../store/useSnackBarStore';
 
 const EditPost = () => {
     const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
@@ -13,9 +13,8 @@ const EditPost = () => {
 
     const { state } = useLocation();
     const { stocktype } = useParams();
-    const [conetentsnackbarVisible, setconetentSnackbarVisible] = useState(false);
-    const [titlesnackbarVisible, settitleSnackbarVisible] = useState(false);
-    const [editPostsuccessSnackbarVisible, seteditPostSuccessSnackbarVisible] = useState(false);
+
+    const { showSnackBar } = useSnackBarStore();
 
     const content = watch("content", "");
     const initialContent = state?.content || "";
@@ -25,11 +24,11 @@ const EditPost = () => {
 
     useEffect(() => {
         if (title.trim().length >= 50) {
-            settitleSnackbarVisible(true);
+            showSnackBar('제목은 공백 포함 50자 제한입니다.', 'normal', 'bottom', '/src/assets/icon/icon-snackbar.svg');
         }
 
         if (content.trim().length >= 1000) {
-            seteditPostSuccessSnackbarVisible(true);
+            showSnackBar('본문은 최대 1000자 입니다.', 'normal', 'bottom', '/src/assets/icon/icon-snackbar.svg');
         }
     }, [content, title, initialContent, initialTitle]);
 
@@ -43,7 +42,7 @@ const EditPost = () => {
     const onSubmit = (data) => {
         const formData = { ...data, stocktype };
         console.log('게시글수정')
-        seteditPostSuccessSnackbarVisible(true);
+        showSnackBar('게시글이 수정되었습니다.', 'action', 'bottom', '');
     };
 
 
@@ -110,30 +109,6 @@ const EditPost = () => {
                         </button>
                     </div>
                 </form>
-                {titlesnackbarVisible && (
-                    <SnackBar
-                        message="제목은 공백 포함 50자 제한입니다."
-                        setsnackbar={settitleSnackbarVisible}
-                        position="bottom"
-                        type="normal"
-                    />
-                )}
-                {conetentsnackbarVisible && (
-                    <SnackBar
-                        message="본문은 최대 1000자 입니다."
-                        setsnackbar={setconetentSnackbarVisible}
-                        position="bottom"
-                        type="normal"
-                    />
-                )}
-                {editPostsuccessSnackbarVisible && (
-                    <SnackBar
-                        message="게시글이 수정되었습니다."
-                        setsnackbar={seteditPostSuccessSnackbarVisible}
-                        position="bottom"
-                        type="action"
-                    />
-                )}
             </div >
         </>
     );
