@@ -1,30 +1,31 @@
 import { useEffect, useState, useRef } from 'react';
-import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from "react-router-dom";
 import BottomModal from '../../components/BottomModal';
-import SnackBar from '../../components/SnackBar';
 import UploadImage from '../../components/UploadImage';
+import useSnackBarStore from '../../store/useSnackBarStore';
+import { useForm } from 'react-hook-form';
 
 const WritePost = () => {
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const { stocktype } = useParams();
     const [isBottomModalOpen, setIsBottomModalOpen] = useState(false);
-
-    const [conetentsnackbarVisible, setconetentSnackbarVisible] = useState(false);
-    const [titlesnackbarVisible, settitleSnackbarVisible] = useState(false);
-    const [writePostsuccessSnackbarVisible, setwritePostSuccessSnackbarVisible] = useState(false);
 
     const [postImages, setPostImages] = useState<string[]>([]);
     const [formImg, setFormImg] = useState<FormData | string[]>([]);
 
     const navigate = useNavigate();
+
+
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const content = watch("content", "");
     const title = watch("title", "");
+
+    const { showSnackBar } = useSnackBarStore();
 
     const handleFileUpload = (formData: FormData) => {
         setFormImg(formData);
     };
+
 
     useEffect(() => {
         const isModalShown = localStorage.getItem("bottoModalShown");
@@ -37,14 +38,14 @@ const WritePost = () => {
 
     useEffect(() => {
         if (title.trim().length >= 50) {
-            settitleSnackbarVisible(true);
+            showSnackBar('제목은 공백 포함 50자 제한입니다.', 'normal', 'bottom', '/src/assets/icon/icon-snackbar.svg');
         }
 
         if (content.trim().length >= 1000) {
-            setconetentSnackbarVisible(true);
+            showSnackBar('본문은 최대 1000자 입니다.', 'normal', 'bottom', '/src/assets/icon/icon-snackbar.svg');
         }
+    }, [content, title, showSnackBar]);
 
-    }, [content, title]);
 
     const movetoSelectStocktype = () => {
         navigate(`/searchstocktype`);
@@ -52,8 +53,8 @@ const WritePost = () => {
 
     const onSubmit = (data: any) => {
         const formData = { ...data, stocktype };
-        setwritePostSuccessSnackbarVisible(true);
-        console.log('게시글작성')
+        showSnackBar('게시글이 작성되었습니다.', 'action', 'bottom', '');
+        console.log('게시글작성', formData)
     };
 
 
@@ -138,33 +139,6 @@ const WritePost = () => {
                 onButtonClick={() => setIsBottomModalOpen(false)}
                 onClose={() => setIsBottomModalOpen(false)}
             />}
-            {titlesnackbarVisible && (
-                <SnackBar
-                    icon="/src/assets/icon/icon-snackbar.svg"
-                    message="제목은 공백 포함 50자 제한입니다."
-                    setsnackbar={settitleSnackbarVisible}
-                    position="bottom"
-                    type="normal"
-                />
-            )}
-            {conetentsnackbarVisible && (
-                <SnackBar
-                    icon="/src/assets/icon/icon-snackbar.svg"
-                    message="본문은 최대 1000자 입니다."
-                    setsnackbar={setconetentSnackbarVisible}
-                    position="bottom"
-                    type="normal"
-                />
-            )}
-            {writePostsuccessSnackbarVisible && (
-                <SnackBar
-                    message="게시글이 작성되었습니다."
-                    setsnackbar={setwritePostSuccessSnackbarVisible}
-                    position="bottom"
-                    type="action"
-                />
-            )}
-
         </div>
     );
 };

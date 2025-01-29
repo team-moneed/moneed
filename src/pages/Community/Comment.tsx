@@ -1,13 +1,14 @@
 import { useState } from "react";
 import Dropdown from "../../components/Dropdown";
-import Modal from "../../components/Modal";
-import SnackBar from "../../components/SnackBar";
+import { useModal } from "../../context/ModalContext";
+import useSnackBarStore from "../../store/useSnackBarStore";
 
 const Comment = ({ userName, content, createdAt, replies, depth = 0, isEdit, editContent, onEditComment }) => {
 
     const [isDropdownOpen, setIsdropdownOpen] = useState(false)
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    const [deleteCommentsuccessSnackbarVisible, setdeleteCommentSuccessSnackbarVisible] = useState(false);
+
+    const { showSnackBar } = useSnackBarStore();
+    const { confirm } = useModal();
 
     //댓글 수정/삭제 드롭다운 
     const handleOpendropdown = (e) => {
@@ -16,20 +17,22 @@ const Comment = ({ userName, content, createdAt, replies, depth = 0, isEdit, edi
     }
 
     //댓글 삭제할건지 묻는 모달 
-    const opencommentDeletemodal = () => {
-        setIsModalOpen((prev) => !prev)
+    const opencommentDeletemodal = (e) => {
+        const result = confirm(<span>
+            삭제된 내용은 복구되지 않아요.<br />
+            정말 삭제하실건가요?
+        </span>);
+        result.then((confirmed) => {
+            if (confirmed) {
+                handledeleteComment(e);
+            }
+        });
         setIsdropdownOpen((prev) => !prev)
-    }
-
-    //댓글 삭제할건지 묻는 모달창 닫기
-    const closecommentModal = () => {
-        setIsModalOpen(false)
     }
 
     //댓글 삭제 api 연동
     const handledeleteComment = () => {
-        setdeleteCommentSuccessSnackbarVisible(true)
-        setIsModalOpen(false)
+        showSnackBar('댓글이 삭제되었습니다.', 'action', 'bottom', '');
     }
 
     const closeDropdown = () => {
@@ -69,25 +72,6 @@ const Comment = ({ userName, content, createdAt, replies, depth = 0, isEdit, edi
                         firstevent={onEditComment}
                         onClose={closeDropdown}
                     ></Dropdown>}
-                    {isModalOpen && <Modal
-                        leftButtontext="취소하기"
-                        rightButtontext="삭제하기"
-                        leftButtonevent={closecommentModal}
-                        rightbuttonevent={handledeleteComment}
-                    >
-                        <div>
-                            삭제된 내용은 복구되지 않아요.<br />
-                            정말 삭제하실건가요?
-                        </div>
-                    </Modal>}
-                    {deleteCommentsuccessSnackbarVisible && (
-                        <SnackBar
-                            message="댓글이 삭제되었습니다."
-                            setsnackbar={setdeleteCommentSuccessSnackbarVisible}
-                            position="bottom"
-                            type="action"
-                        />
-                    )}
                 </div>
             </div>
         </>

@@ -8,9 +8,9 @@ import ImageCarousel from '../../components/Carousel/ImageCarousel'
 import { EmblaOptionsType } from 'embla-carousel'
 import { useState } from "react";
 import Dropdown from "../../components/Dropdown";
-import Modal from "../../components/Modal";
 import DateFormatter from "../../util/Dateformatter";
-import SnackBar from "../../components/SnackBar";
+import useSnackBarStore from "../../store/useSnackBarStore";
+import { useModal } from "../../context/ModalContext";
 
 const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes, createdAt, title }) => {
 
@@ -21,6 +21,9 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
         draggable: true,
         containScroll: 'trimSnaps',
     }
+
+    const { showSnackBar } = useSnackBarStore();
+    const { confirm } = useModal();
 
     let navigate = useNavigate();
     const movetoDetail = (e, stocktype, postId) => {
@@ -35,11 +38,7 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
         }
     };
 
-
-
     const [isDropdownOpen, setIsdropdownOpen] = useState(false)
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    const [deletePostsuccessSnackbarVisible, setdeletePostSuccessSnackbarVisible] = useState(false);
 
     //좋아요
     const toggleLike = (e) => {
@@ -55,20 +54,21 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
     //게시글 삭제할건지 묻는 모달 
     const openpostDeletemodal = (e) => {
         e.stopPropagation();
-        setIsModalOpen((prev) => !prev)
+        const result = confirm(<span>
+            삭제된 내용은 복구되지 않아요.<br />
+            정말 삭제하실건가요?
+        </span>);
+        result.then((confirmed) => {
+            if (confirmed) {
+                handledeletePost(e);
+            }
+        });
         setIsdropdownOpen((prev) => !prev)
-    }
-
-    //게시글 삭제할건지 묻는 모달창 닫기
-    const closepostModal = (e) => {
-        e.stopPropagation();
-        setIsModalOpen(false)
     }
 
     //게시글 삭제 api 연동
     const handledeletePost = (e) => {
-        setdeletePostSuccessSnackbarVisible(true)
-        setIsModalOpen(false)
+        showSnackBar('게시글이 삭제되었습니다.', 'action', 'bottom', '');
     }
 
     const closeDropdown = (e) => {
@@ -116,17 +116,6 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                                         onClose={closeDropdown}
                                     ></Dropdown>
                                 </div>}
-                            {isModalOpen && <Modal
-                                leftButtontext="취소하기"
-                                rightButtontext="삭제하기"
-                                leftButtonevent={closepostModal}
-                                rightbuttonevent={handledeletePost}
-                            >
-                                <div>
-                                    삭제된 내용은 복구되지 않아요.<br />
-                                    정말 삭제하실건가요?
-                                </div>
-                            </Modal>}
                         </div>
                     </div>
                     <p className="mt-[1.2rem] text-[1.6rem] font-bold leading-[135%] text-[var(--moneed-black)] line-clamp-1">
@@ -153,15 +142,6 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                         <Icon onClick={() => handleCopyClipBoard(`${baseUrl}${location.pathname}`)} iconName={sharingIcon} width={20} height={20} />
                     </div>
                 </div>
-                {deletePostsuccessSnackbarVisible && (
-                    <SnackBar
-                        message="게시글이 삭제되었습니다."
-                        setsnackbar={setdeletePostSuccessSnackbarVisible}
-                        position="bottom"
-                        type="cancel"
-                    />
-                )}
-
             </div>
         </>
     );
