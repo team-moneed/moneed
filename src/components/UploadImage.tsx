@@ -109,7 +109,7 @@ const UploadImage = ({
 					>
 						<button
 							className="rounded-full overflow-hidden aspect-[1/1] w-[3.6rem] cursor-pointer"
-							type="submit"
+							type="button"
 						>
 							<img
 								src="/src/assets/icon/icon-gallery.svg"

@@ -257,7 +257,7 @@ const PostDetail = () => {
                                 ref={inputRef}
                                 type="text"
                                 onChange={handleWriteComment}
-                                className="bg-transparent text-[1.4rem] text-[var(--moneed-black)] placeholder:text-[var(--moneed-gray-7)] px-[1.8rem] py-[1.2rem] w-full focus:outline-none"
+                                className="bg-transparent text-[1.6rem] text-[var(--moneed-black)] placeholder:text-[var(--moneed-gray-7)] px-[1.8rem] py-[1.2rem] w-full focus:outline-none"
                                 placeholder="의견을 공유해보세요.(최대 300자)"
                                 value={isEdit ? editContent : newComment}
                             />

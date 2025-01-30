@@ -14,11 +14,11 @@ const MenuHeader = () => {
 
     // 뒤로가기 버튼 클릭 시 동작
     const handleBackButtonClick = () => {
-        if ((isWritePostPath || isEditPostPath || iscommentPath)) {
-            setShowModal(true);
-        } else {
-            navigate(-1);  // 뒤로가기
-        }
+        // if ((isWritePostPath || isEditPostPath || iscommentPath)) {
+        //     setShowModal(true);
+        // } else {
+        navigate(-1);  // 뒤로가기
+        // }
     };
 
     const handleModalConfirm = () => {
