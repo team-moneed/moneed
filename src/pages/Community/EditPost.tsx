@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams, useLocation } from "react-router-dom";
+import UploadImage from '../../components/UploadImage';
+import { useKeyboardOffset } from '../../hook/useKeyboardOffset';
 import useSnackBarStore from '../../store/useSnackBarStore';
 
 const EditPost = () => {
@@ -15,12 +17,16 @@ const EditPost = () => {
     const { stocktype } = useParams();
 
     const { showSnackBar } = useSnackBarStore();
+    const bottomOffset = useKeyboardOffset();
 
     const content = watch("content", "");
     const initialContent = state?.content || "";
 
     const title = watch("title", "");
     const initialTitle = state?.title || "";
+
+    const [postImages, setPostImages] = useState<string[]>([]);
+    const [formImg, setFormImg] = useState<FormData | string[]>([]);
 
     useEffect(() => {
         if (title.trim().length >= 50) {
@@ -39,8 +45,23 @@ const EditPost = () => {
         }
     }, [state, setValue]);
 
+    const handleFileUpload = (formData: FormData) => {
+        setFormImg(formData);
+    };
+
     const onSubmit = (data) => {
         const formData = { ...data, stocktype };
+
+        if (!title.trim()) {
+            showSnackBar('제목을 입력해주세요.', 'normal', 'bottom', '/src/assets/icon/icon-snackbar.svg');
+            return;
+        }
+
+        if (content.trim().length == 0) {
+            showSnackBar('내용을 입력해주세요.', 'normal', 'bottom', '/src/assets/icon/icon-snackbar.svg');
+            return;
+        }
+
         console.log('게시글수정')
         showSnackBar('게시글이 수정되었습니다.', 'action', 'bottom', '');
     };
@@ -70,9 +91,6 @@ const EditPost = () => {
                         className="border-b border-[var(--moneed-gray-5)] w-full py-[1.6rem] text-[1.6rem] font-[400] leading-[140%] focus:outline-none placeholder:text-[var(--moneed-gray-7)]"
                         maxLength={50}
                     />
-                    {errors.title && (
-                        <p className="text-red-500 text-sm mt-2">{errors.title.message}</p>
-                    )}
                     <textarea
                         {...register("content", { required: "의견을 입력해주세요." })}
                         type="text"
@@ -80,20 +98,23 @@ const EditPost = () => {
                         className="w-full h-[30rem] py-[1.6rem] text-[1.6rem] font-[400] leading-[140%] placeholder:text-[var(--moneed-gray-7)] focus:outline-none"
                         maxLength={1000}
                     />
-                    {errors.content && (
-                        <p className="text-red-500 text-sm mt-2">{errors.content.message}</p>
-                    )}
-                    <div className="flex items-center justify-between mt-[1.6rem] fixed bottom-0 left-0 right-0 z-[20] h-[5.2rem] px-8 bg-white">
-                        <button
-                            className="rounded-full overflow-hidden aspect-[1/1] w-[3.6rem] cursor-pointer"
-                            type="submit"
-                        >
-                            <img
-                                src="/src/assets/icon/icon-gallery.svg"
-                                alt="gallery"
-                                className="w-full h-full object-cover p-[.6rem]"
-                            />
-                        </button>
+                    <div
+                        className={`fixed left-0 right-0 z-[20] h-[5.2rem] px-8 bg-white flex items-center justify-between transition-all duration-300 ${bottomOffset > 0 ? `bottom-[${bottomOffset}px]` : "bottom-0"
+                            }`}
+                    >
+                        <UploadImage
+                            id="blog"
+                            onUploadFiles={handleFileUpload}
+                            multiple={true}
+                            uploadfileLength={4}
+                            imgpreviewWidth={60}
+                            imgpreviewHeight={60}
+                            imgClassName="object-cover w-full h-full"
+                            buttonpositionClassName="mr-0"
+                            buttonClassName="px-6 py-2 transition-colors rounded-xl hover:opacity-80 text-md font-bold bg-[#BFFF00]"
+                            imgUrl={postImages}
+                            buttonProps={{ type: "button" }}
+                        />
                         <div className="text-right text-[1.4rem] text-[var(--moneed-gray-7)] w-full mx-[1rem]">
                             {content.length} / 1000자
                         </div>

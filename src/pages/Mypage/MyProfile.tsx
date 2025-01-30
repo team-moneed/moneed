@@ -60,7 +60,7 @@ const MyProfile = () => {
                 <input
                     value={nickname}
                     onChange={handleNicknameChange}
-                    className="bg-[var(--moneed-gray-4)] rounded-[1.2rem] px-[2.4rem] py-[.8rem] h-[5.4rem] w-full"
+                    className="bg-[var(--moneed-gray-4)] text-[1.6rem] rounded-[1.2rem] px-[2.4rem] py-[.8rem] h-[5.4rem] w-full"
                 />
             </div>
 

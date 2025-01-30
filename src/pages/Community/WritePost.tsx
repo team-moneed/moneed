@@ -4,11 +4,14 @@ import BottomModal from '../../components/BottomModal';
 import UploadImage from '../../components/UploadImage';
 import useSnackBarStore from '../../store/useSnackBarStore';
 import { useForm } from 'react-hook-form';
+import { useKeyboardOffset } from '../../hook/useKeyboardOffset';
 
 const WritePost = () => {
 
     const { stocktype } = useParams();
     const [isBottomModalOpen, setIsBottomModalOpen] = useState(false);
+
+    const bottomOffset = useKeyboardOffset();
 
     const [postImages, setPostImages] = useState<string[]>([]);
     const [formImg, setFormImg] = useState<FormData | string[]>([]);
@@ -51,11 +54,42 @@ const WritePost = () => {
         navigate(`/searchstocktype`);
     };
 
-    const onSubmit = (data: any) => {
-        const formData = { ...data, stocktype };
-        showSnackBar('게시글이 작성되었습니다.', 'action', 'bottom', '');
-        console.log('게시글작성', formData)
+    const handleFocus = (field: string) => {
+        if (!stocktype) {
+            showSnackBar('커뮤니티 종목을 먼저 선택해주세요.', 'normal', 'top', '/src/assets/icon/icon-snackbar.svg');
+            return;
+        }
+
+        if (field === 'title') {
+            document.getElementById("title")?.focus();
+        } else if (field === 'content') {
+            document.getElementById("content")?.focus();
+        }
     };
+
+    const onSubmit = (data: any) => {
+        console.log('title', title, content.trim().length)
+        const formData = { ...data, stocktype };
+
+        if (!stocktype) {
+            showSnackBar('커뮤니티 종목을 선택해주세요.', 'normal', 'bottom', '/src/assets/icon/icon-snackbar.svg');
+            return;
+        }
+
+        if (!title.trim()) {
+            showSnackBar('제목을 입력해주세요.', 'normal', 'bottom', '/src/assets/icon/icon-snackbar.svg');
+            return;
+        }
+
+        if (content.trim().length == 0) {
+            showSnackBar('내용을 입력해주세요.', 'normal', 'bottom', '/src/assets/icon/icon-snackbar.svg');
+            return;
+        }
+
+        showSnackBar('게시글이 작성되었습니다.', 'action', 'bottom', '');
+        console.log('게시글작성', formData);
+    };
+
 
 
 
@@ -76,26 +110,25 @@ const WritePost = () => {
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input
-                    {...register("title", { required: "제목을 입력해주세요." })}
+                    {...register("title")}
                     type="text"
                     placeholder="제목을 입력해주세요"
                     className="border-b border-[var(--moneed-gray-5)] w-full py-[1.6rem] text-[1.6rem] font-[400] leading-[140%] focus:outline-none placeholder:text-[var(--moneed-gray-7)]"
                     maxLength={50}
+                    onFocus={() => handleFocus('title')}
                 />
-                {errors.title && (
-                    <p className="text-red-500 text-sm mt-2">{errors.title.message}</p>
-                )}
                 <textarea
-                    {...register("content", { required: "의견을 입력해주세요." })}
+                    {...register("content")}
                     type="text"
                     placeholder="의견을 입력해주세요"
                     className="w-full h-[30rem] py-[1.6rem] text-[1.6rem] font-[400] leading-[140%] placeholder:text-[var(--moneed-gray-7)] focus:outline-none"
                     maxLength={1000}
+                    onFocus={() => handleFocus('content')}
                 />
-                {errors.content && (
-                    <p className="text-red-500 text-sm mt-2">{errors.content.message}</p>
-                )}
-                <div className="flex items-center justify-between mt-[1.6rem] fixed bottom-0 left-0 right-0 z-[20] h-[5.2rem] px-8 bg-white">
+                <div
+                    className={`fixed left-0 right-0 z-[20] h-[5.2rem] px-8 bg-white flex items-center justify-between transition-all duration-300 ${bottomOffset > 0 ? `bottom-[${bottomOffset}px]` : "bottom-0"
+                        }`}
+                >
                     <UploadImage
                         id="blog"
                         onUploadFiles={handleFileUpload}
@@ -107,7 +140,6 @@ const WritePost = () => {
                         buttonpositionClassName="mr-0"
                         buttonClassName="px-6 py-2 transition-colors rounded-xl hover:opacity-80 text-md font-bold bg-[#BFFF00]"
                         imgUrl={postImages}
-                        buttonProps={{ type: "button" }}
                     />
                     <div className="text-right text-[1.4rem] text-[var(--moneed-gray-7)] w-full mx-[1rem]">
                         {content.length} / 1000자
@@ -123,7 +155,7 @@ const WritePost = () => {
                         />
                     </button>
                 </div>
-            </form>
+            </form >
             {isBottomModalOpen && <BottomModal
                 imageSrc="/src/assets/post-warning.svg"
                 title="이런 의견은 피해주세요"
@@ -139,7 +171,7 @@ const WritePost = () => {
                 onButtonClick={() => setIsBottomModalOpen(false)}
                 onClose={() => setIsBottomModalOpen(false)}
             />}
-        </div>
+        </div >
     );
 };
 

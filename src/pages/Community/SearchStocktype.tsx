@@ -116,7 +116,7 @@ const SearchStocktype = () => {
                         placeholder="게시판 종목을 검색 해 주세요."
                         value={searchStockType}
                         onChange={(e) => setsearchStockType(e.target.value)}
-                        className="pl-[3rem] pr-[1rem] py-[.8rem] w-full border border-solid border-[var(--moneed-gray-5)] bg-[var(--moneed-black-3)] rounded-[1.6rem] text-[1.4rem] text-[var(--moneed-gray-7)]"
+                        className="pl-[3rem] pr-[1rem] py-[.8rem] w-full border border-solid border-[var(--moneed-gray-5)] bg-[var(--moneed-black-3)] rounded-[1.6rem] text-[1.6rem] text-[var(--moneed-gray-7)]"
                     />
                 </div>
                 <div className="text-[1.6rem] font-[600] leading-[140%] pb-[1rem] pt-[2.2rem]">
