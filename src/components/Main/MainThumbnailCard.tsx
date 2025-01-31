@@ -4,7 +4,7 @@ interface MainThumbnailCardProps {
     postId?: string | number;
     userName?: string;
     content?: string;
-    createdAt?: string;
+    createdAt: string;
     title?: string;
 }
 

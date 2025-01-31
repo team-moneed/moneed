@@ -4,7 +4,7 @@ type CommunityThumbnailCardPropsType = {
     userName: string
     content?: string
     title?: string
-    createdAt?: string
+    createdAt: string
 
 }
 
