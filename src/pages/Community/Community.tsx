@@ -141,7 +141,7 @@ const Community = () => {
         loop: false,
         // align: "start",
         draggable: true,
-        containScroll: "keepSnaps",
+        // containScroll: "keepSnaps",
     };
 
 
