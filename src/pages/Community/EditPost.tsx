@@ -5,8 +5,16 @@ import UploadImage from '../../components/UploadImage';
 import { useKeyboardOffset } from '../../hook/useKeyboardOffset';
 import useSnackBarStore from '../../store/useSnackBarStore';
 
+
+
+type FieldData = {
+    title: string;
+    content: string;
+}
+
+
 const EditPost = () => {
-    const { register, handleSubmit, watch, setValue } = useForm({
+    const { register, handleSubmit, watch, setValue } = useForm<FieldData>({
         defaultValues: {
             title: "",
             content: "",
@@ -25,8 +33,8 @@ const EditPost = () => {
     const title = watch("title", "");
     const initialTitle = state?.title || "";
 
-    const [postImages, setPostImages] = useState<string[]>([]);
-    const [formImg, setFormImg] = useState<FormData | string[]>([]);
+    const [postImages, _] = useState<string[]>([]);
+    const [, setFormImg] = useState<FormData | string[]>([]);
 
     useEffect(() => {
         if (title.trim().length >= 50) {
@@ -49,7 +57,7 @@ const EditPost = () => {
         setFormImg(formData);
     };
 
-    const onSubmit = (data) => {
+    const onSubmit = (data: FieldData) => {
         const formData = { ...data, stocktype };
 
         if (!title.trim()) {
@@ -62,7 +70,7 @@ const EditPost = () => {
             return;
         }
 
-        console.log('게시글수정')
+        console.log('게시글수정', formData)
         showSnackBar('게시글이 수정되었습니다.', 'action', 'bottom', '');
     };
 
@@ -93,7 +101,7 @@ const EditPost = () => {
                     />
                     <textarea
                         {...register("content", { required: "의견을 입력해주세요." })}
-                        type="text"
+                        // type="text"
                         placeholder="의견을 입력해주세요"
                         className="w-full h-[30rem] py-[1.6rem] text-[1.6rem] font-[400] leading-[140%] placeholder:text-[var(--moneed-gray-7)] focus:outline-none"
                         maxLength={1000}
@@ -112,7 +120,7 @@ const EditPost = () => {
                             imgClassName="object-cover w-full h-full"
                             buttonpositionClassName="mr-0"
                             imgUrl={postImages}
-                            buttonProps={{ type: "button" }}
+                        // buttonProps={{ type: "button" }}
                         />
                         <div className="text-right text-[1.4rem] text-[var(--moneed-gray-7)] w-full mx-[1rem]">
                             {content.length} / 1000자
