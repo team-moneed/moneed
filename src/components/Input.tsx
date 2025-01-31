@@ -1,4 +1,14 @@
-const Input = ({ type, onChange, className, placeholder, value }) => {
+type InputType = HTMLInputElement['type'];
+
+interface InputProps {
+    type: InputType;
+    onChange: () => void;
+    className: string;
+    placeholder: string;
+    value?: string
+}
+
+const Input = ({ type, onChange, className, placeholder, value }: InputProps) => {
     return (
         <div>
             <input

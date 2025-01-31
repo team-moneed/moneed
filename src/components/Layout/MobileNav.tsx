@@ -3,8 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 const MobileNav = () => {
 
-    let navigate = useNavigate();
-    let location = useLocation();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const motetowritepost = () => {
         const lastPathSegment = location.pathname.split("/").pop();

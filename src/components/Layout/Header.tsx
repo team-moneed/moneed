@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const movetowritepost = () => {
         navigate(`/writepost`);
@@ -47,7 +47,7 @@ const Header = () => {
                         </div>
                     </Link>
                     <img className="w-[2.4rem] h-[2.4rem]" src="/src/assets/icon/icon-alarm.svg" alt="" />
-                    <Button onClick={movetowritepost} className="hidden lg:flex gap-[1rem] px-[2.4rem] py-[.8rem] items-center" theme="brand">
+                    <Button onClick={movetowritepost} className="hidden lg:flex gap-[1rem] px-[2.4rem] py-[.8rem] items-center" theme="brand" textcolor="brand">
                         <img className="w-[1.8rem] h-[1.8rem]" src="/src/assets/icon/icon-edit.svg" alt="" />
                         <span className="font-[600] leading-[135%] text-[1.4rem]">포스팅</span>
                     </Button>

@@ -1,20 +1,22 @@
 import { useNavigate } from "react-router-dom";
 
 import { STOCKTYPES } from "../config/StockTypesetting";
-import useStockTypeStore from "../store/useStockTypeStore";
 import Chip from "./Chip";
 
-const StockTypeBar = ({ selectedStockType, setSelectedStockType }) => {
+type StockTypeBar = {
+    selectedStockType: string
+}
+
+const StockTypeBar = ({ selectedStockType }: StockTypeBar) => {
 
     //선택한 카테고리만 보이게
-    const { selectedStockNames } = useStockTypeStore();
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const movetoSelectStockType = () => {
         navigate(`/selectStockType`);
     }
 
-    const movetoStockType = (stocktype) => {
+    const movetoStockType = (stocktype: string) => {
         navigate(`/community/${stocktype}`);
     }
 

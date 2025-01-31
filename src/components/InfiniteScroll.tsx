@@ -18,15 +18,18 @@ const InfiniteScroll = (props: Props) => {
         }
     }, [props]);
 
-    const debounce = (func: Function, delay: number) => {
-        let timeoutId: any = null;
-        return (...args: any[]) => {
-            if (timeoutId) {
-                clearTimeout(timeoutId);
-            }
-            timeoutId = setTimeout(() => {
-                func(...args);
+
+    // unexpected any
+    const debounce = <T extends (...args: any[]) => any>(fn: T, delay: number) => {
+        let timeout: ReturnType<typeof setTimeout>;
+
+        return (...args: Parameters<T>): ReturnType<T> => {
+            let result: any;
+            if (timeout) clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                result = fn(...args);
             }, delay);
+            return result;
         };
     };
 

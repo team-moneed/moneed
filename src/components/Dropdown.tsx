@@ -13,19 +13,18 @@ const Dropdown = ({ children, firsttext, secondtext, firstevent, secondevent, on
 
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    useEffect
-        (() => {
-            const handleOutsideClick = (e: MouseEvent) => {
-                if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-                    onClose();
-                }
-            };
+    useEffect(() => {
+        const handleOutsideClick = (e: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                onClose();
+            }
+        };
 
-            document.addEventListener("mousedown", handleOutsideClick);
-            return () => {
-                document.removeEventListener("mousedown", handleOutsideClick);
-            };
-        }, [onClose]);
+        document.addEventListener("mousedown", handleOutsideClick);
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        };
+    }, [onClose]);
 
     return (
         <div ref={dropdownRef} className="absolute top-0 right-10 z-50 bg-white shadow-custom rounded-[.8rem]">

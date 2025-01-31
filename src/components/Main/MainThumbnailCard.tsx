@@ -1,6 +1,14 @@
 import DateFormatter from "../../util/Dateformatter";
 
-const MainThumbnailCard = ({ postId, userName, content, title, createdAt }) => {
+interface MainThumbnailCardProps {
+    postId?: string | number;
+    userName?: string;
+    content?: string;
+    createdAt?: string;
+    title?: string;
+}
+
+const MainThumbnailCard = ({ userName, content, title, createdAt }: MainThumbnailCardProps) => {
 
     return (
         <>

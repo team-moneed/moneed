@@ -1,11 +1,11 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import Button from "./Button";
 import ReactDOM from "react-dom";
 
 type BottomModalProps = {
     imageSrc?: string;
     title?: string;
-    description?: string;
+    description?: ReactElement;
     ButtonText?: string;
     onButtonClick?: () => void;
     onClose?: () => void;

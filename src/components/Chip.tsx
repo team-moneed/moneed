@@ -9,7 +9,7 @@ type ChipType = {
     children?: ReactNode
 };
 
-const Chip = ({ className, active, label, onClick, disabled, icon, children }: ChipType) => {
+const Chip = ({ className, active, label, onClick, disabled, children }: ChipType) => {
     return (
         <button
             type="button"

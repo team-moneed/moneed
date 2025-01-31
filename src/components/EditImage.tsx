@@ -46,17 +46,17 @@ const EditImage = ({
         if (files) {
             const newFiles = Array.from(files);
 
-            const updatedFiles: any = [...uploadedFiles, ...newFiles];
+            const updatedFiles = [...uploadedFiles, ...newFiles];
             setUploadedFiles(updatedFiles);
 
             const formData = new FormData();
-            updatedFiles.forEach((file: any) => formData.append("files", file));
+            updatedFiles.forEach((file) => formData.append("files", file));
 
             onUploadFiles(formData);
         }
     };
 
-    const handledeleteFile = (index: number, isInitialImage: boolean) => {
+    const handledeleteFile = (index: number, isInitialImage?: boolean) => {
         if (isInitialImage) {
             const imageToRemove = images[index];
             setImages((prevImages) => {

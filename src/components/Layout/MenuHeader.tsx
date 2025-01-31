@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Modal from "../Modal";
 
@@ -81,7 +81,7 @@ const MenuHeader = () => {
                     leftButtontext="이어서 하기"
                     rightButtontext="나가기"
                     leftButtonevent={handleModalCancel}
-                    rightbuttonevent={handleModalConfirm}
+                    rightButtonevent={handleModalConfirm}
                     onClose={handleModalCancel}
                 >
                     {isEditPostPath ?

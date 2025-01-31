@@ -8,8 +8,8 @@ const SearchResult = () => {
 
     const StockTypeBar = STOCKTYPES.map((stocktype) => stocktype.stocktype)
 
-    let navigate = useNavigate();
-    const handlemoveKeywordPosts = (keyword) => {
+    const navigate = useNavigate();
+    const handlemoveKeywordPosts = (keyword: string) => {
         setSearchKeyword(keyword)
         navigate(`/community/${keyword}`);
         setSearchKeyword("")

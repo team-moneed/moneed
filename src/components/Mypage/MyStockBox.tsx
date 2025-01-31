@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
 
 type MyStockProps = {
     infoBoxImgages?: string[] | string;
@@ -13,7 +12,7 @@ type MyStockProps = {
     isSelectCategory: boolean
 };
 
-const MyStockBox = ({ infoBoxImgages, name, priceUSD, rate, children, className, englishName, onClick, isSelectCategory = false }: MyStockProps) => {
+const MyStockBox = ({ name, children, onClick, isSelectCategory = false }: MyStockProps) => {
 
     return (
         <>

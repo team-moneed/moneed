@@ -13,7 +13,7 @@ type ModalProps = {
     onClose: () => void;
 }
 
-const Modal = ({ leftButtontext, rightButtontext, leftButtonevent, rightButtonevent, leftvisible = true, rightvisible = true, children, onClose }: ModalProps) => {
+const Modal = ({ leftButtontext, rightButtontext, leftButtonevent, leftvisible = true, rightvisible = true, children, onClose, rightButtonevent }: ModalProps) => {
 
     useEffect(() => {
         document.body.style.overflow = "hidden";
@@ -23,7 +23,7 @@ const Modal = ({ leftButtontext, rightButtontext, leftButtonevent, rightButtonev
         };
     }, []);
 
-    const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const handleOutsideClick = () => {
         onClose();
     };
 
@@ -44,7 +44,7 @@ const Modal = ({ leftButtontext, rightButtontext, leftButtonevent, rightButtonev
                     </div>
                     <div className="mt-[2.4rem] flex justify-center gap-[3.9rem]">
                         {leftvisible && (
-                            <Button theme="secondary" className="px-[2rem] py-[1.2rem] text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-gray-7)]" onClick={leftButtonevent}>
+                            <Button theme="secondary" className="px-[2rem] py-[1.2rem] text-[1.4rem] font-[600] leading-[140%] " textcolor="ghost" onClick={leftButtonevent}>
                                 {leftButtontext}
                             </Button>
                         )}

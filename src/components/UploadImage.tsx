@@ -34,11 +34,11 @@ const UploadImage = ({
 		if (files) {
 			const newFiles = Array.from(files);
 
-			const updatedFiles: any = [...uploadedFiles, ...newFiles];
+			const updatedFiles: (string|File)[] = [...uploadedFiles, ...newFiles];
 			setUploadedFiles(updatedFiles);
 
 			const formData = new FormData();
-			updatedFiles.forEach((file: any) => formData.append("files", file));
+			updatedFiles.forEach((file: File) => formData.append("files", file));
 
 			onUploadFiles(formData);
 		}

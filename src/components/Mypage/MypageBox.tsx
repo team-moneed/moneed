@@ -8,7 +8,7 @@ type MypageBoxType = {
     children?: ReactNode
 };
 
-const MypageBox = ({ className, menu, count, onClick, children }: MypageBoxType) => {
+const MypageBox = ({ menu, count, onClick }: MypageBoxType) => {
     return (
         <>
             <div className="p-[1.6rem] flex-col justify-center gap-[1rem] rounded-[1.6rem] border border-solid border-[var(--moneed-gray-5)] cursor-pointer" onClick={onClick}>

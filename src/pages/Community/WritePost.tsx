@@ -33,10 +33,10 @@ const WritePost = () => {
     useEffect(() => {
         const isModalShown = localStorage.getItem("bottoModalShown");
 
-        if (!isModalShown && !content && !title) {
-            setIsBottomModalOpen(true);
-            localStorage.setItem("bottoModalShown", "true");
-        }
+        // if (!isModalShown && !content && !title) {
+        setIsBottomModalOpen(true);
+        // localStorage.setItem("bottoModalShown", "true");
+        // }
     }, [content, title]);
 
     useEffect(() => {
