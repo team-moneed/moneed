@@ -90,6 +90,10 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
         });
     }
 
+    const handleCopyClipBoard = () => {
+
+    }
+
     return (
         <>
             <div
@@ -147,7 +151,7 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                     </div>
                     <span className="relative z-[2] mr-[1rem] text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-gray-8)]">8 </span>
                     <div className=" relative z-[2]">
-                        <Icon onClick={() => handleCopyClipBoard(`${baseUrl}${location.pathname}`)} iconUrl="src/assets/sharingIcon.svg" width={20} height={20} />
+                        <Icon onClick={() => handleCopyClipBoard()} iconUrl="src/assets/sharingIcon.svg" width={20} height={20} />
                     </div>
                 </div>
             </div>
