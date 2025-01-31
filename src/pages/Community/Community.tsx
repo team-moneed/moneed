@@ -1,12 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { STOCKTYPES } from "../../config/StockTypesetting";
 import { useParams } from 'react-router-dom';
 import Posts from "./Posts";
-import useSearchStore from "../../store/useSearchStore";
-import Vote from "../../components/Vote";
 import StockTypeBar from "../../components/StockTypeBar";
 import TopCategory from "./TopCategory";
-import { useNavigate } from "react-router-dom";
 import PostCarousel from "../../components/Carousel/PostCarousel";
 import useMoveScroll from "../../hook/usemoveScroll";
 import StockInfoBox from "../../components/Community/StockInfoBox";
@@ -15,7 +11,6 @@ import CompanyInfoBox from "../../components/Community/CompanyInfoBox";
 
 const Community = () => {
 
-    const { searchKeyword } = useSearchStore();
     const { stocktype } = useParams();
 
     const [selectedStockType, setSelectedStockType] = useState(stocktype || "전체");
@@ -40,63 +35,34 @@ const Community = () => {
         {
             postId: 1,
             title: "1",
-            postImages: [
-                'https://via.placeholder.com/600x350/ff7f7f/333333',
-                'https://via.placeholder.com/600x350/7f7fff/333333',
-                'https://via.placeholder.com/600x350/7fff7f/333333'
-            ],
             content: "1 테슬라 주식 언제 사테슬라 주식 언제 사 테슬라 주식 언제 사 테슬라 주식 언제 사 테슬라 주식 언제 사 테슬라 주식 언제 사 테슬라 주식 언제 사 테슬라 주식 언제 사 테슬라 주식 언제 사 테슬라 주식 언제 사 테슬라 주식 언제 사 테슬라 주식 언제 사 테슬라 주식 언제 사 테슬라 주식 언제 사 테슬라 주식 언제 사 테슬라 주식 언제 사 테슬라 주식 언제 사 테슬라 주식 언제 사 테슬라 주식 언제 사  ",
             userName: "사용자1",
             createdAt: "2024-12-10T10:00:00Z",
-            likes: 10,
             stocktype: "테슬라",
-            category: "금융",
-            isliked: true,
         },
         {
             postId: 2,
             title: "2",
-            postImages: [
-            ],
             content: "2 주식으로 돈벌래돈벌꺼야!!테슬라 주식 언제 사테슬라 주식 언제 사테슬라 주식 언제 사테슬라 주식 언제 사테슬라 주식 언제 사테슬라 주식 언제 사테슬라 주식 언제 사언제사야이득이야? 알려줘알려줘알려주라고!!",
             userName: "사용자5",
             createdAt: "2024-12-09T09:00:00Z",
-            likes: 7,
             stocktype: "애플",
-            category: "정보기술",
-            isliked: false,
         },
         {
             postId: 3,
             title: "3",
-            postImages: [
-                'https://via.placeholder.com/600x350/ff7f7f/333333',
-                'https://via.placeholder.com/600x350/7f7fff/333333',
-                'https://via.placeholder.com/600x350/7fff7f/333333'
-            ],
             content: "3 카카오게시글! 카카오카카ㅗ오오",
             userName: "사용자6",
             createdAt: "2024-12-09T09:00:00Z",
-            likes: 7,
             stocktype: "카카오",
-            category: "금융",
-            isliked: false,
         },
         {
             postId: 4,
             title: "4",
-            postImages: [
-                'https://via.placeholder.com/600x350/ff7f7f/333333',
-                'https://via.placeholder.com/600x350/7f7fff/333333',
-                'https://via.placeholder.com/600x350/7fff7f/333333'
-            ],
             content: "4 카카오게시글! 카카오카카ㅗ오오",
             userName: "사용자6",
             createdAt: "2024-12-09T09:00:00Z",
-            likes: 7,
             stocktype: "카카오",
-            category: "금융",
-            isliked: false,
         }
 
 
@@ -118,34 +84,7 @@ const Community = () => {
             likes: 10,
             stocktype: "테슬라",
             category: "금융",
-            isliked: true,
-            comments: [
-                {
-                    commentId: 1,
-                    content: "좋은 정보 감사합니다!",
-                    parentId: null,
-                    userName: "사용자2",
-                    createdAt: "2024-12-10T10:15:00Z",
-                    replies: [
-                        {
-                            commentId: 2,
-                            content: "저도 동의합니다!",
-                            parentId: 1,
-                            userName: "사용자3",
-                            createdAt: "2024-12-10T10:20:00Z",
-                            replies: []
-                        }
-                    ]
-                },
-                {
-                    commentId: 3,
-                    content: "대댓글까지 만들 수 있다니 대단해요.",
-                    parentId: null,
-                    userName: "사용자4",
-                    createdAt: "2024-12-10T10:25:00Z",
-                    replies: []
-                }
-            ]
+            isliked: true
         },
         {
             postId: 2,
@@ -157,8 +96,7 @@ const Community = () => {
             likes: 7,
             stocktype: "애플",
             category: "정보기술",
-            isliked: false,
-            comments: []
+            isliked: false
         },
         {
             postId: 3,
@@ -174,8 +112,7 @@ const Community = () => {
             likes: 7,
             stocktype: "테슬라",
             category: "금융",
-            isliked: false,
-            comments: []
+            isliked: false
         },
         {
             postId: 4,
@@ -191,8 +128,7 @@ const Community = () => {
             likes: 7,
             stocktype: "테슬라",
             category: "금융",
-            isliked: false,
-            comments: []
+            isliked: false
         }
     ];
 
@@ -213,7 +149,7 @@ const Community = () => {
         <>
             <div className="px-[2rem] max-w-[128rem] mx-auto">
                 <div>
-                    <StockTypeBar selectedStockType={selectedStockType} setSelectedStockType={setSelectedStockType} />
+                    <StockTypeBar selectedStockType={selectedStockType} />
                     {selectedStockType === "전체" ? (
                         <div>
                             <div className="flex gap-[1rem] pt-[2rem] items-start">

@@ -100,7 +100,7 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                 className={`relative border border-solid border-[var(--moneed-gray-5)] rounded-[1.8rem] mb-[1.6rem] ${isDropdownOpen ? 'pointer-events-none' : ''
                     }`}
             >
-                <button type="button" onClick={(e) => movetoDetail(e, stocktype, postId)} className="absolute inset-0"></button>
+                <button type="button" onClick={(e) => movetoDetail(stocktype, postId)} className="absolute inset-0"></button>
                 <div className="pl-[1.8rem] pb-[1.3rem] pr-[1.2rem] pt-[1.4rem]">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-[.6rem] flex-1">
