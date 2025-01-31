@@ -1,18 +1,27 @@
 import { create } from "zustand";
 
-const useStockTypeStore = create((set) => ({
+interface StockState { 
+    selectedStockNames: string[]
+}
+
+interface StockAction { 
+    addStockType: (stockType: string) => void
+    removeStockType : (stockType: string) =>void
+}
+
+const useStockTypeStore = create<StockState & StockAction>((set) => ({
     selectedStockNames: [],
-    addStockType: (stocktype) =>
+    addStockType: (stocktype : string) =>
         set((state) => {
             if (state.selectedStockNames.length >= 10) return state; 
             return {
                 selectedStockNames: [...state.selectedStockNames, stocktype], 
             };
         }),
-    removeStockType: (stocktype) =>
+    removeStockType: (stocktype : string) =>
         set((state) => ({
             selectedStockNames: state.selectedStockNames.filter(
-                (selectedStockType) => selectedStockType !== stocktype 
+                (selectedStockType : string) => selectedStockType !== stocktype 
             ),
         })),
 }));

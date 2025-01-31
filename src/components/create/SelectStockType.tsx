@@ -1,7 +1,6 @@
 import { STOCKTYPES } from "../../config/StockTypesetting";
 import useStockTypeStore from "../../store/useStockTypeStore";
 import Button from "../Button";
-import Chip from "../Chip";
 import StockTypeChip from "./StockTypeChip";
 
 const SelectStockType = () => {
@@ -34,7 +33,7 @@ const SelectStockType = () => {
                         </p>
                     </div>
                     <div className="flex flex-wrap gap-[.8rem] md:px-[10.6rem] md:max-h-[calc(38.5rem_-_10rem)] md:overflow-y-auto pb-[12rem]">
-                        {filteredStockNames.map(({ stocktype, value, stockimg }) => (
+                        {filteredStockNames.map(({ stocktype, value }) => (
                             <div key={value} className="mb-[.2rem]">
                                 <StockTypeChip
                                     label={stocktype}

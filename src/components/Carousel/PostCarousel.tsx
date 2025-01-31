@@ -29,7 +29,7 @@ const PostCarousel: React.FC<PropType> = ({ slides, options }) => {
                             className="flex-shrink-0 w-[calc(85%_-_1.6rem)] lg:w-[calc(50%_+_.8rem)]"
                         >
                             <CommunityThumbnailCard
-                                postId={slide.postId}
+                                // postId={slide.postId}
                                 userName={slide.userName}
                                 content={slide.content}
                                 title={slide.title}

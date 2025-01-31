@@ -11,7 +11,7 @@ type StockInfoProps = {
     englishName?: string;
 };
 
-const StockInfoBox = ({ infoBoxImgages, name, priceKRW, priceUSD, rate, children, className, englishName }: StockInfoProps) => {
+const StockInfoBox = ({ name, children }: StockInfoProps) => {
     return (
         <>
             <div className="flex justify-between px-[1.2rem] py-[1.8rem] border border-solid border-[var(--moneed-gray-5)] rounded-[1.6rem]">
@@ -20,7 +20,7 @@ const StockInfoBox = ({ infoBoxImgages, name, priceKRW, priceUSD, rate, children
                         <img src="/src/assets/temp/sample3.png" alt="" className="w-full h-full object-cover" />
                     </div>
                     <div>
-                        <h3 className="text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-black)]">{name }</h3>
+                        <h3 className="text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-black)]">{name}</h3>
                         <span className="text-[1.2rem] font-[400] leading-[135%] text-[var(--moneed-gray-8)]">LLY|헬스케어</span>
                     </div>
                 </div>

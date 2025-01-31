@@ -1,6 +1,14 @@
 import { create } from "zustand";
 
-const useLevelStore = create((set) => ({
+interface LevelState { 
+    selectedLevel : string
+}
+
+interface LevelAction { 
+    setSelectLevel : (level:string) => void
+}
+
+const useLevelStore = create<LevelState & LevelAction>((set) => ({
     selectedLevel: "", 
     setSelectLevel: (level: string) =>
         set(() => ({
