@@ -1,4 +1,4 @@
-import {main as mainApi} from "../main/mainapi"
+import {main as mainApi} from "../main/mainApi"
 
 export const main = {
     main1: () => ({

@@ -1,13 +1,14 @@
 import VideoCarousel from "../../components/Carousel/VideoCarousel";
+import { EmblaOptionsType } from 'embla-carousel'
 
 
 const MainShortforms = () => {
 
-    const VIDEOOPTIONS = {
+    const VIDEOOPTIONS: EmblaOptionsType = {
         slidesToScroll: 1,
         loop: true,
         align: "start",
-        draggable: true,
+        // draggable: true,
         containScroll: "trimSnaps",
     };
 

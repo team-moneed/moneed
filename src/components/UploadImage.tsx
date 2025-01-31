@@ -25,7 +25,7 @@ const UploadImage = ({
 	showPreview = true,
 	imgUrl,
 }: UploadImageProps) => {
-	const [uploadedFiles, setUploadedFiles] = useState(imgUrl || []);
+	const [uploadedFiles, setUploadedFiles] = useState<(string | File)[]>(imgUrl || []);
 	console.log('uploadimage', imgUrl)
 	const ref = useRef<HTMLInputElement | null>(null);
 
@@ -34,11 +34,11 @@ const UploadImage = ({
 		if (files) {
 			const newFiles = Array.from(files);
 
-			const updatedFiles: (string|File)[] = [...uploadedFiles, ...newFiles];
+			const updatedFiles = [...uploadedFiles, ...newFiles];
 			setUploadedFiles(updatedFiles);
 
 			const formData = new FormData();
-			updatedFiles.forEach((file: File) => formData.append("files", file));
+			updatedFiles.forEach((file) => formData.append("files", file));
 
 			onUploadFiles(formData);
 		}

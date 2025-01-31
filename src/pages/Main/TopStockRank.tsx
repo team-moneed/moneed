@@ -95,7 +95,7 @@ const TopStockRank = () => {
 
     const [selectedStockRank, setSelectedStockRank] = useState(StockRank[0])
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const movecommunity = (stockname: string) => {
         navigate(`/community/${stockname}`);
     };
@@ -138,7 +138,7 @@ const TopStockRank = () => {
                     ))}
                 </div>
                 <div className="flex justify-center mt-[1.8rem] lg:justify-start lg:mt-[2.6rem]">
-                    <Button textcolor="primary" onClick={() => movecommunity(selectedStockRank)} className="flex items-center gap-[.8rem] py-0 lg:pl-0">
+                    <Button theme="primary" textcolor="primary" onClick={() => movecommunity(selectedStockRank)} className="flex items-center gap-[.8rem] py-0 lg:pl-0">
                         <span className="text-[1.4rem] text-[var(--moneed-gray-8)] font-semibold leading-[135%]">
                             해당 게시판 더보기
                         </span>

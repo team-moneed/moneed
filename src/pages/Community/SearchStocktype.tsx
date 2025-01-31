@@ -96,7 +96,7 @@ const SearchStocktype = () => {
             return true;
         }
 
-        console.log(Hangul.disassemble(item.name).includes(Hangul.disassemble(searchStockType)))
+        // console.log(Hangul.disassemble(item.name).includes(Hangul.disassemble(searchStockType)))
 
         return (item.name.toLowerCase().includes(searchStockType) ||
             getInitialConsonant(item.name).includes(getInitialConsonant(searchStockType)))

@@ -1,10 +1,12 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import Modal from '../components/Modal';
 
+//수정필요~!
+
 interface ModalContextType {
-    modal: <T = any>(props: ModalProps) => Promise<T>;
+    modal: <T extends boolean>(props: ModalProps) => Promise<T>;
     confirm: (message: string | ReactNode, options?: ConfirmOptions) => Promise<boolean>;
-    alert: (message: string | ReactNode, options?: AlertOptions) => Promise<void>;
+    alert?: (message: string | ReactNode, options?: AlertOptions) => Promise<void>;
 }
 
 interface ModalProps {
@@ -31,7 +33,7 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined);
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
     const [modalProps, setModalProps] = useState<ModalProps | null>(null);
-    const [resolveCallback, setResolveCallback] = useState<((value: any) => void) | null>(null);
+    const [resolveCallback, setResolveCallback] = useState<((param: boolean) => void) | null>(null);
     const [showModal, setShowModal] = useState<boolean>(false);
 
     const closeModal = () => {
@@ -73,7 +75,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <ModalContext.Provider value={{ modal, confirm, alert }}>
+        <ModalContext.Provider value={{ modal, confirm }}>
             {children}
             {showModal && modalProps && (
                 <Modal {...modalProps} onClose={closeModal} />

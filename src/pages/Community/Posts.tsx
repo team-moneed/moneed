@@ -6,7 +6,6 @@ type PostType = {
     isliked: boolean
     postId: number;
     stocktype: string;
-    comments: string[];
     postImages: string[];
     likes: number;
     createdAt: string;
@@ -27,13 +26,12 @@ const Posts = ({ posts }: PostsProps) => {
                     userName={post.userName}
                     content={post.content}
                     isliked={post.isliked}
-                    comments={post.comments}
-                    stocktype={post.stocktype}
-                    likes={post.likes}
                     postId={post.postId}
+                    stocktype={post.stocktype}
+                    postImages={post.postImages}
+                    likes={post.likes}
                     createdAt={post.createdAt}
                     title={post.title}
-                    postImages={post.postImages}
                 />
             ))}
         </div>

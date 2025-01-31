@@ -1,6 +1,10 @@
 import { useMemo } from 'react';
 
-const DateFormatter = ({ createdAt }: any) => {
+type DateFormatterPropsType = {
+    createdAt: string
+}
+
+const DateFormatter = ({ createdAt }: DateFormatterPropsType) => {
 
     // 시간을 계산하는 함수
     const changeFormatDate = (createdAt: string) => {

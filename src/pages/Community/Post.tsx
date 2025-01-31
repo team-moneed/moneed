@@ -1,8 +1,4 @@
 import Icon from "../../components/Icon";
-import commentIcon from "../../assets/commentIcon.svg";
-import heartIcon from "../../assets/heartIcon.svg";
-import redHeartIcon from "../../assets/redHeartIcon.svg";
-import sharingIcon from "../../assets/sharingIcon.svg";
 import { useNavigate } from "react-router-dom";
 import ImageCarousel from '../../components/Carousel/ImageCarousel'
 import { EmblaOptionsType } from 'embla-carousel'
@@ -30,15 +26,15 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
         slidesToScroll: 1,
         loop: true,
         align: 'center',
-        draggable: true,
+        // draggable: true,
         containScroll: 'trimSnaps',
     }
 
     const { showSnackBar } = useSnackBarStore();
     const { confirm } = useModal();
 
-    let navigate = useNavigate();
-    const movetoDetail = (e, stocktype, postId) => {
+    const navigate = useNavigate();
+    const movetoDetail = (stocktype: string, postId: number) => {
         if (isDropdownOpen) {
             setIsdropdownOpen(false);
             return;
@@ -94,13 +90,17 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
         });
     }
 
+    const handleCopyClipBoard = () => {
+
+    }
+
     return (
         <>
             <div
                 className={`relative border border-solid border-[var(--moneed-gray-5)] rounded-[1.8rem] mb-[1.6rem] ${isDropdownOpen ? 'pointer-events-none' : ''
                     }`}
             >
-                <button type="button" onClick={(e) => movetoDetail(e, stocktype, postId)} className="absolute inset-0"></button>
+                <button type="button" onClick={() => movetoDetail(stocktype, postId)} className="absolute inset-0"></button>
                 <div className="pl-[1.8rem] pb-[1.3rem] pr-[1.2rem] pt-[1.4rem]">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-[.6rem] flex-1">
@@ -142,16 +142,16 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                 </div>
                 <div className="flex pl-[1.6rem] pb-[1.6rem] pr-[1.2rem] pt-[.4rem]">
                     <div className="relative z-[2]">
-                        {isliked ? <Icon iconName={heartIcon} width={18} height={18} onClick={toggleLike}></Icon> :
-                            <Icon iconName={redHeartIcon} width={18} height={18} onClick={toggleLike}></Icon>}
+                        {isliked ? <Icon iconUrl="src/assets/heartIcon.svg" width={18} height={18} onClick={toggleLike}></Icon> :
+                            <Icon iconUrl="src/assets/redHeartIcon.svg" width={18} height={18} onClick={toggleLike}></Icon>}
                     </div>
                     <span className="relative z-[2] mr-[1rem] text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-gray-8)]">6</span>
                     <div className=" relative z-[2]">
-                        <Icon iconName={commentIcon} width={20} height={20} />
+                        <Icon iconUrl="src/assets/commentIcon.svg" width={20} height={20} />
                     </div>
                     <span className="relative z-[2] mr-[1rem] text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-gray-8)]">8 </span>
                     <div className=" relative z-[2]">
-                        <Icon onClick={() => handleCopyClipBoard(`${baseUrl}${location.pathname}`)} iconName={sharingIcon} width={20} height={20} />
+                        <Icon onClick={() => handleCopyClipBoard()} iconUrl="src/assets/sharingIcon.svg" width={20} height={20} />
                     </div>
                 </div>
             </div>

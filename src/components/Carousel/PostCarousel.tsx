@@ -5,11 +5,12 @@ import CommunityThumbnailCard from '../Community/CommunityThumbnailCard'
 
 type PropType = {
     slides: {
-        postId: string
+        postId: number;
         userName: string
         content: string
         title: string
         createdAt: string
+        stocktype?: string;
     }[]
     options?: EmblaOptionsType
 }

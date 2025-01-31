@@ -1,15 +1,15 @@
 type IconType = {
     className?: string;
-    iconName: string;
+    iconUrl: string;
     width: number;
     height: number;
-    onClick: () => void;
+    onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-const Icon = ({ className, iconName, width, height, onClick }: IconType) => {
+const Icon = ({ className, iconUrl, width, height, onClick }: IconType) => {
     return (
         <div className={className}>
-            <img src={iconName}
+            <img src={iconUrl}
                 width={width}
                 height={height}
                 onClick={onClick}

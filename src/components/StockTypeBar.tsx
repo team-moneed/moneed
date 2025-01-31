@@ -4,7 +4,7 @@ import { STOCKTYPES } from "../config/StockTypesetting";
 import Chip from "./Chip";
 
 type StockTypeBar = {
-    selectedStockType: string
+    selectedStockType: string;
 }
 
 const StockTypeBar = ({ selectedStockType }: StockTypeBar) => {

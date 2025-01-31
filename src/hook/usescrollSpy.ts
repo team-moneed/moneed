@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const usescrollSpy = (options: IntersectionObserverInit) => {
+const useScrollSpy = (options: IntersectionObserverInit) => {
   const elementRef = useRef<HTMLElement | null>(null);
   const [isIntersecting, setIsIntersecting] = useState<boolean>(false);
 
@@ -30,4 +30,4 @@ const usescrollSpy = (options: IntersectionObserverInit) => {
   return { elementRef, isIntersecting };
 };
 
-export default usescrollSpy;
+export default useScrollSpy;
