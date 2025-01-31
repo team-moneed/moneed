@@ -4,8 +4,9 @@ type DropdownProps = {
     children?: ReactNode;
     firsttext?: string;
     secondtext?: string;
-    firstevent?: MouseEventHandler<HTMLDivElement>;
-    secondevent?: MouseEventHandler<HTMLDivElement>;
+
+    firstevent?: MouseEventHandler<HTMLDivElement | HTMLButtonElement>
+    secondevent?: MouseEventHandler<HTMLDivElement | HTMLButtonElement>
     onClose: () => void;
 };
 

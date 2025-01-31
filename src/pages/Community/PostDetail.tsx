@@ -32,7 +32,7 @@ const PostDetail = () => {
         slidesToScroll: 1,
         loop: true,
         align: 'center',
-        draggable: true,
+        // dragga ble: true,
         containScroll: 'trimSnaps',
     }
 

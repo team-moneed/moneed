@@ -3,7 +3,7 @@ type IconType = {
     iconUrl: string;
     width: number;
     height: number;
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const Icon = ({ className, iconUrl, width, height, onClick }: IconType) => {
