@@ -1,11 +1,11 @@
-import { ReactNode, useEffect, useRef } from "react";
+import { MouseEventHandler, ReactNode, useEffect, useRef } from "react";
 
 type DropdownProps = {
-    children: ReactNode;
+    children?: ReactNode;
     firsttext?: string;
     secondtext?: string;
-    firstevent?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-    secondevent: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    firstevent?: MouseEventHandler<HTMLDivElement>;
+    secondevent?: MouseEventHandler<HTMLDivElement>;
     onClose: () => void;
 };
 

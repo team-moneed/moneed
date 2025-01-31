@@ -95,7 +95,7 @@ const TopStockRank = () => {
 
     const [selectedStockRank, setSelectedStockRank] = useState(StockRank[0])
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const movecommunity = (stockname: string) => {
         navigate(`/community/${stockname}`);
     };

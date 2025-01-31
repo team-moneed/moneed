@@ -56,14 +56,14 @@ const MyComment = () => {
                         ? (<div className="pt-[1.8rem]">
                             {thisweekComments.map((comment) => (
                                 <div className="pt-[1.8rem]">
-                                    <Comment {...comment} />
+                                    <Comment {...comment} onEditComment={() => { console.log("아직안됐어요ㅠㅠ") }} />
                                 </div>
                             ))}
                         </div>)
                         : (<div className="pt-[1.8rem]">
                             {comments.map((comment) => (
                                 <div className="pt-[1.8rem]">
-                                    <Comment {...comment} />
+                                    <Comment {...comment} onEditComment={() => { console.log("아직안됐어요ㅠㅠ") }} />
                                 </div>))}
                         </div>
                         )

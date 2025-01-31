@@ -9,7 +9,7 @@ type MyStockProps = {
     className?: string;
     englishName?: string;
     onClick: () => void;
-    isSelectCategory: boolean
+    isSelectCategory?: boolean
 };
 
 const MyStockBox = ({ name, children, onClick, isSelectCategory = false }: MyStockProps) => {

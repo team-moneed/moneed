@@ -7,7 +7,7 @@ type CommentType = {
     userName: string;
     content: string;
     createdAt: string;
-    onEditComment: string;
+    onEditComment: () => void;
 }
 
 const Comment = ({ userName, content, createdAt, onEditComment }: CommentType) => {
