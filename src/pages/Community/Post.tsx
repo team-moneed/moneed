@@ -12,7 +12,19 @@ import DateFormatter from "../../util/Dateformatter";
 import useSnackBarStore from "../../store/useSnackBarStore";
 import { useModal } from "../../context/ModalContext";
 
-const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes, createdAt, title }) => {
+type PostType = {
+    userName: string;
+    content: string;
+    isliked: boolean
+    postId: number;
+    stocktype: string;
+    postImages: string[];
+    likes: number;
+    createdAt: string;
+    title: string;
+}
+
+const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes, createdAt, title }: PostType) => {
 
     const OPTIONS: EmblaOptionsType = {
         slidesToScroll: 1,
@@ -41,18 +53,18 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
     const [isDropdownOpen, setIsdropdownOpen] = useState(false)
 
     //좋아요
-    const toggleLike = (e) => {
+    const toggleLike = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         console.log('좋아요!')
     }
 
-    const handleOpendropdown = (e) => {
+    const handleOpendropdown = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         setIsdropdownOpen((true))
     }
 
     //게시글 삭제할건지 묻는 모달 
-    const openpostDeletemodal = (e) => {
+    const openpostDeletemodal = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         const result = confirm(<span>
             삭제된 내용은 복구되지 않아요.<br />
@@ -60,22 +72,22 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
         </span>);
         result.then((confirmed) => {
             if (confirmed) {
-                handledeletePost(e);
+                handledeletePost();
             }
         });
         setIsdropdownOpen((prev) => !prev)
     }
 
     //게시글 삭제 api 연동
-    const handledeletePost = (e) => {
+    const handledeletePost = () => {
         showSnackBar('게시글이 삭제되었습니다.', 'action', 'bottom', '');
     }
 
-    const closeDropdown = (e) => {
+    const closeDropdown = () => {
         setIsdropdownOpen(false);
     };
 
-    const onEditPost = (e) => {
+    const onEditPost = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         navigate(`/editpost/${stocktype}`, {
             state: { userName, content, isliked, postId, stocktype, postImages, createdAt, title, likes },

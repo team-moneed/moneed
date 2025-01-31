@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import UploadImage from '../../components/UploadImage';
 import { useKeyboardOffset } from '../../hook/useKeyboardOffset';
 import useSnackBarStore from '../../store/useSnackBarStore';
 
 const EditPost = () => {
-    const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
+    const { register, handleSubmit, watch, setValue } = useForm({
         defaultValues: {
             title: "",
             content: "",
@@ -111,7 +111,6 @@ const EditPost = () => {
                             imgpreviewHeight={60}
                             imgClassName="object-cover w-full h-full"
                             buttonpositionClassName="mr-0"
-                            buttonClassName="px-6 py-2 transition-colors rounded-xl hover:opacity-80 text-md font-bold bg-[#BFFF00]"
                             imgUrl={postImages}
                             buttonProps={{ type: "button" }}
                         />

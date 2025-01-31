@@ -3,7 +3,16 @@ import Dropdown from "../../components/Dropdown";
 import { useModal } from "../../context/ModalContext";
 import useSnackBarStore from "../../store/useSnackBarStore";
 
-const Comment = ({ userName, content, createdAt, replies, depth = 0, isEdit, editContent, onEditComment }) => {
+type CommentType = {
+    userName: string;
+    content: string;
+    createdAt: string;
+    isEdit: () => void;
+    editContent: string;
+    onEditComment: string;
+}
+
+const Comment = ({ userName, content, createdAt, isEdit, editContent, onEditComment }: CommentType) => {
 
     const [isDropdownOpen, setIsdropdownOpen] = useState(false)
 

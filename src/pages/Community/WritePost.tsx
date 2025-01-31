@@ -138,7 +138,6 @@ const WritePost = () => {
                         imgpreviewHeight={60}
                         imgClassName="object-cover w-full h-full"
                         buttonpositionClassName="mr-0"
-                        buttonClassName="px-6 py-2 transition-colors rounded-xl hover:opacity-80 text-md font-bold bg-[#BFFF00]"
                         imgUrl={postImages}
                     />
                     <div className="text-right text-[1.4rem] text-[var(--moneed-gray-7)] w-full mx-[1rem]">
