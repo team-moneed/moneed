@@ -20,20 +20,20 @@ const Comment = ({ userName, content, createdAt, isEdit, editContent, onEditComm
     const { confirm } = useModal();
 
     //댓글 수정/삭제 드롭다운 
-    const handleOpendropdown = (e) => {
+    const handleOpendropdown = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         setIsdropdownOpen((prev) => !prev)
     }
 
     //댓글 삭제할건지 묻는 모달 
-    const opencommentDeletemodal = (e) => {
+    const opencommentDeletemodal = () => {
         const result = confirm(<span>
             삭제된 내용은 복구되지 않아요.<br />
             정말 삭제하실건가요?
         </span>);
         result.then((confirmed) => {
             if (confirmed) {
-                handledeleteComment(e);
+                handledeleteComment();
             }
         });
         setIsdropdownOpen((prev) => !prev)
@@ -65,9 +65,7 @@ const Comment = ({ userName, content, createdAt, isEdit, editContent, onEditComm
                         {createdAt}
                     </span>
                     <div className="text-[1.4rem] font-[400] leading-[140%]">
-                        댓글은 500자 Max입니다-
-                        좌측의 길이는 글을 쓸때 댓글 높이에 따라 짧아지고 길어집니다.
-                        좌측의 길이는 글을 쓸때 댓글 높이에 따라 짧아지고 길어집니다.
+                        {content}
                     </div>
                 </div>
                 <div className="relative">

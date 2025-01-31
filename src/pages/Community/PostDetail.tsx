@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import ImageCarousel from '../../components/Carousel/ImageCarousel';
 import { useNavigate } from "react-router-dom";
@@ -78,7 +78,7 @@ const PostDetail = () => {
     ]
 
     //댓글 추가/수정 창
-    const handleWriteComment = (e) => {
+    const handleWriteComment = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (isEdit) {
             setEditContent(e.target.value);
         } else {
@@ -110,13 +110,13 @@ const PostDetail = () => {
         }
     }
 
-    const handleOpendropdown = (e) => {
+    const handleOpendropdown = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         setIsdropdownOpen(true)
     }
 
     //게시글 삭제할건지 묻는 모달 
-    const openpostDeletemodal = (e) => {
+    const openpostDeletemodal = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         const result = confirm(<span>
             삭제된 내용은 복구되지 않아요.<br />
@@ -131,23 +131,23 @@ const PostDetail = () => {
     }
 
     //게시글 삭제 api 연동
-    const handledeletePost = (e) => {
+    const handledeletePost = (e: React.MouseEvent<HTMLDivElement>) => {
         showSnackBar('게시글이 삭제되었습니다.', 'action', 'bottom', '');
         e.stopPropagation();
 
     }
 
-    const closeDropdown = (e) => {
+    const closeDropdown = () => {
         setIsdropdownOpen(false);
     };
 
-    const handleEditComment = (content) => {
+    const handleEditComment = (content: string) => {
         setIsEdit(true)
         setEditContent(content)
         console.log(content)
     }
 
-    const onEditPost = (e) => {
+    const onEditPost = (e: React.MouseEvent<HTMLDivElement>) => {
 
         const { userName, content, isliked, postId, stocktype, postImages, createdAt, title, likes } = state;
         e.stopPropagation();
@@ -156,7 +156,7 @@ const PostDetail = () => {
         });
     }
 
-    const onEditComment = (content) => {
+    const onEditComment = (content: string) => {
         handleEditComment(content)
     }
 
