@@ -19,7 +19,7 @@ const WritePost = () => {
     const navigate = useNavigate();
 
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, watch } = useForm();
     const content = watch("content", "");
     const title = watch("title", "");
 
@@ -33,10 +33,10 @@ const WritePost = () => {
     useEffect(() => {
         const isModalShown = localStorage.getItem("bottoModalShown");
 
-        // if (!isModalShown && !content && !title) {
-        setIsBottomModalOpen(true);
-        // localStorage.setItem("bottoModalShown", "true");
-        // }
+        if (!isModalShown && !content && !title) {
+            setIsBottomModalOpen(true);
+            localStorage.setItem("bottoModalShown", "true");
+        }
     }, [content, title]);
 
     useEffect(() => {
