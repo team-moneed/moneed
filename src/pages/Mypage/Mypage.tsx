@@ -79,7 +79,7 @@ const Mypage = () => {
     ];
 
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const movetoMyProfile = () => {
         navigate(`/myprofile`);
     }
