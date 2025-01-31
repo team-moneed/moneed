@@ -1,4 +1,14 @@
 import CategoryRankBox from "../../components/Community/CategoryRankBox";
+export type stockCagtegory = {
+    categoryName: string;
+    rate: string;
+    stock: {
+        image: string;
+        company: string;
+        englishName: string;
+    }
+
+}
 
 const TopCategory = () => {
 

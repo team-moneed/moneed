@@ -20,7 +20,7 @@ const StockInfoBox = ({ infoBoxImgages, name, priceKRW, priceUSD, rate, children
                         <img src="/src/assets/temp/sample3.png" alt="" className="w-full h-full object-cover" />
                     </div>
                     <div>
-                        <h3 className="text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-black)]">유나이티드헬스</h3>
+                        <h3 className="text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-black)]">{name }</h3>
                         <span className="text-[1.2rem] font-[400] leading-[135%] text-[var(--moneed-gray-8)]">LLY|헬스케어</span>
                     </div>
                 </div>

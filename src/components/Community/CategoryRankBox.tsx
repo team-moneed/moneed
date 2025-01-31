@@ -1,14 +1,14 @@
 import { ReactNode } from "react";
+import { stockCagtegory } from "../../pages/Community/TopCategory";
 
 type StockInfoProps = {
-    categoryData: {}
-    onClick: () => void;
+    categoryData:stockCagtegory;
     children?: ReactNode;
     className?: string;
     index: number;
 };
 
-const CategoryRankBox = ({ categoryData, onClick, children, className, index }: StockInfoProps) => {
+const CategoryRankBox = ({ categoryData, index }: StockInfoProps) => {
     return (
         <>
 

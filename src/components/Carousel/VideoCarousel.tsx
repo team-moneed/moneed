@@ -1,6 +1,6 @@
 import { EmblaOptionsType } from 'embla-carousel'
 import useEmblaCarousel from 'embla-carousel-react'
-import { usePrevNextButtons, PrevButton, NextButton } from './CarouselArrowButton'
+import { usePrevNextButtons, NextButton } from './CarouselArrowButton'
 import { useNavigate } from "react-router-dom";
 
 type PropType = {
@@ -9,17 +9,17 @@ type PropType = {
     slidesToShow?: number
 }
 const VideoCarousel = (props: PropType) => {
-    const { slides, options, slidesToShow } = props
+    const { slides, options } = props
     const [emblaRef, emblaApi] = useEmblaCarousel({
         ...options,
         loop: false,
-        wrapAround: true,
-        slidesToShow,
+        // wrapAround: true,
+        // slidesToShow,
     })
-    const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } =
+    const { nextBtnDisabled, onNextButtonClick } =
         usePrevNextButtons(emblaApi)
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const movetoshortformDetail = () => {
         navigate(`/shortformdetail`);

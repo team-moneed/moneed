@@ -1,6 +1,6 @@
 import { EmblaOptionsType } from 'embla-carousel'
 import useEmblaCarousel from 'embla-carousel-react'
-import { usePrevNextButtons, PrevButton, NextButton } from './CarouselArrowButton'
+import { usePrevNextButtons, NextButton } from './CarouselArrowButton'
 import CommunityThumbnailCard from '../Community/CommunityThumbnailCard'
 
 type PropType = {
@@ -16,14 +16,14 @@ type PropType = {
 
 const PostCarousel: React.FC<PropType> = ({ slides, options }) => {
     const [emblaRef, emblaApi] = useEmblaCarousel(options)
-    const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } =
+    const { nextBtnDisabled, onNextButtonClick } =
         usePrevNextButtons(emblaApi)
 
     return (
         <div className="relative lg:pr-[5.6rem]">
             <div className="w-full overflow-hidden mask-right" ref={emblaRef}>
                 <div className="flex gap-[1.6rem]">
-                    {slides.map((slide, index) => (
+                    {slides.map((slide) => (
                         <div
                             key={slide.postId}
                             className="flex-shrink-0 w-[calc(85%_-_1.6rem)] lg:w-[calc(50%_+_.8rem)]"

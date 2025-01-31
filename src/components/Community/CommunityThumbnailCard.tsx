@@ -1,6 +1,14 @@
 import DateFormatter from "../../util/Dateformatter";
 
-const CommunityThumbnailCard = ({ postId, userName, content, title, createdAt }) => {
+type CommunityThumbnailCardPropsType = {
+    userName: string
+    content?: string
+    title?: string
+    createdAt?: string
+
+}
+
+const CommunityThumbnailCard = ({ userName, content, title, createdAt }: CommunityThumbnailCardPropsType) => {
     return (
         <div className="relative border border-solid border-[var(--moneed-gray-5)] px-[1.8rem] py-[1.6rem] rounded-[1.6rem] h-[18rem]">
 
