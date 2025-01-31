@@ -26,7 +26,7 @@ const PostDetail = () => {
     const { showSnackBar } = useSnackBarStore();
     const { confirm } = useModal();
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const OPTIONS: EmblaOptionsType = {
         slidesToScroll: 1,

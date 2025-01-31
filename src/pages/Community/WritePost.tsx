@@ -6,6 +6,11 @@ import useSnackBarStore from '../../store/useSnackBarStore';
 import { useForm } from 'react-hook-form';
 import { useKeyboardOffset } from '../../hook/useKeyboardOffset';
 
+type FieldData = {
+    title: string;
+    content: string;
+}
+
 const WritePost = () => {
 
     const { stocktype } = useParams();
@@ -13,13 +18,13 @@ const WritePost = () => {
 
     const bottomOffset = useKeyboardOffset();
 
-    const [postImages, setPostImages] = useState<string[]>([]);
-    const [formImg, setFormImg] = useState<FormData | string[]>([]);
+    const [postImages, _] = useState<string[]>([]);
+    const [, setFormImg] = useState<FormData | string[]>([]);
 
     const navigate = useNavigate();
 
 
-    const { register, handleSubmit, watch } = useForm();
+    const { register, handleSubmit, watch } = useForm<FieldData>();
     const content = watch("content", "");
     const title = watch("title", "");
 
@@ -67,7 +72,7 @@ const WritePost = () => {
         }
     };
 
-    const onSubmit = (data: any) => {
+    const onSubmit = (data: FieldData) => {
         console.log('title', title, content.trim().length)
         const formData = { ...data, stocktype };
 
@@ -119,7 +124,7 @@ const WritePost = () => {
                 />
                 <textarea
                     {...register("content")}
-                    type="text"
+                    // type="text"
                     placeholder="의견을 입력해주세요"
                     className="w-full h-[30rem] py-[1.6rem] text-[1.6rem] font-[400] leading-[140%] placeholder:text-[var(--moneed-gray-7)] focus:outline-none"
                     maxLength={1000}
