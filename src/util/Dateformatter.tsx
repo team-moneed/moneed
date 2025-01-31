@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
-const DateFormatter = ({ createdAt }) => {
+const DateFormatter = ({ createdAt }: any) => {
 
     // 시간을 계산하는 함수
-    const changeFormatDate = (createdAt) => {
+    const changeFormatDate = (createdAt: string) => {
         const now = new Date();
-        const diffInSeconds = Math.floor((now - new Date(createdAt)) / 1000);
+        const diffInSeconds = Math.floor((now.getTime() - new Date(createdAt).getTime()) / 1000);
 
         // 30초 이내
         if (diffInSeconds <= 30) {

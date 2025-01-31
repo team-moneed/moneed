@@ -1,5 +1,5 @@
 
-import { useNavigate, Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MypageBox from "../../components/Mypage/MypageBox";
 import MyStockBox from "../../components/Mypage/MyStockBox";
 

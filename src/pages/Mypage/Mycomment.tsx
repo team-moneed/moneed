@@ -19,7 +19,6 @@ const MyComment = () => {
             parentId: null,
             userName: "사용자4",
             createdAt: "2024-12-10T10:25:00Z",
-            replies: []
         }
     ]
 

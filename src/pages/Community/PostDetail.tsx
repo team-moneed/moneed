@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import ImageCarousel from '../../components/Carousel/ImageCarousel';
 import { useNavigate } from "react-router-dom";
 import Comment from './Comment';
@@ -16,7 +16,7 @@ import { useModal } from '../../context/ModalContext';
 
 const PostDetail = () => {
 
-    let { postId } = useParams();
+    // let { postId } = useParams();
     const inputRef = useRef<HTMLInputElement>(null);;
     const { state } = useLocation();
     console.log('state', state)
@@ -48,32 +48,13 @@ const PostDetail = () => {
             parentId: null,
             userName: "사용자2",
             createdAt: "2024-12-10T10:15:00Z",
-            replies: [
-                {
-                    commentId: 2,
-                    content: "저도 동의합니다!",
-                    parentId: 1,
-                    userName: "사용자3",
-                    createdAt: "2024-12-10T10:20:00Z",
-                    replies: []
-                },
-                {
-                    commentId: 3,
-                    content: "저도 동의합니다2222",
-                    parentId: 1,
-                    userName: "사용자4",
-                    createdAt: "2024-12-10T10:20:00Z",
-                    replies: []
-                }
-            ]
         },
         {
             commentId: 3,
-            content: "대댓글까지 만들 수 있다니 대단해요.",
+            content: "대댓글까지 만들 수 있다니 대단해요.대댓글까지 만들 수 있다니 대단해요.대댓글까지 만들 수 있다니 대단해요.대댓글까지 만들 수 있다니 대단해요.",
             parentId: null,
             userName: "사용자4",
             createdAt: "2024-12-10T10:25:00Z",
-            replies: []
         }
     ]
 
@@ -230,7 +211,7 @@ const PostDetail = () => {
                                 8
                             </div>
                         </div>
-                        <div className="order-2 lg:order-3 max-w-[128rem] mx-auto flex flex-col gap-[3.6rem]">
+                        <div className="order-2 lg:order-3 flex flex-col gap-[3.6rem]">
                             {PostDetail.length == 0 ?
                                 <div>
                                     <div className="flex justify-center items-center mt-[2rem]">
@@ -241,11 +222,7 @@ const PostDetail = () => {
                                     <Comment
                                         userName={item.userName}
                                         content={item.content}
-                                        depth={0}
                                         createdAt={item.createdAt}
-                                        replies={item.replies}
-                                        isEdit={isEdit}
-                                        editContent={item.content}
                                         onEditComment={() => onEditComment(item.content)}
                                     >
                                     </Comment>

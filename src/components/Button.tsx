@@ -1,7 +1,7 @@
 type Props = {
-    theme: "primary" | "secondary" | "brand";
-    children?: React.ReactNode;
-    textcolor: "primary" | "secondary" | "brand" | "ghost";
+    theme: "primary" | "secondary" | "ghost" | "brand";
+    children: React.ReactNode;
+    textcolor: "primary" | "secondary" | "ghost" | "brand";
     className?: string;
     onClick?: () => void;
     disabled?: boolean;

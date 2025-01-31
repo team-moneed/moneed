@@ -1,5 +1,3 @@
-import UploadImage from "../../components/UploadImage";
-
 interface SelectProfileImageProps {
     onSelect: (img: string) => void;
 }

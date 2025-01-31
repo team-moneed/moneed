@@ -7,12 +7,10 @@ type CommentType = {
     userName: string;
     content: string;
     createdAt: string;
-    isEdit: () => void;
-    editContent: string;
     onEditComment: string;
 }
 
-const Comment = ({ userName, content, createdAt, isEdit, editContent, onEditComment }: CommentType) => {
+const Comment = ({ userName, content, createdAt, onEditComment }: CommentType) => {
 
     const [isDropdownOpen, setIsdropdownOpen] = useState(false)
 

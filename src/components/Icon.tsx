@@ -1,12 +1,12 @@
-interface IconProps {
+type IconType = {
     className?: string;
-    iconName?: string;
-    width?: number | string;
-    height?: number | string;
-    onClick?: () => void
+    iconName: string;
+    width: number;
+    height: number;
+    onClick: () => void;
 }
 
-const Icon = ({ className, iconName, width, height, onClick }: IconProps) => {
+const Icon = ({ className, iconName, width, height, onClick }: IconType) => {
     return (
         <div className={className}>
             <img src={iconName}
