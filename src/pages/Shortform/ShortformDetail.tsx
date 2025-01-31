@@ -47,7 +47,7 @@ const ShortformDetail = () => {
             <div>
                 숏폼Detail
             </div>
-            {videoList.map((video, index) => (
+            {videoList.map((index) => (
                 <div className="shrink-0"
                     key={index}
                     style={{ aspectRatio: '9/16' }}>

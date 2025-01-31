@@ -46,7 +46,7 @@ const ShortformList = () => {
     return (
         <div className="px-[2rem] max-w-[128rem] mx-auto">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-[1.6rem] gap-x-[1.6rem] mt-4 md:gap-y-[1.6rem] mb-[.6rem]">
-                {videoList.map((video, index) => (
+                {videoList.map((index) => (
                     <div className="shrink-0"
                         key={index}
                         style={{ aspectRatio: '9/16' }}>

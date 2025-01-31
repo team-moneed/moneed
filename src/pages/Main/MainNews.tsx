@@ -22,6 +22,10 @@ const NewsData = [
     },
 ];
 
+const movetoNewsLink = () => {
+
+}
+
 const MainNews = () => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-[3.8rem] gap-x-[1.6rem]">
@@ -32,6 +36,7 @@ const MainNews = () => {
                     title={news.title}
                     content={news.content}
                     date={news.date}
+                    onClick={movetoNewsLink}
                 />
             ))}
         </div>

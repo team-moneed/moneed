@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import BottomModal from '../../components/BottomModal';
 import UploadImage from '../../components/UploadImage';

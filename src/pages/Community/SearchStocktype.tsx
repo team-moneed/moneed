@@ -7,7 +7,7 @@ const SearchStocktype = () => {
     const navigate = useNavigate();
     const [searchStockType, setsearchStockType] = useState("");
 
-    const selectStocktype = (stocktype) => {
+    const selectStocktype = (stocktype: string) => {
         navigate(`/writepost/${stocktype}`);
     };
 
@@ -85,9 +85,9 @@ const SearchStocktype = () => {
     ];
 
 
-    const getInitialConsonant = (str) => {
+    const getInitialConsonant = (str: string) => {
         return Hangul.d(str)
-            .map(char => char.charAt(0))
+            .map((char: string) => char.charAt(0))
             .join('');
     };
 
