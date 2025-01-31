@@ -7,7 +7,7 @@ type ModalProps = {
     leftButtontext?: string;
     rightButtontext?: string;
     leftButtonevent?: () => void;
-    rightButtonevent: () => void;
+    rightButtonevent?: () => void;
     leftvisible?: boolean;
     rightvisible?: boolean;
     onClose: () => void;
