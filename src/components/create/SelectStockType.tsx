@@ -23,7 +23,7 @@ const SelectStockType = () => {
     return (
         <>
             <div className="px-[2rem] max-w-[128rem] mx-auto md:bg-[#EFEFF3] md:pt-[4rem]">
-                <div className="lg:hidden block fixed top-0 left-0 w-full h-[10rem] bg-white z-[50]"></div>
+                <div className="lg:hidden block fixed top-0 left-0 w-full h-[7rem] bg-white z-[50]"></div>
                 <div className="md:max-w-[59.2rem] md:rounded-[2.4rem] md:bg-white md:mx-auto md:pt-[6rem] md:pb-[4rem]">
                     <div className="sticky top-[6rem] bg-white md:bg-[transparent] pb-[3.6rem] md:static">
                         <h2 className="text-[2.4rem] font-[700] leading-[140%] text-[var(--moneed-black)] pt-[6.1rem] md:pt-0 md:text-center">
@@ -33,7 +33,7 @@ const SelectStockType = () => {
                             *선택된 관심 종목 게시판이 보여집니다.
                         </p>
                     </div>
-                    <div className="flex flex-wrap gap-[.8rem] md:px-[10.6rem] md:max-h-[calc(38.5rem_-_10rem)] md:overflow-y-auto pb-[12rem]">
+                    <div className="flex flex-wrap gap-[.8rem] md:px-[10.6rem] md:max-h-[calc(38.5rem_-_10rem)] md:overflow-y-auto pb-[12rem] pt-[6rem]">
                         {filteredStockNames.map(({ stocktype, value }) => (
                             <div key={value} className="mb-[.2rem]">
                                 <StockTypeChip
