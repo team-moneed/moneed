@@ -188,14 +188,14 @@ const PostDetail = () => {
                             </div>}
                         </div>
                         <div className="flex pb-[1.6rem] pt-[.4rem]">
-                            {state.isliked ? <Icon iconUrl="src/assets/heartIcon.svg" width={18} height={18}></Icon> :
-                                <Icon iconUrl="src/assets/redHeartIcon.svg" width={18} height={18} ></Icon>}
+                            {state.isliked ? <Icon iconUrl="/heartIcon.svg" width={18} height={18}></Icon> :
+                                <Icon iconUrl="/redHeartIcon.svg" width={18} height={18} ></Icon>}
                             <span
                                 className="mr-[1rem] text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-gray-8)]">6</span>
-                            <Icon iconUrl="src/assets/commentIcon.svg" width={20} height={20} />
+                            <Icon iconUrl="/commentIcon.svg" width={20} height={20} />
                             <span
                                 className="mr-[1rem] text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-gray-8)]">8 </span>
-                            <Icon iconUrl="src/assets/sharingIcon.svg" width={20} height={20} />
+                            <Icon iconUrl="/sharingIcon.svg" width={20} height={20} />
                         </div>
                     </div>
                     <div className="lg:w-[40%] lg:ml-auto flex flex-col">
