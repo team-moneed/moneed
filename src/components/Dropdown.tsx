@@ -34,7 +34,7 @@ const Dropdown = ({ children, firsttext, secondtext, firstevent, secondevent, on
                     <div
                         className="overflow-hidden aspect-[1/1] w-[1.8rem] mr-[.6rem] "
                     >
-                        <img src="/src/assets/icon/icon-scissors.svg" alt="Scissors Icon" className="w-full h-full object-cover" />
+                        <img src="/icon/icon-scissors.svg" alt="Scissors Icon" className="w-full h-full object-cover" />
                     </div>
                     <div>{firsttext}</div>
                 </div>
@@ -42,7 +42,7 @@ const Dropdown = ({ children, firsttext, secondtext, firstevent, secondevent, on
                     <div
                         className="overflow-hidden aspect-[1/1] w-[1.8rem] mr-[.6rem]"
                     >
-                        <img src="/src/assets/icon/icon-trashcan.svg" alt="Trashcan Icon" className="w-full h-full object-cover" />
+                        <img src="/icon/icon-trashcan.svg" alt="Trashcan Icon" className="w-full h-full object-cover" />
                     </div>
                     <div>{secondtext}</div>
                 </div>

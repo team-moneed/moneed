@@ -105,7 +105,7 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-[.6rem] flex-1">
                             <div className="rounded-full overflow-hidden aspect-[1/1] w-[3.2rem]">
-                                <img src="/src/assets/temp/sample3.png" alt="" className="w-full h-full object-cover" />
+                                <img src="/temp/sample3.png" alt="" className="w-full h-full object-cover" />
                             </div>
                             <span className="text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-black)]">
                                 {userName}
@@ -116,7 +116,7 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                         <div className="relative ml-auto shrink-0 z-[2]">
                             <div className="cursor-pointer rounded-full overflow-hidden aspect-[1/1] w-[2.4rem]"
                                 onClick={handleOpendropdown}>
-                                <img src="/src/assets/icon/icon-more.svg" alt="" className="w-full h-full object-cover" />
+                                <img src="/icon/icon-more.svg" alt="" className="w-full h-full object-cover" />
                             </div>
                             {isDropdownOpen &&
                                 <div className="relative z-[2] pointer-events-auto">

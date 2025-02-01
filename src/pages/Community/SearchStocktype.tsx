@@ -34,7 +34,7 @@ const SearchStocktype = () => {
             englishName: "Microsoft",
         },
         {
-            infoBoxImgages: "/src/assets/temp/sample4.png",
+            infoBoxImgages: "/temp/sample4.png",
             name: "테슬라",
             priceUSD: "$998.75",
             rate: "4.2%",
@@ -107,7 +107,7 @@ const SearchStocktype = () => {
             <div className="px-[2rem] max-w-[128rem] mx-auto">
                 <div className="relative">
                     <img
-                        src="/src/assets/icon/icon-search.svg"
+                        src="/icon/icon-search.svg"
                         alt="search icon"
                         className="absolute left-[1rem] top-[50%] transform -translate-y-[50%] w-[1.6rem] h-[1.6rem]"
                     />

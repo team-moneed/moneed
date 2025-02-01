@@ -15,7 +15,7 @@ const Header = () => {
                 <Link to="/">
                     <div className="flex">
                         <div className="w-[2.8rem] h-[2.8rem] bg-[var(--moneed-black)] rounded-full flex items-center justify-center">
-                            <img className="w-[1.4rem] h-[1.2rem]" src="/src/assets/icon/icon-logo.svg" alt="" />
+                            <img className="w-[1.4rem] h-[1.2rem]" src="/icon/icon-logo.svg" alt="" />
                         </div>
                         <span className="font-[600] leading-[140%] text-[1.8rem] ml-[.8rem]">moneed</span>
                     </div>
@@ -43,12 +43,12 @@ const Header = () => {
                         to="/mypage"
                     >
                         <div className="hidden lg:block">
-                            <img className="w-[2.4rem] h-[2.4rem]" src="/src/assets/icon/icon-profile-circle.svg" alt="" />
+                            <img className="w-[2.4rem] h-[2.4rem]" src="/icon/icon-profile-circle.svg" alt="" />
                         </div>
                     </Link>
-                    <img className="w-[2.4rem] h-[2.4rem]" src="/src/assets/icon/icon-alarm.svg" alt="" />
+                    <img className="w-[2.4rem] h-[2.4rem]" src="/icon/icon-alarm.svg" alt="" />
                     <Button onClick={movetowritepost} className="hidden lg:flex gap-[1rem] px-[2.4rem] py-[.8rem] items-center" theme="brand" textcolor="brand">
-                        <img className="w-[1.8rem] h-[1.8rem]" src="/src/assets/icon/icon-edit.svg" alt="" />
+                        <img className="w-[1.8rem] h-[1.8rem]" src="/icon/icon-edit.svg" alt="" />
                         <span className="font-[600] leading-[135%] text-[1.4rem]">포스팅</span>
                     </Button>
                 </div>

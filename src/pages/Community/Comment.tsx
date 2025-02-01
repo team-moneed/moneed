@@ -52,7 +52,7 @@ const Comment = ({ userName, content, createdAt, onEditComment }: CommentType) =
             <div className="relative flex items-start gap-[.6rem] w-full">
                 <i className="absolute block w-[.1rem] top-0 bottom-0 left-[1.6rem] bg-[var(--moneed-gray-5)]"></i>
                 <div className="relative rounded-full overflow-hidden aspect-[1/1] w-[3.2rem] shrink-0">
-                    <img src="/src/assets/temp/sample3.png" alt="" className="w-full h-full object-cover" />
+                    <img src="/temp/sample3.png" alt="" className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1">
                     <span className="text-[1.4rem] font-[700] leading-[140%] text-[var(--moneed-black)]">
@@ -68,7 +68,7 @@ const Comment = ({ userName, content, createdAt, onEditComment }: CommentType) =
                 </div>
                 <div className="relative">
                     <div className="relative cursor-pointer rounded-full overflow-hidden aspect-[1/1] w-[2.4rem] shrink-0 ml-auto" onClick={handleOpendropdown}>
-                        <img src="/src/assets/icon/icon-more.svg" alt="" className="w-full h-full object-cover" />
+                        <img src="/icon/icon-more.svg" alt="" className="w-full h-full object-cover" />
                     </div>
                     {isDropdownOpen && <Dropdown
                         firsttext="댓글 수정"

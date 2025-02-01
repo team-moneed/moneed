@@ -15,7 +15,7 @@ const MainThumbnailCard = ({ userName, content, title, createdAt }: MainThumbnai
             <div className="border border-solid border-[var(--moneed-gray-5)] p-[1.8rem] rounded-[1.8rem]">
                 <div className="flex items-center gap-[.6rem]">
                     <div className="rounded-full overflow-hidden aspect-[1/1] w-[1.8rem]">
-                        <img src="/src/assets/temp/sample3.png" alt="" className="w-full h-full object-cover" />
+                        <img src="/temp/sample3.png" alt="" className="w-full h-full object-cover" />
                     </div>
                     <span className="text-[1.4rem] font-[400] leading-[142%] text-[var(--moneed-gray-7)]">
                         {userName}

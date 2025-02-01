@@ -151,7 +151,7 @@ const PostDetail = () => {
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-[.6rem]">
                                     <div className="rounded-full overflow-hidden aspect-[1/1] w-[2.4rem]">
-                                        <img src="/src/assets/temp/sample3.png" alt=""
+                                        <img src="/temp/sample3.png" alt=""
                                             className="w-full h-full object-cover" />
                                     </div>
                                     <span className="text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-black)]">
@@ -163,7 +163,7 @@ const PostDetail = () => {
                                 <div className="relative ml-auto shrink-0 z-[2]">
                                     <div className="cursor-pointer rounded-full overflow-hidden aspect-[1/1] w-[2.4rem]"
                                         onClick={handleOpendropdown}>
-                                        <img src="/src/assets/icon/icon-more.svg" alt="" className="w-full h-full object-cover" />
+                                        <img src="/icon/icon-more.svg" alt="" className="w-full h-full object-cover" />
                                     </div>
                                     {isDropdownOpen &&
                                         <div className="relative z-[2] pointer-events-auto">
@@ -211,7 +211,7 @@ const PostDetail = () => {
                             {PostDetail.length == 0 ?
                                 <div>
                                     <div className="flex justify-center items-center mt-[2rem]">
-                                        <img src="/src/assets/cta-2.svg" alt="" className="w-[29rem]" />
+                                        <img src="/cta-2.svg" alt="" className="w-[29rem]" />
                                     </div>
                                 </div>
                                 : PostDetail.map((item) => (
@@ -238,7 +238,7 @@ const PostDetail = () => {
                                 className="absolute right-[1rem] rounded-full aspect-[1/1] w-[3.6rem] bg-[var(--moneed-gray-6)] cursor-pointer hover:bg-[var(--moneed-brand-color)]"
                                 onClick={handleSubmitComment}
                             >
-                                <img src="/src/assets/icon/icon-submit-comment.svg" alt=""
+                                <img src="/icon/icon-submit-comment.svg" alt=""
                                     className="p-[.6rem]" />
                             </div>
                         </div>

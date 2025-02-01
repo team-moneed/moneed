@@ -22,7 +22,7 @@ const CommunityThumbnailCard = ({ userName, content, title, createdAt }: Communi
             <div className="absolute bottom-[1.6rem] flex items-center gap-[.6rem]">
 
                 <div className="rounded-full overflow-hidden aspect-[1/1] w-[1.8rem]">
-                    <img src="/src/assets/temp/sample3.png" alt="" className="w-full h-full object-cover" />
+                    <img src="/temp/sample3.png" alt="" className="w-full h-full object-cover" />
                 </div>
                 <span className="text-[1.4rem] font-[400] leading-[140%] text-[var(--moneed-black)]">
                     {userName}

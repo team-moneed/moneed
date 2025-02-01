@@ -20,7 +20,7 @@ const MyStockBox = ({ name, children, onClick, isSelectCategory = false }: MySto
                 onClick={onClick}>
                 <div className="flex items-center gap-[.6rem]">
                     <div className="rounded-full overflow-hidden aspect-[1/1] w-[1.75rem]">
-                        <img src="/src/assets/temp/sample3.png" alt="" className="w-full h-full object-cover" />
+                        <img src="/temp/sample3.png" alt="" className="w-full h-full object-cover" />
                     </div>
                     <div className="rounded-[.8rem] bg-[var(--moneed-gray-4)] py-[.2rem] px-[.4rem]">
                         <span className="text-[1.2rem] font-[400] leading-[135%] text-[var(--moneed-gray-9)]">appl</span>
