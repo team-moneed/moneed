@@ -23,7 +23,7 @@ const WelcomePage = () => {
                     2초 뒤 자동으로 페이지가 전환됩니다.
                 </div>
                 <div className="flex justify-center items-center mt-[2rem]">
-                    <img src="/src/assets/welcome.svg" alt="" className="w-[29rem]" />
+                    <img src="/welcome.svg" alt="" className="w-[29rem]" />
                 </div>
             </div>
         </>

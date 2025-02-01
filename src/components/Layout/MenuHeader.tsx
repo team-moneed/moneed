@@ -62,7 +62,7 @@ const MenuHeader = () => {
             <img
                 className="cursor-pointer w-[2.4rem] h-[2.4rem]"
                 onClick={handleBackButtonClick}
-                src="/src/assets/icon/icon-arrow-back.svg"
+                src="/icon/icon-arrow-back.svg"
                 alt=""
             />
             <h1 className="text-[1.6rem] font-[600] text-[var(--moneed-gray-9)]">{getHeaderTitle()}</h1>
@@ -70,11 +70,11 @@ const MenuHeader = () => {
                 <img
                     className="w-[2.4rem] h-[2.4rem] cursor-pointer"
                     onClick={() => navigate("/")}
-                    src="/src/assets/icon/icon-exit.svg"
+                    src="/icon/icon-exit.svg"
                     alt=""
                 />
             ) : (
-                <img className="w-[2.4rem] h-[2.4rem]" src="/src/assets/icon/icon-alarm.svg" alt="" />
+                <img className="w-[2.4rem] h-[2.4rem]" src="/icon/icon-alarm.svg" alt="" />
             )}
             {showModal && (
                 <Modal

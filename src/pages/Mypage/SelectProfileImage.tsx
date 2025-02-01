@@ -3,7 +3,7 @@ interface SelectProfileImageProps {
 }
 
 const SelectProfileImage = ({ onSelect }: SelectProfileImageProps) => {
-    const profileImages = Array.from({ length: 15 }, (_, i) => `/src/assets/profile/profile-${i + 1}.svg`);
+    const profileImages = Array.from({ length: 15 }, (_, i) => `/profile/profile-${i + 1}.svg`);
 
     return (
         <div className="grid grid-cols-4 gap-[1rem] p-[2rem] mt-[4rem]">

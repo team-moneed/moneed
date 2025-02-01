@@ -13,14 +13,14 @@ const Lnb = ({ active }: Lnb) => {
             >
                 <button type="button" className="w-[4.4rem] h-[2.4rem] flex items-center justify-center">
                     <div className="w-[2.8rem] h-[2.8rem] bg-[var(--moneed-black)] rounded-full flex items-center justify-center">
-                        <img className="w-[1.4rem] h-[1.2rem]" src="/src/assets/icon/icon-logo.svg" alt="" />
+                        <img className="w-[1.4rem] h-[1.2rem]" src="/icon/icon-logo.svg" alt="" />
                     </div>
                 </button>
                 <div className="pt-[10.5rem] flex-1 flex flex-col gap-[1.8rem]">
                     <LnbLink
                         to="/"
-                        icon="/src/assets/icon/icon-lnb-1.svg"
-                        activeIcon="/src/assets/icon/icon-lnb-1-on.svg"
+                        icon="/icon/icon-lnb-1.svg"
+                        activeIcon="/icon/icon-lnb-1-on.svg"
                         active={true}
                     >
                         <span
@@ -32,8 +32,8 @@ const Lnb = ({ active }: Lnb) => {
                     </LnbLink>
                     <LnbLink
                         to="/"
-                        icon="/src/assets/icon/icon-lnb-2.svg"
-                        activeIcon="/src/assets/icon/icon-lnb-2-on.svg"
+                        icon="/icon/icon-lnb-2.svg"
+                        activeIcon="/icon/icon-lnb-2-on.svg"
                     >
                         <span
                             className={`text-[1.4rem] font-semibold w-[8.4rem] ${active ? "block" : "hidden"
@@ -44,8 +44,8 @@ const Lnb = ({ active }: Lnb) => {
                     </LnbLink>
                     <LnbLink
                         to="/community"
-                        icon="/src/assets/icon/icon-lnb-3.svg"
-                        activeIcon="/src/assets/icon/icon-lnb-3-on.svg"
+                        icon="/icon/icon-lnb-3.svg"
+                        activeIcon="/icon/icon-lnb-3-on.svg"
                     >
 
                         <span

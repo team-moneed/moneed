@@ -28,7 +28,7 @@ const Mypage = () => {
             englishName: "Microsoft",
         },
         {
-            infoBoxImgages: "/src/assets/temp/sample4.png",
+            infoBoxImgages: "/temp/sample4.png",
             name: "테슬라",
             priceUSD: "$998.75",
             rate: "4.2%",
@@ -105,7 +105,7 @@ const Mypage = () => {
                         <div className="p-[1.6rem] justify-center items-center rounded-[1.6rem] border border-solid border-[var(--moneed-gray-5)]">
                             <div className="flex justify-center">
                                 <div className="rounded-full overflow-hidden aspect-[1/1] w-[5.6rem]">
-                                    <img src="/src/assets/temp/sample3.png" alt="" className="w-full h-full object-cover" />
+                                    <img src="/temp/sample3.png" alt="" className="w-full h-full object-cover" />
                                 </div>
                             </div>
                             <div className="flex gap-[1rem] justify-center items-center">
@@ -113,7 +113,7 @@ const Mypage = () => {
                                     내가본나의 피드
                                 </div>
                                 <div className="aspect-[1/1] w-[2.4rem] cursor-pointer" onClick={movetoMyProfile}>
-                                    <img src="/src/assets/icon/icon-setting.svg" alt="" className="w-full h-full" />
+                                    <img src="/icon/icon-setting.svg" alt="" className="w-full h-full" />
                                 </div>
                             </div>
                             <div className="text-center text-[1.4rem] font-[400] leading-[145%] text-[var(--moneed-gray-7)]">
@@ -139,7 +139,7 @@ const Mypage = () => {
                                 내가 선택한 종목
                             </div>
                             <div className="aspect-[1/1] w-[2.4rem]">
-                                <img src="/src/assets/icon/icon-addcircle.svg" alt="" className="w-full h-full" />
+                                <img src="/icon/icon-addcircle.svg" alt="" className="w-full h-full" />
                             </div>
                         </div>
                         <div className="space-y-[.8rem]">

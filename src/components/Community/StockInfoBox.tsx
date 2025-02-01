@@ -17,7 +17,7 @@ const StockInfoBox = ({ name, children }: StockInfoProps) => {
             <div className="flex justify-between px-[1.2rem] py-[1.8rem] border border-solid border-[var(--moneed-gray-5)] rounded-[1.6rem]">
                 <div className="flex items-center gap-[.6rem]">
                     <div className="rounded-full overflow-hidden aspect-[1/1] w-[3.6rem]">
-                        <img src="/src/assets/temp/sample3.png" alt="" className="w-full h-full object-cover" />
+                        <img src="/temp/sample3.png" alt="" className="w-full h-full object-cover" />
                     </div>
                     <div>
                         <h3 className="text-[1.4rem] font-[600] leading-[140%] text-[var(--moneed-black)]">{name}</h3>

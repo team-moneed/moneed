@@ -11,7 +11,7 @@ const ErrorPage = () => {
     return (
         <div className="px-[2rem] max-w-[128rem] mx-auto">
             <div className="flex justify-center items-center mt-[6.3rem]">
-                <img src="/src/assets/errorcta.svg" alt="" className="w-[29rem]" />
+                <img src="/errorcta.svg" alt="" className="w-[29rem]" />
             </div>
             <div className="text-[2.4rem] text-[var(--moneed-black)] font-[700] text-center mt-[2rem] leading-[140%]">
                 404: 페이지를 찾을 수 없어요.

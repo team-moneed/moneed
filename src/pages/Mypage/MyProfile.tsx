@@ -7,7 +7,7 @@ const MyProfile = () => {
     const navigate = useNavigate();
     const [nickname, setNickname] = useState("");
     const [showProfileImage, setShowProfileImage] = useState(false);
-    const [selectedImage, setSelectedImage] = useState("/src/assets/temp/sample3.png"); // 기본 이미지
+    const [selectedImage, setSelectedImage] = useState("/temp/sample3.png"); // 기본 이미지
 
     const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNickname(e.target.value);
@@ -44,7 +44,7 @@ const MyProfile = () => {
                     className="absolute bottom-[0rem] right-[0.5rem] bg-[var(--moneed-white)] border border-solid border-[var(--moneed-gray-5)] rounded-full p-[0.6rem] cursor-pointer "
                 >
                     <img
-                        src="/src/assets/icon/icon-edit-profile.svg"
+                        src="/icon/icon-edit-profile.svg"
                         alt="Edit Profile"
                         className="w-full h-full object-cover"
                     />

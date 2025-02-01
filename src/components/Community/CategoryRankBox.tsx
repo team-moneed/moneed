@@ -13,7 +13,7 @@ const CategoryRankBox = ({ categoryData, index }: StockInfoProps) => {
         <>
 
             <div className="relative bg-[var(--moneed-black-3)] border-[var(--moneed-gray-5)] border-[.1rem] rounded-[1.6rem]">
-                <i className="absolute block aspect-[1/1] w-[6rem] top-[-.1rem] left-[-.1rem]"><img src="/src/assets/box-bg.png" alt="" className="w-full" /></i>
+                <i className="absolute block aspect-[1/1] w-[6rem] top-[-.1rem] left-[-.1rem]"><img src="/box-bg.png" alt="" className="w-full" /></i>
                 <div className="relative flex items-end gap-[.4rem] h-[4rem] mb-[.4rem]">
                     <div className="flex rounded-[1.6rem] w-[4rem] h-[4rem] shrink-0 justify-center items-center bg-[var(--moneed-black)]">
                         <div className="font-[700] leading-[140%] text-[1.4rem] text-[var(--moneed-white)]">
@@ -31,7 +31,7 @@ const CategoryRankBox = ({ categoryData, index }: StockInfoProps) => {
                 </div>
                 <div className="relative flex my-[1.2rem] mx-[1.4rem] p-4 rounded-[1.2rem] border border-solid border-[var(--moneed-gray-5)] gap-[.6rem] bg-[var(--moneed-white)] items-center justify-center">
                     <div className="rounded-full overflow-hidden aspect-[1/1] w-[1.6rem]">
-                        <img src="/src/assets/temp/sample3.png" alt="" className="w-full h-full object-cover" />
+                        <img src="/temp/sample3.png" alt="" className="w-full h-full object-cover" />
                     </div>
                     <span className="font-[400] leading-[140%] text-[1.4rem] text-[var(--moneed-black)]">
                         {categoryData.stock.company}

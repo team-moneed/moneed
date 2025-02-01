@@ -139,7 +139,7 @@ const Community = () => {
     const POSTOPTIONS = {
         slidesToScroll: 1,
         loop: false,
-        // align: "start",
+        // align: 'start',
         draggable: true,
         // containScroll: "keepSnaps",
     };
