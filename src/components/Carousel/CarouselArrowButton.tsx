@@ -83,7 +83,7 @@ export const NextButton = (props: PropType) => {
             type="button"
             {...restProps}
         >
-            <img src="/src/assets/icon/icon-arrow-right.svg" alt="" className="w-full h-full object-cover" />
+            <img src="/icon/icon-arrow-right.svg" alt="" className="w-full h-full object-cover" />
             {children}
         </button>
     )

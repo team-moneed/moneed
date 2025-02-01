@@ -132,7 +132,7 @@ const EditImage = ({
                             type="submit"
                         >
                             <img
-                                src="/src/assets/icon/icon-gallery.svg"
+                                src="/icon/icon-gallery.svg"
                                 alt="gallery"
                                 className="w-full h-full object-cover p-[.6rem]"
                             />

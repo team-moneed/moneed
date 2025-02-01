@@ -46,11 +46,11 @@ const WritePost = () => {
 
     useEffect(() => {
         if (title.trim().length >= 50) {
-            showSnackBar('제목은 공백 포함 50자 제한입니다.', 'normal', 'bottom', '/src/assets/icon/icon-snackbar.svg');
+            showSnackBar('제목은 공백 포함 50자 제한입니다.', 'normal', 'bottom', '/icon/icon-snackbar.svg');
         }
 
         if (content.trim().length >= 1000) {
-            showSnackBar('본문은 최대 1000자 입니다.', 'normal', 'bottom', '/src/assets/icon/icon-snackbar.svg');
+            showSnackBar('본문은 최대 1000자 입니다.', 'normal', 'bottom', '/icon/icon-snackbar.svg');
         }
     }, [content, title, showSnackBar]);
 
@@ -61,7 +61,7 @@ const WritePost = () => {
 
     const handleFocus = (field: string) => {
         if (!stocktype) {
-            showSnackBar('커뮤니티 종목을 먼저 선택해주세요.', 'normal', 'top', '/src/assets/icon/icon-snackbar.svg');
+            showSnackBar('커뮤니티 종목을 먼저 선택해주세요.', 'normal', 'top', '/icon/icon-snackbar.svg');
             return;
         }
 
@@ -77,17 +77,17 @@ const WritePost = () => {
         const formData = { ...data, stocktype };
 
         if (!stocktype) {
-            showSnackBar('커뮤니티 종목을 선택해주세요.', 'normal', 'bottom', '/src/assets/icon/icon-snackbar.svg');
+            showSnackBar('커뮤니티 종목을 선택해주세요.', 'normal', 'bottom', '/icon/icon-snackbar.svg');
             return;
         }
 
         if (!title.trim()) {
-            showSnackBar('제목을 입력해주세요.', 'normal', 'bottom', '/src/assets/icon/icon-snackbar.svg');
+            showSnackBar('제목을 입력해주세요.', 'normal', 'bottom', '/icon/icon-snackbar.svg');
             return;
         }
 
         if (content.trim().length == 0) {
-            showSnackBar('내용을 입력해주세요.', 'normal', 'bottom', '/src/assets/icon/icon-snackbar.svg');
+            showSnackBar('내용을 입력해주세요.', 'normal', 'bottom', '/icon/icon-snackbar.svg');
             return;
         }
 
@@ -109,7 +109,7 @@ const WritePost = () => {
                         {stocktype || "글을 쓸 커뮤니티 종목을 선택해주세요."}
                     </span>
                     <div className="overflow-hidden aspect-[1/1] w-[1.2rem]">
-                        <img src="/src/assets/icon/icon-arrow-down.svg" alt="" className="w-full h-full object-cover" />
+                        <img src="/icon/icon-arrow-down.svg" alt="" className="w-full h-full object-cover" />
                     </div>
                 </button>
             </div>
@@ -153,7 +153,7 @@ const WritePost = () => {
                         type="submit"
                     >
                         <img
-                            src="/src/assets/icon/icon-submit-post.svg"
+                            src="/icon/icon-submit-post.svg"
                             alt="submit"
                             className="w-full h-full object-cover p-[.6rem]"
                         />
@@ -161,7 +161,7 @@ const WritePost = () => {
                 </div>
             </form >
             {isBottomModalOpen && <BottomModal
-                imageSrc="/src/assets/post-warning.svg"
+                imageSrc="/post-warning.svg"
                 title="이런 의견은 피해주세요"
                 description={
                     <>

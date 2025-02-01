@@ -37,7 +37,7 @@ const SelectStockType = () => {
                             <div key={value} className="mb-[.2rem]">
                                 <StockTypeChip
                                     label={stocktype}
-                                    icon="/src/assets/temp/sample3.png"
+                                    icon="/temp/sample3.png"
                                     onClick={() => toggleStockType(stocktype)}
                                     active={selectedStockNames.includes(stocktype)}
                                 />

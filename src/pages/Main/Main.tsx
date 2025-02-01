@@ -6,8 +6,8 @@ const Main = () => {
     return (
         <div className="px-[2rem] max-w-[128rem] mx-auto">
             <div className="mt-[.7rem] lg:mt-4 aspect-[350/106] rounded-[.8rem] overflow-hidden lg:aspect-[941/151]">
-                <img src="/src/assets/temp/main-bn-m.png" alt="" className="w-full h-full object-cover lg:hidden" />
-                <img src="/src/assets/temp/main-bn-pc.png" alt="" className="hidden w-full h-full object-cover lg:block" />
+                <img src="/temp/main-bn-m.png" alt="" className="w-full h-full object-cover lg:hidden" />
+                <img src="/temp/main-bn-pc.png" alt="" className="hidden w-full h-full object-cover lg:block" />
             </div>
             <div className="mt-[3.6rem] lg:mt-[2.8rem]">
                 <div className="flex items-center gap-[.8rem] mb-[1.8rem] justify-between">
@@ -17,7 +17,7 @@ const Main = () => {
                     <button className="flex items-center gap-[.8rem] self-stretch">
                         <div className="text-[1.4rem] font-[600] leading-[135%] text-[var(--moneed-gray-8)]">더보기</div>
                         <div className="shrink-0 w-[1.8rem] h-[1.8rem]" >
-                            <img src="/src/assets/icon/icon-arrow-right.svg" alt="" />
+                            <img src="/icon/icon-arrow-right.svg" alt="" />
                         </div>
                     </button>
                 </div>

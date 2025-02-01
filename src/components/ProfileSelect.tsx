@@ -5,12 +5,12 @@ interface ProfileSelectProps {
 const ProfileSelect = ({ onSelect }: ProfileSelectProps) => {
 
     const images = [
-        "/src/assets/profile/profile-1.svg",
-        "/src/assets/profile/profile-2.svg",
-        "/src/assets/profile/profile-3.svg",
-        "/src/assets/profile/profile-4.svg",
-        "/src/assets/profile/profile-5.svg",
-        "/src/assets/profile/profile-6.svg",
+        "/profile/profile-1.svg",
+        "/profile/profile-2.svg",
+        "/profile/profile-3.svg",
+        "/profile/profile-4.svg",
+        "/profile/profile-5.svg",
+        "/profile/profile-6.svg",
     ];
 
     return (

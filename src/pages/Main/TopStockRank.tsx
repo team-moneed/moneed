@@ -142,7 +142,7 @@ const TopStockRank = () => {
                         <span className="text-[1.4rem] text-[var(--moneed-gray-8)] font-semibold leading-[135%]">
                             해당 게시판 더보기
                         </span>
-                        <img src="/src/assets/icon/icon-arrow-right.svg" alt="" />
+                        <img src="/icon/icon-arrow-right.svg" alt="" />
                     </Button>
                 </div>
             </div>
