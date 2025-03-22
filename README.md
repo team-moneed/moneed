@@ -23,11 +23,20 @@ mz세대를 위한 주식투자 서비스
 <br />
 
 ## 와이어프레임
+<br />
+1) 홈 <br />
 <img width="290" alt="스크린샷 2025-03-22 오후 11 46 22" src="https://github.com/user-attachments/assets/3a4f0461-6201-4397-803c-a8665ea49fd2" />
+<br />
+2) 마이페이지 <br />
 <img width="310" alt="스크린샷 2025-03-22 오후 11 45 54" src="https://github.com/user-attachments/assets/b921e323-fb53-49f4-9c26-f6d6d08fc928" />
 <img width="320" alt="스크린샷 2025-03-22 오후 11 45 31" src="https://github.com/user-attachments/assets/cd48e81d-f772-4698-8157-971ca1b7846c" />
+<br />
+3) 게시글/댓글 수정,삭제 <br />
 <img width="300" alt="스크린샷 2025-03-22 오후 11 45 03" src="https://github.com/user-attachments/assets/1919e45f-61b9-4ba2-8998-78c6c47c6303" />
+<br />
+4) 커뮤니티 <br />
 <img width="340" alt="스크린샷 2025-03-22 오후 11 44 15" src="https://github.com/user-attachments/assets/2d9ec56a-8612-41c4-a9b0-6ff5b5285952" />
+<img width="340" alt="스크린샷 2025-03-22 오후 11 44 15" src="https://github.com/user-attachments/assets/8fd78f6f-c191-48b5-98f8-c55eabadc034" />
 
 
 
