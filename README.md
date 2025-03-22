@@ -1,50 +1,77 @@
-# React + TypeScript + Vite
+<div align="center">
+  <img width="250" alt="스크린샷 2025-03-22 오후 11 39 54" src="https://github.com/user-attachments/assets/21f4a44a-d8a2-4198-b715-724f8f064478" />
+  <h1>MONEED</h1>
+  <a href="#">
+  </a>
+  <br />
+</div>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 목차
 
-Currently, two official plugins are available:
+1. **웹 서비스 소개**
+2. **와이어프레임**
+3. **기술 스택**
+4. **주요 기능**
+5. **주요 페이지**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<br />
 
-## Expanding the ESLint configuration
+## 💁🏻‍♂ 웹 서비스 소개
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+mz세대를 위한 주식투자 서비스
 
-- Configure the top-level `parserOptions` property like this:
+<br />
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 와이어프레임
+<img width="290" alt="스크린샷 2025-03-22 오후 11 46 22" src="https://github.com/user-attachments/assets/3a4f0461-6201-4397-803c-a8665ea49fd2" />
+<img width="310" alt="스크린샷 2025-03-22 오후 11 45 54" src="https://github.com/user-attachments/assets/b921e323-fb53-49f4-9c26-f6d6d08fc928" />
+<img width="320" alt="스크린샷 2025-03-22 오후 11 45 31" src="https://github.com/user-attachments/assets/cd48e81d-f772-4698-8157-971ca1b7846c" />
+<img width="300" alt="스크린샷 2025-03-22 오후 11 45 03" src="https://github.com/user-attachments/assets/1919e45f-61b9-4ba2-8998-78c6c47c6303" />
+<img width="340" alt="스크린샷 2025-03-22 오후 11 44 15" src="https://github.com/user-attachments/assets/2d9ec56a-8612-41c4-a9b0-6ff5b5285952" />
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+<br />
+
+## 배포주소
+프론트 : https://moneed-scwa.vercel.app/
+
+
+<br />
+
+## 🛠 기술 스택
+
+**Front-end**
+
+- ![HTML5](https://img.shields.io/badge/-HTML5-E34F26?&logo=html5&logoColor=white) ![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?&logo=javascript&logoColor=white)
+- ![React](https://img.shields.io/badge/-React-61DAFB?&logo=react&logoColor=white)
+- <img src="https://img.shields.io/badge/Tailwind CSS-06B6D4?&logo=Tailwind CSS&logoColor=white"/>
+- <img src="https://img.shields.io/badge/Typescript-3178C6?&logo=Typescript&logoColor=white"/>
+
+**ETC**
+
+- ![Git](https://img.shields.io/badge/-Git-F05032?&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/-GitHub-181717?&logo=github&logoColor=white)
+
+<br />
+
+## 💡 주요 기능
+
+- 홈
+- 게시글
+- 마이페이지
+
+<br />
+
+## 📄 주요 페이지 
+
+|                               홈                                         |                               게시글 페이지                               |
+| :---------------------------------------------------------------------: | :---------------------------------------------------------------------: |
+|                    |                    |
+
+|                               마이 페이지                                    |                               게시글 작성 페이지                               |
+| :---------------------------------------------------------------------: | :---------------------------------------------------------------------: |
+|                        |   |
+
+<br />
+
 ```
