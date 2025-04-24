@@ -17,8 +17,10 @@ const ErrorPage = () => {
                 404: 페이지를 찾을 수 없어요.
             </div>
             <div className="text-[var(--moneed-black)] text-center mt-[1.2rem] font-[600] leading-[140%]">
-                죄송합니다! 존재하지 않는 페이지에요.<br />
-                요청하신 페이지가 사라졌거나, 잘못된 경로로<br />
+                죄송합니다! 존재하지 않는 페이지에요.
+                <br />
+                요청하신 페이지가 사라졌거나, 잘못된 경로로
+                <br />
                 접근이 되었어요.
             </div>
             <div className="flex justify-center items-center my-[4rem]">
