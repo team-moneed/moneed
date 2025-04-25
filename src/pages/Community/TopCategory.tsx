@@ -1,4 +1,4 @@
-import CategoryRankBox from "../../components/Community/CategoryRankBox";
+import CategoryRankBox from "@/components/Community/CategoryRankBox";
 
 export type stockCagtegory = {
     categoryName: string;
@@ -7,12 +7,10 @@ export type stockCagtegory = {
         image: string;
         company: string;
         englishName: string;
-    }
-
-}
+    };
+};
 
 const TopCategory = () => {
-
     const stockCategories = [
         {
             categoryName: "기계/반도체/IT가전",
@@ -41,7 +39,7 @@ const TopCategory = () => {
                 englishName: "UNH",
             },
         },
-    ]
+    ];
 
     return (
         <>
@@ -55,7 +53,6 @@ const TopCategory = () => {
                     );
                 })}
             </div>
-
         </>
     );
 };

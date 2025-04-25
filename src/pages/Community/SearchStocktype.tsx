@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import MyStockBox from '../../components/Mypage/MyStockBox';
-import Hangul from 'hangul-js';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import MyStockBox from "@/components/Mypage/MyStockBox";
+import Hangul from "hangul-js";
 
 const SearchStocktype = () => {
     const navigate = useNavigate();
@@ -84,22 +84,23 @@ const SearchStocktype = () => {
         },
     ];
 
-
     const getInitialConsonant = (str: string) => {
         return Hangul.d(str)
             .map((char: string) => char.charAt(0))
-            .join('');
+            .join("");
     };
 
-    const filteredStockData = stockData.filter(item => {
+    const filteredStockData = stockData.filter((item) => {
         if (!searchStockType) {
             return true;
         }
 
         // console.log(Hangul.disassemble(item.name).includes(Hangul.disassemble(searchStockType)))
 
-        return (item.name.toLowerCase().includes(searchStockType) ||
-            getInitialConsonant(item.name).includes(getInitialConsonant(searchStockType)))
+        return (
+            item.name.toLowerCase().includes(searchStockType) ||
+            getInitialConsonant(item.name).includes(getInitialConsonant(searchStockType))
+        );
     });
 
     return (
@@ -130,8 +131,7 @@ const SearchStocktype = () => {
                             className=""
                             isSelectCategory={true}
                             name={item.name}
-                        >
-                        </MyStockBox>
+                        ></MyStockBox>
                     ))}
                 </div>
             </div>

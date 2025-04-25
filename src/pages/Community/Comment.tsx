@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Dropdown from "../../components/Dropdown";
+import Dropdown from "@/components/Dropdown";
 import { useModal } from "../../context/ModalContext";
 import useSnackBarStore from "../../store/useSnackBarStore";
 
@@ -8,44 +8,45 @@ type CommentType = {
     content: string;
     createdAt: string;
     onEditComment: () => void;
-}
+};
 
 const Comment = ({ userName, content, createdAt, onEditComment }: CommentType) => {
-
-    const [isDropdownOpen, setIsdropdownOpen] = useState(false)
+    const [isDropdownOpen, setIsdropdownOpen] = useState(false);
 
     const { showSnackBar } = useSnackBarStore();
     const { confirm } = useModal();
 
-    //댓글 수정/삭제 드롭다운 
+    //댓글 수정/삭제 드롭다운
     const handleOpendropdown = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-        setIsdropdownOpen((prev) => !prev)
-    }
+        setIsdropdownOpen((prev) => !prev);
+    };
 
-    //댓글 삭제할건지 묻는 모달 
+    //댓글 삭제할건지 묻는 모달
     const opencommentDeletemodal = () => {
-        const result = confirm(<span>
-            삭제된 내용은 복구되지 않아요.<br />
-            정말 삭제하실건가요?
-        </span>);
+        const result = confirm(
+            <span>
+                삭제된 내용은 복구되지 않아요.
+                <br />
+                정말 삭제하실건가요?
+            </span>,
+        );
         result.then((confirmed) => {
             if (confirmed) {
                 handledeleteComment();
             }
         });
-        setIsdropdownOpen((prev) => !prev)
-    }
+        setIsdropdownOpen((prev) => !prev);
+    };
 
     //댓글 삭제 api 연동
     const handledeleteComment = () => {
-        showSnackBar('댓글이 삭제되었습니다.', 'action', 'bottom', '');
-    }
+        showSnackBar("댓글이 삭제되었습니다.", "action", "bottom", "");
+    };
 
     const closeDropdown = () => {
         setIsdropdownOpen(false);
     };
-
 
     return (
         <>
@@ -62,21 +63,28 @@ const Comment = ({ userName, content, createdAt, onEditComment }: CommentType) =
                     <span className="text-[1.4rem] font-[400] leading-[142%] text-[var(--moneed-gray-7)]">
                         {createdAt}
                     </span>
-                    <div className="text-[1.4rem] font-[400] leading-[140%]">
-                        {content}
-                    </div>
+                    <div className="text-[1.4rem] font-[400] leading-[140%]">{content}</div>
                 </div>
                 <div className="relative">
-                    <div className="relative cursor-pointer rounded-full overflow-hidden aspect-[1/1] w-[2.4rem] shrink-0 ml-auto" onClick={handleOpendropdown}>
-                        <img src="/icon/icon-more.svg" alt="" className="w-full h-full object-cover" />
+                    <div
+                        className="relative cursor-pointer rounded-full overflow-hidden aspect-[1/1] w-[2.4rem] shrink-0 ml-auto"
+                        onClick={handleOpendropdown}
+                    >
+                        <img
+                            src="/icon/icon-more.svg"
+                            alt=""
+                            className="w-full h-full object-cover"
+                        />
                     </div>
-                    {isDropdownOpen && <Dropdown
-                        firsttext="댓글 수정"
-                        secondtext="댓글 삭제"
-                        secondevent={opencommentDeletemodal}
-                        firstevent={onEditComment}
-                        onClose={closeDropdown}
-                    ></Dropdown>}
+                    {isDropdownOpen && (
+                        <Dropdown
+                            firsttext="댓글 수정"
+                            secondtext="댓글 삭제"
+                            secondevent={opencommentDeletemodal}
+                            firstevent={onEditComment}
+                            onClose={closeDropdown}
+                        ></Dropdown>
+                    )}
                 </div>
             </div>
         </>

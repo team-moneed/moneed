@@ -1,18 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import BottomModal from '../../components/BottomModal';
-import UploadImage from '../../components/UploadImage';
-import useSnackBarStore from '../../store/useSnackBarStore';
-import { useForm } from 'react-hook-form';
-import { useKeyboardOffset } from '../../hook/useKeyboardOffset';
+import BottomModal from "@/components/BottomModal";
+import UploadImage from "@/components/UploadImage";
+import useSnackBarStore from "../../store/useSnackBarStore";
+import { useForm } from "react-hook-form";
+import { useKeyboardOffset } from "../../hook/useKeyboardOffset";
 
 type FieldData = {
     title: string;
     content: string;
-}
+};
 
 const WritePost = () => {
-
     const { stocktype } = useParams();
     const [isBottomModalOpen, setIsBottomModalOpen] = useState(false);
 
@@ -23,7 +22,6 @@ const WritePost = () => {
 
     const navigate = useNavigate();
 
-
     const { register, handleSubmit, watch } = useForm<FieldData>();
     const content = watch("content", "");
     const title = watch("title", "");
@@ -33,7 +31,6 @@ const WritePost = () => {
     const handleFileUpload = (formData: FormData) => {
         setFormImg(formData);
     };
-
 
     useEffect(() => {
         const isModalShown = localStorage.getItem("bottoModalShown");
@@ -46,14 +43,23 @@ const WritePost = () => {
 
     useEffect(() => {
         if (title.trim().length >= 50) {
-            showSnackBar('제목은 공백 포함 50자 제한입니다.', 'normal', 'bottom', '/icon/icon-snackbar.svg');
+            showSnackBar(
+                "제목은 공백 포함 50자 제한입니다.",
+                "normal",
+                "bottom",
+                "/icon/icon-snackbar.svg",
+            );
         }
 
         if (content.trim().length >= 1000) {
-            showSnackBar('본문은 최대 1000자 입니다.', 'normal', 'bottom', '/icon/icon-snackbar.svg');
+            showSnackBar(
+                "본문은 최대 1000자 입니다.",
+                "normal",
+                "bottom",
+                "/icon/icon-snackbar.svg",
+            );
         }
     }, [content, title, showSnackBar]);
-
 
     const movetoSelectStocktype = () => {
         navigate(`/searchstocktype`);
@@ -61,42 +67,49 @@ const WritePost = () => {
 
     const handleFocus = (field: string) => {
         if (!stocktype) {
-            showSnackBar('커뮤니티 종목을 먼저 선택해주세요.', 'normal', 'top', '/icon/icon-snackbar.svg');
+            showSnackBar(
+                "커뮤니티 종목을 먼저 선택해주세요.",
+                "normal",
+                "top",
+                "/icon/icon-snackbar.svg",
+            );
             return;
         }
 
-        if (field === 'title') {
+        if (field === "title") {
             document.getElementById("title")?.focus();
-        } else if (field === 'content') {
+        } else if (field === "content") {
             document.getElementById("content")?.focus();
         }
     };
 
     const onSubmit = (data: FieldData) => {
-        console.log('title', title, content.trim().length)
+        console.log("title", title, content.trim().length);
         const formData = { ...data, stocktype };
 
         if (!stocktype) {
-            showSnackBar('커뮤니티 종목을 선택해주세요.', 'normal', 'bottom', '/icon/icon-snackbar.svg');
+            showSnackBar(
+                "커뮤니티 종목을 선택해주세요.",
+                "normal",
+                "bottom",
+                "/icon/icon-snackbar.svg",
+            );
             return;
         }
 
         if (!title.trim()) {
-            showSnackBar('제목을 입력해주세요.', 'normal', 'bottom', '/icon/icon-snackbar.svg');
+            showSnackBar("제목을 입력해주세요.", "normal", "bottom", "/icon/icon-snackbar.svg");
             return;
         }
 
         if (content.trim().length == 0) {
-            showSnackBar('내용을 입력해주세요.', 'normal', 'bottom', '/icon/icon-snackbar.svg');
+            showSnackBar("내용을 입력해주세요.", "normal", "bottom", "/icon/icon-snackbar.svg");
             return;
         }
 
-        showSnackBar('게시글이 작성되었습니다.', 'action', 'bottom', '');
-        console.log('게시글작성', formData);
+        showSnackBar("게시글이 작성되었습니다.", "action", "bottom", "");
+        console.log("게시글작성", formData);
     };
-
-
-
 
     return (
         <div className="px-[2rem] max-w-[128rem] mx-auto">
@@ -105,11 +118,19 @@ const WritePost = () => {
                     className="bg-[var(--moneed-shade-bg)] py-[1.2rem] px-[1.6rem] rounded-[.8rem] flex items-center gap-[0.6rem]"
                     onClick={movetoSelectStocktype}
                 >
-                    <span className={`text-[1.4rem] font-[400] ${stocktype ? 'text-[var(--moneed-black)]' : 'text-[var(--moneed-gray-7)]'}`}>
+                    <span
+                        className={`text-[1.4rem] font-[400] ${
+                            stocktype ? "text-[var(--moneed-black)]" : "text-[var(--moneed-gray-7)]"
+                        }`}
+                    >
                         {stocktype || "글을 쓸 커뮤니티 종목을 선택해주세요."}
                     </span>
                     <div className="overflow-hidden aspect-[1/1] w-[1.2rem]">
-                        <img src="/icon/icon-arrow-down.svg" alt="" className="w-full h-full object-cover" />
+                        <img
+                            src="/icon/icon-arrow-down.svg"
+                            alt=""
+                            className="w-full h-full object-cover"
+                        />
                     </div>
                 </button>
             </div>
@@ -120,7 +141,7 @@ const WritePost = () => {
                     placeholder="제목을 입력해주세요"
                     className="border-b border-[var(--moneed-gray-5)] w-full py-[1.6rem] text-[1.6rem] font-[400] leading-[140%] focus:outline-none placeholder:text-[var(--moneed-gray-7)]"
                     maxLength={50}
-                    onFocus={() => handleFocus('title')}
+                    onFocus={() => handleFocus("title")}
                 />
                 <textarea
                     {...register("content")}
@@ -128,11 +149,12 @@ const WritePost = () => {
                     placeholder="의견을 입력해주세요"
                     className="w-full h-[30rem] py-[1.6rem] text-[1.6rem] font-[400] leading-[140%] placeholder:text-[var(--moneed-gray-7)] focus:outline-none"
                     maxLength={1000}
-                    onFocus={() => handleFocus('content')}
+                    onFocus={() => handleFocus("content")}
                 />
                 <div
-                    className={`fixed left-0 right-0 z-[20] h-[5.2rem] px-8 bg-white flex items-center justify-between transition-all duration-300 ${bottomOffset > 0 ? `bottom-[${bottomOffset}px]` : "bottom-0"
-                        }`}
+                    className={`fixed left-0 right-0 z-[20] h-[5.2rem] px-8 bg-white flex items-center justify-between transition-all duration-300 ${
+                        bottomOffset > 0 ? `bottom-[${bottomOffset}px]` : "bottom-0"
+                    }`}
                 >
                     <UploadImage
                         id="blog"
@@ -159,25 +181,29 @@ const WritePost = () => {
                         />
                     </button>
                 </div>
-            </form >
-            {isBottomModalOpen && <BottomModal
-                imageSrc="/post-warning.svg"
-                title="이런 의견은 피해주세요"
-                description={
-                    <>
-                        스팸홍보/도배글<br />
-                        욕설/음란물,<br />
-                        불법 투자 조장,<br />
-                        청소년에게 유해한 내용
-                    </>
-                }
-                ButtonText="확인"
-                onButtonClick={() => setIsBottomModalOpen(false)}
-                onClose={() => setIsBottomModalOpen(false)}
-            />}
-        </div >
+            </form>
+            {isBottomModalOpen && (
+                <BottomModal
+                    imageSrc="/post-warning.svg"
+                    title="이런 의견은 피해주세요"
+                    description={
+                        <>
+                            스팸홍보/도배글
+                            <br />
+                            욕설/음란물,
+                            <br />
+                            불법 투자 조장,
+                            <br />
+                            청소년에게 유해한 내용
+                        </>
+                    }
+                    ButtonText="확인"
+                    onButtonClick={() => setIsBottomModalOpen(false)}
+                    onClose={() => setIsBottomModalOpen(false)}
+                />
+            )}
+        </div>
     );
 };
 
 export default WritePost;
-
