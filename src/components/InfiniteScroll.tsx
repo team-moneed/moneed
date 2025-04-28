@@ -1,5 +1,5 @@
-import {useCallback, useEffect} from 'react';
-import {BeatLoader} from 'react-spinners';
+import { useCallback, useEffect } from 'react';
+import { BeatLoader } from 'react-spinners';
 
 interface Props {
     isLastPage: boolean; //마지막 페이지인지

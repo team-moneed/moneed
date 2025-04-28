@@ -1,31 +1,27 @@
-import { STOCKTYPES } from "../../config/StockTypesetting";
-import useSearchStore from "../../store/useSearchStore";
-import { useNavigate } from "react-router-dom";
+import { STOCKTYPES } from '../../config/StockTypesetting';
+import useSearchStore from '../../store/useSearchStore';
+import { useNavigate } from 'react-router-dom';
 
 const SearchResult = () => {
-
     const { searchKeyword, setSearchKeyword } = useSearchStore();
 
-    const StockTypeBar = STOCKTYPES.map((stocktype) => stocktype.stocktype)
+    const StockTypeBar = STOCKTYPES.map(stocktype => stocktype.stocktype);
 
     const navigate = useNavigate();
     const handlemoveKeywordPosts = (keyword: string) => {
-        setSearchKeyword(keyword)
+        setSearchKeyword(keyword);
         navigate(`/community/${keyword}`);
-        setSearchKeyword("")
-    }
+        setSearchKeyword('');
+    };
 
     return (
         <>
-            {StockTypeBar.includes(searchKeyword.trim()) &&
+            {StockTypeBar.includes(searchKeyword.trim()) && (
                 <>
-                    <div>
-                        {searchKeyword}
-                    </div>
-                    <button onClick={() => handlemoveKeywordPosts(searchKeyword.trim())}>
-                        커뮤니티로 이동
-                    </button>
-                </>}
+                    <div>{searchKeyword}</div>
+                    <button onClick={() => handlemoveKeywordPosts(searchKeyword.trim())}>커뮤니티로 이동</button>
+                </>
+            )}
         </>
     );
 };

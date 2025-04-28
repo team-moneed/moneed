@@ -5,7 +5,7 @@
 // const Vote = () => {
 //     const { stocktype } = useParams();
 
-//     //카테고리에 해당하는 투표 결과 가져오는 api 
+//     //카테고리에 해당하는 투표 결과 가져오는 api
 //     // const [votes, setVotes] = useState({
 //     //     raise: 0,
 //     //     lower: 0

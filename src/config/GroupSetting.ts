@@ -1,4 +1,1 @@
-export const GROUPS = [
-    { group: "국내"},
-    { group: "해외" },
-  ];
+export const GROUPS = [{ group: '국내' }, { group: '해외' }];
