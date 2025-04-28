@@ -5,7 +5,7 @@ interface InputProps {
     onChange: () => void;
     className: string;
     placeholder: string;
-    value?: string
+    value?: string;
 }
 
 const Input = ({ type, onChange, className, placeholder, value }: InputProps) => {
@@ -17,8 +17,7 @@ const Input = ({ type, onChange, className, placeholder, value }: InputProps) =>
                 className={className}
                 placeholder={placeholder}
                 value={value}
-            >
-            </input>
+            ></input>
         </div>
     );
 };

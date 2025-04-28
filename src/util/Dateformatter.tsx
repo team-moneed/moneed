@@ -1,11 +1,10 @@
 import { useMemo } from 'react';
 
 type DateFormatterPropsType = {
-    createdAt: string
-}
+    createdAt: string;
+};
 
 const DateFormatter = ({ createdAt }: DateFormatterPropsType) => {
-
     // 시간을 계산하는 함수
     const changeFormatDate = (createdAt: string) => {
         const now = new Date();
@@ -72,9 +71,7 @@ const DateFormatter = ({ createdAt }: DateFormatterPropsType) => {
     const formattedDate = useMemo(() => changeFormatDate(createdAt), [createdAt]);
 
     return (
-        <span className="text-[1.4rem] font-normal leading-[142%] text-[var(--moneed-gray-7)]">
-            {formattedDate}
-        </span>
+        <span className='text-[1.4rem] font-normal leading-[142%] text-[var(--moneed-gray-7)]'>{formattedDate}</span>
     );
 };
 

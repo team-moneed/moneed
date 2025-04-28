@@ -1,5 +1,5 @@
 import VideoCarousel from '@/components/Carousel/VideoCarousel';
-import {EmblaOptionsType} from 'embla-carousel';
+import { EmblaOptionsType } from 'embla-carousel';
 
 const MainShortforms = () => {
     const VIDEOOPTIONS: EmblaOptionsType = {
@@ -63,7 +63,7 @@ const MainShortforms = () => {
 
     return (
         <>
-            <div className="mt-[1rem]">
+            <div className='mt-[1rem]'>
                 <VideoCarousel slides={videoSlides} options={VIDEOOPTIONS} />
             </div>
         </>

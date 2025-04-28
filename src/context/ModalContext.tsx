@@ -46,7 +46,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const modal = <T extends boolean>(props: ModalProps): Promise<T> => {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             setResolveCallback(() => resolve);
             setModalProps({
                 ...props,
@@ -57,7 +57,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
                 rightButtonevent: () => {
                     resolve(true as T);
                     closeModal();
-                }
+                },
             });
             setShowModal(true);
         });
@@ -66,8 +66,8 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     const confirm = (message: string | ReactNode, options: ConfirmOptions = {}) => {
         return modal<boolean>({
             children: message,
-            leftButtontext: options.leftButtontext || "취소",
-            rightButtontext: options.rightButtontext || "확인",
+            leftButtontext: options.leftButtontext || '취소',
+            rightButtontext: options.rightButtontext || '확인',
             leftvisible: true,
             rightvisible: true,
             onClose: closeModal,
@@ -77,9 +77,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     return (
         <ModalContext.Provider value={{ modal, confirm }}>
             {children}
-            {showModal && modalProps && (
-                <Modal {...modalProps} onClose={closeModal} />
-            )}
+            {showModal && modalProps && <Modal {...modalProps} onClose={closeModal} />}
         </ModalContext.Provider>
     );
 };

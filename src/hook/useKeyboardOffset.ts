@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export const useKeyboardOffset = () => {
     const [bottomOffset, setBottomOffset] = useState(0);
@@ -15,10 +15,10 @@ export const useKeyboardOffset = () => {
         };
 
         handleResize();
-        window.visualViewport?.addEventListener("resize", handleResize);
+        window.visualViewport?.addEventListener('resize', handleResize);
 
         return () => {
-            window.visualViewport?.removeEventListener("resize", handleResize);
+            window.visualViewport?.removeEventListener('resize', handleResize);
         };
     }, []);
 

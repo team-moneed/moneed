@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 type EditImageProps = {
     onUploadFiles: ((formData: FormData) => void) | (() => void);
@@ -25,19 +25,17 @@ const EditImage = ({
     buttonpositionClassName,
     showPreview = true,
     initialImages,
-    onDeleteImageUrlsChange
+    onDeleteImageUrlsChange,
 }: EditImageProps) => {
     const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
     const [deleteImageUrls, setDeleteImageUrls] = useState<string[]>([]);
     const [images, setImages] = useState<string[]>(initialImages);
-
 
     useEffect(() => {
         if (initialImages.length) {
             setImages(initialImages);
         }
     }, [initialImages]);
-
 
     const ref = useRef<HTMLInputElement | null>(null);
 
@@ -50,7 +48,7 @@ const EditImage = ({
             setUploadedFiles(updatedFiles);
 
             const formData = new FormData();
-            updatedFiles.forEach((file) => formData.append("files", file));
+            updatedFiles.forEach(file => formData.append('files', file));
 
             onUploadFiles(formData);
         }
@@ -59,7 +57,7 @@ const EditImage = ({
     const handledeleteFile = (index: number, isInitialImage?: boolean) => {
         if (isInitialImage) {
             const imageToRemove = images[index];
-            setImages((prevImages) => {
+            setImages(prevImages => {
                 const updatedImages = prevImages.filter((_, i) => i !== index);
                 const updatedDeleteUrls = [...deleteImageUrls, imageToRemove];
                 setDeleteImageUrls(updatedDeleteUrls);
@@ -67,7 +65,7 @@ const EditImage = ({
                 return updatedImages;
             });
         } else {
-            setUploadedFiles((prevFiles) => {
+            setUploadedFiles(prevFiles => {
                 const updatedFiles = prevFiles.filter((_, i) => i !== index);
                 return updatedFiles;
             });
@@ -76,32 +74,28 @@ const EditImage = ({
 
     return (
         <>
-            <div className="relative flex flex-row gap-2 items-start">
+            <div className='relative flex flex-row gap-2 items-start'>
                 <input
                     id={id}
-                    type="file"
-                    className="hidden"
+                    type='file'
+                    className='hidden'
                     onChange={handleuploadFile}
                     multiple={multiple}
                     ref={ref}
                 />
-                <div className="absolute flex gap-x-[9px] bottom-[4rem] z-10">
+                <div className='absolute flex gap-x-[9px] bottom-[4rem] z-10'>
                     {showPreview &&
                         uploadedFiles?.map((file, index) => (
                             <div
                                 key={index}
-                                className="relative "
+                                className='relative '
                                 style={{
                                     width: `${imgpreviewWidth}px`,
                                     height: `${imgpreviewHeight}px`,
                                 }}
                             >
-                                {typeof file === "string" ? (
-                                    <img
-                                        src={file}
-                                        alt={`uploaded-${index}`}
-                                        className={imgClassName}
-                                    />
+                                {typeof file === 'string' ? (
+                                    <img src={file} alt={`uploaded-${index}`} className={imgClassName} />
                                 ) : (
                                     <img
                                         src={URL.createObjectURL(file)}
@@ -110,9 +104,9 @@ const EditImage = ({
                                     />
                                 )}
                                 <button
-                                    type="button"
+                                    type='button'
                                     onClick={() => handledeleteFile(index)}
-                                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-[20px] h-[20px] flex items-center justify-center"
+                                    className='absolute top-0 right-0 bg-red-500 text-white rounded-full w-[20px] h-[20px] flex items-center justify-center'
                                 >
                                     x
                                 </button>
@@ -122,19 +116,19 @@ const EditImage = ({
                 {uploadedFiles.length < uploadfileLength && (
                     <label
                         className={`cursor-pointer ${buttonpositionClassName} ml-auto`}
-                        onClick={(event) => {
+                        onClick={event => {
                             event.stopPropagation();
                             ref.current?.click();
                         }}
                     >
                         <button
-                            className="rounded-full overflow-hidden aspect-[1/1] w-[3.6rem] cursor-pointer"
-                            type="submit"
+                            className='rounded-full overflow-hidden aspect-[1/1] w-[3.6rem] cursor-pointer'
+                            type='submit'
                         >
                             <img
-                                src="/icon/icon-gallery.svg"
-                                alt="gallery"
-                                className="w-full h-full object-cover p-[.6rem]"
+                                src='/icon/icon-gallery.svg'
+                                alt='gallery'
+                                className='w-full h-full object-cover p-[.6rem]'
                             />
                         </button>
                     </label>
