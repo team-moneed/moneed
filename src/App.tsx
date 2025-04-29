@@ -6,6 +6,9 @@ import MobileNav from './components/Layout/MobileNav';
 import SnackBar from './components/SnackBar';
 import { ModalProvider } from './context/ModalContext';
 import { ScrollToTop } from './routes/ScrollToTop';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 function App() {
     const location = useLocation();
@@ -20,30 +23,34 @@ function App() {
 
     return (
         <>
-            <ModalProvider>
-                <div className='flex-1'>
-                    <ScrollToTop />
-                    <div className='hidden lg:block sticky top-0 z-10 bg-white'>
-                        <Header />
-                    </div>
-                    <div className='block lg:hidden sticky top-0 z-10 bg-white'>
-                        {menuHeaderPaths.includes(location.pathname) ||
-                        isWritePostPath ||
-                        isEditPostPath ||
-                        iscommentPath ? (
-                            <MenuHeader />
-                        ) : (
+            <QueryClientProvider client={queryClient}>
+                <ModalProvider>
+                    <div className='flex-1'>
+                        <ScrollToTop />
+                        <div className='hidden lg:block sticky top-0 z-10 bg-white'>
                             <Header />
+                        </div>
+                        <div className='block lg:hidden sticky top-0 z-10 bg-white'>
+                            {menuHeaderPaths.includes(location.pathname) ||
+                            isWritePostPath ||
+                            isEditPostPath ||
+                            iscommentPath ? (
+                                <MenuHeader />
+                            ) : (
+                                <Header />
+                            )}
+                        </div>
+                        <Outlet />
+                        {!hideFooterPaths.includes(location.pathname) && !isWritePostPath && !isEditPostPath && (
+                            <Footer />
                         )}
                     </div>
-                    <Outlet />
-                    {!hideFooterPaths.includes(location.pathname) && !isWritePostPath && !isEditPostPath && <Footer />}
-                </div>
-                {!isWritePostPath && !isEditPostPath && !hideFooterPaths.includes(location.pathname) && (
-                    <MobileNav></MobileNav>
-                )}
-                <SnackBar></SnackBar>
-            </ModalProvider>
+                    {!isWritePostPath && !isEditPostPath && !hideFooterPaths.includes(location.pathname) && (
+                        <MobileNav></MobileNav>
+                    )}
+                    <SnackBar></SnackBar>
+                </ModalProvider>
+            </QueryClientProvider>
         </>
     );
 }
