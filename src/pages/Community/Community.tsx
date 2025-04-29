@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Posts from './Posts';
 import StockTypeBar from '@/components/StockTypeBar';
@@ -10,14 +10,7 @@ import CompanyInfoBox from '@/components/Community/CompanyInfoBox';
 
 const Community = () => {
     const { stocktype } = useParams();
-
-    const [selectedStockType, setSelectedStockType] = useState(stocktype || '전체');
-
-    useEffect(() => {
-        if (stocktype) {
-            setSelectedStockType(stocktype);
-        }
-    }, [stocktype]);
+    const selectedStockType = stocktype || '전체';
 
     const top5Ref = useRef<HTMLDivElement>(null);
     const categoryRef = useRef<HTMLDivElement>(null);
