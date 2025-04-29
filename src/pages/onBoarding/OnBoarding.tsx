@@ -1,11 +1,11 @@
-import Button from '@/components/Button';
+import Button from '../../components/Button';
 
 const OnBoarding = () => {
-    const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID;
-    const REDIRECT_URI = '';
-
     const handleKakaoLogin = () => {
-        const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+        const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
+        const redirectUri = import.meta.env.VITE_KAKAO_REDIRECT_URL;
+        const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+
         window.location.href = kakaoAuthUrl;
     };
 
