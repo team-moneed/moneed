@@ -1,6 +1,7 @@
 import MainShortforms from './MainShortforms';
 import MainNews from './MainNews';
 import TopStockRank from './TopStockRank';
+import { Link } from 'react-router-dom';
 
 const Main = () => {
     return (
@@ -15,9 +16,12 @@ const Main = () => {
                         HOT 숏폼
                     </h2>
                     <button className='flex items-center gap-[.8rem] self-stretch'>
-                        <div className='text-[1.4rem] font-[600] leading-[135%] text-[var(--moneed-gray-8)]'>
+                        <Link
+                            className='text-[1.4rem] font-[600] leading-[135%] text-[var(--moneed-gray-8)]'
+                            to='/shortform'
+                        >
                             더보기
-                        </div>
+                        </Link>
                         <div className='shrink-0 w-[1.8rem] h-[1.8rem]'>
                             <img src='/icon/icon-arrow-right.svg' alt='' />
                         </div>
