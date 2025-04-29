@@ -1,14 +1,20 @@
-import { http } from '../request';
+import axios from 'axios';
 
-type KakaoAuthPropsType = {
-    authorizationCode: string;
-};
+const baseUrl = import.meta.env.VITE_BASE_URL;
 
-export const kakaoAuth = async (data: KakaoAuthPropsType) => {
-    const response = await http.post(`/api/accounts/kakao/login`, data, {
-        headers: {
-            'Content-Type': 'application/json',
-        },
+interface KakaoTokenResponse {
+    access_token: string;
+    token_type: string;
+    refresh_token: string;
+    expires_in: number;
+    scope: string;
+    refresh_token_expires_in: number;
+}
+
+export const fetchKakaoToken = async (code: string): Promise<KakaoTokenResponse> => {
+    const { data } = await axios.get<KakaoTokenResponse>(`${baseUrl}/oauth2/kakao`, {
+        params: { code },
+        headers: { Accept: 'application/json' },
     });
-    return response;
+    return data;
 };
