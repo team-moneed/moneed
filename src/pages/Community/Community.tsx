@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Posts from './Posts';
 import StockTypeBar from '@/components/StockTypeBar';
@@ -10,14 +10,7 @@ import CompanyInfoBox from '@/components/Community/CompanyInfoBox';
 
 const Community = () => {
     const { stocktype } = useParams();
-
-    const [selectedStockType, setSelectedStockType] = useState(stocktype || '전체');
-
-    useEffect(() => {
-        if (stocktype) {
-            setSelectedStockType(stocktype);
-        }
-    }, [stocktype]);
+    const selectedStockType = stocktype || '전체';
 
     const top5Ref = useRef<HTMLDivElement>(null);
     const categoryRef = useRef<HTMLDivElement>(null);
@@ -159,7 +152,7 @@ const Community = () => {
                                     onClick={moveToCategory}
                                     className='text-[1.4rem] leading-[140%] font-[400] text-[var(--moneed-gray-7)] mr-[1.2rem]'
                                 >
-                                    지금 뜨는 카테고리
+                                    지금 뜨는 종목
                                 </button>
                                 <button
                                     onClick={moveToVote}
@@ -188,7 +181,7 @@ const Community = () => {
                             <div ref={categoryRef} className='mt-[2.8rem]'>
                                 <div className='flex items-baseline gap-[.8rem] mb-[1.8rem]'>
                                     <h2 className='text-[2.2rem] leading-[145%] font-[700] text-[var(--moneed-black)] lg:text-[2.4rem] lg:leading-[140%]'>
-                                        지금 뜨는 카테고리
+                                        지금 뜨는 종목
                                     </h2>
                                     <span className='text-[var(--moneed-gray-7)] text-[1.2rem] font-[400] leading-[135%]'>
                                         12월 17일 8시 기준 | 전일종가

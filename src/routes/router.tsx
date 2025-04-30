@@ -10,6 +10,7 @@ import MyPost from '../pages/Mypage/MyPost';
 import MyProfile from '../pages/Mypage/MyProfile';
 import ShortformList from '../pages/Shortform/ShortformList';
 import OnBoarding from '../pages/onBoarding/OnBoarding';
+import KakaoRedirectHandler from '../pages/onBoarding/KakaoRedirectHandler';
 import ShortformDetail from '../pages/Shortform/ShortformDetail';
 import Mycomment from '../pages/Mypage/Mycomment';
 import SearchStocktype from '../pages/Community/SearchStocktype';
@@ -87,6 +88,11 @@ const router = createBrowserRouter([
     {
         path: '/onboarding',
         element: <OnBoarding />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/oauth2/callback/kakao',
+        element: <KakaoRedirectHandler />,
         errorElement: <ErrorPage />,
     },
     {
