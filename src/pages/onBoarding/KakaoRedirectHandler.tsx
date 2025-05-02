@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { fetchKakaoToken } from '@/api/auth/authApi';
+import useAuthStore from '@/store/useAuthStore';
 
 const KakaoRedirectHandler = () => {
     const navigate = useNavigate();
+    const login = useAuthStore(state => state.login);
     const [searchParams] = useSearchParams();
     const code = searchParams.get('code');
 
@@ -12,8 +14,8 @@ const KakaoRedirectHandler = () => {
         navigate('/onboarding');
     };
 
-    const handleSuccess = (token: string) => {
-        localStorage.setItem('access_token', token);
+    const handleSuccess = ({ accessToken, refreshToken }: { accessToken: string; refreshToken: string }) => {
+        login({ accessToken, refreshToken });
         navigate('/');
     };
 
@@ -45,7 +47,7 @@ const KakaoRedirectHandler = () => {
         return null;
     }
 
-    handleSuccess(data.access_token);
+    handleSuccess({ accessToken: data.access_token, refreshToken: data.refresh_token });
     return null;
 };
 
