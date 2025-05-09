@@ -17,6 +17,38 @@ import SearchStocktype from '../pages/Community/SearchStocktype';
 import EditPost from '../pages/Community/EditPost';
 import WelcomePage from '../pages/onBoarding/WelcomePage';
 import ErrorPage from '../pages/ErrorPage';
+import Protected from '@/components/Protected';
+
+const authRoutes = [
+    {
+        path: '/mypage',
+        element: <Mypage />,
+    },
+    {
+        path: '/myprofile',
+        element: <MyProfile />,
+    },
+    {
+        path: '/mypost',
+        element: <MyPost />,
+    },
+    {
+        path: '/mycomment',
+        element: <Mycomment />,
+    },
+    {
+        path: '/writepost/:stocktype',
+        element: <WritePost />,
+    },
+    {
+        path: '/writepost',
+        element: <WritePost />,
+    },
+    {
+        path: '/editpost/:stocktype',
+        element: <EditPost />,
+    },
+];
 
 const router = createBrowserRouter([
     {
@@ -30,18 +62,6 @@ const router = createBrowserRouter([
             {
                 path: '/community',
                 element: <Community />,
-            },
-            {
-                path: '/writepost/:stocktype',
-                element: <WritePost />,
-            },
-            {
-                path: '/writepost',
-                element: <WritePost />,
-            },
-            {
-                path: '/editpost/:stocktype',
-                element: <EditPost />,
             },
             {
                 path: '/community/:stocktype',
@@ -60,22 +80,6 @@ const router = createBrowserRouter([
                 element: <ShortformList />,
             },
             {
-                path: '/mypage',
-                element: <Mypage />,
-            },
-            {
-                path: '/myprofile',
-                element: <MyProfile />,
-            },
-            {
-                path: '/mypost',
-                element: <MyPost />,
-            },
-            {
-                path: '/mycomment',
-                element: <Mycomment />,
-            },
-            {
                 path: '/searchstocktype',
                 element: <SearchStocktype />,
             },
@@ -83,6 +87,10 @@ const router = createBrowserRouter([
                 path: '/welcome',
                 element: <WelcomePage />,
             },
+            ...authRoutes.map(route => ({
+                ...route,
+                element: <Protected>{route.element}</Protected>,
+            })),
         ],
     },
     {

@@ -9,6 +9,7 @@ interface AuthState {
 interface AuthActions {
     setUserId: (userId: number) => void;
     setLoginState: (isLoggedIn: boolean) => void;
+    login: ({ accessToken, refreshToken }: { accessToken: string; refreshToken: string }) => void;
     logout: () => void;
 }
 
@@ -19,10 +20,15 @@ const useAuthStore = create<AuthState & AuthActions>()(
             isLoggedIn: false,
             setUserId: (userId: number) => set({ userId }),
             setLoginState: (isLoggedIn: boolean) => set({ isLoggedIn }),
+            login: ({ accessToken, refreshToken }: { accessToken: string; refreshToken: string }) => {
+                set({ isLoggedIn: true });
+                localStorage.setItem('access_token', accessToken);
+                localStorage.setItem('refresh_token', refreshToken);
+            },
             logout: () => {
                 set({ userId: null, isLoggedIn: false });
-                localStorage.removeItem('auth_token');
-                localStorage.removeItem('auth_refresh_token');
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
             },
         }),
         {
