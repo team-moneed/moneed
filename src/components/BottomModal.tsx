@@ -38,7 +38,7 @@ const BottomModal = ({ imageSrc, title, description, ButtonText, onButtonClick, 
         <>
             <div
                 onClick={handleOutsideClick}
-                className={`fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex items-end justify-center transition-opacity duration-300 ${
+                className={`fixed inset-0 bg-gray-900/50 z-50 flex items-end justify-center transition-opacity duration-300 ${
                     isVisible ? 'opacity-100' : 'opacity-0'
                 }`}
             >

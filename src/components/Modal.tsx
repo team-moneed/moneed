@@ -43,7 +43,7 @@ const Modal = ({
         <>
             <div
                 onClick={handleOutsideClick}
-                className='fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50'
+                className='fixed inset-0 bg-gray-900/50 flex items-center justify-center z-50'
             >
                 <div
                     onClick={handleInsideClick}

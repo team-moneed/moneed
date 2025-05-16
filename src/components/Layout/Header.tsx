@@ -10,7 +10,7 @@ const Header = () => {
 
     return (
         <>
-            <div className='sticky top-0 z-[10] bg-white flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-[2rem] sticky top-0 z-[10] bg-white'>
+            <div className='sticky top-0 z-[10] bg-white flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-[2rem]'>
                 <Link to='/'>
                     <div className='flex'>
                         <div className='w-[2.8rem] h-[2.8rem] bg-[var(--moneed-black)] rounded-full flex items-center justify-center'>

@@ -25,10 +25,7 @@ const PostCarousel: React.FC<PropType> = ({ slides, options }) => {
             <div className='w-full overflow-hidden mask-right' ref={emblaRef}>
                 <div className='flex gap-[1.6rem]'>
                     {slides.map(slide => (
-                        <div
-                            key={slide.postId}
-                            className='flex-shrink-0 w-[calc(85%_-_1.6rem)] lg:w-[calc(50%_+_.8rem)]'
-                        >
+                        <div key={slide.postId} className='shrink-0 w-[calc(85%_-_1.6rem)] lg:w-[calc(50%_+_.8rem)]'>
                             <CommunityThumbnailCard
                                 // postId={slide.postId}
                                 userName={slide.userName}
