@@ -1,18 +1,20 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+'use client';
+
+import { use, useEffect, useState } from 'react';
 import BottomModal from '@/components/BottomModal';
 import UploadImage from '@/components/UploadImage';
-import useSnackBarStore from '../../store/useSnackBarStore';
+import useSnackBarStore from '@/store/useSnackBarStore';
 import { useForm } from 'react-hook-form';
-import { useKeyboardOffset } from '../../hook/useKeyboardOffset';
+import { useKeyboardOffset } from '@/hook/useKeyboardOffset';
+import { useRouter } from 'next/navigation';
 
 type FieldData = {
     title: string;
     content: string;
 };
 
-const WritePost = () => {
-    const { stocktype } = useParams();
+const WritePost = ({ params }: { params: Promise<{ stocktype: string }> }) => {
+    const { stocktype } = use(params);
     const [isBottomModalOpen, setIsBottomModalOpen] = useState(false);
 
     const bottomOffset = useKeyboardOffset();
@@ -20,7 +22,7 @@ const WritePost = () => {
     const [postImages] = useState<string[]>([]);
     const [, setFormImg] = useState<FormData | string[]>([]);
 
-    const navigate = useNavigate();
+    const router = useRouter();
 
     const { register, handleSubmit, watch } = useForm<FieldData>();
     const content = watch('content', '');
@@ -52,7 +54,7 @@ const WritePost = () => {
     }, [content, title, showSnackBar]);
 
     const movetoSelectStocktype = () => {
-        navigate(`/searchstocktype`);
+        router.push('/searchstocktype');
     };
 
     const handleFocus = (field: string) => {
@@ -69,7 +71,6 @@ const WritePost = () => {
     };
 
     const onSubmit = (data: FieldData) => {
-        console.log('title', title, content.trim().length);
         const formData = { ...data, stocktype };
 
         if (!stocktype) {

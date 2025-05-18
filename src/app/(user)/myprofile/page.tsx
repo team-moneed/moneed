@@ -1,10 +1,12 @@
+'use client';
+
 import { useState } from 'react';
 import Button from '@/components/Button';
-import SelectProfileImage from './SelectProfileImage';
-import { useNavigate } from 'react-router-dom';
+import SelectProfileImage from '@/pages/Mypage/SelectProfileImage';
+import { useRouter } from 'next/navigation';
 
 const MyProfile = () => {
-    const navigate = useNavigate();
+    const router = useRouter();
     const [nickname, setNickname] = useState('');
     const [showProfileImage, setShowProfileImage] = useState(false);
     const [selectedImage, setSelectedImage] = useState('/temp/sample3.png'); // 기본 이미지
@@ -23,7 +25,7 @@ const MyProfile = () => {
     };
 
     const cancelChangeProfile = () => {
-        navigate(-1);
+        router.back();
     };
 
     const handleImageSelect = (img: string) => {

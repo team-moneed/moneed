@@ -1,8 +1,10 @@
+'use client';
+
 import { EmblaOptionsType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
-import { NextButton } from './CarouselArrowButton';
-import { useNavigate } from 'react-router-dom';
+import { NextButton } from '@/components/Carousel/CarouselArrowButton';
 import { usePrevNextButtons } from '@/hook/usePrevNextButtons';
+import { useRouter } from 'next/navigation';
 
 type PropType = {
     slides: { imgUrl?: string; videoUrl?: string; title: string; userName: string; createdAt: string }[];
@@ -19,10 +21,10 @@ const VideoCarousel = (props: PropType) => {
     });
     const { nextBtnDisabled, onNextButtonClick } = usePrevNextButtons(emblaApi);
 
-    const navigate = useNavigate();
+    const router = useRouter();
 
     const movetoshortformDetail = () => {
-        navigate(`/shortformdetail`);
+        router.push('/shortformdetail');
     };
 
     return (

@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Modal from '../Modal';
+import { usePathname, useRouter } from 'next/navigation';
 
 const MenuHeader = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
+    const router = useRouter();
     const { stocktype } = useParams();
-    const isWritePostPath = location.pathname.startsWith('/writepost');
-    const isEditPostPath = location.pathname.startsWith('/editpost');
-    const iscommentPath = location.pathname.startsWith('/comment');
+    const pathname = usePathname();
+    const isWritePostPath = pathname.startsWith('/writepost');
+    const isEditPostPath = pathname.startsWith('/editpost');
+    const iscommentPath = pathname.startsWith('/comment');
     const [showModal, setShowModal] = useState(false);
 
     // 뒤로가기 버튼 클릭 시 동작
@@ -16,13 +17,13 @@ const MenuHeader = () => {
         // if ((isWritePostPath || isEditPostPath || iscommentPath)) {
         //     setShowModal(true);
         // } else {
-        navigate(-1); // 뒤로가기
+        router.back(); // 뒤로가기
         // }
     };
 
     const handleModalConfirm = () => {
         setShowModal(false);
-        navigate(-1); // 모달에서 나가기를 클릭 시 뒤로가기
+        router.back(); // 모달에서 나가기를 클릭 시 뒤로가기
     };
 
     const handleModalCancel = () => {
@@ -68,7 +69,7 @@ const MenuHeader = () => {
             {isWritePostPath || isEditPostPath ? (
                 <img
                     className='w-[2.4rem] h-[2.4rem] cursor-pointer'
-                    onClick={() => navigate('/')}
+                    onClick={() => router.push('/')}
                     src='/icon/icon-exit.svg'
                     alt=''
                 />

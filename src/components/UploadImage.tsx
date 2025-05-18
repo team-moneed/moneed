@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import gallery from 'icon/icon-gallery.svg';
 
 type UploadImageProps = {
     onUploadFiles: ((formData: FormData) => void) | (() => void);
@@ -107,11 +108,7 @@ const UploadImage = ({
                             className='rounded-full overflow-hidden aspect-[1/1] w-[3.6rem] cursor-pointer'
                             type='button'
                         >
-                            <img
-                                src='/icon/icon-gallery.svg'
-                                alt='gallery'
-                                className='w-full h-full object-cover p-[.6rem]'
-                            />
+                            <img src={gallery.src} alt='gallery' className='w-full h-full object-cover p-[.6rem]' />
                         </button>
                     </label>
                 )}

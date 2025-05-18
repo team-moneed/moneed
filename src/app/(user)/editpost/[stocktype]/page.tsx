@@ -1,19 +1,19 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useLocation } from 'react-router-dom';
 import UploadImage from '@/components/UploadImage';
-import { useKeyboardOffset } from '../../hook/useKeyboardOffset';
-import useSnackBarStore from '../../store/useSnackBarStore';
-import { PostType } from './Post';
+import { useKeyboardOffset } from '@/hook/useKeyboardOffset';
+import useSnackBarStore from '@/store/useSnackBarStore';
 
 type FieldData = {
     title: string;
     content: string;
 };
 
-const EditPost = () => {
+const EditPost = ({ params }: { params: Promise<{ stocktype: string }> }) => {
+    const { stocktype } = use(params);
     const { register, handleSubmit, watch, setValue } = useForm<FieldData>({
         defaultValues: {
             title: '',
@@ -21,10 +21,8 @@ const EditPost = () => {
         },
     });
 
-    const params = useParams<{ stocktype: string }>();
-    const searchParams = useSearchParams();
-    const state = Object.fromEntries(searchParams.entries()) as unknown as PostType;
-    const stocktype = params.stocktype as string;
+    // 상태
+    const { state } = useLocation();
 
     const { showSnackBar } = useSnackBarStore();
     const bottomOffset = useKeyboardOffset();

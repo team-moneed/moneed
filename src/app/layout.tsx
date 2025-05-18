@@ -1,5 +1,17 @@
+'use client';
 import { Metadata } from 'next';
 import Script from 'next/script';
+import '@/app/globals.css';
+import '@/app/ui.base.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ModalProvider } from '@/context/ModalContext';
+import Header from '@/components/Layout/Header';
+import MobileNav from '@/components/Layout/MobileNav';
+import SnackBar from '@/components/SnackBar';
+import { ScrollToTop } from '@/routes/ScrollToTop';
+import MenuHeader from '@/components/Layout/MenuHeader';
+import Footer from '@/components/Layout/Footer';
+import { usePathname } from 'next/navigation';
 
 export const metadata: Metadata = {
     title: 'Moneed',
@@ -9,29 +21,60 @@ export const metadata: Metadata = {
     viewport: 'width=device-width, initial-scale=1.0',
 };
 
+export const queryClient = new QueryClient();
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+    const pathname = usePathname();
+
+    const hideFooterPaths = ['/selectStockType', '/myprofile', '/welcome', '/writepost', '/editpost'];
+
+    const menuHeaderPaths = [
+        '/selectStockType',
+        '/mycomment',
+        '/mypost',
+        '/searchstocktype',
+        '/writepost',
+        '/editpost',
+        '/post',
+    ];
     return (
         <html lang='en'>
-            <head>
-                <meta charSet='UTF-8' />
-            </head>
+            <head></head>
             <body>
                 {/* GTM noscript */}
                 <noscript>
                     <iframe
-                        src={`https://www.googletagmanager.com/ns.html?id=${import.meta.env.VITE_GTM_KEY}`}
+                        src={`https://www.googletagmanager.com/ns.html?id=${process.env.GTM_KEY}`}
                         height='0'
                         width='0'
                         style={{ display: 'none', visibility: 'hidden' }}
                     ></iframe>
                 </noscript>
 
-                <div id='root'>{children}</div>
+                <div id='root'>
+                    <QueryClientProvider client={queryClient}>
+                        <ModalProvider>
+                            <div className='flex-1'>
+                                <ScrollToTop />
+                                <div className='hidden lg:block sticky top-0 z-10 bg-white'>
+                                    <Header />
+                                </div>
+                                <div className='block lg:hidden sticky top-0 z-10 bg-white'>
+                                    {menuHeaderPaths.includes(pathname) ? <MenuHeader /> : <Header />}
+                                </div>
+                                {children}
+                                {!hideFooterPaths.includes(pathname) && <Footer />}
+                            </div>
+                            {!hideFooterPaths.includes(pathname) && <MobileNav />}
+                            <SnackBar></SnackBar>
+                        </ModalProvider>
+                    </QueryClientProvider>
+                </div>
 
                 {/* GA 설치 */}
                 <Script
                     async
-                    src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.VITE_GA_ID}`}
+                    src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GA_ID}`}
                     strategy='afterInteractive'
                 />
                 <Script id='google-analytics' strategy='afterInteractive'>
@@ -39,9 +82,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             window.dataLayer = window.dataLayer || [];
             function gtag() {
               dataLayer.push(arguments);
-            }
+            }pm
             gtag('js', new Date());
-            gtag('config', '${import.meta.env.VITE_GA_ID}');
+            gtag('config', '${process.env.GA_ID}');
           `}
                 </Script>
 
@@ -56,7 +99,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               j.async=true;
               j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
               f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','${import.meta.env.VITE_GTM_KEY}');
+            })(window,document,'script','dataLayer','${process.env.GTM_KEY}');
           `}
                 </Script>
 
@@ -68,10 +111,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               c[a].push({start:new Date().getTime(),event:'initialize'});
               i=l.createElement(r);
               i.async=1;
-              i.src='https://www.clarity.ms/tag/'+'${import.meta.env.VITE_CLARITY_TRACKING_ID}';
+              i.src='https://www.clarity.ms/tag/'+'${process.env.CLARITY_TRACKING_ID}';
               y=l.getElementsByTagName(r)[0];
               y.parentNode.insertBefore(i,y);
-            })(window,document,'clarity','script','${import.meta.env.VITE_CLARITY_TRACKING_ID}');
+            })(window,document,'clarity','script','${process.env.CLARITY_TRACKING_ID}');
           `}
                 </Script>
             </body>

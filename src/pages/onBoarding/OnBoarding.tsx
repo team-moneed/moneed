@@ -2,8 +2,8 @@ import Button from '../../components/Button';
 
 const OnBoarding = () => {
     const handleKakaoLogin = () => {
-        const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
-        const redirectUri = import.meta.env.VITE_KAKAO_REDIRECT_URL;
+        const clientId = process.env.KAKAO_CLIENT_ID;
+        const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL;
         const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
 
         window.location.href = kakaoAuthUrl;

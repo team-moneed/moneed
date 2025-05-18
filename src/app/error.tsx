@@ -1,12 +1,14 @@
-import { useNavigate } from 'react-router-dom';
-import Button from '../components/Button';
+'use client';
 
-const ErrorPage = () => {
-    const navigate = useNavigate();
+import Button from '@/components/Button';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
-    const movetoMain = () => {
-        navigate(`/`);
-    };
+export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
+    const router = useRouter();
+    useEffect(() => {
+        console.error(error);
+    }, [error]);
 
     return (
         <div className='px-[2rem] max-w-[128rem] mx-auto'>
@@ -14,23 +16,27 @@ const ErrorPage = () => {
                 <img src='/errorcta.svg' alt='' className='w-[29rem]' />
             </div>
             <div className='text-[2.4rem] text-[var(--moneed-black)] font-[700] text-center mt-[2rem] leading-[140%]'>
-                404: 페이지를 찾을 수 없어요.
+                {error.name}
             </div>
             <div className='text-[var(--moneed-black)] text-center mt-[1.2rem] font-[600] leading-[140%]'>
-                죄송합니다! 존재하지 않는 페이지에요.
-                <br />
-                요청하신 페이지가 사라졌거나, 잘못된 경로로
-                <br />
-                접근이 되었어요.
+                {error.message}
             </div>
             <div className='flex justify-center items-center my-[4rem]'>
                 <Button
-                    onClick={movetoMain}
+                    onClick={() => reset()}
                     theme='primary'
                     textcolor='primary'
                     className='text-[1.6rem] font-[700] leading-[140%] px-[14.5rem] py-[1.8rem]'
                 >
-                    메인홈으로 이동
+                    다시 시도
+                </Button>
+                <Button
+                    onClick={() => router.push('/')}
+                    theme='primary'
+                    textcolor='primary'
+                    className='text-[1.6rem] font-[700] leading-[140%] px-[14.5rem] py-[1.8rem]'
+                >
+                    다시 시도
                 </Button>
             </div>
             <div className='text-[var(--moneed-gray-7)] font-[400] text-center text-[1.4rem] leading-[140%]'>
@@ -38,6 +44,4 @@ const ErrorPage = () => {
             </div>
         </div>
     );
-};
-
-export default ErrorPage;
+}

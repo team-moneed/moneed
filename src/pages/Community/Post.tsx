@@ -1,5 +1,4 @@
 import Icon from '@/components/Icon';
-import { useNavigate } from 'react-router-dom';
 import ImageCarousel from '@/components/Carousel/ImageCarousel';
 import { EmblaOptionsType } from 'embla-carousel';
 import { useState } from 'react';
@@ -7,8 +6,9 @@ import Dropdown from '@/components/Dropdown';
 import DateFormatter from '../../util/Dateformatter';
 import useSnackBarStore from '../../store/useSnackBarStore';
 import { useModal } from '../../context/ModalContext';
+import { useRouter } from 'next/navigation';
 
-type PostType = {
+export type PostType = {
     userName: string;
     content: string;
     isliked: boolean;
@@ -32,25 +32,15 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
     const { showSnackBar } = useSnackBarStore();
     const { confirm } = useModal();
 
-    const navigate = useNavigate();
+    const router = useRouter();
     const movetoDetail = (stocktype: string, postId: number) => {
         if (isDropdownOpen) {
             setIsdropdownOpen(false);
             return;
         } else {
-            navigate(`/post/${stocktype}/${postId}`, {
-                state: {
-                    userName,
-                    content,
-                    isliked,
-                    postId,
-                    stocktype,
-                    postImages,
-                    createdAt,
-                    title,
-                    likes,
-                },
-            });
+            router.push(
+                `/post/${stocktype}/${postId}?userName=${userName}&content=${content}&isliked=${isliked}&postId=${postId}&stocktype=${stocktype}&postImages=${postImages}&createdAt=${createdAt}&title=${title}&likes=${likes}`,
+            );
         }
     };
 
@@ -96,19 +86,9 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
 
     const onEditPost = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        navigate(`/editpost/${stocktype}`, {
-            state: {
-                userName,
-                content,
-                isliked,
-                postId,
-                stocktype,
-                postImages,
-                createdAt,
-                title,
-                likes,
-            },
-        });
+        router.push(
+            `/editpost/${stocktype}?userName=${userName}&content=${content}&isliked=${isliked}&postId=${postId}&stocktype=${stocktype}&postImages=${postImages}&createdAt=${createdAt}&title=${title}&likes=${likes}`,
+        );
     };
 
     const handleCopyClipBoard = () => {};

@@ -1,6 +1,7 @@
-import { useNavigate } from 'react-router-dom';
+'use client';
 import MypageBox from '@/components/Mypage/MypageBox';
 import MyStockBox from '@/components/Mypage/MyStockBox';
+import { useRouter } from 'next/navigation';
 
 const Mypage = () => {
     const stockData = [
@@ -76,21 +77,22 @@ const Mypage = () => {
         },
     ];
 
-    const navigate = useNavigate();
+    const router = useRouter();
+
     const movetoMyProfile = () => {
-        navigate(`/myprofile`);
+        router.push('/myprofile');
     };
 
     const movetoMyPost = () => {
-        navigate(`/mypost`);
+        router.push('/mypost');
     };
 
     const movetoMyComment = () => {
-        navigate(`/mycomment`);
+        router.push('/mycomment');
     };
 
     const movetocommunity = (stockname: string) => {
-        navigate(`/community/${stockname}`);
+        router.push(`/community/${stockname}`);
     };
 
     return (

@@ -1,22 +1,23 @@
-import { useNavigate } from 'react-router-dom';
+'use client';
 
-import { STOCKTYPES } from '../config/StockTypesetting';
-import Chip from './Chip';
+import { STOCKTYPES } from '@/config/StockTypesetting';
+import Chip from '@/components/Chip';
+import { useRouter } from 'next/navigation';
 
-type StockTypeBar = {
+type StockTypeBarProps = {
     selectedStockType: string;
 };
 
-const StockTypeBar = ({ selectedStockType }: StockTypeBar) => {
+const StockTypeBar = ({ selectedStockType }: StockTypeBarProps) => {
     //선택한 카테고리만 보이게
 
-    const navigate = useNavigate();
+    const router = useRouter();
     const movetoSelectStockType = () => {
-        navigate(`/selectStockType`);
+        router.push('/selectStockType');
     };
 
     const movetoStockType = (stocktype: string) => {
-        navigate(`/community/${stocktype}`);
+        router.push(`/community/${stocktype}`);
     };
 
     return (

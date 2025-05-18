@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const Footer = () => {
     return (
@@ -11,19 +11,19 @@ const Footer = () => {
                 귀속됩니다.
             </p>
             <div className='flex items-center gap-x-[1.4rem] flex-wrap mt-[1.2rem] sm:gap-x-[1.8rem]  lg:hidden'>
-                <Link to='' className='text-[var(--moneed-gray-8)] text-[1.2rem] font-semibold leading-[135%]'>
+                <Link href='' className='text-[var(--moneed-gray-8)] text-[1.2rem] font-semibold leading-[135%]'>
                     이용약관
                 </Link>
                 <i className='w-[.1rem] h-[1rem] bg-[var(--moneed-gray-8)]'></i>
-                <Link to='' className='text-[var(--moneed-gray-8)] text-[1.2rem] font-semibold leading-[135%]'>
+                <Link href='' className='text-[var(--moneed-gray-8)] text-[1.2rem] font-semibold leading-[135%]'>
                     개인정보처리방침
                 </Link>
                 <i className='w-[.1rem] h-[1rem] bg-[var(--moneed-gray-8)]'></i>
-                <Link to='' className='text-[var(--moneed-gray-8)] text-[1.2rem] font-semibold leading-[135%]'>
+                <Link href='' className='text-[var(--moneed-gray-8)] text-[1.2rem] font-semibold leading-[135%]'>
                     게시판이용정책
                 </Link>
                 <i className='w-[.1rem] h-[1rem] bg-[var(--moneed-gray-8)]'></i>
-                <Link to='' className='text-[var(--moneed-gray-8)] text-[1.2rem] font-semibold leading-[135%]'>
+                <Link href='' className='text-[var(--moneed-gray-8)] text-[1.2rem] font-semibold leading-[135%]'>
                     법적고지
                 </Link>
             </div>

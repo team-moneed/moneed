@@ -1,21 +1,22 @@
+import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import MobileNavLink from '../MobileNavLink';
-import { useNavigate, useLocation } from 'react-router-dom';
 
 const MobileNav = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
+    const router = useRouter();
+    const pathname = usePathname();
 
     const motetowritepost = () => {
-        const lastPathSegment = location.pathname.split('/').pop();
+        const lastPathSegment = pathname.split('/').pop();
 
         if (location.pathname.startsWith('/community/')) {
             if (lastPathSegment && decodeURIComponent(lastPathSegment) !== '전체') {
-                navigate(`/writepost/${lastPathSegment}`);
+                router.push(`/writepost/${lastPathSegment}`);
             } else {
-                navigate(`/writepost`);
+                router.push(`/writepost`);
             }
         } else {
-            navigate(`/writepost`);
+            router.push(`/writepost`);
         }
     };
 
