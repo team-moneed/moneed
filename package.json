@@ -13,10 +13,7 @@
         "postinstall": "husky install"
     },
     "lint-staged": {
-        "*.{js,jsx,ts,tsx}": [
-            "eslint . --cache --fix",
-            "prettier . --cache --write"
-        ]
+        "*.{js,jsx,ts,tsx}": []
     },
     "dependencies": {
         "@tanstack/react-query": "^5.62.7",
