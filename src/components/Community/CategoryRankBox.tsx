@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { stockCagtegory } from '../../pages/Community/TopCategory';
+import { stockCagtegory } from './TopCategory';
 
 type StockInfoProps = {
     categoryData: stockCagtegory;

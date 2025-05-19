@@ -2,8 +2,8 @@
 
 import PostCarousel from '@/components/Carousel/PostCarousel';
 import useMoveScroll from '@/hooks/usemoveScroll';
-import Posts from '@/pages/Community/Posts';
-import TopCategory from '@/pages/Community/TopCategory';
+import Posts from '@/components/Community/Posts';
+import TopCategory from '@/components/Community/TopCategory';
 import { type Post } from '@/types/post';
 import { useQuery } from '@tanstack/react-query';
 import { useRef } from 'react';

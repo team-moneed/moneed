@@ -1,8 +1,8 @@
 'use client';
 
-import MainNews from '@/pages/Main/MainNews';
-import MainShortforms from '@/pages/Main/MainShortforms';
-import TopStockRank from '@/pages/Main/TopStockRank';
+import MainNews from '@/components/Main/MainNews';
+import MainShortforms from '@/components/Main/MainShortforms';
+import TopStockRank from '@/components/Main/TopStockRank';
 import Link from 'next/link';
 
 function HomePage() {

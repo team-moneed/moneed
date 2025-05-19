@@ -7,7 +7,7 @@ import { useModal } from '@/context/ModalContext';
 import DateFormatter from '@/util/Dateformatter';
 import Icon from '@/components/Icon';
 import Dropdown from '@/components/Dropdown';
-import Comment from '@/pages/Community/Comment';
+import Comment from '@/components/Community/Comment';
 import { EmblaOptionsType } from 'embla-carousel';
 
 type PostDetailState = {

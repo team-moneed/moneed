@@ -2,7 +2,7 @@
 
 import CompanyInfoBox from '@/components/Community/CompanyInfoBox';
 import StockInfoBox from '@/components/Community/StockInfoBox';
-import Posts from '@/pages/Community/Posts';
+import Posts from '@/components/Community/Posts';
 import { useQuery } from '@tanstack/react-query';
 import { use } from 'react';
 import { type Post } from '@/types/post';

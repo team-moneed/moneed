@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Posts from '@/pages/Community/Posts';
+import Posts from '@/components/Community/Posts';
 
 const MyPost = () => {
     const [activeTab, setActiveTab] = useState('thisWeek');

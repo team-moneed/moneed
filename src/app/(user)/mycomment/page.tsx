@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Comment from '@/pages/Community/Comment';
+import Comment from '@/components/Community/Comment';
 
 const MyComment = () => {
     const [activeTab, setActiveTab] = useState('thisWeek');
