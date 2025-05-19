@@ -4,7 +4,7 @@ import { use, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 import UploadImage from '@/components/UploadImage';
-import { useKeyboardOffset } from '@/hook/useKeyboardOffset';
+import { useKeyboardOffset } from '@/hooks/useKeyboardOffset';
 import useSnackBarStore from '@/store/useSnackBarStore';
 
 type FieldData = {

@@ -1,9 +1,16 @@
-import { useEffect } from 'react';
+'use client';
+
+import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import useSnackBarStore from '../store/useSnackBarStore';
 
 export default function SnackBar() {
     const { message, icon, position, type, isVisible, hideSnackBar } = useSnackBarStore();
+    const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
+
+    useEffect(() => {
+        setPortalRoot(document.getElementById('portal-root') || document.body);
+    }, []);
 
     useEffect(() => {
         if (isVisible) {
@@ -30,7 +37,7 @@ export default function SnackBar() {
         textColor = 'text-[--moneed-red]';
     }
 
-    const portalRoot = document.getElementById('portal-root') || document.body;
+    if (!portalRoot) return null;
 
     return isVisible
         ? ReactDOM.createPortal(

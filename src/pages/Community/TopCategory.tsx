@@ -45,7 +45,7 @@ const TopCategory = () => {
         <>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-[1.2rem] gap-x-[1.6rem] mt-4 md:gap-y-[1.2rem]'>
                 {stockCategories.map((categoryData, index) => {
-                    return <CategoryRankBox categoryData={categoryData} index={index}></CategoryRankBox>;
+                    return <CategoryRankBox categoryData={categoryData} index={index} key={index}></CategoryRankBox>;
                 })}
             </div>
         </>

@@ -1,6 +1,6 @@
-import Button from '../../components/Button';
+import Button from '@/components/Button';
 
-const OnBoarding = () => {
+export default function Onboarding() {
     const handleKakaoLogin = () => {
         const clientId = process.env.KAKAO_CLIENT_ID;
         const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL;
@@ -64,6 +64,4 @@ const OnBoarding = () => {
             </div>
         </>
     );
-};
-
-export default OnBoarding;
+}

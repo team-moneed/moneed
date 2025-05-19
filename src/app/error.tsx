@@ -21,12 +21,12 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
             <div className='text-[var(--moneed-black)] text-center mt-[1.2rem] font-[600] leading-[140%]'>
                 {error.message}
             </div>
-            <div className='flex justify-center items-center my-[4rem]'>
+            <div className='flex flex-col justify-center items-center my-[4rem] gap-[1.2rem]'>
                 <Button
                     onClick={() => reset()}
                     theme='primary'
                     textcolor='primary'
-                    className='text-[1.6rem] font-[700] leading-[140%] px-[14.5rem] py-[1.8rem]'
+                    className='text-[1.6rem] font-[700] leading-[140%] px-[14.5rem] py-[1.8rem] w-2xl'
                 >
                     다시 시도
                 </Button>
@@ -34,9 +34,9 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
                     onClick={() => router.push('/')}
                     theme='primary'
                     textcolor='primary'
-                    className='text-[1.6rem] font-[700] leading-[140%] px-[14.5rem] py-[1.8rem]'
+                    className='text-[1.6rem] font-[700] leading-[140%] px-[14.5rem] py-[1.8rem] w-2xl'
                 >
-                    다시 시도
+                    홈으로 돌아가기
                 </Button>
             </div>
             <div className='text-[var(--moneed-gray-7)] font-[400] text-center text-[1.4rem] leading-[140%]'>

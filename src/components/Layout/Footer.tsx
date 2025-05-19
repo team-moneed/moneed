@@ -1,6 +1,17 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const Footer = () => {
+    const pathname = usePathname();
+
+    const hideFooterPaths = ['/selectStockType', '/myprofile', '/welcome', '/writepost', '/editpost'];
+
+    if (hideFooterPaths.includes(pathname)) {
+        return null;
+    }
+
     return (
         <div className='mt-[12rem] pt-4 px-8 pb-[9.2rem] lg:pb-[3.6rem] lg:mt-[14.8rem]'>
             <p className='text-[1.4rem] font-[400] leading-[140%] mb-[.5rem] text-[var(--moneed-gray-8)] lg:hidden'>

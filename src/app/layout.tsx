@@ -1,42 +1,27 @@
-'use client';
-import { Metadata } from 'next';
+import { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import '@/app/globals.css';
 import '@/app/ui.base.css';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ModalProvider } from '@/context/ModalContext';
 import Header from '@/components/Layout/Header';
 import MobileNav from '@/components/Layout/MobileNav';
 import SnackBar from '@/components/SnackBar';
-import { ScrollToTop } from '@/routes/ScrollToTop';
-import MenuHeader from '@/components/Layout/MenuHeader';
 import Footer from '@/components/Layout/Footer';
-import { usePathname } from 'next/navigation';
+import QueryClientProvider from '@/components/QueryClientProvider';
 
 export const metadata: Metadata = {
     title: 'Moneed',
     icons: {
         icon: '/favicon_48.png',
     },
-    viewport: 'width=device-width, initial-scale=1.0',
 };
 
-export const queryClient = new QueryClient();
+export const viewport: Viewport = {
+    width: 'device-width',
+    initialScale: 1,
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-    const pathname = usePathname();
-
-    const hideFooterPaths = ['/selectStockType', '/myprofile', '/welcome', '/writepost', '/editpost'];
-
-    const menuHeaderPaths = [
-        '/selectStockType',
-        '/mycomment',
-        '/mypost',
-        '/searchstocktype',
-        '/writepost',
-        '/editpost',
-        '/post',
-    ];
     return (
         <html lang='en'>
             <head></head>
@@ -52,21 +37,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </noscript>
 
                 <div id='root'>
-                    <QueryClientProvider client={queryClient}>
+                    <QueryClientProvider>
                         <ModalProvider>
                             <div className='flex-1'>
-                                <ScrollToTop />
                                 <div className='hidden lg:block sticky top-0 z-10 bg-white'>
                                     <Header />
                                 </div>
-                                <div className='block lg:hidden sticky top-0 z-10 bg-white'>
-                                    {menuHeaderPaths.includes(pathname) ? <MenuHeader /> : <Header />}
-                                </div>
                                 {children}
-                                {!hideFooterPaths.includes(pathname) && <Footer />}
+                                <Footer />
                             </div>
-                            {!hideFooterPaths.includes(pathname) && <MobileNav />}
-                            <SnackBar></SnackBar>
+                            <MobileNav />
+                            <SnackBar />
                         </ModalProvider>
                     </QueryClientProvider>
                 </div>

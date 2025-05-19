@@ -1,3 +1,5 @@
+'use client';
+
 import Icon from '@/components/Icon';
 import ImageCarousel from '@/components/Carousel/ImageCarousel';
 import { EmblaOptionsType } from 'embla-carousel';
@@ -39,7 +41,7 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
             return;
         } else {
             router.push(
-                `/post/${stocktype}/${postId}?userName=${userName}&content=${content}&isliked=${isliked}&postId=${postId}&stocktype=${stocktype}&postImages=${postImages}&createdAt=${createdAt}&title=${title}&likes=${likes}`,
+                `/posts/${stocktype}/${postId}?userName=${userName}&content=${content}&isliked=${isliked}&postId=${postId}&stocktype=${stocktype}&postImages=${postImages}&createdAt=${createdAt}&title=${title}&likes=${likes}`,
             );
         }
     };

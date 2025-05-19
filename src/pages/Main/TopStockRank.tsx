@@ -1,4 +1,6 @@
-import { useNavigate } from 'react-router-dom';
+'use client';
+
+import { useRouter } from 'next/navigation';
 import Chip from '@/components/Chip';
 import Button from '@/components/Button';
 import { useState } from 'react';
@@ -92,9 +94,9 @@ const TopStockRank = () => {
 
     const [selectedStockRank, setSelectedStockRank] = useState(StockRank[0]);
 
-    const navigate = useNavigate();
+    const router = useRouter();
     const movecommunity = (stockname: string) => {
-        navigate(`/community/${stockname}`);
+        router.push(`/community/${stockname}`);
     };
 
     const filteredPosts = allPosts.filter(post => post.stocktype === selectedStockRank);

@@ -1,7 +1,7 @@
 import { EmblaOptionsType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
 import { NextButton } from './CarouselArrowButton';
-import { usePrevNextButtons } from '@/hook/usePrevNextButtons';
+import { usePrevNextButtons } from '@/hooks/usePrevNextButtons';
 import CommunityThumbnailCard from '../Community/CommunityThumbnailCard';
 
 type PropType = {

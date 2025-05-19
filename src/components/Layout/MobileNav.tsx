@@ -1,3 +1,5 @@
+'use client';
+
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import MobileNavLink from '../MobileNavLink';
@@ -5,6 +7,12 @@ import MobileNavLink from '../MobileNavLink';
 const MobileNav = () => {
     const router = useRouter();
     const pathname = usePathname();
+
+    const hideMobileNavPaths = ['/selectStockType', '/myprofile', '/welcome', '/writepost', '/editpost'];
+
+    if (hideMobileNavPaths.includes(pathname)) {
+        return null;
+    }
 
     const motetowritepost = () => {
         const lastPathSegment = pathname.split('/').pop();

@@ -3,7 +3,7 @@
 import { EmblaOptionsType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
 import { NextButton } from '@/components/Carousel/CarouselArrowButton';
-import { usePrevNextButtons } from '@/hook/usePrevNextButtons';
+import { usePrevNextButtons } from '@/hooks/usePrevNextButtons';
 import { useRouter } from 'next/navigation';
 
 type PropType = {
@@ -24,7 +24,7 @@ const VideoCarousel = (props: PropType) => {
     const router = useRouter();
 
     const movetoshortformDetail = () => {
-        router.push('/shortformdetail');
+        router.push('/shortform');
     };
 
     return (
@@ -39,7 +39,7 @@ const VideoCarousel = (props: PropType) => {
                             onClick={movetoshortformDetail}
                         >
                             <video controls className='w-full h-full object-cover rounded-[.8rem]'>
-                                <source src={slide.videoUrl} type='video/mp4' />
+                                {slide.videoUrl && <source src={slide.videoUrl} type='video/mp4' />}
                             </video>
                         </div>
                     ))}

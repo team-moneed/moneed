@@ -5,7 +5,7 @@ import BottomModal from '@/components/BottomModal';
 import UploadImage from '@/components/UploadImage';
 import useSnackBarStore from '@/store/useSnackBarStore';
 import { useForm } from 'react-hook-form';
-import { useKeyboardOffset } from '@/hook/useKeyboardOffset';
+import { useKeyboardOffset } from '@/hooks/useKeyboardOffset';
 import { useRouter } from 'next/navigation';
 
 type FieldData = {

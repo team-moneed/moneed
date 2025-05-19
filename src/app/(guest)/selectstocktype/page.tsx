@@ -1,11 +1,19 @@
-import { STOCKTYPES } from '../../config/StockTypesetting';
-import useStockTypeStore from '../../store/useStockTypeStore';
-import Button from '../Button';
-import StockTypeChip from './StockTypeChip';
+'use client';
 
-const SelectStockType = () => {
+import Button from '@/components/Button';
+import StockTypeChip from '@/components/create/StockTypeChip';
+import useStockTypeStore from '@/store/useStockTypeStore';
+import { StockType } from '@/types/stock';
+import { useQuery } from '@tanstack/react-query';
+
+export default function SelectStockType() {
     const { selectedStockNames, addStockType, removeStockType } = useStockTypeStore();
-    const filteredStockNames = STOCKTYPES.filter(({ stocktype }) => stocktype !== '전체');
+    const { data: stockTypes } = useQuery<StockType[]>({
+        queryKey: ['stockTypes'],
+        queryFn: () => fetch('/api/stocktypes').then(res => res.json()),
+    });
+
+    const filteredStockNames = stockTypes?.filter(({ stocktype }) => stocktype !== '전체');
 
     const toggleStockType = (stocktype: string) => {
         if (selectedStockNames.includes(stocktype)) {
@@ -33,7 +41,7 @@ const SelectStockType = () => {
                         </p>
                     </div>
                     <div className='flex flex-wrap gap-[.8rem] md:px-[10.6rem] md:max-h-[calc(38.5rem_-_10rem)] md:overflow-y-auto pb-[12rem] pt-[6rem]'>
-                        {filteredStockNames.map(({ stocktype, value }) => (
+                        {filteredStockNames?.map(({ stocktype, value }) => (
                             <div key={value} className='mb-[.2rem]'>
                                 <StockTypeChip
                                     label={stocktype}
@@ -59,5 +67,4 @@ const SelectStockType = () => {
             </div>
         </>
     );
-};
-export default SelectStockType;
+}

@@ -1,3 +1,5 @@
+'use client';
+
 import useAuthStore from '@/store/useAuthStore';
 import { PropsWithChildren } from 'react';
 import { redirect } from 'next/navigation';

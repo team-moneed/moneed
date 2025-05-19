@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams, useSearchParams } from 'next/navigation';
 import UploadImage from '@/components/UploadImage';
-import { useKeyboardOffset } from '../../hook/useKeyboardOffset';
+import { useKeyboardOffset } from '../../hooks/useKeyboardOffset';
 import useSnackBarStore from '../../store/useSnackBarStore';
 import { PostType } from './Post';
 

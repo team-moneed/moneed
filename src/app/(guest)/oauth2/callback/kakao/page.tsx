@@ -1,22 +1,24 @@
-import { useQuery } from '@tanstack/react-query';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { fetchKakaoToken } from '@/api/auth/authApi';
+'use client';
+import { useSearchParams } from 'next/navigation';
 import useAuthStore from '@/store/useAuthStore';
+import { useRouter } from 'next/navigation';
+import { fetchKakaoToken } from '@/api/auth/authApi';
+import { useQuery } from '@tanstack/react-query';
 
-const KakaoRedirectHandler = () => {
-    const navigate = useNavigate();
+export default function KakaoRedirectHandler() {
+    const router = useRouter();
     const login = useAuthStore(state => state.login);
-    const [searchParams] = useSearchParams();
+    const searchParams = useSearchParams();
     const code = searchParams.get('code');
 
     const handleError = (message: string) => {
         alert(message);
-        navigate('/onboarding');
+        router.push('/onboarding');
     };
 
     const handleSuccess = ({ accessToken, refreshToken }: { accessToken: string; refreshToken: string }) => {
         login({ accessToken, refreshToken });
-        navigate('/');
+        router.push('/');
     };
 
     const { data, error, isLoading } = useQuery({
@@ -27,7 +29,7 @@ const KakaoRedirectHandler = () => {
     });
 
     if (!code) {
-        navigate('/onboarding');
+        router.push('/onboarding');
         return null;
     }
 
@@ -49,6 +51,4 @@ const KakaoRedirectHandler = () => {
 
     handleSuccess({ accessToken: data.access_token, refreshToken: data.refresh_token });
     return null;
-};
-
-export default KakaoRedirectHandler;
+}

@@ -1,15 +1,18 @@
 'use client';
 
-import { STOCKTYPES } from '@/config/StockTypesetting';
 import Chip from '@/components/Chip';
-import { useRouter } from 'next/navigation';
+import { StockType } from '@/types/stock';
+import { useQuery } from '@tanstack/react-query';
+import { useParams, useRouter } from 'next/navigation';
 
-type StockTypeBarProps = {
-    selectedStockType: string;
-};
-
-const StockTypeBar = ({ selectedStockType }: StockTypeBarProps) => {
+const StockTypeBar = () => {
     //선택한 카테고리만 보이게
+    const { stocktype } = useParams<{ stocktype?: string }>();
+    const selectedStockType = stocktype || '전체';
+    const { data: stockTypes } = useQuery<StockType[]>({
+        queryKey: ['stockTypes'],
+        queryFn: () => fetch('/api/stocktypes').then(res => res.json()),
+    });
 
     const router = useRouter();
     const movetoSelectStockType = () => {
@@ -24,7 +27,7 @@ const StockTypeBar = ({ selectedStockType }: StockTypeBarProps) => {
         <div className='relative'>
             <div className='flex gap-4 mb-6 overflow-x-auto whitespace-nowrap'>
                 <Chip label='+' onClick={movetoSelectStockType} />
-                {STOCKTYPES.map(({ stocktype, StockTypeId }) => (
+                {stockTypes?.map(({ stocktype, StockTypeId }) => (
                     <Chip
                         key={StockTypeId}
                         label={stocktype}

@@ -1,16 +1,17 @@
+'use client';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-const WelcomePage = () => {
-    const navigate = useNavigate();
+export default function Welcome() {
+    const router = useRouter();
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            navigate('/');
+            router.push('/');
         }, 2000);
 
         return () => clearTimeout(timer);
-    }, [navigate]);
+    }, [router]);
 
     return (
         <>
@@ -29,6 +30,4 @@ const WelcomePage = () => {
             </div>
         </>
     );
-};
-
-export default WelcomePage;
+}

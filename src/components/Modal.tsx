@@ -1,3 +1,5 @@
+'use client';
+
 import { ReactNode, useEffect } from 'react';
 import Button from './Button';
 import ReactDOM from 'react-dom';
