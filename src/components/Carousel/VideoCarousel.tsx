@@ -5,14 +5,14 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { NextButton } from '@/components/Carousel/CarouselArrowButton';
 import { usePrevNextButtons } from '@/hooks/usePrevNextButtons';
 import { useRouter } from 'next/navigation';
-
+import { Video } from '@/types/video';
 type PropType = {
-    slides: { imgUrl?: string; videoUrl?: string; title: string; userName: string; createdAt: string }[];
+    videos: Video[];
     options?: EmblaOptionsType;
     slidesToShow?: number;
 };
 const VideoCarousel = (props: PropType) => {
-    const { slides, options } = props;
+    const { videos, options } = props;
     const [emblaRef, emblaApi] = useEmblaCarousel({
         ...options,
         loop: false,
@@ -31,7 +31,7 @@ const VideoCarousel = (props: PropType) => {
         <div className='relative lg:pr-[5.6rem]'>
             <div className='w-full overflow-hidden mask-right' ref={emblaRef}>
                 <div className='flex gap-[.8rem]'>
-                    {slides.map((slide, index) => (
+                    {videos.map((video, index) => (
                         <div
                             className='w-[calc(30%-1.6rem)] lg:w-[calc(20%-1.6rem)] shrink-0'
                             key={index}
@@ -39,7 +39,7 @@ const VideoCarousel = (props: PropType) => {
                             onClick={movetoshortformDetail}
                         >
                             <video controls className='w-full h-full object-cover rounded-[.8rem]'>
-                                {slide.videoUrl && <source src={slide.videoUrl} type='video/mp4' />}
+                                {video.videoUrl && <source src={video.videoUrl} type='video/mp4' />}
                             </video>
                         </div>
                     ))}

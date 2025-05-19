@@ -1,3 +1,5 @@
+'use client';
+
 type Props = {
     theme: 'primary' | 'secondary' | 'ghost' | 'brand';
     children: React.ReactNode;

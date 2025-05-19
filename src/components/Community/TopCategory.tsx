@@ -1,3 +1,5 @@
+'use client';
+
 import CategoryRankBox from '@/components/Community/CategoryRankBox';
 
 export type stockCagtegory = {

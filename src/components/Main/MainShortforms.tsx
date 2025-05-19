@@ -1,5 +1,9 @@
+'use client';
+
 import VideoCarousel from '@/components/Carousel/VideoCarousel';
 import { EmblaOptionsType } from 'embla-carousel';
+import { useQuery } from '@tanstack/react-query';
+import { Video } from '@/types/video';
 
 const MainShortforms = () => {
     const VIDEOOPTIONS: EmblaOptionsType = {
@@ -10,62 +14,14 @@ const MainShortforms = () => {
         containScroll: 'trimSnaps',
     };
 
-    const videoSlides = [
-        {
-            videoUrl: '',
-            title: '동영상 1',
-            createdAt: '2024-12-10T10:00:00Z',
-            userName: 'a',
-        },
-        {
-            videoUrl: '',
-            title: '동영상 2',
-            createdAt: '2024-12-09T09:00:00Z',
-            userName: 'a',
-        },
-        {
-            videoUrl: '',
-            title: '동영상 3',
-            createdAt: '2024-12-09T09:00:00Z',
-            userName: 'a',
-        },
-        {
-            videoUrl: '',
-            title: '동영상 4',
-            createdAt: '2024-12-09T09:00:00Z',
-            userName: 'a',
-        },
-        {
-            videoUrl: '',
-            title: '동영상 5',
-            createdAt: '2024-12-09T09:00:00Z',
-            userName: 'a',
-        },
-        {
-            videoUrl: '',
-            title: '동영상 6',
-            createdAt: '2024-12-09T09:00:00Z',
-            userName: 'a',
-        },
-        {
-            videoUrl: '',
-            title: '동영상 7',
-            createdAt: '2024-12-09T09:00:00Z',
-            userName: 'a',
-        },
-        {
-            videoUrl: '',
-            title: '동영상 8',
-            createdAt: '2024-12-09T09:00:00Z',
-            userName: 'a',
-        },
-    ];
+    const { data: videoData } = useQuery<Video[]>({
+        queryKey: ['videos'],
+        queryFn: () => fetch('/api/videos').then(res => res.json()),
+    });
 
     return (
         <>
-            <div className='mt-4'>
-                <VideoCarousel slides={videoSlides} options={VIDEOOPTIONS} />
-            </div>
+            <div className='mt-4'>{videoData && <VideoCarousel videos={videoData} options={VIDEOOPTIONS} />}</div>
         </>
     );
 };

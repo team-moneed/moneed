@@ -1,3 +1,5 @@
+'use client';
+
 import DateFormatter from '../../util/Dateformatter';
 
 type CommunityThumbnailCardPropsType = {
