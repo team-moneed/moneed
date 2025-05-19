@@ -1,7 +1,7 @@
 'use client';
 
 import PostCarousel from '@/components/Carousel/PostCarousel';
-import useMoveScroll from '@/hooks/usemoveScroll';
+import useMoveScroll from '@/hooks/useMoveScroll';
 import Posts from '@/components/Community/Posts';
 import TopCategory from '@/components/Community/TopCategory';
 import { type Post } from '@/types/post';
@@ -45,6 +45,65 @@ const topPosts = [
     },
 ];
 
+const HotPosts = ({ ref }: { ref: React.RefObject<HTMLDivElement> }) => {
+    return (
+        <div ref={ref} className='mt-[2.8rem]'>
+            <div className='flex items-baseline gap-[.8rem] mb-[1.8rem]'>
+                <h2 className='text-[2.2rem] leading-[145%] font-bold text-(--moneed-black) lg:text-[2.4rem] lg:leading-[140%]'>
+                    인기 급상승 게시글
+                </h2>
+            </div>
+        </div>
+    );
+};
+
+const Vote = ({ ref }: { ref: React.RefObject<HTMLDivElement> }) => {
+    return (
+        <>
+            <div ref={ref} className='mt-[2.8rem]'>
+                <div className='flex items-baseline gap-[.8rem] mb-[1.8rem]'>
+                    <h2 className='text-[2.2rem] leading-[145%] font-bold text-(--moneed-black) lg:text-[2.4rem] lg:leading-[140%]'>
+                        지금 핫한 투표
+                    </h2>
+                    <span className='text-(--moneed-gray-7) text-[1.2rem] font-normal leading-[135%]'>
+                        12월 17일 8시 기준
+                    </span>
+                </div>
+            </div>
+            <div className='bg-(--moneed-navy) h-48 rounded-[.8rem] text-center  pt-16'>
+                <span className='text-[2rem] leading-[145%] font-bold text-(--moneed-white)'>comming soon</span>
+            </div>
+        </>
+    );
+};
+
+const Top5 = ({ ref }: { ref: React.RefObject<HTMLDivElement> }) => {
+    return (
+        <div ref={ref} className='mt-[3.6rem]'>
+            <div className='flex items-baseline gap-[.8rem] mb-[1.6rem]'>
+                <h2 className='text-[2.2rem] leading-[145%] font-bold text-(--moneed-black) lg:text-[2.4rem] lg:leading-[140%]'>
+                    Top 5
+                </h2>
+                <span className='text-(--moneed-gray-7) text-[1.2rem] font-normal leading-[135%]'>12월 기준</span>
+            </div>
+        </div>
+    );
+};
+
+const Category = ({ ref }: { ref: React.RefObject<HTMLDivElement> }) => {
+    return (
+        <div ref={ref} className='mt-[2.8rem]'>
+            <div className='flex items-baseline gap-[.8rem] mb-[1.8rem]'>
+                <h2 className='text-[2.2rem] leading-[145%] font-bold text-(--moneed-black) lg:text-[2.4rem] lg:leading-[140%]'>
+                    지금 뜨는 종목
+                </h2>
+                <span className='text-(--moneed-gray-7) text-[1.2rem] font-normal leading-[135%]'>
+                    12월 17일 8시 기준 | 전일종가
+                </span>
+            </div>
+        </div>
+    );
+};
 export default function CommunityPage() {
     const { data: posts } = useQuery<Post[]>({
         queryKey: ['posts'],
@@ -71,74 +130,38 @@ export default function CommunityPage() {
 
     return (
         <div>
-            <div className='flex gap-[1rem] pt-[2rem] items-start'>
+            <div className='flex gap-4 pt-8 items-start'>
                 <button
                     onClick={moveToTop5}
-                    className='text-[1.4rem] leading-[140%] font-[400] text-[var(--moneed-gray-7)] mr-[1.2rem]'
+                    className='text-[1.4rem] leading-[140%] font-normal text-(--moneed-gray-7) mr-[1.2rem]'
                 >
                     Top 5
                 </button>
                 <button
                     onClick={moveToCategory}
-                    className='text-[1.4rem] leading-[140%] font-[400] text-[var(--moneed-gray-7)] mr-[1.2rem]'
+                    className='text-[1.4rem] leading-[140%] font-normal text-(--moneed-gray-7) mr-[1.2rem]'
                 >
                     지금 뜨는 종목
                 </button>
                 <button
                     onClick={moveToVote}
-                    className='text-[1.4rem] leading-[140%] font-[400] text-[var(--moneed-gray-7)] mr-[1.2rem]'
+                    className='text-[1.4rem] leading-[140%] font-normal text-(--moneed-gray-7) mr-[1.2rem]'
                 >
                     지금 핫한 투표
                 </button>
                 <button
                     onClick={moveToHotPosts}
-                    className='text-[1.4rem] leading-[140%] font-[400] text-[var(--moneed-gray-7)]'
+                    className='text-[1.4rem] leading-[140%] font-normal text-(--moneed-gray-7)'
                 >
                     인기 급상승 게시글
                 </button>
             </div>
-            <div ref={top5Ref} className='mt-[3.6rem]'>
-                <div className='flex items-baseline gap-[.8rem] mb-[1.6rem]'>
-                    <h2 className='text-[2.2rem] leading-[145%] font-[700] text-[var(--moneed-black)] lg:text-[2.4rem] lg:leading-[140%]'>
-                        Top 5
-                    </h2>
-                    <span className='text-[var(--moneed-gray-7)] text-[1.2rem] font-[400] leading-[135%]'>
-                        12월 기준
-                    </span>
-                </div>
-            </div>
-            <PostCarousel slides={topPosts} options={POSTOPTIONS}></PostCarousel>
-            <div ref={categoryRef} className='mt-[2.8rem]'>
-                <div className='flex items-baseline gap-[.8rem] mb-[1.8rem]'>
-                    <h2 className='text-[2.2rem] leading-[145%] font-[700] text-[var(--moneed-black)] lg:text-[2.4rem] lg:leading-[140%]'>
-                        지금 뜨는 종목
-                    </h2>
-                    <span className='text-[var(--moneed-gray-7)] text-[1.2rem] font-[400] leading-[135%]'>
-                        12월 17일 8시 기준 | 전일종가
-                    </span>
-                </div>
-            </div>
+            <Top5 ref={top5Ref} />
+            <PostCarousel slides={topPosts} options={POSTOPTIONS} />
+            <Category ref={categoryRef} />
             <TopCategory />
-            <div ref={voteRef} className='mt-[2.8rem]'>
-                <div className='flex items-baseline gap-[.8rem] mb-[1.8rem]'>
-                    <h2 className='text-[2.2rem] leading-[145%] font-[700] text-[var(--moneed-black)] lg:text-[2.4rem] lg:leading-[140%]'>
-                        지금 핫한 투표
-                    </h2>
-                    <span className='text-[var(--moneed-gray-7)] text-[1.2rem] font-[400] leading-[135%]'>
-                        12월 17일 8시 기준
-                    </span>
-                </div>
-            </div>
-            <div className='bg-[var(--moneed-navy)] h-[12rem] rounded-[.8rem] text-center  pt-[4rem]'>
-                <span className='text-[2rem] leading-[145%] font-[700] text-[var(--moneed-white)]'>comming soon</span>
-            </div>
-            <div ref={hotPostsRef} className='mt-[2.8rem]'>
-                <div className='flex items-baseline gap-[.8rem] mb-[1.8rem]'>
-                    <h2 className='text-[2.2rem] leading-[145%] font-[700] text-[var(--moneed-black)] lg:text-[2.4rem] lg:leading-[140%]'>
-                        인기 급상승 게시글
-                    </h2>
-                </div>
-            </div>
+            <Vote ref={voteRef} />
+            <HotPosts ref={hotPostsRef} />
             {posts && <Posts posts={posts} />}
         </div>
     );

@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import MobileNavLink from '../MobileNavLink';
+import MobileNavLink from '@/components/MobileNavLink';
 
 const MobileNav = () => {
     const router = useRouter();
@@ -30,7 +30,7 @@ const MobileNav = () => {
 
     return (
         <>
-            <div className='flex fixed bottom-0 left-0 right-0 z-[10] pt-[.6rem] pb-4 px-8 bg-[var(--moneed-gray-3)] lg:hidden'>
+            <div className='flex fixed bottom-0 left-0 right-0 z-10 pt-[.6rem] pb-4 px-8 bg-(--moneed-gray-3) lg:hidden'>
                 <MobileNavLink to='/' icon='/icon/icon-m-nav-1.svg' activeIcon='/icon/icon-lnb-1-on.svg'>
                     홈페이지
                 </MobileNavLink>
@@ -47,7 +47,7 @@ const MobileNav = () => {
                 <button
                     type='button'
                     onClick={motetowritepost}
-                    className='aspect-[1/1] w-[5.2rem] bg-[var(--moneed-brand-color)] absolute bottom-[calc(100%+2rem)] flex items-center justify-center rounded-full right-[2rem]'
+                    className='aspect-square w-[5.2rem] bg-(--moneed-brand-color) absolute bottom-[calc(100%+2rem)] flex items-center justify-center rounded-full right-8'
                 >
                     <img src='/icon/icon-edit.svg' alt='' />
                 </button>

@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams, useSearchParams } from 'next/navigation';
 import UploadImage from '@/components/UploadImage';
-import { useKeyboardOffset } from '../../hooks/useKeyboardOffset';
-import useSnackBarStore from '../../store/useSnackBarStore';
-import { PostType } from './Post';
+import { useKeyboardOffset } from '@/hooks/useKeyboardOffset';
+import useSnackBarStore from '@/store/useSnackBarStore';
+import { PostType } from '@/components/Community/Post';
 
 type FieldData = {
     title: string;
@@ -80,17 +80,17 @@ const EditPost = () => {
 
     return (
         <>
-            <div className='px-[2rem] max-w-[128rem] mx-auto'>
-                <div className='flex items-center justify-between gap-[.6rem] mt-[1rem]'>
-                    <button className='bg-[var(--moneed-shade-bg)] py-[1.2rem] px-[1.6rem] rounded-[.8rem] flex items-center gap-[0.6rem]'>
+            <div className='px-8 max-w-512 mx-auto'>
+                <div className='flex items-center justify-between gap-[.6rem] mt-4'>
+                    <button className='bg-(--moneed-shade-bg) py-[1.2rem] px-[1.6rem] rounded-[.8rem] flex items-center gap-[0.6rem]'>
                         <span
-                            className={`text-[1.4rem] font-[400] ${
-                                stocktype ? 'text-[var(--moneed-black)]' : 'text-[var(--moneed-gray-7)]'
+                            className={`text-[1.4rem] font-normal ${
+                                stocktype ? 'text-(--moneed-black)' : 'text-(--moneed-gray-7)'
                             }`}
                         >
                             {stocktype || '글을 쓸 커뮤니티 종목을 선택해주세요.'}
                         </span>
-                        <div className='overflow-hidden aspect-[1/1] w-[1.2rem]'>
+                        <div className='overflow-hidden aspect-square w-[1.2rem]'>
                             <img src='/icon/icon-arrow-down.svg' alt='' className='w-full h-full object-cover' />
                         </div>
                     </button>
@@ -100,18 +100,18 @@ const EditPost = () => {
                         {...register('title', { required: '제목을 입력해주세요.' })}
                         type='text'
                         placeholder='제목을 입력해주세요'
-                        className='border-b border-[var(--moneed-gray-5)] w-full py-[1.6rem] text-[1.6rem] font-[400] leading-[140%] focus:outline-none placeholder:text-[var(--moneed-gray-7)]'
+                        className='border-b border-(--moneed-gray-5) w-full py-[1.6rem] text-[1.6rem] font-normal leading-[140%] focus:outline-none placeholder:text-(--moneed-gray-7)'
                         maxLength={50}
                     />
                     <textarea
                         {...register('content', { required: '의견을 입력해주세요.' })}
                         // type="text"
                         placeholder='의견을 입력해주세요'
-                        className='w-full h-[30rem] py-[1.6rem] text-[1.6rem] font-[400] leading-[140%] placeholder:text-[var(--moneed-gray-7)] focus:outline-none'
+                        className='w-full h-120 py-[1.6rem] text-[1.6rem] font-normal leading-[140%] placeholder:text-(--moneed-gray-7) focus:outline-none'
                         maxLength={1000}
                     />
                     <div
-                        className={`fixed left-0 right-0 z-[20] h-[5.2rem] px-8 bg-white flex items-center justify-between transition-all duration-300 ${
+                        className={`fixed left-0 right-0 z-20 h-[5.2rem] px-8 bg-white flex items-center justify-between transition-all duration-300 ${
                             bottomOffset > 0 ? `bottom-[${bottomOffset}px]` : 'bottom-0'
                         }`}
                     >
@@ -127,11 +127,11 @@ const EditPost = () => {
                             imgUrl={postImages}
                             // buttonProps={{ type: "button" }}
                         />
-                        <div className='text-right text-[1.4rem] text-[var(--moneed-gray-7)] w-full mx-[1rem]'>
+                        <div className='text-right text-[1.4rem] text-(--moneed-gray-7) w-full mx-4'>
                             {content.length} / 1000자
                         </div>
                         <button
-                            className='rounded-full overflow-hidden aspect-[1/1] w-[3.6rem] bg-[var(--moneed-gray-6)] cursor-pointer hover:bg-[var(--moneed-brand-color)]'
+                            className='rounded-full overflow-hidden aspect-square w-[3.6rem] bg-(--moneed-gray-6) cursor-pointer hover:bg-(--moneed-brand-color)'
                             type='submit'
                         >
                             <img

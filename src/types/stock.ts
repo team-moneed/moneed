@@ -8,6 +8,5 @@ export type Stock = {
 
 export type StockType = {
     stocktype: string;
-    value: string;
     StockTypeId: number;
 };

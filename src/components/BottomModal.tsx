@@ -46,22 +46,22 @@ const BottomModal = ({ imageSrc, title, description, ButtonText, onButtonClick, 
             >
                 <div
                     onClick={handleInsideClick}
-                    className={`bg-white w-[50rem] h-[44rem] rounded-lg p-6 shadow-lg transform transition-transform duration-300 ${
+                    className={`bg-white w-200 h-176 rounded-lg p-6 shadow-lg transform transition-transform duration-300 ${
                         isVisible ? 'translate-y-0' : 'translate-y-full'
                     }`}
                 >
                     {imageSrc && (
-                        <img src={imageSrc} alt='모달 이미지' className='w-[12rem] aspect-[1/1]  mb-[.8rem] mx-auto' />
+                        <img src={imageSrc} alt='모달 이미지' className='w-48 aspect-square  mb-[.8rem] mx-auto' />
                     )}
 
                     {title && (
-                        <h2 className='text-[2.4rem] text-center text-[var(--moneed-black)] font-[700] leading-[140%]'>
+                        <h2 className='text-[2.4rem] text-center text-(--moneed-black) font-bold leading-[140%]'>
                             {title}
                         </h2>
                     )}
 
                     {description && (
-                        <div className='text-[1.6rem] text-center text-[var(--moneed-black)] font-[600] leading-[140%] mt-[3.8rem]'>
+                        <div className='text-[1.6rem] text-center text-(--moneed-black) font-semibold leading-[140%] mt-[3.8rem]'>
                             {description}
                         </div>
                     )}
@@ -70,7 +70,7 @@ const BottomModal = ({ imageSrc, title, description, ButtonText, onButtonClick, 
                         <Button
                             theme='primary'
                             textcolor='primary'
-                            className='text-[1.6rem] font-[700] leading-[140%] px-[14.5rem] py-[1.8rem]'
+                            className='text-[1.6rem] font-bold leading-[140%] px-58 py-[1.8rem]'
                             onClick={onButtonClick}
                         >
                             {ButtonText}

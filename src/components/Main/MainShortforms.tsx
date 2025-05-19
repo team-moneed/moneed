@@ -63,7 +63,7 @@ const MainShortforms = () => {
 
     return (
         <>
-            <div className='mt-[1rem]'>
+            <div className='mt-4'>
                 <VideoCarousel slides={videoSlides} options={VIDEOOPTIONS} />
             </div>
         </>

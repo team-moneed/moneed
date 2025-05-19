@@ -1,5 +1,5 @@
-import { STOCKTYPES } from '../../config/StockTypesetting';
-import useSearchStore from '../../store/useSearchStore';
+import { STOCKTYPES } from '@/config/StockTypesetting';
+import useSearchStore from '@/store/useSearchStore';
 import { useNavigate } from 'react-router-dom';
 
 const SearchResult = () => {

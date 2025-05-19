@@ -11,9 +11,6 @@ import QueryClientProvider from '@/components/QueryClientProvider';
 
 export const metadata: Metadata = {
     title: 'Moneed',
-    icons: {
-        icon: '/favicon_48.png',
-    },
 };
 
 export const viewport: Viewport = {

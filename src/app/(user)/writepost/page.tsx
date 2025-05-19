@@ -1,20 +1,21 @@
 'use client';
 
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import BottomModal from '@/components/BottomModal';
 import UploadImage from '@/components/UploadImage';
 import useSnackBarStore from '@/store/useSnackBarStore';
 import { useForm } from 'react-hook-form';
 import { useKeyboardOffset } from '@/hooks/useKeyboardOffset';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 type FieldData = {
     title: string;
     content: string;
 };
 
-const WritePost = ({ params }: { params: Promise<{ stocktype: string }> }) => {
-    const { stocktype } = use(params);
+const WritePost = () => {
+    const searchParams = useSearchParams();
+    const stocktype = searchParams.get('stocktype');
     const [isBottomModalOpen, setIsBottomModalOpen] = useState(false);
 
     const bottomOffset = useKeyboardOffset();
@@ -35,11 +36,11 @@ const WritePost = ({ params }: { params: Promise<{ stocktype: string }> }) => {
     };
 
     useEffect(() => {
-        const isModalShown = localStorage.getItem('bottoModalShown');
+        const isModalShown = localStorage.getItem('bottomModalShown');
 
         if (!isModalShown && !content && !title) {
             setIsBottomModalOpen(true);
-            localStorage.setItem('bottoModalShown', 'true');
+            localStorage.setItem('bottomModalShown', 'true');
         }
     }, [content, title]);
 
@@ -53,7 +54,7 @@ const WritePost = ({ params }: { params: Promise<{ stocktype: string }> }) => {
         }
     }, [content, title, showSnackBar]);
 
-    const movetoSelectStocktype = () => {
+    const movetoSearchStocktype = () => {
         router.push('/searchstocktype');
     };
 
@@ -93,20 +94,20 @@ const WritePost = ({ params }: { params: Promise<{ stocktype: string }> }) => {
     };
 
     return (
-        <div className='px-[2rem] max-w-[128rem] mx-auto'>
-            <div className='flex items-center justify-between gap-[.6rem] mt-[1rem]'>
+        <div className='px-8 max-w-512 mx-auto'>
+            <div className='flex items-center justify-between gap-[.6rem] mt-4'>
                 <button
-                    className='bg-[var(--moneed-shade-bg)] py-[1.2rem] px-[1.6rem] rounded-[.8rem] flex items-center gap-[0.6rem]'
-                    onClick={movetoSelectStocktype}
+                    className='bg-(--moneed-shade-bg) py-[1.2rem] px-[1.6rem] rounded-[.8rem] flex items-center gap-[0.6rem]'
+                    onClick={movetoSearchStocktype}
                 >
                     <span
-                        className={`text-[1.4rem] font-[400] ${
-                            stocktype ? 'text-[var(--moneed-black)]' : 'text-[var(--moneed-gray-7)]'
+                        className={`text-[1.4rem] font-normal ${
+                            stocktype ? 'text-(--moneed-black)' : 'text-(--moneed-gray-7)'
                         }`}
                     >
                         {stocktype || '글을 쓸 커뮤니티 종목을 선택해주세요.'}
                     </span>
-                    <div className='overflow-hidden aspect-[1/1] w-[1.2rem]'>
+                    <div className='overflow-hidden aspect-square w-[1.2rem]'>
                         <img src='/icon/icon-arrow-down.svg' alt='' className='w-full h-full object-cover' />
                     </div>
                 </button>
@@ -116,7 +117,7 @@ const WritePost = ({ params }: { params: Promise<{ stocktype: string }> }) => {
                     {...register('title')}
                     type='text'
                     placeholder='제목을 입력해주세요'
-                    className='border-b border-[var(--moneed-gray-5)] w-full py-[1.6rem] text-[1.6rem] font-[400] leading-[140%] focus:outline-none placeholder:text-[var(--moneed-gray-7)]'
+                    className='border-b border-(--moneed-gray-5) w-full py-[1.6rem] text-[1.6rem] font-normal leading-[140%] focus:outline-none placeholder:text-(--moneed-gray-7)'
                     maxLength={50}
                     onFocus={() => handleFocus('title')}
                 />
@@ -124,12 +125,12 @@ const WritePost = ({ params }: { params: Promise<{ stocktype: string }> }) => {
                     {...register('content')}
                     // type="text"
                     placeholder='의견을 입력해주세요'
-                    className='w-full h-[30rem] py-[1.6rem] text-[1.6rem] font-[400] leading-[140%] placeholder:text-[var(--moneed-gray-7)] focus:outline-none'
+                    className='w-full h-120 py-[1.6rem] text-[1.6rem] font-normal leading-[140%] placeholder:text-(--moneed-gray-7) focus:outline-none'
                     maxLength={1000}
                     onFocus={() => handleFocus('content')}
                 />
                 <div
-                    className={`fixed left-0 right-0 z-[20] h-[5.2rem] px-8 bg-white flex items-center justify-between transition-all duration-300 ${
+                    className={`fixed left-0 right-0 z-20 h-[5.2rem] px-8 bg-white flex items-center justify-between transition-all duration-300 ${
                         bottomOffset > 0 ? `bottom-[${bottomOffset}px]` : 'bottom-0'
                     }`}
                 >
@@ -144,11 +145,11 @@ const WritePost = ({ params }: { params: Promise<{ stocktype: string }> }) => {
                         buttonpositionClassName='mr-0'
                         imgUrl={postImages}
                     />
-                    <div className='text-right text-[1.4rem] text-[var(--moneed-gray-7)] w-full mx-[1rem]'>
+                    <div className='text-right text-[1.4rem] text-(--moneed-gray-7) w-full mx-4'>
                         {content.length} / 1000자
                     </div>
                     <button
-                        className='rounded-full overflow-hidden aspect-[1/1] w-[3.6rem] bg-[var(--moneed-gray-6)] cursor-pointer hover:bg-[var(--moneed-brand-color)]'
+                        className='rounded-full overflow-hidden aspect-square w-[3.6rem] bg-(--moneed-gray-6) cursor-pointer hover:bg-(--moneed-brand-color)'
                         type='submit'
                     >
                         <img

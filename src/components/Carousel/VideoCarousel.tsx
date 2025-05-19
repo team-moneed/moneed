@@ -33,7 +33,7 @@ const VideoCarousel = (props: PropType) => {
                 <div className='flex gap-[.8rem]'>
                     {slides.map((slide, index) => (
                         <div
-                            className='w-[calc(30%_-_1.6rem)] lg:w-[calc(20%_-_1.6rem)] shrink-0'
+                            className='w-[calc(30%-1.6rem)] lg:w-[calc(20%-1.6rem)] shrink-0'
                             key={index}
                             style={{ aspectRatio: '9/16' }}
                             onClick={movetoshortformDetail}
@@ -48,7 +48,7 @@ const VideoCarousel = (props: PropType) => {
             <NextButton
                 onClick={onNextButtonClick}
                 disabled={nextBtnDisabled}
-                className='hidden lg:absolute lg:block top-1/2 right-2 transform -translate-y-1/2 z-10 p-[1.2rem] rounded-[2rem] bg-[var(--moneed-gray-5)]'
+                className='hidden lg:absolute lg:block top-1/2 right-2 transform -translate-y-1/2 z-10 p-[1.2rem] rounded-4xl bg-(--moneed-gray-5)'
             />
         </div>
     );

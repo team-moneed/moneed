@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-
+import { type Stock } from '@/types/stock';
 export async function GET() {
-    const stockData = [
+    const stockData: Stock[] = [
         {
             infoBoxImgages: '',
             name: '애플',

@@ -1,10 +1,10 @@
 'use client';
 
 import { useParams, usePathname, useRouter } from 'next/navigation';
-import Button from '../Button';
+import Button from '@/components/Button';
 import Link from 'next/link';
 import { useState } from 'react';
-import Modal from '../Modal';
+import Modal from '@/components/Modal';
 
 const CommonHeader = () => {
     const router = useRouter();
@@ -15,13 +15,13 @@ const CommonHeader = () => {
 
     return (
         <>
-            <div className='sticky top-0 z-[10] bg-white flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-[2rem]'>
+            <div className='sticky top-0 z-10 bg-white flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-8'>
                 <Link href='/'>
                     <div className='flex'>
-                        <div className='w-[2.8rem] h-[2.8rem] bg-[var(--moneed-black)] rounded-full flex items-center justify-center'>
+                        <div className='w-[2.8rem] h-[2.8rem] bg-(--moneed-black) rounded-full flex items-center justify-center'>
                             <img className='w-[1.4rem] h-[1.2rem]' src='/icon/icon-logo.svg' alt='' />
                         </div>
-                        <span className='font-[600] leading-[140%] text-[1.8rem] ml-[.8rem]'>moneed</span>
+                        <span className='font-semibold leading-[140%] text-[1.8rem] ml-[.8rem]'>moneed</span>
                     </div>
                 </Link>
                 <Link href='/shortform'>
@@ -41,12 +41,12 @@ const CommonHeader = () => {
                     <img className='w-[2.4rem] h-[2.4rem]' src='/icon/icon-alarm.svg' alt='' />
                     <Button
                         onClick={movetowritepost}
-                        className='hidden lg:flex gap-[1rem] px-[2.4rem] py-[.8rem] items-center'
+                        className='hidden lg:flex gap-4 px-[2.4rem] py-[.8rem] items-center'
                         theme='brand'
                         textcolor='brand'
                     >
                         <img className='w-[1.8rem] h-[1.8rem]' src='/icon/icon-edit.svg' alt='' />
-                        <span className='font-[600] leading-[135%] text-[1.4rem]'>포스팅</span>
+                        <span className='font-semibold leading-[135%] text-[1.4rem]'>포스팅</span>
                     </Button>
                 </div>
             </div>
@@ -94,7 +94,7 @@ const MenuHeader = () => {
             return `${decodeURIComponent(stocktype as string)} 커뮤니티`;
         }
 
-        switch (location.pathname) {
+        switch (pathname) {
             case '/searchstocktype':
                 return '게시판 선택';
             case '/community':
@@ -109,14 +109,14 @@ const MenuHeader = () => {
     };
 
     return (
-        <div className='sticky top-0 z-[10] bg-white flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-[2rem]'>
+        <div className='sticky top-0 z-10 bg-white flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-8'>
             <img
                 className='cursor-pointer w-[2.4rem] h-[2.4rem]'
                 onClick={handleBackButtonClick}
                 src='/icon/icon-arrow-back.svg'
                 alt=''
             />
-            <h1 className='text-[1.6rem] font-[600] text-[var(--moneed-gray-9)]'>{getHeaderTitle()}</h1>
+            <h1 className='text-[1.6rem] font-semibold text-(--moneed-gray-9)'>{getHeaderTitle()}</h1>
             {isWritePostPath || isEditPostPath ? (
                 <img
                     className='w-[2.4rem] h-[2.4rem] cursor-pointer'
@@ -165,7 +165,13 @@ const Header = () => {
         '/post',
     ];
 
+    const noMenuHeaderPaths = ['/onboarding', '/oauth2/callback/kakao'];
+
     const pathname = usePathname();
+
+    if (noMenuHeaderPaths.includes(pathname)) {
+        return null;
+    }
 
     return menuHeaderPaths.includes(pathname) ? <MenuHeader /> : <CommonHeader />;
 };

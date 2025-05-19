@@ -19,7 +19,7 @@ const MobileNavLink = ({ className, icon, activeIcon, to, children }: MobileNavT
         <Link
             href={to}
             className={`flex flex-col justify-center items-center gap-[.3rem] text-[1rem] flex-1 ${
-                active ? 'text-[var(--moneed-black)]' : 'text-[var(--moneed-gray-6)]'
+                active ? 'text-(--moneed-black)' : 'text-(--moneed-gray-6)'
             } ${className}`}
         >
             {icon ? (

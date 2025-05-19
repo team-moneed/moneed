@@ -32,24 +32,24 @@ export default function Mypage() {
 
     return (
         <>
-            <div className='px-[2rem] max-w-[128rem] mx-auto'>
+            <div className='px-8 max-w-512 mx-auto'>
                 <div className='lg:flex lg:gap-[2.4rem] lg:mt-[1.6rem]'>
                     <div className='space-y-[1.6rem] lg:w-[40%]'>
-                        <div className='p-[1.6rem] justify-center items-center rounded-[1.6rem] border border-solid border-[var(--moneed-gray-5)]'>
+                        <div className='p-[1.6rem] justify-center items-center rounded-[1.6rem] border border-solid border-(--moneed-gray-5)'>
                             <div className='flex justify-center'>
-                                <div className='rounded-full overflow-hidden aspect-[1/1] w-[5.6rem]'>
+                                <div className='rounded-full overflow-hidden aspect-square w-[5.6rem]'>
                                     <img src='/temp/sample3.png' alt='' className='w-full h-full object-cover' />
                                 </div>
                             </div>
-                            <div className='flex gap-[1rem] justify-center items-center'>
-                                <div className='text-[2rem] my-[.8rem] font-[700] leading-[145%] text-[var(--moneed-brand-color)]'>
+                            <div className='flex gap-4 justify-center items-center'>
+                                <div className='text-[2rem] my-[.8rem] font-bold leading-[145%] text-(--moneed-brand-color)'>
                                     내가본나의 피드
                                 </div>
-                                <div className='aspect-[1/1] w-[2.4rem] cursor-pointer' onClick={movetoMyProfile}>
+                                <div className='aspect-square w-[2.4rem] cursor-pointer' onClick={movetoMyProfile}>
                                     <img src='/icon/icon-setting.svg' alt='' className='w-full h-full' />
                                 </div>
                             </div>
-                            <div className='text-center text-[1.4rem] font-[400] leading-[145%] text-[var(--moneed-gray-7)]'>
+                            <div className='text-center text-[1.4rem] font-normal leading-[145%] text-(--moneed-gray-7)'>
                                 연동된 계정: 카카오
                             </div>
                         </div>
@@ -58,10 +58,10 @@ export default function Mypage() {
                             <MypageBox menu='내가 작성한 댓글' count={7} onClick={movetoMyComment}></MypageBox>
                         </div>
                     </div>
-                    <div className='p-[1.6rem] justify-center items-center rounded-[1.6rem] border border-solid bg-[var(--moneed-black-3)] border-[var(--moneed-gray-5)] lg:w-[60%]'>
+                    <div className='p-[1.6rem] justify-center items-center rounded-[1.6rem] border border-solid bg-(--moneed-black-3) border-(--moneed-gray-5) lg:w-[60%]'>
                         <div className='flex mb-[1.6rem] justify-between'>
-                            <div className='text-[2rem] font-[600] leading-[140%]'>내가 선택한 종목</div>
-                            <div className='aspect-[1/1] w-[2.4rem]'>
+                            <div className='text-[2rem] font-semibold leading-[140%]'>내가 선택한 종목</div>
+                            <div className='aspect-square w-[2.4rem]'>
                                 <img src='/icon/icon-addcircle.svg' alt='' className='w-full h-full' />
                             </div>
                         </div>

@@ -22,20 +22,20 @@ export default function CommunityPage({ params }: { params: Promise<{ stocktype:
             </div>
             <div className='mt-[2.8rem]'>
                 <div className='flex items-baseline gap-[.8rem] mb-[1.8rem]'>
-                    <h2 className='text-[2.2rem] leading-[145%] font-[700] text-[var(--moneed-black)] lg:text-[2.4rem] lg:leading-[140%]'>
+                    <h2 className='text-[2.2rem] leading-[145%] font-bold text-(--moneed-black) lg:text-[2.4rem] lg:leading-[140%]'>
                         투표
                     </h2>
-                    <span className='text-[var(--moneed-gray-7)] text-[1.2rem] font-[400] leading-[135%]'>
+                    <span className='text-(--moneed-gray-7) text-[1.2rem] font-normal leading-[135%]'>
                         12월 17일 8시 기준
                     </span>
                 </div>
             </div>
-            <div className='bg-[var(--moneed-navy)] h-[12rem] rounded-[.8rem] text-center  pt-[4rem]'>
-                <span className='text-[2rem] leading-[145%] font-[700] text-[var(--moneed-white)]'>comming soon</span>
+            <div className='bg-(--moneed-navy) h-48 rounded-[.8rem] text-center  pt-16'>
+                <span className='text-[2rem] leading-[145%] font-bold text-(--moneed-white)'>comming soon</span>
             </div>
             <div className='mt-[2.8rem]'>
-                <div className='flex items-baseline gap-[.8rem] mb-[1rem]'>
-                    <h2 className='text-[2.2rem] leading-[145%] font-[700] text-[var(--moneed-black)] lg:text-[2.4rem] lg:leading-[140%]'>
+                <div className='flex items-baseline gap-[.8rem] mb-4'>
+                    <h2 className='text-[2.2rem] leading-[145%] font-bold text-(--moneed-black) lg:text-[2.4rem] lg:leading-[140%]'>
                         게시글
                     </h2>
                 </div>

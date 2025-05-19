@@ -104,19 +104,19 @@ const MyPost = () => {
 
     return (
         <>
-            <div className='px-[2rem] max-w-[128rem] mx-auto'>
+            <div className='px-8 max-w-512 mx-auto'>
                 <div className='flex my-[1.8rem]'>
-                    <div className='text-[1.8rem] font-[600] leading-[140%]'>게시글</div>
-                    <div className='ml-[.4rem] text-[1.8rem] font-[600] leading-[140%]'>7</div>
+                    <div className='text-[1.8rem] font-semibold leading-[140%]'>게시글</div>
+                    <div className='ml-[.4rem] text-[1.8rem] font-semibold leading-[140%]'>7</div>
                 </div>
-                <div className='border-b-2 border-solid border-[var(--moneed-gray-5)]'>
+                <div className='border-b-2 border-solid border-(--moneed-gray-5)'>
                     <button
                         onClick={() => setActiveTab('thisWeek')}
                         className={`${
                             activeTab === 'thisWeek'
-                                ? 'text-[var(--moneed-black)] border-b-4 border-solid border-[var(--moneed-black)]'
-                                : 'text-[var(--moneed-gray-7)]'
-                        } pr-[1.2rem] text-[1.6rem] font-[600] leading-[140%]`}
+                                ? 'text-(--moneed-black) border-b-4 border-solid border-(--moneed-black)'
+                                : 'text-(--moneed-gray-7)'
+                        } pr-[1.2rem] text-[1.6rem] font-semibold leading-[140%]`}
                     >
                         이번주 게시글
                     </button>
@@ -124,9 +124,9 @@ const MyPost = () => {
                         onClick={() => setActiveTab('notthisWeek')}
                         className={`${
                             activeTab === 'notthisWeek'
-                                ? 'text-[var(--moneed-black)] border-b-4 border-solid border-[var(--moneed-black)]'
-                                : 'text-[var(--moneed-gray-7)]'
-                        } pr-[1.2rem] text-[1.6rem] font-[600] leading-[140%]`}
+                                ? 'text-(--moneed-black) border-b-4 border-solid border-(--moneed-black)'
+                                : 'text-(--moneed-gray-7)'
+                        } pr-[1.2rem] text-[1.6rem] font-semibold leading-[140%]`}
                     >
                         이전 게시글
                     </button>

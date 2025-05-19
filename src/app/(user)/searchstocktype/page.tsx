@@ -1,88 +1,22 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+'use client';
 import MyStockBox from '@/components/Mypage/MyStockBox';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { type Stock } from '@/types/stock';
 import Hangul from 'hangul-js';
 
-const SearchStocktype = () => {
-    const navigate = useNavigate();
+export default function SearchStockType() {
+    const router = useRouter();
     const [searchStockType, setsearchStockType] = useState('');
+    const { data: stockData } = useQuery<Stock[]>({
+        queryKey: ['stockData'],
+        queryFn: () => fetch('/api/stocks').then(res => res.json()),
+    });
 
     const selectStocktype = (stocktype: string) => {
-        navigate(`/writepost/${stocktype}`);
+        router.push(`/writepost?stocktype=${stocktype}`);
     };
-
-    const stockData = [
-        {
-            infoBoxImgages: '',
-            name: '애플',
-            priceUSD: '$173.45',
-            rate: '2.5%',
-            englishName: 'Apple',
-        },
-        {
-            infoBoxImgages: '',
-            name: '구글',
-            priceUSD: '$2723.56',
-            rate: '-1.3%',
-            englishName: 'Google',
-        },
-        {
-            infoBoxImgages: '',
-            name: '마이크로소프트',
-            priceUSD: '$312.65',
-            rate: '0.8%',
-            englishName: 'Microsoft',
-        },
-        {
-            infoBoxImgages: '/temp/sample4.png',
-            name: '테슬라',
-            priceUSD: '$998.75',
-            rate: '4.2%',
-            englishName: 'Tesla',
-        },
-        {
-            infoBoxImgages: '',
-            name: '아마존',
-            priceUSD: '$3476.55',
-            rate: '-0.4%',
-            englishName: 'Amazon',
-        },
-        {
-            infoBoxImgages: '',
-            name: '유나이티드헬스',
-            priceUSD: '$504.99',
-            rate: '16.3%',
-            englishName: 'UnitedHealth',
-        },
-        {
-            infoBoxImgages: '',
-            name: '페이스북',
-            priceUSD: '$328.54',
-            rate: '1.1%',
-            englishName: 'Facebook',
-        },
-        {
-            infoBoxImgages: '',
-            name: '알리바바',
-            priceUSD: '$145.32',
-            rate: '-3.2%',
-            englishName: 'Alibaba',
-        },
-        {
-            infoBoxImgages: '',
-            name: '삼성전자',
-            priceUSD: '$50.12',
-            rate: '0.5%',
-            englishName: 'Samsung',
-        },
-        {
-            infoBoxImgages: '',
-            name: '넷플릭스',
-            priceUSD: '$612.99',
-            rate: '-2.1%',
-            englishName: 'Netflix',
-        },
-    ];
 
     const getInitialConsonant = (str: string) => {
         return Hangul.d(str)
@@ -90,7 +24,7 @@ const SearchStocktype = () => {
             .join('');
     };
 
-    const filteredStockData = stockData.filter(item => {
+    const filteredStockData = stockData?.filter(item => {
         if (!searchStockType) {
             return true;
         }
@@ -102,7 +36,6 @@ const SearchStocktype = () => {
             getInitialConsonant(item.name).includes(getInitialConsonant(searchStockType))
         );
     });
-
     return (
         <>
             <div className='px-[2rem] max-w-[128rem] mx-auto'>
@@ -124,7 +57,7 @@ const SearchStocktype = () => {
                     나의 선호 종목 [10]개
                 </div>
                 <div className='px-[2.4rem] py-[.8rem]'>
-                    {filteredStockData.map(item => (
+                    {filteredStockData?.map(item => (
                         <MyStockBox
                             key={item.name}
                             onClick={() => selectStocktype(item.name)}
@@ -137,6 +70,4 @@ const SearchStocktype = () => {
             </div>
         </>
     );
-};
-
-export default SearchStocktype;
+}
