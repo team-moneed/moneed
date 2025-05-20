@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Dropdown from '@/components/Dropdown';
+import { PrimaryDropdown, PrimaryDropdownProps } from '@/components/Dropdown';
 import { useModal } from '@/context/ModalContext';
 import useSnackBarStore from '@/store/useSnackBarStore';
 
@@ -9,7 +9,7 @@ type CommentType = {
     userName: string;
     content: string;
     createdAt: string;
-    onEditComment: () => void;
+    onEditComment: (e?: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 const Comment = ({ userName, content, createdAt, onEditComment }: CommentType) => {
@@ -25,7 +25,8 @@ const Comment = ({ userName, content, createdAt, onEditComment }: CommentType) =
     };
 
     //댓글 삭제할건지 묻는 모달
-    const opencommentDeletemodal = () => {
+    const opencommentDeletemodal = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
         const result = confirm(
             <span>
                 삭제된 내용은 복구되지 않아요.
@@ -35,20 +36,34 @@ const Comment = ({ userName, content, createdAt, onEditComment }: CommentType) =
         );
         result.then(confirmed => {
             if (confirmed) {
-                handledeleteComment();
+                handledeleteComment(e);
             }
         });
         setIsdropdownOpen(prev => !prev);
     };
 
     //댓글 삭제 api 연동
-    const handledeleteComment = () => {
+    const handledeleteComment = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
         showSnackBar('댓글이 삭제되었습니다.', 'action', 'bottom', '');
     };
 
     const closeDropdown = () => {
         setIsdropdownOpen(false);
     };
+
+    const dropdownMenus: PrimaryDropdownProps['dropdownMenus'] = [
+        {
+            icon: '/icon/icon-scissors.svg',
+            text: '댓글 수정',
+            onClick: onEditComment,
+        },
+        {
+            icon: '/icon/icon-trashcan.svg',
+            text: '댓글 삭제',
+            onClick: opencommentDeletemodal,
+        },
+    ];
 
     return (
         <>
@@ -70,15 +85,7 @@ const Comment = ({ userName, content, createdAt, onEditComment }: CommentType) =
                     >
                         <img src='/icon/icon-more.svg' alt='' className='w-full h-full object-cover' />
                     </div>
-                    {isDropdownOpen && (
-                        <Dropdown
-                            firsttext='댓글 수정'
-                            secondtext='댓글 삭제'
-                            secondevent={opencommentDeletemodal}
-                            firstevent={onEditComment}
-                            onClose={closeDropdown}
-                        ></Dropdown>
-                    )}
+                    {isDropdownOpen && <PrimaryDropdown dropdownMenus={dropdownMenus} closeDropdown={closeDropdown} />}
                 </div>
             </div>
         </>

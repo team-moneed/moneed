@@ -57,7 +57,7 @@ const MyComment = () => {
                 {activeTab === 'thisWeek' ? (
                     <div className='pt-[1.8rem]'>
                         {thisweekComments.map(comment => (
-                            <div className='pt-[1.8rem]'>
+                            <div key={comment.commentId} className='pt-[1.8rem]'>
                                 <Comment
                                     {...comment}
                                     onEditComment={() => {
@@ -70,7 +70,7 @@ const MyComment = () => {
                 ) : (
                     <div className='pt-[1.8rem]'>
                         {comments.map(comment => (
-                            <div className='pt-[1.8rem]'>
+                            <div key={comment.commentId} className='pt-[1.8rem]'>
                                 <Comment
                                     {...comment}
                                     onEditComment={() => {

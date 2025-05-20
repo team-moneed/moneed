@@ -4,7 +4,7 @@ import Icon from '@/components/Icon';
 import ImageCarousel from '@/components/Carousel/ImageCarousel';
 import { EmblaOptionsType } from 'embla-carousel';
 import { useState } from 'react';
-import Dropdown from '@/components/Dropdown';
+import { PrimaryDropdown, PrimaryDropdownProps } from '@/components/Dropdown';
 import DateFormatter from '@/util/Dateformatter';
 import useSnackBarStore from '@/store/useSnackBarStore';
 import { useModal } from '@/context/ModalContext';
@@ -95,7 +95,7 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
 
     const handleCopyClipBoard = () => {};
 
-    const dropdownMenus = [
+    const dropdownMenus: PrimaryDropdownProps['dropdownMenus'] = [
         {
             icon: '/icon/icon-scissors.svg',
             text: '게시글 수정',
@@ -140,28 +140,7 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                                 <img src='/icon/icon-more.svg' alt='' className='w-full h-full object-cover' />
                             </button>
                             {isDropdownOpen && (
-                                <div className='relative z-2 pointer-events-auto'>
-                                    <Dropdown onClose={closeDropdown}>
-                                        <div className='absolute top-0 right-10 z-50 bg-white shadow-custom rounded-[.8rem]'>
-                                            {dropdownMenus.map(menu => (
-                                                <button
-                                                    type='button'
-                                                    className='cursor-pointer flex gap-[.6rem] justify-center items-center whitespace-nowrap hover:bg-(--moneed-gray-5) px-[1.6rem] py-[1.8rem] rounded-[.8rem] w-50'
-                                                    onClick={menu.onClick}
-                                                >
-                                                    <div className='overflow-hidden aspect-square w-[1.8rem]'>
-                                                        <img
-                                                            src={menu.icon}
-                                                            alt={menu.text}
-                                                            className='w-full h-full object-cover'
-                                                        />
-                                                    </div>
-                                                    <div>{menu.text}</div>
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </Dropdown>
-                                </div>
+                                <PrimaryDropdown dropdownMenus={dropdownMenus} closeDropdown={closeDropdown} />
                             )}
                         </div>
                     </div>

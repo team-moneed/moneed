@@ -7,6 +7,7 @@ const useScrollSpy = (options: IntersectionObserverInit) => {
     const [isIntersecting, setIsIntersecting] = useState<boolean>(false);
 
     useEffect(() => {
+        const element = elementRef.current;
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 setIsIntersecting(entry.isIntersecting);
@@ -14,14 +15,14 @@ const useScrollSpy = (options: IntersectionObserverInit) => {
         }, options);
 
         // 요소를 관찰
-        if (elementRef.current) {
-            observer.observe(elementRef.current);
+        if (element) {
+            observer.observe(element);
         }
 
         // 클린업
         return () => {
-            if (elementRef.current) {
-                observer.unobserve(elementRef.current);
+            if (element) {
+                observer.unobserve(element);
             }
         };
     }, [options]);

@@ -6,7 +6,7 @@ import ImageCarousel from '@/components/Carousel/ImageCarousel';
 import { useModal } from '@/context/ModalContext';
 import DateFormatter from '@/util/Dateformatter';
 import Icon from '@/components/Icon';
-import Dropdown from '@/components/Dropdown';
+import { PrimaryDropdown, PrimaryDropdownProps } from '@/components/Dropdown';
 import Comment from '@/components/Community/Comment';
 import { EmblaOptionsType } from 'embla-carousel';
 
@@ -152,7 +152,7 @@ export default function PostDetailPage() {
         handleEditComment(content);
     };
 
-    const dropdownMenus = [
+    const dropdownMenus: PrimaryDropdownProps['dropdownMenus'] = [
         {
             icon: '/icon/icon-scissors.svg',
             text: '게시글 수정',
@@ -193,30 +193,7 @@ export default function PostDetailPage() {
                                         <img src='/icon/icon-more.svg' alt='' className='w-full h-full object-cover' />
                                     </div>
                                     {isDropdownOpen && (
-                                        <div className='relative z-2 pointer-events-auto'>
-                                            <Dropdown onClose={closeDropdown}>
-                                                <div className='absolute top-0 right-10 z-50 bg-white shadow-custom rounded-[.8rem]'>
-                                                    <div className='px-[4.4rem] py-[3.6rem]'>
-                                                        {dropdownMenus.map(menu => (
-                                                            <button
-                                                                type='button'
-                                                                className='cursor-pointer flex items-center mb-[2.4rem] whitespace-nowrap'
-                                                                onClick={menu.onClick}
-                                                            >
-                                                                <div className='overflow-hidden aspect-square w-[1.8rem] mr-[.6rem] '>
-                                                                    <img
-                                                                        src={menu.icon}
-                                                                        alt={menu.text}
-                                                                        className='w-full h-full object-cover'
-                                                                    />
-                                                                </div>
-                                                                <div>{menu.text}</div>
-                                                            </button>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            </Dropdown>
-                                        </div>
+                                        <PrimaryDropdown dropdownMenus={dropdownMenus} closeDropdown={closeDropdown} />
                                     )}
                                 </div>
                             </div>
@@ -250,9 +227,7 @@ export default function PostDetailPage() {
                     </div>
                     <div className='lg:w-[40%] lg:ml-auto flex flex-col'>
                         <div className='order-1 lg:order-2 flex gap-4 py-[1.8rem]'>
-                            <div className='text-[1.8rem] font-semibold leading-[140%] text-(--moneed-black)'>
-                                댓글
-                            </div>
+                            <div className='text-[1.8rem] font-semibold leading-[140%] text-(--moneed-black)'>댓글</div>
                             <div className='text-[1.8rem] font-semibold leading-[140%] text-(--moneed-black)'>8</div>
                         </div>
                         <div className='order-2 lg:order-3 flex flex-col gap-[3.6rem]'>
@@ -265,6 +240,7 @@ export default function PostDetailPage() {
                             ) : (
                                 PostDetail.map(item => (
                                     <Comment
+                                        key={item.commentId}
                                         userName={item.userName}
                                         content={item.content}
                                         createdAt={item.createdAt}
