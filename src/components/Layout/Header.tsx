@@ -165,7 +165,7 @@ const Header = () => {
         '/post',
     ];
 
-    const noMenuHeaderPaths = ['/onboarding', '/oauth2/callback/kakao'];
+    const noMenuHeaderPaths = ['/onboarding'];
 
     const pathname = usePathname();
 
