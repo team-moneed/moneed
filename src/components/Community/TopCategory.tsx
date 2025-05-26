@@ -1,6 +1,8 @@
 'use client';
 
 import CategoryRankBox from '@/components/Community/CategoryRankBox';
+import { useQuery } from '@tanstack/react-query';
+import { getHotStock } from '@/api/invest/hotStock';
 
 export type stockCagtegory = {
     categoryName: string;
@@ -42,6 +44,13 @@ const TopCategory = () => {
             },
         },
     ];
+
+    const { data } = useQuery({
+        queryKey: ['hotStock'],
+        queryFn: () => getHotStock({ market: 'NAS' }),
+    });
+
+    console.log(data);
 
     return (
         <>
