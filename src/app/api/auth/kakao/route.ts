@@ -1,4 +1,4 @@
-import { fetchKakaoToken } from '@/api/auth/authApi';
+import { getKakaoToken } from '@/api/auth/auth.api';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
         }
 
         // 3. Access Token 요청
-        const tokenResponse = await fetchKakaoToken(code);
+        const tokenResponse = await getKakaoToken(code);
 
         console.log('🔑 tokenResponse', tokenResponse);
 

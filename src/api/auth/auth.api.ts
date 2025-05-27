@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const kakaoTokenUrl = 'https://kauth.kakao.com/oauth/token';
+const kakaoAuthCodeUrl = 'https://kauth.kakao.com/oauth/authorize';
 
 interface KakaoTokenResponse {
     access_token: string;
@@ -11,7 +12,19 @@ interface KakaoTokenResponse {
     refresh_token_expires_in: number;
 }
 
-export const fetchKakaoToken = async (code: string): Promise<KakaoTokenResponse> => {
+export const getKakaoAuthCode = async (): Promise<string> => {
+    const res = await axios.get(kakaoAuthCodeUrl, {
+        params: {
+            client_id: process.env.KAKAO_CLIENT_ID,
+            redirect_uri: process.env.KAKAO_REDIRECT_URI,
+            response_type: 'code',
+            scope: 'openid',
+        },
+    });
+    return res.data;
+};
+
+export const getKakaoToken = async (code: string): Promise<KakaoTokenResponse> => {
     const data = {
         grant_type: 'authorization_code',
         client_id: process.env.KAKAO_CLIENT_ID,

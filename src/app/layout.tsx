@@ -8,7 +8,6 @@ import MobileNav from '@/components/Layout/MobileNav';
 import SnackBar from '@/components/SnackBar';
 import Footer from '@/components/Layout/Footer';
 import QueryClientProvider from '@/components/QueryClientProvider';
-import { KakaoProvider } from '@/context/KakaoContext';
 
 export const metadata: Metadata = {
     title: 'Moneed',
@@ -37,27 +36,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <div id='root'>
                     <QueryClientProvider>
                         <ModalProvider>
-                            <KakaoProvider>
-                                <div className='flex-1'>
-                                    <div className='hidden lg:block sticky top-0 z-10 bg-white'>
-                                        <Header />
-                                    </div>
-                                    {children}
-                                    <Footer />
+                            <div className='flex-1'>
+                                <div className='hidden lg:block sticky top-0 z-10 bg-white'>
+                                    <Header />
                                 </div>
-                                <MobileNav />
-                                <SnackBar />
-                            </KakaoProvider>
+                                {children}
+                                <Footer />
+                            </div>
+                            <MobileNav />
+                            <SnackBar />
                         </ModalProvider>
                     </QueryClientProvider>
                 </div>
-                {/* Kakao SDK */}
-                <Script
-                    src='https://t1.kakaocdn.net/kakao_js_sdk/2.7.5/kakao.min.js'
-                    integrity='sha384-dok87au0gKqJdxs7msEdBPNnKSRT+/mhTVzq+qOhcL464zXwvcrpjeWvyj1kCdq6'
-                    crossOrigin='anonymous'
-                    strategy='afterInteractive'
-                />
 
                 {/* GA 설치 */}
                 <Script
