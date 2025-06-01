@@ -2,7 +2,7 @@
 
 import CategoryRankBox from '@/components/Community/CategoryRankBox';
 import { useQuery } from '@tanstack/react-query';
-import { getHotStock } from '@/api/invest/hotStock';
+import { getHotStock } from '@/api/client/hotStock.api';
 
 export type stockCagtegory = {
     categoryName: string;

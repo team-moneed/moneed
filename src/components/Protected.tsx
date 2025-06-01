@@ -1,15 +1,17 @@
 'use client';
-
-import useAuthStore from '@/store/useAuthStore';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import { redirect } from 'next/navigation';
+import useAuthStore from '@/store/useAuthStore';
 
 const Protected = ({ children }: PropsWithChildren) => {
-    const isLoggedIn = useAuthStore(state => state.isLoggedIn);
-    if (!isLoggedIn) {
-        alert('로그인이 필요합니다.');
-        return redirect('/onboarding');
-    }
+    const accessToken = useAuthStore(state => state.accessToken);
+
+    useEffect(() => {
+        if (!accessToken) {
+            alert('로그인이 필요합니다.');
+            redirect('/onboarding');
+        }
+    }, [accessToken]);
     return children;
 };
 

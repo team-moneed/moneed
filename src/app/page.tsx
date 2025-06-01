@@ -1,11 +1,9 @@
-'use client';
-
 import MainNews from '@/components/Main/MainNews';
 import MainShortforms from '@/components/Main/MainShortforms';
 import TopStockRank from '@/components/Main/TopStockRank';
 import Link from 'next/link';
 
-function HomePage() {
+export default function Home() {
     return (
         <div className='px-8 max-w-512 mx-auto'>
             <div className='mt-[.7rem] lg:mt-4 aspect-350/106 rounded-[.8rem] overflow-hidden lg:aspect-941/151'>
@@ -55,5 +53,3 @@ function HomePage() {
         </div>
     );
 }
-
-export default HomePage;

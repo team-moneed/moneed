@@ -1,12 +1,12 @@
 'use client';
 
-import { Stock } from '@/types/stock';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import MypageBox from '@/components/Mypage/MypageBox';
 import MyStockBox from '@/components/Mypage/MyStockBox';
 
 export default function Mypage() {
+    // TODO: Selected Stock 불러오기
     const { data: stockData } = useQuery<Stock[]>({
         queryKey: ['stockData'],
         queryFn: () => fetch('/api/stocks').then(res => res.json()),

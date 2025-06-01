@@ -4,12 +4,12 @@ import { http } from '../request';
 type MarketCode = 'NYS' | 'NAS' | 'AMS' | 'TSE' | 'HKS' | 'SHS' | 'SZS' | 'HSX' | 'HNX';
 
 const investHttp = axios.create({
-    baseURL: import.meta.env.VITE_KIS_BASE_URL,
+    baseURL: process.env.KIS_BASE_URL,
     headers: {
         'Content-type': 'application/json; charset=utf-8',
-        Appkey: import.meta.env.VITE_KIS_APP_KEY,
-        Appsecret: import.meta.env.VITE_KIS_APP_SECRET,
-        Authorization: `Bearer ${import.meta.env.VITE_KIS_ACCESS_TOKEN}`,
+        Appkey: process.env.KIS_APP_KEY,
+        Appsecret: process.env.KIS_APP_SECRET,
+        Authorization: `Bearer ${process.env.KIS_ACCESS_TOKEN}`,
     },
 });
 

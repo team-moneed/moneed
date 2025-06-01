@@ -1,11 +1,12 @@
 'use client';
 
-import { type Stock } from '@/types/stock';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Hangul from 'hangul-js';
 import MyStockBox from '@/components/Mypage/MyStockBox';
+import { Stock } from '@/generated/prisma';
+import { getStocks } from '@/api/client/stock.api';
 
 export default function SearchStocktype() {
     const router = useRouter();
@@ -17,7 +18,7 @@ export default function SearchStocktype() {
 
     const { data: stockData } = useQuery<Stock[]>({
         queryKey: ['stockData'],
-        queryFn: () => fetch('/api/stocks').then(res => res.json()),
+        queryFn: () => getStocks(),
     });
 
     const getInitialConsonant = (str: string) => {

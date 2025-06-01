@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { AxiosInstance, AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
+import { refreshToken } from './client/auth.api';
 
 const Instance = (): AxiosInstance => {
     const instance: AxiosInstance = axios.create({
-        baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
         withCredentials: true,
+        baseURL: process.env.NEXT_PUBLIC_MONEED_BASE_URL,
         headers: {
             'Content-type': 'application/json',
         },
@@ -16,7 +17,7 @@ const Instance = (): AxiosInstance => {
                 return config;
             }
 
-            const authToken = localStorage.getItem('token');
+            const authToken = sessionStorage.getItem('accessToken');
 
             if (authToken) {
                 config.headers.Authorization = `Bearer ${authToken}`;
@@ -24,7 +25,6 @@ const Instance = (): AxiosInstance => {
             return config;
         },
         (error: AxiosError) => {
-            console.log(error);
             return Promise.reject(error);
         },
     );
@@ -33,10 +33,17 @@ const Instance = (): AxiosInstance => {
         (response: AxiosResponse) => {
             return response;
         },
-        (error: AxiosError) => {
-            // if () {
-
-            // }
+        async (error: AxiosError) => {
+            if (error.response?.status === 401) {
+                // access token 재발급
+                const data = await refreshToken();
+                if (data.accessToken) {
+                    sessionStorage.setItem('accessToken', data.accessToken);
+                } else {
+                    return Promise.reject(error);
+                }
+            }
+            console.log(error);
             return Promise.reject(error);
         },
     );
