@@ -11,7 +11,7 @@
         "lint:fix": "next lint --fix",
         "preview": "vite preview",
         "prepare": "husky install",
-        "postinstall": "husky install && prismaGenerate",
+        "postinstall": "husky install && npm run prismaGenerate",
         "prismaGenerate": "dotenv -e .env.local prisma generate",
         "prismaPull": "dotenv -e .env.local prisma db pull",
         "prismaDev": "dotenv -e .env.local prisma migrate dev"
