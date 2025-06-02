@@ -1,5 +1,5 @@
 import 'server-only';
-import { JWTPayload, SignJWT, decodeJwt, jwtVerify } from 'jose';
+import { JWTPayload, SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { TOKEN_EXPIRATION } from '@/constants/token';
 
@@ -15,12 +15,14 @@ export async function encrypt<T extends JWTPayload>(payload: T, exp: Date) {
 }
 
 export async function decrypt<T extends JWTPayload>(jwt: string | undefined = '') {
-    // TODO: 토큰 만료 시 401 에러 반환
-    console.log(await decodeJwt(jwt), Date.now());
-    const { payload } = await jwtVerify(jwt, encodedKey, {
-        algorithms: ['HS256'],
-    });
-    return payload as T;
+    try {
+        const { payload } = await jwtVerify(jwt, encodedKey, {
+            algorithms: ['HS256'],
+        });
+        return payload as T;
+    } catch (error) {
+        throw error;
+    }
 }
 
 export async function createToken<T extends JWTPayload>(payload: T) {
