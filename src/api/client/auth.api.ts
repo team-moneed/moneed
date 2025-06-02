@@ -7,6 +7,7 @@ type KakaoTokenParams = {
 
 type KakaoTokenResponse = {
     accessToken: string;
+    isExistingUser: boolean;
 };
 
 export const loginWithKakao = async ({ code, state }: KakaoTokenParams) => {

@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useSelectedStock } from '@/hooks/useSelectedStock';
 
 export default function SelectStockType() {
+    // TODO: UI 수정 필요
     const router = useRouter();
     const { data: stocks } = useQuery<Stock[]>({
         queryKey: ['stocks'],

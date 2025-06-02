@@ -77,7 +77,7 @@ export class AuthService {
     }
 
     // 기존 회원 확인 및 등록
-    async handleKakaoAuth(
+    async signInOrSignUpWithKakao(
         kakaoUserInfo: KakaoUserInfo,
         providerData: Pick<OAuthAccount, 'accessToken' | 'refreshToken'>,
     ) {
@@ -92,24 +92,28 @@ export class AuthService {
 
         if (existingUser.isExistingUser) {
             // 이미 존재하는 회원인 경우 (로그인)
-            existingUser.user = await this.userRepository.updateByProvider(provider);
+            return {
+                user: await this.userRepository.updateByProvider(provider),
+                isExistingUser: true,
+            };
         } else {
             // 존재하지 않는 회원인 경우 (회원가입)
-            existingUser.user = await this.userRepository.create(provider, {
-                name: kakaoUserInfo.kakao_account.name,
-                nickname: kakaoUserInfo.kakao_account.profile.nickname,
-                email: kakaoUserInfo.kakao_account.email,
-                birthyear: kakaoUserInfo.kakao_account.birthyear,
-                birthday: kakaoUserInfo.kakao_account.birthday,
-                profileImage: kakaoUserInfo.kakao_account.profile.profile_image_url,
-                thumbnailImage: kakaoUserInfo.kakao_account.profile.thumbnail_image_url,
-                ageRange: kakaoUserInfo.kakao_account.age_range,
-                gender: kakaoUserInfo.kakao_account.gender,
-                lastLoginAt: new Date(),
-            });
+            return {
+                user: await this.userRepository.create(provider, {
+                    name: kakaoUserInfo.kakao_account.name,
+                    nickname: kakaoUserInfo.kakao_account.profile.nickname,
+                    email: kakaoUserInfo.kakao_account.email,
+                    birthyear: kakaoUserInfo.kakao_account.birthyear,
+                    birthday: kakaoUserInfo.kakao_account.birthday,
+                    profileImage: kakaoUserInfo.kakao_account.profile.profile_image_url,
+                    thumbnailImage: kakaoUserInfo.kakao_account.profile.thumbnail_image_url,
+                    ageRange: kakaoUserInfo.kakao_account.age_range,
+                    gender: kakaoUserInfo.kakao_account.gender,
+                    lastLoginAt: new Date(),
+                }),
+                isExistingUser: false,
+            };
         }
-
-        return existingUser.user;
     }
 
     async refreshToken(token: string) {

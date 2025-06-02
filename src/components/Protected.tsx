@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import useAuthStore from '@/store/useAuthStore';
 
 const Protected = ({ children }: PropsWithChildren) => {
+    // TODO:
     const accessToken = useAuthStore(state => state.accessToken);
 
     useEffect(() => {

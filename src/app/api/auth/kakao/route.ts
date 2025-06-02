@@ -28,20 +28,20 @@ export async function POST(request: NextRequest) {
 
         const authService = new AuthService();
 
-        // 4. 기존 회원 여부 확인 및 등록
-        const user = await authService.handleKakaoAuth(kakaoUserInfo, {
+        // 기존 회원 여부 확인 및 등록
+        const { user, isExistingUser } = await authService.signInOrSignUpWithKakao(kakaoUserInfo, {
             accessToken: kakaoAccessToken,
             refreshToken: kakaoRefreshToken,
         });
 
-        // 5. 토큰 발급
+        // 토큰 발급
         const { accessToken, refreshToken } = await createToken<TokenPayload>({
             id: user.id,
             nickname: user.nickname,
             profileImage: user.profileImage,
         });
 
-        const response = NextResponse.json({ accessToken }, { status: 200 });
+        const response = NextResponse.json({ accessToken, isExistingUser }, { status: 200 });
 
         response.cookies.set('refresh_token', refreshToken, {
             httpOnly: true,

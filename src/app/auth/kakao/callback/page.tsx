@@ -25,24 +25,29 @@ export default function KakaoCallbackPage() {
     const setAccessToken = useAuthStore(state => state.setAccessToken);
     const setUserInfo = useUserStore(state => state.setUserInfo);
 
-    const { data: token } = useQuery({
+    const { data } = useQuery({
         queryKey: ['kakao', code, state],
         queryFn: () => loginWithKakao({ code: code!, state: state }),
         enabled: !!code,
     });
 
     useEffect(() => {
-        if (token) {
-            setAccessToken(token.accessToken);
-            const userInfo = decodeJwt<TokenPayload>(token.accessToken);
+        if (data) {
+            const { accessToken, isExistingUser } = data;
+            setAccessToken(accessToken);
+            const userInfo = decodeJwt<TokenPayload>(accessToken);
             setUserInfo({
                 id: userInfo.id,
                 nickname: userInfo.nickname,
                 profileImage: userInfo.profileImage,
             });
-            router.push('/selectstocktype');
+            if (isExistingUser) {
+                router.push('/');
+            } else {
+                router.push('/selectstocktype');
+            }
         }
-    }, [token, setUserInfo, setAccessToken, router]);
+    }, [data, setUserInfo, setAccessToken, router]);
 
     return <div>리다이렉트 중...</div>;
 }
