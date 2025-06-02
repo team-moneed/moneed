@@ -1,6 +1,6 @@
 import { TOKEN_ERROR } from '@/constants/token';
 import { verifySession } from '@/lib/dal';
-import prisma from '@/lib/prisma';
+import { StockService } from '@/services/stock.service';
 import { JWTExpired } from 'jose/errors';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -12,19 +12,10 @@ export async function GET(req: NextRequest) {
         }
 
         const payload = await verifySession(token);
-        const selectedStocks = await prisma.selectedStock.findMany({
-            where: {
-                userId: payload.id,
-            },
-            include: {
-                stock: {
-                    select: {
-                        name: true,
-                    },
-                },
-            },
-        });
-        return NextResponse.json(selectedStocks.flatMap(stock => ({ ...stock, name: stock.stock.name })));
+        const stockService = new StockService();
+        const selectedStocks = await stockService.getSelectedStock(payload.id);
+
+        return NextResponse.json(selectedStocks);
     } catch (error) {
         if (error instanceof JWTExpired) {
             return NextResponse.json({ error: TOKEN_ERROR.EXPIRED_TOKEN }, { status: 401 });
