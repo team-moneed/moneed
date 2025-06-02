@@ -7,35 +7,37 @@ import { selectStock as selectStockApi } from '@/api/client/stock.api';
 import { Stock } from '@/generated/prisma';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { redirect } from 'next/navigation';
-import { useUser } from '@/hooks/useUser';
-import { decodeToken, isTokenExpired } from '@/lib/auth';
+import { useRouter } from 'next/navigation';
 import { useSelectedStock } from '@/hooks/useSelectedStock';
 
 export default function SelectStockType() {
-    const { data: storedSelectedStock } = useSelectedStock();
-
+    const router = useRouter();
     const { data: stocks } = useQuery<Stock[]>({
         queryKey: ['stocks'],
         queryFn: () => getStocks(),
     });
 
+    const { data: mySelectedStockIds } = useSelectedStock<number[]>({
+        select: data => data.map(stock => stock.stockId),
+    });
+
     const { mutate: selectStock } = useMutation({
         mutationFn: (stockIds: number[]) => selectStockApi(stockIds),
     });
-    const [selectedStock, setSelectedStock] = useState<number[]>(storedSelectedStock ?? []);
+    const [stockIds, setStockIds] = useState<number[]>([]);
+    const selectedStock = [...stockIds, ...(mySelectedStockIds ?? [])];
 
     const toggleStock = (stockId: number) => {
         if (selectedStock.includes(stockId)) {
-            setSelectedStock(selectedStock.filter(stock => stock !== stockId));
+            setStockIds(stockIds.filter(stock => stock !== stockId));
         } else {
-            setSelectedStock([...selectedStock, stockId]);
+            setStockIds([...stockIds, stockId]);
         }
     };
 
     const handleSubmit = async () => {
         selectStock(selectedStock);
-        redirect('/');
+        router.push('/');
     };
 
     return (

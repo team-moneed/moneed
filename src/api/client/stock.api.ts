@@ -1,5 +1,6 @@
 import { http } from '@/api/request';
 import { Stock } from '@/generated/prisma';
+import { SelectedStock } from '@/types/stock';
 
 export async function getStocks({ count = 30, cursor = 0 }: { count?: number; cursor?: number } = {}) {
     const res = await http.get<Stock[]>('/api/stocks', { params: { count, cursor } });
@@ -12,6 +13,6 @@ export async function selectStock(stockIds: number[]) {
 }
 
 export async function getSelectedStock() {
-    const res = await http.get<number[]>('/api/stocks/selected');
+    const res = await http.get<SelectedStock[]>('/api/stocks/selected');
     return res.data;
 }

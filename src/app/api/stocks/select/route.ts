@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 import { JWTExpired } from 'jose/errors';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
     try {
         const token = req.headers.get('authorization')?.split(' ')[1];
         if (!token) {

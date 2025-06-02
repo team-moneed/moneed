@@ -2,17 +2,15 @@ import axios from 'axios';
 
 type KakaoTokenParams = {
     code: string;
-    state: string;
-    error: string;
-    error_description: string;
+    state?: string;
 };
 
 type KakaoTokenResponse = {
     accessToken: string;
 };
 
-export const getKakaoToken = async ({ code, state, error, error_description }: KakaoTokenParams) => {
-    const res = await axios.post<KakaoTokenResponse>('/api/auth/kakao', { code, state, error, error_description });
+export const loginWithKakao = async ({ code, state }: KakaoTokenParams) => {
+    const res = await axios.post<KakaoTokenResponse>('/api/auth/kakao', { code, state });
     return res.data;
 };
 

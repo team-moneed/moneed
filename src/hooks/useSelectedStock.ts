@@ -1,9 +1,16 @@
 import { getSelectedStock } from '@/api/client/stock.api';
-import { useQuery } from '@tanstack/react-query';
+import { SelectedStock } from '@/types/stock';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 
-export const useSelectedStock = () => {
-    return useQuery({
+type UseSelectedStockParams<TData = SelectedStock[]> = Omit<
+    UseQueryOptions<SelectedStock[], Error, TData>,
+    'queryKey' | 'queryFn'
+>;
+
+export const useSelectedStock = <TData = SelectedStock[]>(args: UseSelectedStockParams<TData> = {}) => {
+    return useQuery<SelectedStock[], Error, TData>({
         queryKey: ['selectedStock'],
         queryFn: () => getSelectedStock(),
+        ...args,
     });
 };

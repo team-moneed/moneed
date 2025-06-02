@@ -3,7 +3,7 @@ import MyStockBox from '@/components/Mypage/MyStockBox';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { type Stock } from '@/types/stock';
+import { type Stock } from '@/generated/prisma';
 import Hangul from 'hangul-js';
 
 export default function SearchStockType() {
@@ -53,9 +53,7 @@ export default function SearchStockType() {
                         className='pl-12 pr-4 py-[.8rem] w-full border border-solid border-(--moneed-gray-5) bg-(--moneed-black-3) rounded-[1.6rem] text-[1.6rem] text-(--moneed-gray-7)'
                     />
                 </div>
-                <div className='text-[1.6rem] font-semibold leading-[140%] pb-4 pt-[2.2rem]'>
-                    나의 선호 종목 [10]개
-                </div>
+                <div className='text-[1.6rem] font-semibold leading-[140%] pb-4 pt-[2.2rem]'>나의 선호 종목 [10]개</div>
                 <div className='px-[2.4rem] py-[.8rem]'>
                     {filteredStockData?.map(item => (
                         <MyStockBox

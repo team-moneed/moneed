@@ -12,15 +12,19 @@ export async function GET(req: NextRequest) {
         }
 
         const payload = await verifySession(token);
-        const selectedStock = await prisma.selectedStock.findMany({
+        const selectedStocks = await prisma.selectedStock.findMany({
             where: {
                 userId: payload.id,
             },
-            select: {
-                stockId: true,
+            include: {
+                stock: {
+                    select: {
+                        name: true,
+                    },
+                },
             },
         });
-        return NextResponse.json(selectedStock);
+        return NextResponse.json(selectedStocks.flatMap(stock => ({ ...stock, name: stock.stock.name })));
     } catch (error) {
         if (error instanceof JWTExpired) {
             return NextResponse.json({ error: TOKEN_ERROR.EXPIRED_TOKEN }, { status: 401 });

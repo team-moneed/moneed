@@ -1,16 +1,11 @@
 'use client';
-
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import MypageBox from '@/components/Mypage/MypageBox';
 import MyStockBox from '@/components/Mypage/MyStockBox';
+import { useSelectedStock } from '@/hooks/useSelectedStock';
 
 export default function Mypage() {
-    // TODO: Selected Stock 불러오기
-    const { data: stockData } = useQuery<Stock[]>({
-        queryKey: ['stockData'],
-        queryFn: () => fetch('/api/stocks').then(res => res.json()),
-    });
+    const { data: selectedStocks } = useSelectedStock();
 
     const router = useRouter();
 
@@ -66,16 +61,8 @@ export default function Mypage() {
                             </div>
                         </div>
                         <div className='space-y-[.8rem]'>
-                            {stockData?.map((stock, index) => (
-                                <MyStockBox
-                                    key={index}
-                                    infoBoxImgages={stock.infoBoxImgages}
-                                    name={stock.name}
-                                    priceUSD={stock.priceUSD}
-                                    rate={stock.rate}
-                                    englishName={stock.englishName}
-                                    onClick={() => movetocommunity(stock.name)}
-                                />
+                            {selectedStocks?.map(({ id, name }) => (
+                                <MyStockBox key={id} name={name} onClick={() => movetocommunity(name)} />
                             ))}
                         </div>
                     </div>
