@@ -58,15 +58,17 @@ const HotPosts = ({ ref }: { ref: React.RefObject<HTMLDivElement> }) => {
 };
 
 const Vote = ({ ref }: { ref: React.RefObject<HTMLDivElement> }) => {
+    const title = '지금 핫한 투표';
+    const standardDate = '12월 17일 8시';
     return (
         <>
             <div ref={ref} className='mt-[2.8rem]'>
                 <div className='flex items-baseline gap-[.8rem] mb-[1.8rem]'>
                     <h2 className='text-[2.2rem] leading-[145%] font-bold text-(--moneed-black) lg:text-[2.4rem] lg:leading-[140%]'>
-                        지금 핫한 투표
+                        {title}
                     </h2>
                     <span className='text-(--moneed-gray-7) text-[1.2rem] font-normal leading-[135%]'>
-                        12월 17일 8시 기준
+                        {standardDate} 기준
                     </span>
                 </div>
             </div>
@@ -78,32 +80,22 @@ const Vote = ({ ref }: { ref: React.RefObject<HTMLDivElement> }) => {
 };
 
 const Top5 = ({ ref }: { ref: React.RefObject<HTMLDivElement> }) => {
+    const title = 'Top 5';
+    const standardDate = '12월';
     return (
         <div ref={ref} className='mt-[3.6rem]'>
             <div className='flex items-baseline gap-[.8rem] mb-[1.6rem]'>
                 <h2 className='text-[2.2rem] leading-[145%] font-bold text-(--moneed-black) lg:text-[2.4rem] lg:leading-[140%]'>
-                    Top 5
-                </h2>
-                <span className='text-(--moneed-gray-7) text-[1.2rem] font-normal leading-[135%]'>12월 기준</span>
-            </div>
-        </div>
-    );
-};
-
-const Category = ({ ref }: { ref: React.RefObject<HTMLDivElement> }) => {
-    return (
-        <div ref={ref} className='mt-[2.8rem]'>
-            <div className='flex items-baseline gap-[.8rem] mb-[1.8rem]'>
-                <h2 className='text-[2.2rem] leading-[145%] font-bold text-(--moneed-black) lg:text-[2.4rem] lg:leading-[140%]'>
-                    지금 뜨는 종목
+                    {title}
                 </h2>
                 <span className='text-(--moneed-gray-7) text-[1.2rem] font-normal leading-[135%]'>
-                    12월 17일 8시 기준 | 전일종가
+                    {standardDate} 기준
                 </span>
             </div>
         </div>
     );
 };
+
 export default function CommunityPage() {
     const { data: posts } = useQuery<Post[]>({
         queryKey: ['posts'],
@@ -158,8 +150,7 @@ export default function CommunityPage() {
             </div>
             <Top5 ref={top5Ref} />
             <PostCarousel slides={topPosts} options={POSTOPTIONS} />
-            <Category ref={categoryRef} />
-            <TopCategory />
+            <TopCategory ref={categoryRef} />
             <Vote ref={voteRef} />
             <HotPosts ref={hotPostsRef} />
             {posts && <Posts posts={posts} />}

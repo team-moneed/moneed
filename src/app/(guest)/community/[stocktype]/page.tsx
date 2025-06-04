@@ -12,6 +12,7 @@ export default function CommunityPage({ params }: { params: Promise<{ stocktype:
     const { data: posts } = useQuery<Post[]>({
         queryKey: ['posts', stocktype],
         queryFn: () => fetch(`/api/posts?stocktype=${stocktype}`).then(res => res.json()),
+        enabled: !!stocktype,
     });
 
     return (
