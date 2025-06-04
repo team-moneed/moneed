@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { loginWithKakao } from '@/api/client/auth.api';
 import { useQuery } from '@tanstack/react-query';
@@ -9,7 +9,7 @@ import { decodeJwt } from 'jose';
 import { TokenPayload } from '@/types/auth';
 import useUserStore from '@/store/useUserStore';
 
-export default function KakaoCallbackPage() {
+function KakaoCallback() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const code = searchParams.get('code');
@@ -50,4 +50,12 @@ export default function KakaoCallbackPage() {
     }, [data, setUserInfo, setAccessToken, router]);
 
     return <div>리다이렉트 중...</div>;
+}
+
+export default function KakaoCallbackPage() {
+    return (
+        <Suspense fallback={<div>리다이렉트 중...</div>}>
+            <KakaoCallback />
+        </Suspense>
+    );
 }
