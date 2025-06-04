@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { AxiosInstance, AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
-import { refreshToken } from './client/auth.api';
+import { refreshToken } from './auth.api';
 
 const Instance = (): AxiosInstance => {
     const instance: AxiosInstance = axios.create({

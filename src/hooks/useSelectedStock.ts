@@ -1,4 +1,4 @@
-import { getSelectedStock } from '@/api/client/stock.api';
+import { getSelectedStock } from '@/api/stock.api';
 import { SelectedStock } from '@/types/stock';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 

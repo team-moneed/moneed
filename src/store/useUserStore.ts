@@ -1,4 +1,4 @@
-import { refreshToken } from '@/api/client/auth.api';
+import { refreshToken } from '@/api/auth.api';
 import { decodeToken, isTokenExpired } from '@/lib/auth';
 import { UserInfo } from '@/types/user';
 import { getCookie } from '@/util/cookie';

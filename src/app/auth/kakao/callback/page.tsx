@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { loginWithKakao } from '@/api/client/auth.api';
+import { loginWithKakao } from '@/api/auth.api';
 import { useQuery } from '@tanstack/react-query';
 import useAuthStore from '@/store/useAuthStore';
 import { decodeJwt } from 'jose';

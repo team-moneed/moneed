@@ -1,4 +1,4 @@
-import { getKakaoToken, getKakaoUserInfo } from '@/api/server/kakao.api';
+import { getKakaoToken, getKakaoUserInfo } from '@/api/kakao.api';
 import { NextRequest, NextResponse } from 'next/server';
 import { AuthService } from '@/services/auth.service';
 import { TokenPayload } from '@/types/auth';

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { type Stock } from '@/generated/prisma';
 import Hangul from 'hangul-js';
-import { getStocks } from '@/api/client/stock.api';
+import { getStocks } from '@/api/stock.api';
 
 export default function SearchStockType() {
     const router = useRouter();
