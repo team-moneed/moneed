@@ -34,20 +34,27 @@ export async function POST(request: NextRequest) {
             refreshToken: kakaoRefreshToken,
         });
 
-        // 토큰 발급
+        // 서비스 자체 토큰 발급
         const { accessToken, refreshToken } = await createToken<TokenPayload>({
             id: user.id,
             nickname: user.nickname,
             profileImage: user.profileImage,
         });
 
-        const response = NextResponse.json({ accessToken, isExistingUser }, { status: 200 });
+        const response = NextResponse.json({ isExistingUser }, { status: 200 });
 
         response.cookies.set('refresh_token', refreshToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
             maxAge: 30 * 24 * 60 * 60, // 30일
+            path: '/',
+        });
+
+        response.cookies.set('access_token', accessToken, {
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 7 * 24 * 60 * 60, // 7일
             path: '/',
         });
 

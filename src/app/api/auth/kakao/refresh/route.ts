@@ -15,14 +15,20 @@ export async function POST() {
         const authService = new AuthService();
         const { accessToken, refreshToken: newRefreshToken } = await authService.refreshToken(refreshToken);
 
-        const response = NextResponse.json({ accessToken }, { status: 200 });
+        const response = NextResponse.json({ message: 'Token refreshed' }, { status: 200 });
 
-        // 새로운 리프레시 토큰을 쿠키에 설정
         response.cookies.set('refresh_token', newRefreshToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
             maxAge: 30 * 24 * 60 * 60, // 30일
+            path: '/',
+        });
+
+        response.cookies.set('access_token', accessToken, {
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 7 * 24 * 60 * 60, // 7일
             path: '/',
         });
 

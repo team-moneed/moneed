@@ -8,6 +8,7 @@ import useAuthStore from '@/store/useAuthStore';
 import { decodeJwt } from 'jose';
 import { TokenPayload } from '@/types/auth';
 import useUserStore from '@/store/useUserStore';
+import { getCookie } from '@/util/cookie';
 
 function KakaoCallback() {
     const searchParams = useSearchParams();
@@ -33,14 +34,17 @@ function KakaoCallback() {
 
     useEffect(() => {
         if (data) {
-            const { accessToken, isExistingUser } = data;
-            setAccessToken(accessToken);
+            const { isExistingUser } = data;
+            const accessToken = getCookie('access_token');
+            if (!accessToken) return;
+
             const userInfo = decodeJwt<TokenPayload>(accessToken);
             setUserInfo({
                 id: userInfo.id,
                 nickname: userInfo.nickname,
                 profileImage: userInfo.profileImage,
             });
+            setAccessToken(accessToken);
             if (isExistingUser) {
                 router.push('/');
             } else {

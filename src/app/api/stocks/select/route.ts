@@ -3,10 +3,11 @@ import { verifySession } from '@/lib/dal';
 import prisma from '@/lib/prisma';
 import { JWTExpired } from 'jose/errors';
 import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 export async function POST(req: NextRequest) {
     try {
-        const token = req.headers.get('authorization')?.split(' ')[1];
+        const token = (await cookies()).get('access_token')?.value;
         if (!token) {
             return NextResponse.json({ error: TOKEN_ERROR.NOT_FOUND_TOKEN }, { status: 401 });
         }

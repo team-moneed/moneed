@@ -2,11 +2,13 @@ import { TOKEN_ERROR } from '@/constants/token';
 import { verifySession } from '@/lib/dal';
 import { StockService } from '@/services/stock.service';
 import { JWTExpired } from 'jose/errors';
-import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest) {
+export async function GET() {
     try {
-        const token = req.headers.get('authorization')?.split(' ')[1];
+        const token = (await cookies()).get('access_token')?.value;
+
         if (!token) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }

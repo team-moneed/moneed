@@ -13,18 +13,10 @@ const Instance = (): AxiosInstance => {
 
     instance.interceptors.request.use(
         (config: InternalAxiosRequestConfig) => {
-            if (!config.headers) {
-                return config;
-            }
-
-            const authToken = sessionStorage.getItem('accessToken');
-
-            if (authToken) {
-                config.headers.Authorization = `Bearer ${authToken}`;
-            }
             return config;
         },
         (error: AxiosError) => {
+            console.error(error.response?.data);
             return Promise.reject(error);
         },
     );
@@ -36,16 +28,17 @@ const Instance = (): AxiosInstance => {
         async (error: AxiosError) => {
             if (error.response?.status === 401) {
                 // access token 재발급
-                const data = await refreshToken();
-                if (data.accessToken) {
-                    sessionStorage.setItem('accessToken', data.accessToken);
+                const response = await refreshToken();
+                if (response.status === 200) {
+                    console.log('access token 재발급 성공');
+                    return Promise.resolve(response);
                 } else {
                     alert('세션이 만료되었습니다. 로그인을 다시 해주세요.');
                     window.location.href = '/onboarding';
+                    console.error(error.response?.data);
+                    return Promise.reject(error);
                 }
             }
-            console.log(error);
-            return Promise.reject(error);
         },
     );
 

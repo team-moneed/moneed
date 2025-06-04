@@ -10,8 +10,3 @@ export const TOKEN_ERROR = {
     EXPIRED_TOKEN: 'Expired token',
     NOT_FOUND_TOKEN: 'Not found token',
 } as const;
-
-export const STORAGE_KEY = {
-    ACCESS_TOKEN: 'accessToken',
-    REFRESH_TOKEN: 'refreshToken',
-} as const;

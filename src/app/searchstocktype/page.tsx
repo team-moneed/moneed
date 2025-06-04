@@ -5,13 +5,14 @@ import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { type Stock } from '@/generated/prisma';
 import Hangul from 'hangul-js';
+import { getStocks } from '@/api/client/stock.api';
 
 export default function SearchStockType() {
     const router = useRouter();
     const [searchStockType, setsearchStockType] = useState('');
     const { data: stockData } = useQuery<Stock[]>({
         queryKey: ['stockData'],
-        queryFn: () => fetch('/api/stocks').then(res => res.json()),
+        queryFn: () => getStocks(),
     });
 
     const selectStocktype = (stocktype: string) => {
