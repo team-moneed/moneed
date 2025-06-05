@@ -1,9 +1,9 @@
 'use client';
 
-import { getStocks } from '@/api/client/stock.api';
+import { getStocks } from '@/api/stock.api';
 import Button from '@/components/Button';
 import StockTypeChip from '@/components/create/StockTypeChip';
-import { selectStock as selectStockApi } from '@/api/client/stock.api';
+import { selectStock as selectStockApi } from '@/api/stock.api';
 import { Stock } from '@/generated/prisma';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';

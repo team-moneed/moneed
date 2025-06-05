@@ -65,11 +65,7 @@ const MenuHeader = () => {
 
     // 뒤로가기 버튼 클릭 시 동작
     const handleBackButtonClick = () => {
-        // if ((isWritePostPath || isEditPostPath || iscommentPath)) {
-        //     setShowModal(true);
-        // } else {
-        router.back(); // 뒤로가기
-        // }
+        router.back();
     };
 
     const handleModalConfirm = () => {

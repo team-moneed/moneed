@@ -1,6 +1,7 @@
-import { refreshToken } from '@/api/client/auth.api';
+import { refreshToken } from '@/api/auth.api';
 import { decodeToken, isTokenExpired } from '@/lib/auth';
 import { UserInfo } from '@/types/user';
+import { getCookie } from '@/util/cookie';
 import { create } from 'zustand';
 
 interface UserState {
@@ -28,9 +29,9 @@ export const useUserStore = create<UserState & UserAction>((set, get) => ({
         return null;
     },
     refreshUserInfo: async () => {
-        const data = await refreshToken();
-
-        const decodedInfo = decodeToken(data.accessToken);
+        await refreshToken();
+        const accessToken = getCookie('access_token');
+        const decodedInfo = decodeToken(accessToken);
 
         if (!decodedInfo) {
             set({ userInfo: null });

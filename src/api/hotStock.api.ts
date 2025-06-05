@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { http } from '../request';
+import { http } from './request';
 
 type MarketCode = 'NYS' | 'NAS' | 'AMS' | 'TSE' | 'HKS' | 'SHS' | 'SZS' | 'HSX' | 'HNX';
 

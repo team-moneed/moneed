@@ -6,7 +6,6 @@ type KakaoTokenParams = {
 };
 
 type KakaoTokenResponse = {
-    accessToken: string;
     isExistingUser: boolean;
 };
 
@@ -17,5 +16,5 @@ export const loginWithKakao = async ({ code, state }: KakaoTokenParams) => {
 
 export const refreshToken = async () => {
     const res = await axios.post<KakaoTokenResponse>('/api/auth/kakao/refresh');
-    return res.data;
+    return res;
 };
