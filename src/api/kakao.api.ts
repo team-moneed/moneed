@@ -4,29 +4,25 @@ import axios, { AxiosError } from 'axios';
 
 const kakaoTokenUrl = 'https://kauth.kakao.com/oauth/token';
 const kakaoUserInfoUrl = 'https://kapi.kakao.com/v2/user/me';
+const kakaoLogoutUrl = 'https://kapi.kakao.com/v1/user/logout';
 
 export const getKakaoToken = async (code: string) => {
-    try {
-        const data = {
-            grant_type: 'authorization_code',
-            client_id: process.env.KAKAO_CLIENT_ID,
-            redirect_uri: process.env.KAKAO_REDIRECT_URI,
-            code,
-            client_secret: process.env.KAKAO_CLIENT_SECRET,
-        };
+    const data = {
+        grant_type: 'authorization_code',
+        client_id: process.env.KAKAO_CLIENT_ID,
+        redirect_uri: process.env.KAKAO_REDIRECT_URI,
+        code,
+        client_secret: process.env.KAKAO_CLIENT_SECRET,
+    };
 
-        const headers = {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
-        };
+    const headers = {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+    };
 
-        const res = await axios.post<KakaoToken>(kakaoTokenUrl, data, {
-            headers,
-        });
-        return res.data;
-    } catch (error) {
-        console.error('Failed to get Kakao token:', (error as AxiosError).response?.data);
-        throw error;
-    }
+    const res = await axios.post<KakaoToken>(kakaoTokenUrl, data, {
+        headers,
+    });
+    return res.data;
 };
 
 export const getKakaoUserInfo = async (accessToken: string) => {
@@ -40,6 +36,28 @@ export const getKakaoUserInfo = async (accessToken: string) => {
         return res.data;
     } catch (error) {
         console.error('Failed to get Kakao user info:', (error as AxiosError).response?.data);
+        throw error;
+    }
+};
+
+export const logoutKakao = async ({ accessToken, providerUserId }: { accessToken: string; providerUserId: string }) => {
+    try {
+        const res = await axios.post(
+            kakaoLogoutUrl,
+            {
+                target_id_type: 'user_id',
+                target_id: BigInt(providerUserId),
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            },
+        );
+        return res.data;
+    } catch (error) {
+        console.error('Failed to logout with Kakao:', (error as AxiosError).response?.data);
         throw error;
     }
 };

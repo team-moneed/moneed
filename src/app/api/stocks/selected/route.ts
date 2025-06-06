@@ -1,21 +1,18 @@
 import { TOKEN_ERROR } from '@/constants/token';
-import { verifySession } from '@/lib/dal';
+import { getSession } from '@/lib/session';
 import { StockService } from '@/services/stock.service';
 import { JWTExpired } from 'jose/errors';
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
-        const token = (await cookies()).get('access_token')?.value;
-
-        if (!token) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        const session = await getSession();
+        if (!session) {
+            return NextResponse.json({ error: TOKEN_ERROR.INVALID_TOKEN }, { status: 401 });
         }
 
-        const payload = await verifySession(token);
         const stockService = new StockService();
-        const selectedStocks = await stockService.getSelectedStock(payload.id);
+        const selectedStocks = await stockService.getSelectedStock(session.userId);
 
         return NextResponse.json(selectedStocks);
     } catch (error) {

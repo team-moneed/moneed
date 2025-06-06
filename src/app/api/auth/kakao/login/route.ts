@@ -1,11 +1,10 @@
 import { getKakaoToken, getKakaoUserInfo } from '@/api/kakao.api';
 import { NextRequest, NextResponse } from 'next/server';
 import { AuthService } from '@/services/auth.service';
-import { TokenPayload } from '@/types/auth';
-import { createToken } from '@/lib/session';
 import { JWTExpired } from 'jose/errors';
 import { TOKEN_ERROR } from '@/constants/token';
 import { AxiosError } from 'axios';
+import { createSession } from '@/lib/session';
 
 export async function POST(request: NextRequest) {
     try {
@@ -24,6 +23,7 @@ export async function POST(request: NextRequest) {
 
         // Access Token 요청 및 사용자 정보 조회
         const { access_token: kakaoAccessToken, refresh_token: kakaoRefreshToken } = await getKakaoToken(code);
+        console.log('kakaoAccessToken', kakaoAccessToken);
         const kakaoUserInfo = await getKakaoUserInfo(kakaoAccessToken);
 
         const authService = new AuthService();
@@ -34,29 +34,9 @@ export async function POST(request: NextRequest) {
             refreshToken: kakaoRefreshToken,
         });
 
-        // 서비스 자체 토큰 발급
-        const { accessToken, refreshToken } = await createToken<TokenPayload>({
-            id: user.id,
-            nickname: user.nickname,
-            profileImage: user.profileImage,
-        });
-
         const response = NextResponse.json({ isExistingUser }, { status: 200 });
 
-        response.cookies.set('refresh_token', refreshToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-            maxAge: 30 * 24 * 60 * 60, // 30일
-            path: '/',
-        });
-
-        response.cookies.set('access_token', accessToken, {
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-            maxAge: 7 * 24 * 60 * 60, // 7일
-            path: '/',
-        });
+        await createSession(user.id);
 
         return response;
     } catch (error) {

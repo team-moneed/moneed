@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import MypageBox from '@/components/Mypage/MypageBox';
 import MyStockBox from '@/components/Mypage/MyStockBox';
 import { useSelectedStock } from '@/hooks/useSelectedStock';
+import LogoutButton from './LogoutButton';
 
 export default function Mypage() {
     const { data: selectedStocks } = useSelectedStock();
@@ -23,13 +24,6 @@ export default function Mypage() {
 
     const movetocommunity = (stockname: string) => {
         router.push(`/community/${stockname}`);
-    };
-
-    const handleLogout = () => {
-        const isLogout = window.confirm('로그아웃 하시겠습니까?');
-        if (isLogout) {
-            router.push(`/onboarding`);
-        }
     };
 
     return (
@@ -74,12 +68,7 @@ export default function Mypage() {
                         </div>
                     </div>
                     <div className='flex items-center ml-auto'>
-                        <button
-                            className='text-[1.4rem] font-normal leading-[145%] text-(--moneed-gray-7)'
-                            onClick={handleLogout}
-                        >
-                            로그아웃
-                        </button>
+                        <LogoutButton />
                     </div>
                 </div>
             </div>

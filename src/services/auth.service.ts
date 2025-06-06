@@ -1,8 +1,8 @@
 import { UserRepository } from '@/repositories/user.repository';
-import { OAuthAccount, User } from '@/generated/prisma';
-import { createToken, decrypt } from '@/lib/session';
-import { TokenPayload } from '@/types/auth';
-import { TOKEN_ERROR } from '@/constants/token';
+import { OAuthAccount } from '@/generated/prisma';
+import { deleteSession } from '@/lib/session';
+import { logoutKakao } from '@/api/kakao.api';
+import { ProviderRepository } from '@/repositories/provider.repository';
 
 export interface KakaoUserInfo {
     id: bigint;
@@ -30,50 +30,11 @@ export interface KakaoUserInfo {
 
 export class AuthService {
     private userRepository: UserRepository;
+    private providerRepository: ProviderRepository;
 
     constructor() {
         this.userRepository = new UserRepository();
-    }
-
-    async checkExistingUser(userInfo: KakaoUserInfo): Promise<{
-        isExistingUser: boolean;
-        matchType: 'provider' | 'userInfo' | 'none';
-        user: User | null;
-    }> {
-        // 1. 카카오 ID로 기존 회원 확인
-        const userByProvider = await this.userRepository.findByProvider({
-            provider: 'kakao',
-            providerUserId: userInfo.id.toString(),
-        });
-        if (userByProvider) {
-            return {
-                isExistingUser: true,
-                matchType: 'provider',
-                user: userByProvider,
-            };
-        }
-
-        // 2. 사용자 정보로 기존 회원 확인
-        const userByInfo = await this.userRepository.findByUserInfo({
-            name: userInfo.kakao_account.name,
-            email: userInfo.kakao_account.email,
-            birthyear: userInfo.kakao_account.birthyear,
-            birthday: userInfo.kakao_account.birthday,
-        });
-
-        if (userByInfo) {
-            return {
-                isExistingUser: true,
-                matchType: 'userInfo',
-                user: userByInfo,
-            };
-        }
-
-        return {
-            isExistingUser: false,
-            matchType: 'none',
-            user: null,
-        };
+        this.providerRepository = new ProviderRepository();
     }
 
     // 기존 회원 확인 및 등록
@@ -81,60 +42,42 @@ export class AuthService {
         kakaoUserInfo: KakaoUserInfo,
         providerData: Pick<OAuthAccount, 'accessToken' | 'refreshToken'>,
     ) {
-        const existingUser = await this.checkExistingUser(kakaoUserInfo);
-
         const provider = {
-            provider: 'kakao',
+            provider: 'kakao' as const,
             providerUserId: kakaoUserInfo.id.toString(),
             accessToken: providerData.accessToken,
             refreshToken: providerData.refreshToken,
         };
 
-        if (existingUser.isExistingUser) {
-            // 이미 존재하는 회원인 경우 (로그인)
-            return {
-                user: await this.userRepository.updateByProvider(provider),
-                isExistingUser: true,
-            };
-        } else {
-            // 존재하지 않는 회원인 경우 (회원가입)
-            return {
-                user: await this.userRepository.create(provider, {
-                    name: kakaoUserInfo.kakao_account.name,
-                    nickname: kakaoUserInfo.kakao_account.profile.nickname,
-                    email: kakaoUserInfo.kakao_account.email,
-                    birthyear: kakaoUserInfo.kakao_account.birthyear,
-                    birthday: kakaoUserInfo.kakao_account.birthday,
-                    profileImage: kakaoUserInfo.kakao_account.profile.profile_image_url,
-                    thumbnailImage: kakaoUserInfo.kakao_account.profile.thumbnail_image_url,
-                    ageRange: kakaoUserInfo.kakao_account.age_range,
-                    gender: kakaoUserInfo.kakao_account.gender,
-                    lastLoginAt: new Date(),
-                }),
-                isExistingUser: false,
-            };
-        }
+        const userData = {
+            name: kakaoUserInfo.kakao_account.name,
+            nickname: kakaoUserInfo.kakao_account.profile.nickname,
+            email: kakaoUserInfo.kakao_account.email,
+            birthyear: kakaoUserInfo.kakao_account.birthyear,
+            birthday: kakaoUserInfo.kakao_account.birthday,
+            profileImage: kakaoUserInfo.kakao_account.profile.profile_image_url,
+            thumbnailImage: kakaoUserInfo.kakao_account.profile.thumbnail_image_url,
+            ageRange: kakaoUserInfo.kakao_account.age_range,
+            gender: kakaoUserInfo.kakao_account.gender,
+        };
+
+        return await this.userRepository.upsertWithKakao(provider, userData);
     }
 
-    async refreshToken(token: string) {
-        const payload = await decrypt<TokenPayload>(token);
-
-        if (!payload) {
-            throw new Error(TOKEN_ERROR.INVALID_TOKEN);
+    async logoutWithKakao(userId: string) {
+        const providerInfo = await this.providerRepository.findProviderInfo(userId, 'kakao');
+        if (!providerInfo) {
+            await deleteSession();
+            return;
         }
 
-        const user = await this.userRepository.findById(payload.id);
-
-        if (!user) {
-            throw new Error(TOKEN_ERROR.USER_NOT_FOUND);
+        const { accessToken, providerUserId } = providerInfo;
+        if (!accessToken) {
+            await deleteSession();
+            return;
         }
 
-        const { accessToken, refreshToken } = await createToken<TokenPayload>({
-            id: user.id,
-            nickname: user.nickname,
-            profileImage: user.profileImage,
-        });
-
-        return { accessToken, refreshToken };
+        await logoutKakao({ accessToken, providerUserId });
+        await deleteSession();
     }
 }

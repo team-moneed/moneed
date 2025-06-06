@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { AxiosInstance, AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
-import { refreshToken } from './auth.api';
 
 const Instance = (): AxiosInstance => {
     const instance: AxiosInstance = axios.create({
@@ -27,17 +26,10 @@ const Instance = (): AxiosInstance => {
         },
         async (error: AxiosError) => {
             if (error.response?.status === 401) {
-                // access token 재발급
-                const response = await refreshToken();
-                if (response.status === 200) {
-                    console.log('access token 재발급 성공');
-                    return Promise.resolve(response);
-                } else {
-                    alert('세션이 만료되었습니다. 로그인을 다시 해주세요.');
-                    window.location.href = '/onboarding';
-                    console.error(error.response?.data);
-                    return Promise.reject(error);
-                }
+                alert('세션이 만료되었습니다. 로그인을 다시 해주세요.');
+                window.location.href = '/onboarding';
+                console.error(error.response?.data);
+                return Promise.reject(error);
             }
         },
     );

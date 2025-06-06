@@ -1,4 +1,3 @@
-import { refreshToken } from '@/api/auth.api';
 import { decodeToken, isTokenExpired } from '@/lib/auth';
 import { UserInfo } from '@/types/user';
 import { getCookie } from '@/util/cookie';
@@ -11,7 +10,7 @@ interface UserState {
 interface UserAction {
     setUserInfo: (userInfo: UserInfo) => void;
     getUserInfo: () => UserInfo | null;
-    refreshUserInfo: () => Promise<null | undefined>;
+    refreshUserInfo: () => void;
     clearUserInfo: () => void;
 }
 
@@ -28,8 +27,7 @@ export const useUserStore = create<UserState & UserAction>((set, get) => ({
         set({ userInfo: null });
         return null;
     },
-    refreshUserInfo: async () => {
-        await refreshToken();
+    refreshUserInfo: () => {
         const accessToken = getCookie('access_token');
         const decodedInfo = decodeToken(accessToken);
 

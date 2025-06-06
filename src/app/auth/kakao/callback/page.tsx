@@ -2,11 +2,9 @@
 
 import { Suspense, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { loginWithKakao } from '@/api/auth.api';
+import { login } from '@/api/auth.api';
 import { useQuery } from '@tanstack/react-query';
 import useAuthStore from '@/store/useAuthStore';
-import { decodeJwt } from 'jose';
-import { TokenPayload } from '@/types/auth';
 import useUserStore from '@/store/useUserStore';
 import { getCookie } from '@/util/cookie';
 
@@ -28,7 +26,7 @@ function KakaoCallback() {
 
     const { data } = useQuery({
         queryKey: ['kakao', code, state],
-        queryFn: () => loginWithKakao({ code: code!, state: state }),
+        queryFn: () => login({ code: code!, state: state, provider: 'kakao' }),
         enabled: !!code,
     });
 
@@ -38,12 +36,6 @@ function KakaoCallback() {
             const accessToken = getCookie('access_token');
             if (!accessToken) return;
 
-            const userInfo = decodeJwt<TokenPayload>(accessToken);
-            setUserInfo({
-                id: userInfo.id,
-                nickname: userInfo.nickname,
-                profileImage: userInfo.profileImage,
-            });
             setAccessToken(accessToken);
             if (isExistingUser) {
                 router.push('/');
