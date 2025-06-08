@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import Modal from '@/components/Modal';
 import Logo from '@/app/onboarding/Logo';
-import NavLink from '../NavLink';
+import NavLink from '@/components/NavLink';
 
 const CommonHeader = () => {
     const router = useRouter();
@@ -165,17 +165,27 @@ const NoMenuHeader = () => {
 };
 
 const Header = () => {
-    const menuHeaderPaths = ['/mycomment', '/mypost', '/searchstocktype', '/writepost', '/editpost', '/post'];
+    const menuHeaderPaths = [
+        '/selectStockType',
+        '/mycomment',
+        '/mypost',
+        '/searchstocktype',
+        '/writepost',
+        '/editpost',
+        '/post',
+    ];
 
     const noMenuHeaderPaths = ['/onboarding', '/selectstocktype'];
 
     const pathname = usePathname();
 
     if (noMenuHeaderPaths.includes(pathname)) {
-        return null;
+        return <NoMenuHeader />;
+    } else if (menuHeaderPaths.includes(pathname)) {
+        return <MenuHeader />;
+    } else {
+        return <CommonHeader />;
     }
-
-    return menuHeaderPaths.includes(pathname) ? <MenuHeader /> : <CommonHeader />;
 };
 
 export default Header;
