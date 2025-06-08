@@ -1,8 +1,8 @@
 'use client';
 
+import useSnackBarStore from '@/store/useSnackBarStore';
 import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import useSnackBarStore from '@/store/useSnackBarStore';
 
 export default function SnackBar() {
     const { message, icon, position, type, isVisible, hideSnackBar } = useSnackBarStore();
@@ -32,7 +32,7 @@ export default function SnackBar() {
     } else if (type === 'action') {
         backgroundColor = 'bg-(--moneed-blue-light)';
         textColor = 'text-(--moneed-blue)';
-    } else if (type === 'cancel') {
+    } else if (type === 'caution') {
         backgroundColor = 'bg-(--moneed-red-light)';
         textColor = 'text-(--moneed-red)';
     }

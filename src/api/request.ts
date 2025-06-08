@@ -26,8 +26,7 @@ const Instance = (): AxiosInstance => {
         },
         async (error: AxiosError) => {
             if (error.response?.status === 401) {
-                alert('세션이 만료되었습니다. 로그인을 다시 해주세요.');
-                window.location.href = '/onboarding';
+                window.location.href = '/onboarding?reason=expired_session';
                 console.error(error.response?.data);
                 return Promise.reject(error);
             }

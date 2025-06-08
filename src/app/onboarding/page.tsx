@@ -1,17 +1,34 @@
 'use client';
 
 import KakaoLoginButton from '@/components/KakaoLoginButton';
+import useSnackBarStore, { SnackBarType } from '@/store/useSnackBarStore';
+import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
+
+const reasons: Record<string, { title: string; type: SnackBarType }> = {
+    no_session: { title: '로그인이 필요합니다.', type: 'caution' },
+    expired_session: { title: '세션이 만료되었습니다. 다시 로그인해주세요.', type: 'caution' },
+    logout: { title: '로그아웃 되었습니다.', type: 'action' },
+};
 
 export default function Onboarding() {
+    const searchParams = useSearchParams();
+    const reason = searchParams.get('reason');
+    const showSnackBar = useSnackBarStore(state => state.showSnackBar);
+
+    useEffect(() => {
+        if (reason) {
+            showSnackBar(
+                reasons[reason as keyof typeof reasons].title,
+                reasons[reason as keyof typeof reasons].type,
+                'top',
+            );
+        }
+    }, [reason, showSnackBar]);
+
     return (
         <>
             <div className="relative h-screen overflow-hidden px-[1.8rem] pt-8 bg-[url('/line-bg.png')] bg-size-[8rem_8rem] lg:bg-[url('/line-bg-pc.png')]">
-                <div className='flex'>
-                    <div className='w-[2.8rem] h-[2.8rem] bg-(--moneed-black) rounded-full flex items-center justify-center'>
-                        <img className='w-[1.4rem] h-[1.2rem]' src='/icon/icon-logo.svg' alt='' />
-                    </div>
-                    <span className='font-semibold leading-[140%] text-[1.8rem] ml-[.8rem]'>moneed</span>
-                </div>
                 <div className='pt-[14.3rem]'>
                     <div className='relative z-2 text-[3.2rem] text-(--moneed-black) font-bold leading-[145%]'>
                         당신의 니즈를
