@@ -3,7 +3,7 @@
 import KakaoLoginButton from '@/components/KakaoLoginButton';
 import useSnackBarStore, { SnackBarType } from '@/store/useSnackBarStore';
 import { useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 
 const reasons: Record<string, { title: string; type: SnackBarType }> = {
     no_session: { title: '로그인이 필요합니다.', type: 'caution' },
@@ -11,7 +11,7 @@ const reasons: Record<string, { title: string; type: SnackBarType }> = {
     logout: { title: '로그아웃 되었습니다.', type: 'action' },
 };
 
-export default function Onboarding() {
+function Onboarding() {
     const searchParams = useSearchParams();
     const reason = searchParams.get('reason');
     const showSnackBar = useSnackBarStore(state => state.showSnackBar);
@@ -53,5 +53,13 @@ export default function Onboarding() {
                 </div>
             </div>
         </>
+    );
+}
+
+export default function OnBoardingWrapper() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <Onboarding />
+        </Suspense>
     );
 }
