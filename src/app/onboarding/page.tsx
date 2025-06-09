@@ -5,10 +5,10 @@ import useSnackBarStore, { SnackBarType } from '@/store/useSnackBarStore';
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect } from 'react';
 
-const reasons: Record<string, { title: string; type: SnackBarType }> = {
-    no_session: { title: '로그인이 필요합니다.', type: 'caution' },
-    expired_session: { title: '세션이 만료되었습니다. 다시 로그인해주세요.', type: 'caution' },
-    logout: { title: '로그아웃 되었습니다.', type: 'action' },
+const reasons: Record<string, { message: string; type: SnackBarType }> = {
+    no_session: { message: '로그인이 필요합니다.', type: 'caution' },
+    expired_session: { message: '세션이 만료되었습니다. 다시 로그인해주세요.', type: 'caution' },
+    logout: { message: '로그아웃 되었습니다.', type: 'action' },
 };
 
 function Onboarding() {
@@ -19,7 +19,7 @@ function Onboarding() {
     useEffect(() => {
         if (reason) {
             showSnackBar(
-                reasons[reason as keyof typeof reasons].title,
+                reasons[reason as keyof typeof reasons].message,
                 reasons[reason as keyof typeof reasons].type,
                 'top',
             );

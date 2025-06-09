@@ -1,9 +1,32 @@
+'use client';
+
 import MainNews from '@/components/Main/MainNews';
 import MainShortforms from '@/components/Main/MainShortforms';
 import TopStockRank from '@/components/Main/TopStockRank';
 import Link from 'next/link';
+import useSnackBarStore, { SnackBarType } from '@/store/useSnackBarStore';
+import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
+
+const reasons: Record<string, { message: string; type: SnackBarType }> = {
+    logged_in: { message: '이미 로그인 상태입니다.', type: 'normal' },
+};
 
 export default function Home() {
+    const searchParams = useSearchParams();
+    const reason = searchParams.get('reason');
+    const showSnackBar = useSnackBarStore(state => state.showSnackBar);
+
+    useEffect(() => {
+        if (reason) {
+            showSnackBar(
+                reasons[reason as keyof typeof reasons].message,
+                reasons[reason as keyof typeof reasons].type,
+                'top',
+            );
+        }
+    }, [reason, showSnackBar]);
+
     return (
         <div className='px-8 max-w-512 mx-auto'>
             <div className='mt-[.7rem] lg:mt-4 aspect-350/106 rounded-[.8rem] overflow-hidden lg:aspect-941/151'>
