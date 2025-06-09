@@ -57,6 +57,8 @@ model OAuthAccount {
     updatedAt         DateTime  @updatedAt
     accessToken       String
     refreshToken      String
+    accessTokenExpiresIn DateTime
+    refreshTokenExpiresIn DateTime
 
     @@unique([provider, providerUserId])
     @@map("oauth_accounts")

@@ -40,13 +40,18 @@ export class AuthService {
     // 기존 회원 확인 및 등록
     async signInOrSignUpWithKakao(
         kakaoUserInfo: KakaoUserInfo,
-        providerData: Pick<OAuthAccount, 'accessToken' | 'refreshToken'>,
+        providerData: Pick<
+            OAuthAccount,
+            'accessToken' | 'refreshToken' | 'accessTokenExpiresIn' | 'refreshTokenExpiresIn'
+        >,
     ) {
         const provider = {
             provider: 'kakao' as const,
             providerUserId: kakaoUserInfo.id.toString(),
             accessToken: providerData.accessToken,
             refreshToken: providerData.refreshToken,
+            accessTokenExpiresIn: providerData.accessTokenExpiresIn,
+            refreshTokenExpiresIn: providerData.refreshTokenExpiresIn,
         };
 
         const userData = {
