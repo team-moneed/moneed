@@ -1,5 +1,6 @@
 import { OAuthAccount } from '@/generated/prisma';
 import prisma from '@/lib/prisma';
+import { Optional } from '@/types/util';
 
 export class ProviderRepository {
     private prisma = prisma;
@@ -32,14 +33,17 @@ export class ProviderRepository {
     }
 
     async updateToken(
-        providerData: Pick<
-            OAuthAccount,
-            | 'provider'
-            | 'providerUserId'
-            | 'accessToken'
-            | 'refreshToken'
-            | 'accessTokenExpiresIn'
-            | 'refreshTokenExpiresIn'
+        providerData: Optional<
+            Pick<
+                OAuthAccount,
+                | 'provider'
+                | 'providerUserId'
+                | 'accessToken'
+                | 'refreshToken'
+                | 'accessTokenExpiresIn'
+                | 'refreshTokenExpiresIn'
+            >,
+            'refreshToken' | 'refreshTokenExpiresIn'
         >,
     ) {
         const { provider, providerUserId, accessToken, refreshToken, accessTokenExpiresIn, refreshTokenExpiresIn } =

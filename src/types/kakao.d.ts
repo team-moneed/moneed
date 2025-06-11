@@ -1,6 +1,8 @@
 // Kakao SDK TypeScript 타입 정의
 // 참고: https://developers.kakao.com/sdk/reference/js/release/Kakao.html
 
+import { Optional } from './util';
+
 declare global {
     interface Window {
         Kakao: KakaoStatic;
@@ -236,7 +238,7 @@ export interface KakaoShare {
     }): void;
 }
 
-export interface KakaoToken {
+export interface KakaoTokenResponse {
     access_token: string;
     token_type: string;
     refresh_token: string;
@@ -245,3 +247,5 @@ export interface KakaoToken {
     refresh_token_expires_in: number;
     id_token: string;
 }
+
+export type KakaoRefreshTokenResponse = Optional<KakaoTokenResponse, 'refresh_token' | 'refresh_token_expires_in'>;

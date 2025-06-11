@@ -1,6 +1,6 @@
 import 'server-only';
 import { KakaoUserInfo } from '@/services/auth.service';
-import { KakaoToken } from '@/types/kakao';
+import { KakaoRefreshTokenResponse, KakaoTokenResponse } from '@/types/kakao';
 import axios, { AxiosError } from 'axios';
 import { ProviderRepository } from '@/repositories/provider.repository';
 import { deleteSession } from '@/lib/session';
@@ -23,7 +23,7 @@ export const getKakaoToken = async (code: string) => {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
     };
 
-    const res = await axios.post<KakaoToken>(kakaoTokenUrl, data, {
+    const res = await axios.post<KakaoTokenResponse>(kakaoTokenUrl, data, {
         headers,
     });
     return res.data;
@@ -41,7 +41,7 @@ export const refreshKakaoToken = async (refreshToken: string) => {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
     };
 
-    const res = await axios.post<KakaoToken>(kakaoTokenUrl, data, {
+    const res = await axios.post<KakaoRefreshTokenResponse>(kakaoTokenUrl, data, {
         headers,
     });
     return res.data;
@@ -72,7 +72,9 @@ const kakaoAuthInstance = (() => {
                             accessToken: newToken.access_token,
                             refreshToken: newToken.refresh_token,
                             accessTokenExpiresIn: new Date(Date.now() + newToken.expires_in * 1000),
-                            refreshTokenExpiresIn: new Date(Date.now() + newToken.refresh_token_expires_in * 1000),
+                            refreshTokenExpiresIn: newToken.refresh_token_expires_in
+                                ? new Date(Date.now() + newToken.refresh_token_expires_in * 1000)
+                                : undefined,
                         });
                     } else if (isRefreshTokenExpired) {
                         await providerRepository.delete('kakao', providerData.providerUserId);
