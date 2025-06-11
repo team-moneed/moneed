@@ -22,8 +22,13 @@ export async function POST(request: NextRequest) {
         }
 
         // Access Token 요청 및 사용자 정보 조회
-        const { access_token: kakaoAccessToken, refresh_token: kakaoRefreshToken } = await getKakaoToken(code);
-        console.log('kakaoAccessToken', kakaoAccessToken);
+        const kakaoToken = await getKakaoToken(code);
+        const {
+            access_token: kakaoAccessToken,
+            refresh_token: kakaoRefreshToken,
+            expires_in: kakaoAccessTokenExpiresInSec,
+            refresh_token_expires_in: kakaoRefreshTokenExpiresInSec,
+        } = kakaoToken;
         const kakaoUserInfo = await getKakaoUserInfo(kakaoAccessToken);
 
         const authService = new AuthService();
@@ -32,6 +37,8 @@ export async function POST(request: NextRequest) {
         const { user, isExistingUser } = await authService.signInOrSignUpWithKakao(kakaoUserInfo, {
             accessToken: kakaoAccessToken,
             refreshToken: kakaoRefreshToken,
+            accessTokenExpiresIn: new Date(Date.now() + kakaoAccessTokenExpiresInSec * 1000),
+            refreshTokenExpiresIn: new Date(Date.now() + kakaoRefreshTokenExpiresInSec * 1000),
         });
 
         const response = NextResponse.json({ isExistingUser }, { status: 200 });

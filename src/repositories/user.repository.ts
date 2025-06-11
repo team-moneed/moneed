@@ -111,7 +111,15 @@ export class UserRepository {
     }
 
     async upsertWithKakao(
-        providerData: Pick<OAuthAccount, 'provider' | 'providerUserId' | 'accessToken' | 'refreshToken'>,
+        providerData: Pick<
+            OAuthAccount,
+            | 'provider'
+            | 'providerUserId'
+            | 'accessToken'
+            | 'refreshToken'
+            | 'accessTokenExpiresIn'
+            | 'refreshTokenExpiresIn'
+        >,
         userData: Optional<User, 'id' | 'createdAt' | 'updatedAt' | 'role' | 'lastLoginAt'>,
     ): Promise<{ user: User; isExistingUser: boolean }> {
         // 먼저 기존 사용자 확인 (provider ID 또는 사용자 정보로)
@@ -149,7 +157,15 @@ export class UserRepository {
     }
 
     async create(
-        providerData: Pick<OAuthAccount, 'provider' | 'providerUserId' | 'accessToken' | 'refreshToken'> | null,
+        providerData: Pick<
+            OAuthAccount,
+            | 'provider'
+            | 'providerUserId'
+            | 'accessToken'
+            | 'refreshToken'
+            | 'accessTokenExpiresIn'
+            | 'refreshTokenExpiresIn'
+        > | null,
         userData: Optional<User, 'id' | 'createdAt' | 'updatedAt' | 'role'>,
     ): Promise<User> {
         if (providerData) {

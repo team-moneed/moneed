@@ -20,7 +20,7 @@ export class ProviderRepository {
         });
     }
 
-    async delete(providerUserId: string, provider: string) {
+    async delete(provider: string, providerUserId: string) {
         return this.prisma.oAuthAccount.delete({
             where: {
                 provider_providerUserId: {
@@ -32,9 +32,18 @@ export class ProviderRepository {
     }
 
     async updateToken(
-        providerData: Pick<OAuthAccount, 'provider' | 'providerUserId' | 'accessToken' | 'refreshToken'>,
+        providerData: Pick<
+            OAuthAccount,
+            | 'provider'
+            | 'providerUserId'
+            | 'accessToken'
+            | 'refreshToken'
+            | 'accessTokenExpiresIn'
+            | 'refreshTokenExpiresIn'
+        >,
     ) {
-        const { provider, providerUserId, accessToken, refreshToken } = providerData;
+        const { provider, providerUserId, accessToken, refreshToken, accessTokenExpiresIn, refreshTokenExpiresIn } =
+            providerData;
 
         return this.prisma.oAuthAccount.update({
             where: {
@@ -46,12 +55,22 @@ export class ProviderRepository {
             data: {
                 accessToken,
                 refreshToken,
+                accessTokenExpiresIn,
+                refreshTokenExpiresIn,
             },
         });
     }
 
     async create(
-        providerData: Pick<OAuthAccount, 'provider' | 'providerUserId' | 'accessToken' | 'refreshToken'>,
+        providerData: Pick<
+            OAuthAccount,
+            | 'provider'
+            | 'providerUserId'
+            | 'accessToken'
+            | 'refreshToken'
+            | 'accessTokenExpiresIn'
+            | 'refreshTokenExpiresIn'
+        >,
         userId: string,
     ) {
         return this.prisma.oAuthAccount.create({
@@ -62,6 +81,22 @@ export class ProviderRepository {
                         id: userId,
                     },
                 },
+            },
+        });
+    }
+
+    async getTokenExpiration(provider: string, accessToken: string) {
+        return this.prisma.oAuthAccount.findFirst({
+            where: {
+                provider,
+                accessToken,
+            },
+            select: {
+                accessToken: true,
+                refreshToken: true,
+                accessTokenExpiresIn: true,
+                refreshTokenExpiresIn: true,
+                providerUserId: true,
             },
         });
     }
