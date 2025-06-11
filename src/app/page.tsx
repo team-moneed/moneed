@@ -6,13 +6,13 @@ import TopStockRank from '@/components/Main/TopStockRank';
 import Link from 'next/link';
 import useSnackBarStore, { SnackBarType } from '@/store/useSnackBarStore';
 import { useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 
 const reasons: Record<string, { message: string; type: SnackBarType }> = {
     logged_in: { message: '이미 로그인 상태입니다.', type: 'normal' },
 };
 
-export default function Home() {
+function Home() {
     const searchParams = useSearchParams();
     const reason = searchParams.get('reason');
     const showSnackBar = useSnackBarStore(state => state.showSnackBar);
@@ -74,5 +74,13 @@ export default function Home() {
                 <MainNews />
             </div>
         </div>
+    );
+}
+
+export default function HomeWrapper() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <Home />
+        </Suspense>
     );
 }
