@@ -5,6 +5,7 @@ import Button from '@/components/Button';
 import Link from 'next/link';
 import { useState } from 'react';
 import Modal from '@/components/Modal';
+import Logo from '@/app/onboarding/Logo';
 
 const CommonHeader = () => {
     const router = useRouter();
@@ -65,11 +66,7 @@ const MenuHeader = () => {
 
     // 뒤로가기 버튼 클릭 시 동작
     const handleBackButtonClick = () => {
-        // if ((isWritePostPath || isEditPostPath || iscommentPath)) {
-        //     setShowModal(true);
-        // } else {
-        router.back(); // 뒤로가기
-        // }
+        router.back();
     };
 
     const handleModalConfirm = () => {
@@ -154,6 +151,14 @@ const MenuHeader = () => {
     );
 };
 
+const NoMenuHeader = () => {
+    return (
+        <div className='sticky top-0 z-10 bg-white flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-8'>
+            <Logo />
+        </div>
+    );
+};
+
 const Header = () => {
     const menuHeaderPaths = [
         '/selectStockType',
@@ -165,15 +170,17 @@ const Header = () => {
         '/post',
     ];
 
-    const noMenuHeaderPaths = ['/onboarding', '/oauth2/callback/kakao'];
+    const noMenuHeaderPaths = ['/onboarding'];
 
     const pathname = usePathname();
 
     if (noMenuHeaderPaths.includes(pathname)) {
-        return null;
+        return <NoMenuHeader />;
+    } else if (menuHeaderPaths.includes(pathname)) {
+        return <MenuHeader />;
+    } else {
+        return <CommonHeader />;
     }
-
-    return menuHeaderPaths.includes(pathname) ? <MenuHeader /> : <CommonHeader />;
 };
 
 export default Header;
