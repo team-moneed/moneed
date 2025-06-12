@@ -4,10 +4,10 @@ export default function SelectStockTypeLayout({ children }: { children: React.Re
             <div className='lg:hidden block fixed top-0 left-0 w-full h-28 bg-white z-50'></div>
             <div className='md:max-w-[59.2rem] md:rounded-[2.4rem] md:bg-white md:mx-auto md:pt-24 md:pb-16'>
                 <div className='sticky top-24 bg-white md:bg-transparent pb-[3.6rem] md:static'>
-                    <h2 className='text-[2.4rem] font-bold leading-[140%] text-(--moneed-black) pt-[6.1rem] md:pt-0 md:text-center'>
+                    <h2 className='text-[2.4rem] font-bold leading-[140%] text-moneed-black pt-[6.1rem] md:pt-0 md:text-center'>
                         어떤 종목을 선호하시나요?
                     </h2>
-                    <p className='text-[1.4rem] font-normal leading-[140%] text-(--moneed-gray-7) md:text-center'>
+                    <p className='text-[1.4rem] font-normal leading-[140%] text-moneed-gray-7 md:text-center'>
                         *선택된 관심 종목 게시판이 보여집니다.
                     </p>
                 </div>

@@ -26,7 +26,7 @@ export default function LogoutButton() {
     };
 
     return (
-        <button className='text-[1.4rem] font-normal leading-[145%] text-(--moneed-gray-7)' onClick={handleLogout}>
+        <button className='text-[1.4rem] font-normal leading-[145%] text-moneed-gray-7' onClick={handleLogout}>
             로그아웃
         </button>
     );

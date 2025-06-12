@@ -39,7 +39,7 @@ const MyProfile = () => {
                 <img src={selectedImage} alt='Selected Profile' className='w-full h-full object-cover rounded-full' />
                 <div
                     onClick={handleClickEditProfile}
-                    className='absolute bottom-[0rem] right-2 bg-(--moneed-white) border border-solid border-(--moneed-gray-5) rounded-full p-[0.6rem] cursor-pointer '
+                    className='absolute bottom-[0rem] right-2 bg-moneed-white border border-solid border-moneed-gray-5 rounded-full p-[0.6rem] cursor-pointer '
                 >
                     <img src='/icon/icon-edit-profile.svg' alt='Edit Profile' className='w-full h-full object-cover' />
                 </div>
@@ -48,21 +48,19 @@ const MyProfile = () => {
             {showProfileImage && <SelectProfileImage onSelect={handleImageSelect} />}
 
             <div>
-                <div className='text-[1.6rem] font-normal leading-[140%] text-(--moneed-black) mt-[6.9rem]'>
-                    닉네임
-                </div>
+                <div className='text-[1.6rem] font-normal leading-[140%] text-moneed-black mt-[6.9rem]'>닉네임</div>
                 <input
                     value={nickname}
                     onChange={handleNicknameChange}
-                    className='bg-(--moneed-gray-4) text-[1.6rem] rounded-[1.2rem] px-[2.4rem] py-[.8rem] h-[5.4rem] w-full'
+                    className='bg-moneed-gray-4 text-[1.6rem] rounded-[1.2rem] px-[2.4rem] py-[.8rem] h-[5.4rem] w-full'
                 />
             </div>
 
             <div>
-                <li className='text-[1.4rem] font-normal leading-[140%] text-(--moneed-gray-7) mt-[.8rem]'>
+                <li className='text-[1.4rem] font-normal leading-[140%] text-moneed-gray-7 mt-[.8rem]'>
                     닉네임은 2-10자까지 입력하실 수 있습니다.
                 </li>
-                <li className='text-[1.4rem] font-normal leading-[140%] text-(--moneed-gray-7)'>
+                <li className='text-[1.4rem] font-normal leading-[140%] text-moneed-gray-7'>
                     한번 수정된 닉네임은 30일 뒤에 변경이 가능합니다.
                 </li>
             </div>
@@ -72,7 +70,7 @@ const MyProfile = () => {
                     onClick={cancelChangeProfile}
                     theme='secondary'
                     textcolor='secondary'
-                    className='border border-solid border-(--moneed-gray-6) text-[1.6rem] font-bold leading-[140%] px-[2.4rem] py-[1.8rem]'
+                    className='border border-solid border-moneed-gray-6 text-[1.6rem] font-bold leading-[140%] px-[2.4rem] py-[1.8rem]'
                 >
                     취소
                 </Button>

@@ -91,13 +91,13 @@ function AuthError() {
             <div className='flex justify-center items-center mt-[6.3rem]'>
                 <img src='/errorcta.svg' alt='' className='w-116' />
             </div>
-            <div className='text-[2.4rem] text-(--moneed-black) font-bold text-center mt-8 leading-[140%]'>
+            <div className='text-[2.4rem] text-moneed-black font-bold text-center mt-8 leading-[140%]'>
                 {errorInfo.title}
             </div>
-            <div className='text-(--moneed-black) text-center mt-[1.2rem] font-semibold leading-[140%]'>
+            <div className='text-moneed-black text-center mt-[1.2rem] font-semibold leading-[140%]'>
                 {errorInfo.message}
             </div>
-            <div className='text-(--moneed-black) text-center mt-[1.2rem] font-semibold leading-[140%]'>
+            <div className='text-moneed-black text-center mt-[1.2rem] font-semibold leading-[140%]'>
                 {errorInfo.action}
             </div>
             <div className='flex flex-col justify-center items-center my-16 gap-[1.2rem]'>
@@ -118,7 +118,7 @@ function AuthError() {
                     홈으로 돌아가기
                 </Button>
             </div>
-            <div className='text-(--moneed-gray-7) font-normal text-center text-[1.4rem] leading-[140%]'>
+            <div className='text-moneed-gray-7 font-normal text-center text-[1.4rem] leading-[140%]'>
                 오류상황 메일신고: help@moneed.kr
             </div>
         </div>

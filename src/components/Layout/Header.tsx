@@ -19,7 +19,7 @@ const CommonHeader = () => {
             <div className='sticky top-0 z-10 bg-white flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-8'>
                 <Link href='/'>
                     <div className='flex'>
-                        <div className='w-[2.8rem] h-[2.8rem] bg-(--moneed-black) rounded-full flex items-center justify-center'>
+                        <div className='w-[2.8rem] h-[2.8rem] bg-moneed-black rounded-full flex items-center justify-center'>
                             <img className='w-[1.4rem] h-[1.2rem]' src='/icon/icon-logo.svg' alt='' />
                         </div>
                         <span className='font-semibold leading-[140%] text-[1.8rem] ml-[.8rem]'>moneed</span>
@@ -113,7 +113,7 @@ const MenuHeader = () => {
                 src='/icon/icon-arrow-back.svg'
                 alt=''
             />
-            <h1 className='text-[1.6rem] font-semibold text-(--moneed-gray-9)'>{getHeaderTitle()}</h1>
+            <h1 className='text-[1.6rem] font-semibold text-moneed-gray-9'>{getHeaderTitle()}</h1>
             {isWritePostPath || isEditPostPath ? (
                 <img
                     className='w-[2.4rem] h-[2.4rem] cursor-pointer'
@@ -153,24 +153,16 @@ const MenuHeader = () => {
 
 const NoMenuHeader = () => {
     return (
-        <div className='sticky top-0 z-10 bg-white flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-8'>
+        <div className='sticky top-0 z-10 bg-white flex items-center justify-between shrink-0 self-stretch pt-[30px] pr-10 pb-[18px] pl-10'>
             <Logo />
         </div>
     );
 };
 
 const Header = () => {
-    const menuHeaderPaths = [
-        '/selectStockType',
-        '/mycomment',
-        '/mypost',
-        '/searchstocktype',
-        '/writepost',
-        '/editpost',
-        '/post',
-    ];
+    const menuHeaderPaths = ['/mycomment', '/mypost', '/searchstocktype', '/writepost', '/editpost', '/post'];
 
-    const noMenuHeaderPaths = ['/onboarding'];
+    const noMenuHeaderPaths = ['/onboarding', '/selectstocktype'];
 
     const pathname = usePathname();
 
