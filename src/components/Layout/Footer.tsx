@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 const Footer = () => {
     const pathname = usePathname();
 
-    const hideFooterPaths = ['/selectStockType', '/myprofile', '/welcome', '/writepost', '/editpost'];
+    const hideFooterPaths = ['/selectstocktype', '/myprofile', '/welcome', '/writepost', '/editpost'];
 
     if (hideFooterPaths.includes(pathname)) {
         return null;
