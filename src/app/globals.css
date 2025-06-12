@@ -32,7 +32,7 @@
     --color-moneed-gray-2: #fbfbfb;
     --color-moneed-gray-1: #fdfdfe;
     --color-moneed-white: #ffffff;
-    --container-7xl: 80rem * 1.6;
+    --container-7xl: calc(80rem * 1.6);
 }
 
 @utility mask-right {

@@ -35,9 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <div id='root' className='mx-auto min-h-screen max-w-7xl'>
                     <QueryClientProvider>
                         <ModalProvider>
-                            <div className='sticky top-0 z-10 bg-white'>
-                                <Header />
-                            </div>
+                            <Header />
                             {children}
                             <Footer />
                             <MobileNav />
