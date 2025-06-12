@@ -3,6 +3,7 @@ import { OAuthAccount } from '@/generated/prisma';
 import { deleteSession } from '@/lib/session';
 import { logoutKakao } from '@/api/kakao.api';
 import { ProviderRepository } from '@/repositories/provider.repository';
+import { AxiosError } from 'axios';
 
 export interface KakaoUserInfo {
     id: bigint;
@@ -70,19 +71,26 @@ export class AuthService {
     }
 
     async logoutWithKakao(userId: string) {
-        const providerInfo = await this.providerRepository.findProviderInfo(userId, 'kakao');
-        if (!providerInfo) {
-            await deleteSession();
-            return;
-        }
+        try {
+            const providerInfo = await this.providerRepository.findProviderInfo(userId, 'kakao');
+            if (!providerInfo) {
+                await deleteSession();
+                return;
+            }
 
-        const { accessToken, providerUserId } = providerInfo;
-        if (!accessToken) {
-            await deleteSession();
-            return;
-        }
+            const { accessToken, providerUserId } = providerInfo;
+            if (!accessToken) {
+                await deleteSession();
+                return;
+            }
 
-        await logoutKakao({ accessToken, providerUserId });
-        await deleteSession();
+            await logoutKakao({ accessToken, providerUserId });
+            await deleteSession();
+        } catch (e) {
+            const error = e as AxiosError<{ msg: string; code: number }>;
+            if (error.response?.data?.code === -401) {
+                await deleteSession();
+            }
+        }
     }
 }
