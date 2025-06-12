@@ -8,7 +8,7 @@ const MobileNav = () => {
     const router = useRouter();
     const pathname = usePathname();
 
-    const hideMobileNavPaths = ['/selectStockType', '/myprofile', '/welcome', '/writepost', '/editpost'];
+    const hideMobileNavPaths = ['/selectstocktype', '/myprofile', '/welcome', '/writepost', '/editpost'];
 
     if (hideMobileNavPaths.includes(pathname)) {
         return null;
@@ -52,7 +52,6 @@ const MobileNav = () => {
                     <img src='/icon/icon-edit.svg' alt='' />
                 </button>
             </div>
-            <div className='w-[1.2rem] h-[1.2rem] bg-moneed-gray-7'></div>
         </>
     );
 };

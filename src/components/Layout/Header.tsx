@@ -16,7 +16,7 @@ const CommonHeader = () => {
 
     return (
         <>
-            <div className='sticky top-0 z-10 bg-white flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-8'>
+            <div className='sticky top-0 z-10 bg-white flex items-center justify-between px-[4rem] pb-[1.8rem] pt-[3rem]'>
                 <Link href='/'>
                     <div className='flex'>
                         <div className='w-[2.8rem] h-[2.8rem] bg-moneed-black rounded-full flex items-center justify-center'>
@@ -110,7 +110,7 @@ const MenuHeader = () => {
     };
 
     return (
-        <div className='sticky top-0 z-10 bg-white flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-8'>
+        <div className='sticky top-0 z-10 bg-white flex items-center justify-between px-[4rem] pb-[1.8rem] pt-[3rem]'>
             <img
                 className='cursor-pointer w-[2.4rem] h-[2.4rem]'
                 onClick={handleBackButtonClick}
@@ -157,7 +157,7 @@ const MenuHeader = () => {
 
 const NoMenuHeader = () => {
     return (
-        <div className='sticky top-0 z-10 bg-white flex items-center justify-between shrink-0 self-stretch pt-[30px] pr-10 pb-[18px] pl-10'>
+        <div className='sticky top-0 z-10 bg-white flex items-center justify-between px-[4rem] pb-[1.8rem] pt-[3rem]'>
             <Logo />
         </div>
     );
