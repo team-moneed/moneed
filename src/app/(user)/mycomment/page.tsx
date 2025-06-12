@@ -32,13 +32,13 @@ const MyComment = () => {
                     <div className='text-[1.8rem] font-semibold leading-[140%]'>댓글</div>
                     <div className='ml-[.4rem] text-[1.8rem] font-semibold leading-[140%]'>7</div>
                 </div>
-                <div className='border-b-2 border-solid border-(--moneed-gray-5)'>
+                <div className='border-b-2 border-solid border-moneed-gray-5'>
                     <button
                         onClick={() => setActiveTab('thisWeek')}
                         className={`${
                             activeTab === 'thisWeek'
-                                ? 'text-(--moneed-black) border-b-4 border-solid border-(--moneed-black)'
-                                : 'text-(--moneed-gray-7)'
+                                ? 'text-moneed-black border-b-4 border-solid border-moneed-black'
+                                : 'text-moneed-gray-7'
                         } pr-[1.2rem] text-[1.6rem] font-semibold leading-[140%]`}
                     >
                         이번주 게시글
@@ -47,8 +47,8 @@ const MyComment = () => {
                         onClick={() => setActiveTab('notthisWeek')}
                         className={`${
                             activeTab === 'notthisWeek'
-                                ? 'text-(--moneed-black) border-b-4 border-solid border-(--moneed-black)'
-                                : 'text-(--moneed-gray-7)'
+                                ? 'text-moneed-black border-b-4 border-solid border-moneed-black'
+                                : 'text-moneed-gray-7'
                         } pr-[1.2rem] text-[1.6rem] font-semibold leading-[140%]`}
                     >
                         이전 게시글

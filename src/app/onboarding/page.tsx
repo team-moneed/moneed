@@ -11,7 +11,7 @@ export default function Onboarding() {
                     <span className='font-semibold leading-[140%] text-[1.8rem] ml-[.8rem]'>moneed</span>
                 </div>
                 <div className='pt-[14.3rem]'>
-                    <div className='relative z-2 text-[3.2rem] text-(--moneed-black) font-bold leading-[145%]'>
+                    <div className='relative z-2 text-[3.2rem] text-moneed-black font-bold leading-[145%]'>
                         당신의 니즈를
                         <br />
                         충족하는 투자의
