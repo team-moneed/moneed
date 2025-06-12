@@ -53,10 +53,8 @@ const kakaoAuthInstance = (() => {
     instance.interceptors.request.use(async config => {
         try {
             if (config.headers.Authorization) {
-                const providerData = await providerRepository.getTokenExpiration(
-                    'kakao',
-                    config.headers.Authorization as string,
-                );
+                const token = (config.headers.Authorization as string).split(' ')[1];
+                const providerData = await providerRepository.getTokenExpiration('kakao', token);
                 if (providerData) {
                     const isAcessTokenExpired = providerData.accessTokenExpiresIn < new Date();
                     const isRefreshTokenExpired = providerData.refreshTokenExpiresIn < new Date();
@@ -118,7 +116,7 @@ export const getKakaoUserInfo = async (accessToken: string) => {
 
 export const logoutKakao = async ({ accessToken, providerUserId }: { accessToken: string; providerUserId: string }) => {
     try {
-        const res = await axios.post(
+        const res = await kakaoAuthInstance.post(
             kakaoLogoutUrl,
             {
                 target_id_type: 'user_id',
