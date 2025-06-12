@@ -17,14 +17,7 @@ const NavLink = ({ className, icon, activeIcon, to, children }: NavLinkType) => 
     const active = pathname === to;
 
     return (
-        <Link
-            href={to}
-            className={cn(
-                'flex flex-col justify-center items-center gap-[.3rem] text-[1rem] flex-1',
-                active ? 'text-moneed-black' : 'text-moneed-gray-6',
-                className,
-            )}
-        >
+        <Link href={to} className={cn('text-[1rem]', active ? 'text-moneed-black' : 'text-moneed-gray-6', className)}>
             {icon ? (
                 <img src={active ? activeIcon || icon : icon} alt='icon' className='w-[2.4rem] h-[2.4rem]' />
             ) : (
