@@ -15,6 +15,7 @@ export type stockCagtegory = {
 };
 
 const TopCategory = ({ ref }: { ref: React.RefObject<HTMLDivElement> }) => {
+    // TODO: API 연결
     const stockCategories = [
         {
             categoryName: '기계/반도체/IT가전',
