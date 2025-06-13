@@ -3,7 +3,6 @@
 import VideoCarousel from '@/components/Carousel/VideoCarousel';
 import { EmblaOptionsType } from 'embla-carousel';
 import { useQuery } from '@tanstack/react-query';
-import { Video } from '@/types/video';
 import { shorts } from '@/api/shorts/shortsQueries';
 
 const MainShortforms = () => {
@@ -15,7 +14,7 @@ const MainShortforms = () => {
         containScroll: 'trimSnaps',
     };
 
-    const { data: videoData = [], isLoading } = useQuery(shorts.getYoutubeStockshorts());
+    const { data: videoData = [] } = useQuery(shorts.getYoutubeStockshorts());
 
     return (
         <>

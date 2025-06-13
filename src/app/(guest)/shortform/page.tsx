@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { shorts } from '@/api/shorts/shortsQueries';
+import { Video } from '@/types/video';
 
 export default function ShortformPage() {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -13,7 +14,7 @@ export default function ShortformPage() {
         <div className='sm:px-6 px-8 max-w-512 mx-auto'>
             <div className='grid grid-cols-2 lg:grid-cols-4 gap-y-[1.6rem] gap-x-[1.6rem] mt-4 md:gap-y-[1.6rem] mb-[.6rem]'>
                 {!isLoading &&
-                    videos.map((video: any, i: number) => (
+                    videos.map((video: Video, i: number) => (
                         <div
                             key={video.id.videoId}
                             className='overflow-hidden rounded-lg cursor-pointer'
