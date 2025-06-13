@@ -1,7 +1,7 @@
 import { fetchShorts } from './shortsApi';
 
 export const shorts = {
-    getYoutubeshorts: () => ({
+    getYoutubeStockshorts: () => ({
         queryKey: ['shorts'],
         queryFn: fetchShorts,
     }),

@@ -7,7 +7,7 @@ import { shorts } from '@/api/shorts/shortsQueries';
 export default function ShortformPage() {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-    const { data: videos = [], isLoading } = useQuery(shorts.getYoutubeshorts());
+    const { data: videos = [], isLoading } = useQuery(shorts.getYoutubeStockshorts());
 
     return (
         <div className='sm:px-6 px-8 max-w-512 mx-auto'>
