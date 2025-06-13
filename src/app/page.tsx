@@ -15,7 +15,6 @@ const reasons: Record<string, { message: string; type: SnackBarType }> = {
 function Home() {
     const searchParams = useSearchParams();
     const reason = searchParams.get('reason');
-    console.log(reason);
     const showSnackBar = useSnackBarStore(state => state.showSnackBar);
 
     useEffect(() => {
