@@ -4,6 +4,7 @@ import MainNews from '@/components/Main/MainNews';
 import MainShortforms from '@/components/Main/MainShortforms';
 import TopStockRank from '@/components/Main/TopStockRank';
 import Link from 'next/link';
+import SmartTalkBanner from '@/components/Main/SmartTalkBanner';
 
 function HomePage() {
     return (
@@ -12,6 +13,7 @@ function HomePage() {
                 <img src='/temp/main-bn-m.png' alt='' className='w-full h-full object-cover lg:hidden' />
                 <img src='/temp/main-bn-pc.png' alt='' className='hidden w-full h-full object-cover lg:block' />
             </div>
+            <SmartTalkBanner />
             <div className='mt-[3.6rem] lg:mt-[2.8rem]'>
                 <div className='flex items-center gap-[.8rem] mb-[1.8rem] justify-between'>
                     <h2 className='text-[2.2rem] leading-[135%] font-bold text-(--moneed-black) lg:text-[2.4rem] lg:leading-[140%]'>
