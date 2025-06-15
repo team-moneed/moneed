@@ -31,16 +31,16 @@ const MobileNav = () => {
     return (
         <>
             <div className='flex fixed bottom-0 left-0 right-0 z-10 pt-[.6rem] pb-4 px-8 bg-moneed-gray-3 xl:hidden'>
-                <NavLink to='/' icon='/icon/icon-m-nav-1.svg' activeIcon='/icon/icon-lnb-1-on.svg'>
+                <NavLink href='/' icon='/icon/icon-m-nav-1.svg' activeIcon='/icon/icon-lnb-1-on.svg'>
                     홈페이지
                 </NavLink>
-                <NavLink to='/shortform' icon='/icon/icon-m-nav-2.svg' activeIcon='/icon/icon-lnb-2-on.svg'>
+                <NavLink href='/shortform' icon='/icon/icon-m-nav-2.svg' activeIcon='/icon/icon-lnb-2-on.svg'>
                     숏폼
                 </NavLink>
-                <NavLink to='/community' icon='/icon/icon-m-nav-3.svg' activeIcon='/icon/icon-lnb-3-on.svg'>
+                <NavLink href='/community' icon='/icon/icon-m-nav-3.svg' activeIcon='/icon/icon-lnb-3-on.svg'>
                     커뮤니티
                 </NavLink>
-                <NavLink to='/mypage' icon='/icon/icon-lnb-4.svg' activeIcon='/icon/icon-lnb-4-on.svg'>
+                <NavLink href='/mypage' icon='/icon/icon-lnb-4.svg' activeIcon='/icon/icon-lnb-4-on.svg'>
                     내프로필
                 </NavLink>
 
