@@ -1,34 +1,17 @@
 import { UserRepository } from '@/repositories/user.repository';
-import { OAuthAccount } from '@/generated/prisma';
+import { OAuthAccount, User } from '@/generated/prisma';
 import { deleteSession } from '@/lib/session';
-import { leaveKakao, logoutKakao } from '@/api/kakao.api';
+import { getKakaoToken, getKakaoUserInfo, leaveKakao, logoutKakao } from '@/api/kakao.api';
 import { ProviderRepository } from '@/repositories/provider.repository';
 import { AxiosError } from 'axios';
+import { RequiredUserInfo, UserInfo } from '@/types/user';
 
-export interface KakaoUserInfo {
-    id: bigint;
-    connected_at: string;
-    synched_at: string;
-    properties: {
-        nickname: string;
-        profile_image: string;
-        thumbnail_image: string;
-    };
-    kakao_account: {
-        profile: {
-            nickname: string;
-            thumbnail_image_url: string;
-            profile_image_url: string;
-        };
-        age_range: string;
-        gender: 'male' | 'female';
-        name: string;
-        email: string;
-        birthyear: string;
-        birthday: string;
-    };
+export interface ProviderInfo {
+    provider: string;
+    providerUserId: string;
 }
 
+// TODO: 추상화 (카카오 로그인 외 다른 로그인 추가 시 수정 필요)
 export class AuthService {
     private userRepository: UserRepository;
     private providerRepository: ProviderRepository;
@@ -38,36 +21,59 @@ export class AuthService {
         this.providerRepository = new ProviderRepository();
     }
 
-    // 기존 회원 확인 및 등록
-    async signInOrSignUpWithKakao(
-        kakaoUserInfo: KakaoUserInfo,
+    async checkExistingUser({
+        userInfo,
+        provider,
+    }: {
+        userInfo: UserInfo;
+        provider: ProviderInfo;
+    }): Promise<{ user: User; isExisting: true } | { user: null; isExisting: false }> {
+        const existingUserByProvider = await this.userRepository.findByProvider({
+            provider: provider.provider,
+            providerUserId: provider.providerUserId,
+        });
+
+        if (existingUserByProvider) {
+            return { user: existingUserByProvider, isExisting: true };
+        }
+
+        const existingUserByUserInfo = await this.userRepository.findByUserInfo(userInfo);
+
+        if (existingUserByUserInfo) {
+            return { user: existingUserByUserInfo, isExisting: true };
+        }
+
+        return { user: null, isExisting: false };
+    }
+
+    async signIn(
+        userId: string,
         providerData: Pick<
             OAuthAccount,
-            'accessToken' | 'refreshToken' | 'accessTokenExpiresIn' | 'refreshTokenExpiresIn'
+            | 'provider'
+            | 'providerUserId'
+            | 'accessToken'
+            | 'refreshToken'
+            | 'accessTokenExpiresIn'
+            | 'refreshTokenExpiresIn'
         >,
     ) {
-        const provider = {
-            provider: 'kakao' as const,
-            providerUserId: kakaoUserInfo.id.toString(),
-            accessToken: providerData.accessToken,
-            refreshToken: providerData.refreshToken,
-            accessTokenExpiresIn: providerData.accessTokenExpiresIn,
-            refreshTokenExpiresIn: providerData.refreshTokenExpiresIn,
-        };
+        await this.providerRepository.upsert(userId, providerData);
+    }
 
-        const userData = {
-            name: kakaoUserInfo.kakao_account.name,
-            nickname: kakaoUserInfo.kakao_account.profile.nickname,
-            email: kakaoUserInfo.kakao_account.email,
-            birthyear: kakaoUserInfo.kakao_account.birthyear,
-            birthday: kakaoUserInfo.kakao_account.birthday,
-            profileImage: kakaoUserInfo.kakao_account.profile.profile_image_url,
-            thumbnailImage: kakaoUserInfo.kakao_account.profile.thumbnail_image_url,
-            ageRange: kakaoUserInfo.kakao_account.age_range,
-            gender: kakaoUserInfo.kakao_account.gender,
-        };
-
-        return await this.userRepository.upsertWithKakao(provider, userData);
+    async signUp(
+        user: RequiredUserInfo,
+        providerData: Pick<
+            OAuthAccount,
+            | 'provider'
+            | 'providerUserId'
+            | 'accessToken'
+            | 'refreshToken'
+            | 'accessTokenExpiresIn'
+            | 'refreshTokenExpiresIn'
+        >,
+    ) {
+        await this.userRepository.create(providerData, user);
     }
 
     async logoutWithKakao(userId: string) {
@@ -133,6 +139,28 @@ export class AuthService {
             ok: false,
             reason: 'Failed to process leave request',
         };
+    }
+
+    async getTokenWithKakao(code: string) {
+        const kakaoToken = await getKakaoToken(code);
+        const {
+            access_token: accessToken,
+            refresh_token: refreshToken,
+            expires_in: accessTokenExpiresInSec,
+            refresh_token_expires_in: refreshTokenExpiresInSec,
+        } = kakaoToken;
+
+        return {
+            accessToken,
+            refreshToken,
+            accessTokenExpiresInSec,
+            refreshTokenExpiresInSec,
+        };
+    }
+
+    async getKakaoUserInfo(kakaoAccessToken: string) {
+        const kakaoUserInfo = await getKakaoUserInfo(kakaoAccessToken);
+        return kakaoUserInfo;
     }
 
     async leave(userId: string) {

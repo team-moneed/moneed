@@ -1,9 +1,32 @@
 import 'server-only';
-import { KakaoUserInfo } from '@/services/auth.service';
 import { KakaoRefreshTokenResponse, KakaoTokenResponse } from '@/types/kakao';
 import axios, { AxiosError } from 'axios';
 import { ProviderRepository } from '@/repositories/provider.repository';
 import { deleteSession } from '@/lib/session';
+
+export interface KakaoUserInfo {
+    id: bigint;
+    connected_at: string;
+    synched_at: string;
+    properties: {
+        nickname: string;
+        profile_image: string;
+        thumbnail_image: string;
+    };
+    kakao_account: {
+        profile: {
+            nickname: string;
+            thumbnail_image_url: string;
+            profile_image_url: string;
+        };
+        age_range: string;
+        gender: 'male' | 'female';
+        name: string;
+        email: string;
+        birthyear: string;
+        birthday: string;
+    };
+}
 
 const kakaoTokenUrl = 'https://kauth.kakao.com/oauth/token';
 const kakaoUserInfoUrl = 'https://kapi.kakao.com/v2/user/me';
@@ -55,36 +78,42 @@ const kakaoAuthInstance = (() => {
         try {
             if (config.headers.Authorization) {
                 const token = (config.headers.Authorization as string).split(' ')[1];
+                // 로그인 시 providerData === null (카카오 처음 로그인 시 토큰 없음)
                 const providerData = await providerRepository.getTokenExpiration('kakao', token);
                 if (providerData) {
                     const isAcessTokenExpired = providerData.accessTokenExpiresIn < new Date();
                     const isRefreshTokenExpired = providerData.refreshTokenExpiresIn < new Date();
 
                     if (!isAcessTokenExpired && !isRefreshTokenExpired) {
-                        config.headers.Athorization = `Bearer ${providerData.accessToken}`;
+                        config.headers.Authorization = `Bearer ${providerData.accessToken}`;
                         return config;
                     } else if (isAcessTokenExpired) {
                         const newToken = await refreshKakaoToken(providerData.refreshToken);
                         config.headers.Authorization = `Bearer ${newToken.access_token}`;
-                        await providerRepository.updateToken({
-                            provider: 'kakao',
-                            providerUserId: providerData.providerUserId,
-                            accessToken: newToken.access_token,
-                            refreshToken: newToken.refresh_token,
-                            accessTokenExpiresIn: new Date(Date.now() + newToken.expires_in * 1000),
-                            refreshTokenExpiresIn: newToken.refresh_token_expires_in
-                                ? new Date(Date.now() + newToken.refresh_token_expires_in * 1000)
-                                : undefined,
-                        });
+                        await providerRepository.updateTokenData(
+                            {
+                                provider: 'kakao',
+                                providerUserId: providerData.providerUserId,
+                            },
+                            {
+                                accessToken: newToken.access_token,
+                                refreshToken: newToken.refresh_token,
+                                accessTokenExpiresIn: new Date(Date.now() + newToken.expires_in * 1000),
+                                refreshTokenExpiresIn: newToken.refresh_token_expires_in
+                                    ? new Date(Date.now() + newToken.refresh_token_expires_in * 1000)
+                                    : undefined,
+                            },
+                        );
                         return config;
                     } else if (isRefreshTokenExpired) {
                         await providerRepository.delete('kakao', providerData.providerUserId);
                         await deleteSession();
-                        return config;
+                        return Promise.reject(new AxiosError('Token expired'));
                     }
                 }
+                return config;
             }
-            return Promise.reject(new Error('Token expired'));
+            return Promise.reject(new AxiosError('Authorization header is required'));
         } catch (error) {
             console.error('Failed to get Kakao token expiration:', (error as AxiosError).response?.data);
             return Promise.reject(error);
