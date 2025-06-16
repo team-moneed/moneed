@@ -6,12 +6,11 @@ import StockTypeChip from '@/components/create/StockTypeChip';
 import { selectStock as selectStockApi } from '@/api/stock.api';
 import { Stock } from '@/generated/prisma';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSelectedStock } from '@/hooks/useSelectedStock';
 
-export default function SelectStockType() {
-    // TODO: UI 수정 필요
+function SelectStockTypeContent() {
     const router = useRouter();
     const { data: stocks } = useQuery<Stock[]>({
         queryKey: ['stocks'],
@@ -69,5 +68,13 @@ export default function SelectStockType() {
                 </Button>
             </div>
         </form>
+    );
+}
+
+export default function SelectStockType() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <SelectStockTypeContent />
+        </Suspense>
     );
 }

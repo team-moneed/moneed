@@ -3,26 +3,27 @@ import { useRouter } from 'next/navigation';
 import MypageBox from '@/components/Mypage/MypageBox';
 import MyStockBox from '@/components/Mypage/MyStockBox';
 import { useSelectedStock } from '@/hooks/useSelectedStock';
-import LogoutButton from './LogoutButton';
+import LogoutButton from '@/app/mypage/LogoutButton';
+import LeaveButton from '@/app/mypage/LeaveButton';
 
 export default function Mypage() {
     const { data: selectedStocks } = useSelectedStock();
 
     const router = useRouter();
 
-    const movetoMyProfile = () => {
+    const moveToMyProfile = () => {
         router.push(`/myprofile`);
     };
 
-    const movetoMyPost = () => {
+    const moveToMyPost = () => {
         router.push(`/mypost`);
     };
 
-    const movetoMyComment = () => {
+    const moveToMyComment = () => {
         router.push(`/mycomment`);
     };
 
-    const movetocommunity = (stockname: string) => {
+    const moveToCommunity = (stockname: string) => {
         router.push(`/community/${stockname}`);
     };
 
@@ -40,7 +41,7 @@ export default function Mypage() {
                             <div className='text-[2rem] my-[.8rem] font-bold leading-[145%] text-moneed-brand'>
                                 내가본나의 피드
                             </div>
-                            <div className='aspect-square w-[2.4rem] cursor-pointer' onClick={movetoMyProfile}>
+                            <div className='aspect-square w-[2.4rem] cursor-pointer' onClick={moveToMyProfile}>
                                 <img src='/icon/icon-setting.svg' alt='' className='w-full h-full' />
                             </div>
                         </div>
@@ -49,8 +50,8 @@ export default function Mypage() {
                         </div>
                     </div>
                     <div className='grid grid-cols-2 gap-x-[1.6rem] pb-[1.6rem]'>
-                        <MypageBox menu='내가 작성한 게시글' count={5} onClick={movetoMyPost}></MypageBox>
-                        <MypageBox menu='내가 작성한 댓글' count={7} onClick={movetoMyComment}></MypageBox>
+                        <MypageBox menu='내가 작성한 게시글' count={5} onClick={moveToMyPost}></MypageBox>
+                        <MypageBox menu='내가 작성한 댓글' count={7} onClick={moveToMyComment}></MypageBox>
                     </div>
                 </div>
                 <div className='flex flex-col gap-[1.6rem] flex-1'>
@@ -63,12 +64,14 @@ export default function Mypage() {
                         </div>
                         <div className='space-y-[.8rem]'>
                             {selectedStocks?.map(({ id, name }) => (
-                                <MyStockBox key={id} name={name} onClick={() => movetocommunity(name)} />
+                                <MyStockBox key={id} name={name} onClick={() => moveToCommunity(name)} />
                             ))}
                         </div>
                     </div>
-                    <div className='flex items-center ml-auto'>
+                    <div className='flex items-center sm:ml-auto sm:mr-0 ml-auto mr-auto gap-x-[1.6rem]'>
                         <LogoutButton />
+                        <i className='w-[.2rem] h-[1.6rem] bg-moneed-gray-5'></i>
+                        <LeaveButton />
                     </div>
                 </div>
             </div>

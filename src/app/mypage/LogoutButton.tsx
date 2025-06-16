@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 export default function LogoutButton() {
     const router = useRouter();
     const showSnackBar = useSnackBarStore(state => state.showSnackBar);
-    const { mutate: mutateLogout } = useMutation({
+    const { mutate: mutateLogout, isPending } = useMutation({
         mutationFn: ({ provider }: { provider: 'kakao' }) => logout({ provider }),
         onSuccess: () => {
             router.push('/onboarding?reason=logout');
@@ -26,8 +26,12 @@ export default function LogoutButton() {
     };
 
     return (
-        <button className='text-[1.4rem] font-normal leading-[145%] text-moneed-gray-7' onClick={handleLogout}>
-            로그아웃
+        <button
+            className='text-[1.4rem] font-normal leading-[145%] text-moneed-gray-7'
+            onClick={handleLogout}
+            disabled={isPending}
+        >
+            {isPending ? '로그아웃 중...' : '로그아웃'}
         </button>
     );
 }

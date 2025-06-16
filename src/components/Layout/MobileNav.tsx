@@ -14,7 +14,7 @@ const MobileNav = () => {
         return null;
     }
 
-    const motetowritepost = () => {
+    const moveToWritePost = () => {
         const lastPathSegment = pathname.split('/').pop();
 
         if (location.pathname.startsWith('/community/')) {
@@ -45,7 +45,7 @@ const MobileNav = () => {
 
             <button
                 type='button'
-                onClick={motetowritepost}
+                onClick={moveToWritePost}
                 className='aspect-square w-[5.2rem] bg-moneed-brand absolute bottom-[calc(100%+2rem)] flex items-center justify-center rounded-full right-8'
             >
                 <img src='/icon/icon-edit.svg' alt='' />

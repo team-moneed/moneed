@@ -8,6 +8,7 @@ import { deleteSession } from '@/lib/session';
 const kakaoTokenUrl = 'https://kauth.kakao.com/oauth/token';
 const kakaoUserInfoUrl = 'https://kapi.kakao.com/v2/user/me';
 const kakaoLogoutUrl = 'https://kapi.kakao.com/v1/user/logout';
+const kakaoLeaveUrl = 'https://kapi.kakao.com/v1/user/unlink';
 const providerRepository = new ProviderRepository();
 
 export const getKakaoToken = async (code: string) => {
@@ -61,6 +62,7 @@ const kakaoAuthInstance = (() => {
 
                     if (!isAcessTokenExpired && !isRefreshTokenExpired) {
                         config.headers.Athorization = `Bearer ${providerData.accessToken}`;
+                        return config;
                     } else if (isAcessTokenExpired) {
                         const newToken = await refreshKakaoToken(providerData.refreshToken);
                         config.headers.Authorization = `Bearer ${newToken.access_token}`;
@@ -74,13 +76,15 @@ const kakaoAuthInstance = (() => {
                                 ? new Date(Date.now() + newToken.refresh_token_expires_in * 1000)
                                 : undefined,
                         });
+                        return config;
                     } else if (isRefreshTokenExpired) {
                         await providerRepository.delete('kakao', providerData.providerUserId);
                         await deleteSession();
+                        return config;
                     }
                 }
             }
-            return config;
+            return Promise.reject(new Error('Token expired'));
         } catch (error) {
             console.error('Failed to get Kakao token expiration:', (error as AxiosError).response?.data);
             return Promise.reject(error);
@@ -132,5 +136,28 @@ export const logoutKakao = async ({ accessToken, providerUserId }: { accessToken
         return res.data;
     } catch (error) {
         console.error('Failed to logout with Kakao:', (error as AxiosError).response?.data);
+        throw error;
+    }
+};
+
+export const leaveKakao = async ({ accessToken, providerUserId }: { accessToken: string; providerUserId: string }) => {
+    try {
+        const res = await kakaoAuthInstance.post<{ id: bigint }>(
+            kakaoLeaveUrl,
+            {
+                target_id_type: 'user_id',
+                target_id: BigInt(providerUserId),
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            },
+        );
+        return res.data;
+    } catch (error) {
+        console.error('Failed to leave with Kakao:', (error as AxiosError).response?.data);
+        throw error;
     }
 };

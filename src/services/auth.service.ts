@@ -1,7 +1,7 @@
 import { UserRepository } from '@/repositories/user.repository';
 import { OAuthAccount } from '@/generated/prisma';
 import { deleteSession } from '@/lib/session';
-import { logoutKakao } from '@/api/kakao.api';
+import { leaveKakao, logoutKakao } from '@/api/kakao.api';
 import { ProviderRepository } from '@/repositories/provider.repository';
 import { AxiosError } from 'axios';
 
@@ -92,5 +92,51 @@ export class AuthService {
                 await deleteSession();
             }
         }
+    }
+
+    async leaveWithKakao(userId: string) {
+        const providerInfo = await this.providerRepository.findProviderInfo(userId, 'kakao');
+        if (!providerInfo) {
+            await deleteSession();
+            return {
+                ok: false,
+                reason: 'Provider information not found',
+            };
+        }
+
+        const { accessToken, providerUserId } = providerInfo;
+        if (!accessToken) {
+            await deleteSession();
+            return {
+                ok: false,
+                reason: 'Access token not found',
+            };
+        }
+
+        // 카카오 연결 해제 시도
+        const kakaoResponse = await leaveKakao({ accessToken, providerUserId });
+        if (kakaoResponse.id) {
+            const user = await this.userRepository.findByProvider({
+                provider: 'kakao',
+                providerUserId: kakaoResponse.id.toString(),
+            });
+
+            if (user) {
+                await this.leave(user.id);
+                return {
+                    ok: true,
+                };
+            }
+        }
+
+        return {
+            ok: false,
+            reason: 'Failed to process leave request',
+        };
+    }
+
+    async leave(userId: string) {
+        await this.userRepository.delete(userId);
+        await deleteSession();
     }
 }

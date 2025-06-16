@@ -30,6 +30,7 @@ const Instance = (): AxiosInstance => {
                 console.error(error.response?.data);
                 return Promise.reject(error);
             }
+            return Promise.reject(error);
         },
     );
 
