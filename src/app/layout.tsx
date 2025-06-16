@@ -32,11 +32,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     ></iframe>
                 </noscript>
 
-                <div id='root' className='mx-auto min-h-screen max-w-7xl'>
+                <div id='root' className='mx-auto min-h-screen max-w-7xl flex flex-col'>
                     <QueryClientProvider>
                         <ModalProvider>
                             <Header />
-                            {children}
+                            <main className='flex-1 pb-[8rem]'>{children}</main>
                             <Footer />
                             <MobileNav />
                             <SnackBar />

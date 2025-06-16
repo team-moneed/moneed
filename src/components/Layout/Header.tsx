@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import Modal from '@/components/Modal';
 import Logo from '@/app/onboarding/Logo';
+import NavLink from '@/components/NavLink';
 
 const CommonHeader = () => {
     const router = useRouter();
@@ -25,20 +26,20 @@ const CommonHeader = () => {
                         <span className='font-semibold leading-[140%] text-[1.8rem] ml-[.8rem]'>moneed</span>
                     </div>
                 </Link>
-                <Link href='/shortform'>
+                <NavLink href='/shortform'>
                     <span className='hidden lg:block lg:text-[1.4rem] font-semibold ml-[2.6rem]'>숏폼</span>
-                </Link>
-                <Link href='/community'>
+                </NavLink>
+                <NavLink href='/community'>
                     <span className='hidden lg:block lg:text-[1.4rem] font-semibold w-[8.4rem] ml-[2.4rem]'>
                         커뮤니티
                     </span>
-                </Link>
+                </NavLink>
                 <div className='flex items-center gap-[2.4rem] ml-auto'>
-                    <Link href='/mypage'>
-                        <div className='hidden lg:block'>
-                            <img className='w-[2.4rem] h-[2.4rem]' src='/icon/icon-profile-circle.svg' alt='' />
-                        </div>
-                    </Link>
+                    <NavLink
+                        href='/mypage'
+                        icon='/icon/icon-profile-circle.svg'
+                        activeIcon='/icon/icon-profile-circle.svg'
+                    />
                     <img className='w-[2.4rem] h-[2.4rem]' src='/icon/icon-alarm.svg' alt='' />
                     <Button
                         onClick={movetowritepost}
@@ -153,7 +154,7 @@ const MenuHeader = () => {
 
 const NoMenuHeader = () => {
     return (
-        <div className='sticky top-0 z-10 bg-white flex items-center justify-between px-[4rem] pb-[1.8rem] pt-[3rem]'>
+        <div className='sticky top-0 z-10 bg-white flex items-center justify-between md:px-[4rem] md:pb-[1.8rem] md:pt-[3rem] px-[1.8rem] pt-[2rem] pb-[1.2rem]'>
             <Logo />
         </div>
     );
