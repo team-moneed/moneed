@@ -78,7 +78,6 @@ const kakaoAuthInstance = (() => {
         try {
             if (config.headers.Authorization) {
                 const token = (config.headers.Authorization as string).split(' ')[1];
-                // 로그인 시 providerData === null (카카오 처음 로그인 시 토큰 없음)
                 const providerData = await providerRepository.getTokenExpiration('kakao', token);
                 if (providerData) {
                     const isAcessTokenExpired = providerData.accessTokenExpiresIn < new Date();

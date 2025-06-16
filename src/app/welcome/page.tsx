@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
+// TODO: 랜덤닉네임 생성 로직 구현
 export default function Welcome() {
     const router = useRouter();
 

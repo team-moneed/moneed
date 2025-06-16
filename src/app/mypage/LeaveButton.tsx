@@ -1,6 +1,7 @@
 'use client';
 import { useMutation } from '@tanstack/react-query';
 import { leave } from '@/api/auth.api';
+import { cn } from '@/util/style';
 
 export default function LeaveButton() {
     const { mutate: leaveKakao, isPending } = useMutation({
@@ -33,9 +34,10 @@ export default function LeaveButton() {
 
     return (
         <button
-            className={`text-[1.4rem] font-normal leading-[145%] text-moneed-gray-7 ${
-                isPending ? 'opacity-50 cursor-not-allowed' : 'hover:text-red-500'
-            }`}
+            className={cn(
+                'text-[1.4rem] font-normal leading-[145%] text-moneed-gray-7',
+                isPending ? 'opacity-50 cursor-not-allowed' : 'hover:text-moneed-gray-9',
+            )}
             onClick={handleLeave}
             disabled={isPending}
         >

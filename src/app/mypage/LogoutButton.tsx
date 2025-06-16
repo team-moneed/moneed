@@ -2,6 +2,7 @@
 
 import { logout } from '@/api/auth.api';
 import useSnackBarStore from '@/store/useSnackBarStore';
+import { cn } from '@/util/style';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
@@ -27,7 +28,10 @@ export default function LogoutButton() {
 
     return (
         <button
-            className='text-[1.4rem] font-normal leading-[145%] text-moneed-gray-7'
+            className={cn(
+                'text-[1.4rem] font-normal leading-[145%] text-moneed-gray-7',
+                isPending ? 'opacity-50 cursor-not-allowed' : 'hover:text-moneed-gray-9',
+            )}
             onClick={handleLogout}
             disabled={isPending}
         >
