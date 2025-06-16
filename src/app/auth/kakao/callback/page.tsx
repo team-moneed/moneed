@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { redirect, useSearchParams } from 'next/navigation';
-import { getKakaoToken } from '@/api/client/auth.api';
+import { getKakaoToken } from '@/api/auth.api';
 import { useQuery } from '@tanstack/react-query';
 import useAuthStore from '@/store/useAuthStore';
 import { decodeJwt } from 'jose';

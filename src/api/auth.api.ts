@@ -12,7 +12,12 @@ type KakaoTokenResponse = {
 };
 
 export const getKakaoToken = async ({ code, state, error, error_description }: KakaoTokenParams) => {
-    const res = await axios.post<KakaoTokenResponse>('/api/auth/kakao', { code, state, error, error_description });
+    const res = await axios.post<KakaoTokenResponse>('/api/auth/kakao/login', {
+        code,
+        state,
+        error,
+        error_description,
+    });
     return res.data;
 };
 
