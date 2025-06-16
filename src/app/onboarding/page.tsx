@@ -30,7 +30,7 @@ function Onboarding() {
         <>
             <div className="relative h-screen overflow-hidden px-[1.8rem] pt-8 bg-[url('/line-bg.png')] bg-size-[8rem_8rem] lg:bg-[url('/line-bg-pc.png')]">
                 <div className='pt-[14.3rem]'>
-                    <div className='relative z-2 text-[3.2rem] text-(--moneed-black) font-bold leading-[145%]'>
+                    <div className='relative z-2 text-[3.2rem] text-moneed-black font-bold leading-[145%]'>
                         당신의 니즈를
                         <br />
                         충족하는 투자의

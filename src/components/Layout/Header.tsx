@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import Modal from '@/components/Modal';
 import Logo from '@/app/onboarding/Logo';
+import NavLink from '@/components/NavLink';
 
 const CommonHeader = () => {
     const router = useRouter();
@@ -16,29 +17,29 @@ const CommonHeader = () => {
 
     return (
         <>
-            <div className='sticky top-0 z-10 bg-white flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-8'>
+            <div className='sticky top-0 z-10 bg-white flex items-center justify-between px-[4rem] pb-[1.8rem] pt-[3rem]'>
                 <Link href='/'>
                     <div className='flex'>
-                        <div className='w-[2.8rem] h-[2.8rem] bg-(--moneed-black) rounded-full flex items-center justify-center'>
+                        <div className='w-[2.8rem] h-[2.8rem] bg-moneed-black rounded-full flex items-center justify-center'>
                             <img className='w-[1.4rem] h-[1.2rem]' src='/icon/icon-logo.svg' alt='' />
                         </div>
                         <span className='font-semibold leading-[140%] text-[1.8rem] ml-[.8rem]'>moneed</span>
                     </div>
                 </Link>
-                <Link href='/shortform'>
+                <NavLink href='/shortform'>
                     <span className='hidden lg:block lg:text-[1.4rem] font-semibold ml-[2.6rem]'>숏폼</span>
-                </Link>
-                <Link href='/community'>
+                </NavLink>
+                <NavLink href='/community'>
                     <span className='hidden lg:block lg:text-[1.4rem] font-semibold w-[8.4rem] ml-[2.4rem]'>
                         커뮤니티
                     </span>
-                </Link>
+                </NavLink>
                 <div className='flex items-center gap-[2.4rem] ml-auto'>
-                    <Link href='/mypage'>
-                        <div className='hidden lg:block'>
-                            <img className='w-[2.4rem] h-[2.4rem]' src='/icon/icon-profile-circle.svg' alt='' />
-                        </div>
-                    </Link>
+                    <NavLink
+                        href='/mypage'
+                        icon='/icon/icon-profile-circle.svg'
+                        activeIcon='/icon/icon-profile-circle.svg'
+                    />
                     <img className='w-[2.4rem] h-[2.4rem]' src='/icon/icon-alarm.svg' alt='' />
                     <Button
                         onClick={movetowritepost}
@@ -106,14 +107,14 @@ const MenuHeader = () => {
     };
 
     return (
-        <div className='sticky top-0 z-10 bg-white flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-8'>
+        <div className='sticky top-0 z-10 bg-white flex items-center justify-between px-[4rem] pb-[1.8rem] pt-[3rem]'>
             <img
                 className='cursor-pointer w-[2.4rem] h-[2.4rem]'
                 onClick={handleBackButtonClick}
                 src='/icon/icon-arrow-back.svg'
                 alt=''
             />
-            <h1 className='text-[1.6rem] font-semibold text-(--moneed-gray-9)'>{getHeaderTitle()}</h1>
+            <h1 className='text-[1.6rem] font-semibold text-moneed-gray-9'>{getHeaderTitle()}</h1>
             {isWritePostPath || isEditPostPath ? (
                 <img
                     className='w-[2.4rem] h-[2.4rem] cursor-pointer'
@@ -153,24 +154,16 @@ const MenuHeader = () => {
 
 const NoMenuHeader = () => {
     return (
-        <div className='sticky top-0 z-10 bg-white flex items-center justify-between shrink-0 self-stretch px-[1.8rem] pb-[1.2rem] pt-8'>
+        <div className='sticky top-0 z-10 bg-white flex items-center justify-between md:px-[4rem] md:pb-[1.8rem] md:pt-[3rem] px-[1.8rem] pt-[2rem] pb-[1.2rem]'>
             <Logo />
         </div>
     );
 };
 
 const Header = () => {
-    const menuHeaderPaths = [
-        '/selectStockType',
-        '/mycomment',
-        '/mypost',
-        '/searchstocktype',
-        '/writepost',
-        '/editpost',
-        '/post',
-    ];
+    const menuHeaderPaths = ['/mycomment', '/mypost', '/searchstocktype', '/writepost', '/editpost', '/post'];
 
-    const noMenuHeaderPaths = ['/onboarding'];
+    const noMenuHeaderPaths = ['/onboarding', '/selectstocktype'];
 
     const pathname = usePathname();
 

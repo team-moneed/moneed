@@ -134,6 +134,5 @@ export const logoutKakao = async ({ accessToken, providerUserId }: { accessToken
         return res.data;
     } catch (error) {
         console.error('Failed to logout with Kakao:', (error as AxiosError).response?.data);
-        throw error;
     }
 };

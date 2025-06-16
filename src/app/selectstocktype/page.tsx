@@ -7,7 +7,7 @@ import { selectStock as selectStockApi } from '@/api/stock.api';
 import { Stock } from '@/generated/prisma';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useSelectedStock } from '@/hooks/useSelectedStock';
 
 export default function SelectStockType() {
@@ -17,6 +17,7 @@ export default function SelectStockType() {
         queryKey: ['stocks'],
         queryFn: () => getStocks(),
     });
+    const searchParams = useSearchParams();
 
     const { data: mySelectedStockIds } = useSelectedStock<number[]>({
         select: data => data.map(stock => stock.stockId),
@@ -38,12 +39,13 @@ export default function SelectStockType() {
 
     const handleSubmit = async () => {
         selectStock(selectedStock);
-        router.push('/');
+        const url = searchParams.get('url') ?? '/';
+        router.push(decodeURIComponent(url));
     };
 
     return (
         <form action={handleSubmit}>
-            <div className='flex flex-wrap gap-[.8rem] md:px-[10.6rem] md:max-h-[calc(38.5rem-10rem)] md:overflow-y-auto pb-48 pt-24'>
+            <div className='flex flex-wrap gap-[.8rem] md:px-[10.6rem] md:max-h-[calc(38.5rem-10rem)] md:overflow-y-auto'>
                 {stocks?.map(({ id, name }) => (
                     <div key={id} className='mb-[.2rem]'>
                         <StockTypeChip
