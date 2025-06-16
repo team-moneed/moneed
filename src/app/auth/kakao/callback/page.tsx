@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { login } from '@/api/auth.api';
 import { useQuery } from '@tanstack/react-query';
 import useAuthStore from '@/store/useAuthStore';
-import useUserStore from '@/store/useUserStore';
+// import useUserStore from '@/store/useUserStore';
 import { getCookie } from '@/util/cookie';
 
 function KakaoCallback() {
@@ -22,7 +22,8 @@ function KakaoCallback() {
     }
 
     const setAccessToken = useAuthStore(state => state.setAccessToken);
-    const setUserInfo = useUserStore(state => state.setUserInfo);
+    // TODO: 유저 정보 로직 추가
+    // const setUserInfo = useUserStore(state => state.setUserInfo);
 
     const { data } = useQuery({
         queryKey: ['kakao', code, state],
@@ -43,7 +44,7 @@ function KakaoCallback() {
                 router.push(`/selectstocktype?url=${encodeURIComponent('/welcome')}`);
             }
         }
-    }, [data, setUserInfo, setAccessToken, router]);
+    }, [data, setAccessToken, router]);
 
     return <div>리다이렉트 중...</div>;
 }
