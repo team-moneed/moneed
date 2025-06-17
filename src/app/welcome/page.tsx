@@ -1,24 +1,18 @@
-'use client';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { redirect } from 'next/navigation';
+import RandomNickname from './RandomNickname';
 
 // TODO: 랜덤닉네임 생성 로직 구현
 export default function Welcome() {
-    const router = useRouter();
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            router.push('/');
-        }, 2000);
-
-        return () => clearTimeout(timer);
-    }, [router]);
+    setTimeout(() => {
+        redirect('/');
+    }, 2000);
 
     return (
         <>
             <div className='px-8 max-w-512 mx-auto'>
                 <div className='text-[2.4rem] text-moneed-black font-bold text-center mt-36 leading-[140%]'>
-                    랜덤닉네임님,
+                    <RandomNickname />
+                    님,
                     <br />
                     회원가입을 축하합니다.
                 </div>

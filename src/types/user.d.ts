@@ -8,4 +8,4 @@ export interface UserInfo {
     birthday: string;
 }
 
-export type RequiredUserInfo = Optional<User, 'id' | 'createdAt' | 'updatedAt' | 'role' | 'lastLoginAt'>;
+export type RequiredUserInfo = Optional<User, 'id' | 'createdAt' | 'updatedAt' | 'role' | 'lastLoginAt' | 'nickname'>;

@@ -5,6 +5,7 @@ import { getKakaoToken, getKakaoUserInfo, leaveKakao, logoutKakao } from '@/api/
 import { ProviderRepository } from '@/repositories/provider.repository';
 import { AxiosError } from 'axios';
 import { RequiredUserInfo, UserInfo } from '@/types/user';
+import { NicknameService } from '@/services/nickname.service';
 
 export interface ProviderInfo {
     provider: string;
@@ -15,10 +16,12 @@ export interface ProviderInfo {
 export class AuthService {
     private userRepository: UserRepository;
     private providerRepository: ProviderRepository;
+    private nicknameService: NicknameService;
 
     constructor() {
         this.userRepository = new UserRepository();
         this.providerRepository = new ProviderRepository();
+        this.nicknameService = new NicknameService();
     }
 
     async checkExistingUser({
@@ -57,8 +60,13 @@ export class AuthService {
             | 'accessTokenExpiresIn'
             | 'refreshTokenExpiresIn'
         >,
-    ) {
+    ): Promise<User> {
         await this.providerRepository.upsert(userId, providerData);
+        const user = await this.userRepository.findById(userId);
+        if (!user) {
+            throw new Error('User not found');
+        }
+        return user;
     }
 
     async signUp(
@@ -72,8 +80,17 @@ export class AuthService {
             | 'accessTokenExpiresIn'
             | 'refreshTokenExpiresIn'
         >,
-    ) {
-        await this.userRepository.create(providerData, user);
+    ): Promise<User> {
+        // 랜덤 닉네임 생성
+        const uniqueNickname = await this.nicknameService.generateUniqueNickname();
+
+        // 사용자 데이터에 생성된 닉네임 추가
+        const userWithNickname = {
+            ...user,
+            nickname: uniqueNickname,
+        };
+
+        return this.userRepository.create(providerData, userWithNickname);
     }
 
     async logoutWithKakao(userId: string) {

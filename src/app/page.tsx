@@ -12,7 +12,9 @@ const reasons: Record<string, { message: string; type: SnackBarType }> = {
     logged_in: { message: '이미 로그인 상태입니다.', type: 'normal' },
 };
 
+// TODO: 서버컴포넌트로 변경 필요
 function Home() {
+    // TODO: 스낵바 로직 별도의 클라이언트 컴포넌트로 분리
     const searchParams = useSearchParams();
     const reason = searchParams.get('reason');
     const showSnackBar = useSnackBarStore(state => state.showSnackBar);
