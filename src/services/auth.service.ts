@@ -70,7 +70,7 @@ export class AuthService {
     }
 
     async signUp(
-        user: RequiredUserInfo,
+        user: Omit<RequiredUserInfo, 'nickname'>,
         providerData: Pick<
             OAuthAccount,
             | 'provider'
@@ -85,7 +85,7 @@ export class AuthService {
         const uniqueNickname = await this.nicknameService.generateUniqueNickname();
 
         // 사용자 데이터에 생성된 닉네임 추가
-        const userWithNickname = {
+        const userWithNickname: RequiredUserInfo = {
             ...user,
             nickname: uniqueNickname,
         };

@@ -2,13 +2,14 @@
 import { useMutation } from '@tanstack/react-query';
 import { leave } from '@/api/auth.api';
 import { cn } from '@/util/style';
+import { useRouter } from 'next/navigation';
 
 export default function LeaveButton() {
+    const router = useRouter();
     const { mutate: leaveKakao, isPending } = useMutation({
         mutationFn: () => leave({ provider: 'kakao' }),
         onSuccess: () => {
-            alert('탈퇴가 완료되었습니다.');
-            window.location.href = '/';
+            router.push('/?reason=leave');
         },
         onError: error => {
             console.error('탈퇴 오류:', error);

@@ -117,6 +117,3 @@ export function generateRandomNicknameWithNumber(): string {
 
     return `${baseNickname}${randomNumber}`;
 }
-
-console.log('adjectives.length', adjectives.length);
-console.log('nouns.length', nouns.length);

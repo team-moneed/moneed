@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
                 nickname: user.nickname,
             };
         } else {
-            const user: RequiredUserInfo = {
+            const user: Omit<RequiredUserInfo, 'nickname'> = {
                 name: kakaoUserInfo.kakao_account.name,
                 email: kakaoUserInfo.kakao_account.email,
                 birthyear: kakaoUserInfo.kakao_account.birthyear,

@@ -23,7 +23,7 @@ const Footer = () => {
     }
 
     return (
-        <div
+        <footer
             className={cn(
                 'w-full max-w-7xl mx-auto pt-[1rem] px-[2rem] pb-[3.2rem] sm:px-[4rem] sm:pb-[3.2rem] sm:pt-[1.2rem] mt-auto',
                 shouldHideOnlyMobile ? 'hidden sm:block' : 'block',
@@ -72,7 +72,7 @@ const Footer = () => {
                     <p className='text-[1.2rem]/[135%] font-normal text-moneed-gray-8 text-end'>Email help@moneed.kr</p>
                 </div>
             </div>
-        </div>
+        </footer>
     );
 };
 

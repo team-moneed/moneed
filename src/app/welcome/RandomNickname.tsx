@@ -1,16 +1,22 @@
-import { accessTokenCookie } from '@/lib/session';
+'use client';
+
 import { TokenPayload } from '@/types/auth';
 import { decodeJwt } from 'jose';
-import { cookies } from 'next/headers';
+import { getCookie } from '@/util/cookie';
+import { useEffect, useState } from 'react';
 
-export default async function RandomNickname() {
-    const cookieStore = await cookies();
-    const accessToken = cookieStore.get(accessTokenCookie.name)?.value;
-    if (!accessToken) {
-        return <span>RandomNickname</span>;
-    }
+export default function RandomNickname() {
+    const [nickname, setNickname] = useState<string>('');
 
-    const decoded = decodeJwt<TokenPayload>(accessToken);
+    useEffect(() => {
+        const accessToken = getCookie('access_token');
+        if (!accessToken) {
+            return;
+        }
 
-    return <span>[{decoded.nickname}]</span>;
+        const decoded = decodeJwt<TokenPayload>(accessToken);
+        setNickname(decoded.nickname);
+    }, []);
+
+    return <span className='text-[#10DBBD]'>[{nickname}]</span>;
 }

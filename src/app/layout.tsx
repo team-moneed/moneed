@@ -4,7 +4,7 @@ import '@/app/globals.css';
 import { ModalProvider } from '@/context/ModalContext';
 import Header from '@/components/Layout/Header';
 import MobileNav from '@/components/Layout/MobileNav';
-import SnackBar from '@/components/SnackBar';
+import { SnackbarProvider } from '@/components/Snackbar';
 import Footer from '@/components/Layout/Footer';
 import QueryClientProvider from '@/components/QueryClientProvider';
 
@@ -39,7 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                             <main className='flex-1 pb-[8rem]'>{children}</main>
                             <Footer />
                             <MobileNav />
-                            <SnackBar />
+                            <SnackbarProvider />
                         </ModalProvider>
                     </QueryClientProvider>
                 </div>

@@ -1,11 +1,17 @@
-import { redirect } from 'next/navigation';
-import RandomNickname from './RandomNickname';
+'use client';
 
-// TODO: 랜덤닉네임 생성 로직 구현
+import { useRouter } from 'next/navigation';
+import RandomNickname from './RandomNickname';
+import { useEffect } from 'react';
+
 export default function Welcome() {
-    setTimeout(() => {
-        redirect('/');
-    }, 2000);
+    const router = useRouter();
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            router.push('/');
+        }, 2000);
+        return () => clearTimeout(timer);
+    }, [router]);
 
     return (
         <>
