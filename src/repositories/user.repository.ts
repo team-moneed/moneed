@@ -37,6 +37,14 @@ export class UserRepository {
         });
     }
 
+    async findByNickname(nickname: string): Promise<User | null> {
+        return this.prisma.user.findFirst({
+            where: {
+                nickname,
+            },
+        });
+    }
+
     async create(
         providerData: Pick<
             OAuthAccount,

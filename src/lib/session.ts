@@ -7,7 +7,7 @@ import { TokenPayload } from '@/types/auth';
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
-const accessTokenCookie = {
+export const accessTokenCookie = {
     name: 'access_token',
     options: {
         secure: process.env.NODE_ENV === 'production',
@@ -17,7 +17,7 @@ const accessTokenCookie = {
     duration: TOKEN_EXPIRATION.ACCESS_TOKEN,
 };
 
-const refreshTokenCookie = {
+export const refreshTokenCookie = {
     name: 'refresh_token',
     options: {
         httpOnly: true,
@@ -47,15 +47,15 @@ export async function decrypt<T extends TokenPayload>(jwt: string | undefined = 
     }
 }
 
-export async function createSession(userId: string) {
+export async function createSession(payload: TokenPayload) {
     const expires = {
         access: new Date(Date.now() + accessTokenCookie.duration),
         refresh: new Date(Date.now() + refreshTokenCookie.duration),
     };
 
     const [accessToken, refreshToken] = await Promise.all([
-        encrypt({ userId }, expires.access),
-        encrypt({ userId }, expires.refresh),
+        encrypt(payload, expires.access),
+        encrypt(payload, expires.refresh),
     ]);
 
     const cookieStore = await cookies();
@@ -84,7 +84,7 @@ export async function updateSession() {
     try {
         const currentRefreshToken = (await cookies()).get(refreshTokenCookie.name)?.value;
         const payload = await decrypt<TokenPayload>(currentRefreshToken);
-        await createSession(payload.userId);
+        await createSession(payload);
         return payload;
     } catch {
         return null;

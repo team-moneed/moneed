@@ -16,43 +16,39 @@ const CommonHeader = () => {
     };
 
     return (
-        <>
-            <div className='sticky top-0 z-10 bg-white flex items-center justify-between px-[4rem] pb-[1.8rem] pt-[3rem]'>
-                <Link href='/'>
-                    <div className='flex'>
-                        <div className='w-[2.8rem] h-[2.8rem] bg-moneed-black rounded-full flex items-center justify-center'>
-                            <img className='w-[1.4rem] h-[1.2rem]' src='/icon/icon-logo.svg' alt='' />
-                        </div>
-                        <span className='font-semibold leading-[140%] text-[1.8rem] ml-[.8rem]'>moneed</span>
+        <header className='sticky top-0 z-10 bg-white flex items-center justify-between px-[4rem] pb-[1.8rem] pt-[3rem]'>
+            <Link href='/'>
+                <div className='flex'>
+                    <div className='w-[2.8rem] h-[2.8rem] bg-moneed-black rounded-full flex items-center justify-center'>
+                        <img className='w-[1.4rem] h-[1.2rem]' src='/icon/icon-logo.svg' alt='' />
                     </div>
-                </Link>
-                <NavLink href='/shortform'>
-                    <span className='hidden lg:block lg:text-[1.4rem] font-semibold ml-[2.6rem]'>숏폼</span>
-                </NavLink>
-                <NavLink href='/community'>
-                    <span className='hidden lg:block lg:text-[1.4rem] font-semibold w-[8.4rem] ml-[2.4rem]'>
-                        커뮤니티
-                    </span>
-                </NavLink>
-                <div className='flex items-center gap-[2.4rem] ml-auto'>
-                    <NavLink
-                        href='/mypage'
-                        icon='/icon/icon-profile-circle.svg'
-                        activeIcon='/icon/icon-profile-circle.svg'
-                    />
-                    <img className='w-[2.4rem] h-[2.4rem]' src='/icon/icon-alarm.svg' alt='' />
-                    <Button
-                        onClick={movetowritepost}
-                        className='hidden lg:flex gap-4 px-[2.4rem] py-[.8rem] items-center'
-                        theme='brand'
-                        textcolor='brand'
-                    >
-                        <img className='w-[1.8rem] h-[1.8rem]' src='/icon/icon-edit.svg' alt='' />
-                        <span className='font-semibold leading-[135%] text-[1.4rem]'>포스팅</span>
-                    </Button>
+                    <span className='font-semibold leading-[140%] text-[1.8rem] ml-[.8rem]'>moneed</span>
                 </div>
+            </Link>
+            <NavLink href='/shortform'>
+                <span className='hidden lg:block lg:text-[1.4rem] font-semibold ml-[2.6rem]'>숏폼</span>
+            </NavLink>
+            <NavLink href='/community'>
+                <span className='hidden lg:block lg:text-[1.4rem] font-semibold w-[8.4rem] ml-[2.4rem]'>커뮤니티</span>
+            </NavLink>
+            <div className='flex items-center gap-[2.4rem] ml-auto'>
+                <NavLink
+                    href='/mypage'
+                    icon='/icon/icon-profile-circle.svg'
+                    activeIcon='/icon/icon-profile-circle.svg'
+                />
+                <img className='w-[2.4rem] h-[2.4rem]' src='/icon/icon-alarm.svg' alt='' />
+                <Button
+                    onClick={movetowritepost}
+                    className='hidden lg:flex gap-4 px-[2.4rem] py-[.8rem] items-center'
+                    theme='brand'
+                    textcolor='brand'
+                >
+                    <img className='w-[1.8rem] h-[1.8rem]' src='/icon/icon-edit.svg' alt='' />
+                    <span className='font-semibold leading-[135%] text-[1.4rem]'>포스팅</span>
+                </Button>
             </div>
-        </>
+        </header>
     );
 };
 
@@ -107,7 +103,7 @@ const MenuHeader = () => {
     };
 
     return (
-        <div className='sticky top-0 z-10 bg-white flex items-center justify-between px-[4rem] pb-[1.8rem] pt-[3rem]'>
+        <header className='sticky top-0 z-10 bg-white flex items-center justify-between px-[4rem] pb-[1.8rem] pt-[3rem]'>
             <img
                 className='cursor-pointer w-[2.4rem] h-[2.4rem]'
                 onClick={handleBackButtonClick}
@@ -148,15 +144,15 @@ const MenuHeader = () => {
                     )}
                 </Modal>
             )}
-        </div>
+        </header>
     );
 };
 
 const NoMenuHeader = () => {
     return (
-        <div className='sticky top-0 z-10 bg-white flex items-center justify-between md:px-[4rem] md:pb-[1.8rem] md:pt-[3rem] px-[1.8rem] pt-[2rem] pb-[1.2rem]'>
+        <header className='sticky top-0 z-10 bg-white flex items-center justify-between md:px-[4rem] md:pb-[1.8rem] md:pt-[3rem] px-[1.8rem] pt-[2rem] pb-[1.2rem]'>
             <Logo />
-        </div>
+        </header>
     );
 };
 

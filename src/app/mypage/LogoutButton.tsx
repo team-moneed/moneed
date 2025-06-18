@@ -1,21 +1,25 @@
 'use client';
 
 import { logout } from '@/api/auth.api';
-import useSnackBarStore from '@/store/useSnackBarStore';
+import useSnackbarStore from '@/store/useSnackbarStore';
 import { cn } from '@/util/style';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 export default function LogoutButton() {
     const router = useRouter();
-    const showSnackBar = useSnackBarStore(state => state.showSnackBar);
+    const showSnackbar = useSnackbarStore(state => state.showSnackbar);
     const { mutate: mutateLogout, isPending } = useMutation({
         mutationFn: ({ provider }: { provider: 'kakao' }) => logout({ provider }),
         onSuccess: () => {
             router.push('/onboarding?reason=logout');
         },
         onError: () => {
-            showSnackBar('로그아웃 실패', 'caution', 'top');
+            showSnackbar({
+                message: '로그아웃 실패',
+                variant: 'caution',
+                position: 'top',
+            });
         },
     });
 
