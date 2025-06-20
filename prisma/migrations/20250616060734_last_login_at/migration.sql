@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "users" ALTER COLUMN "lastLoginAt" SET DEFAULT CURRENT_TIMESTAMP;
