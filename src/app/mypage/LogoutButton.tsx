@@ -1,20 +1,25 @@
 'use client';
 
 import { logout } from '@/api/auth.api';
-import useSnackBarStore from '@/store/useSnackBarStore';
+import useSnackbarStore from '@/store/useSnackbarStore';
+import { cn } from '@/util/style';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 export default function LogoutButton() {
     const router = useRouter();
-    const showSnackBar = useSnackBarStore(state => state.showSnackBar);
-    const { mutate: mutateLogout } = useMutation({
+    const showSnackbar = useSnackbarStore(state => state.showSnackbar);
+    const { mutate: mutateLogout, isPending } = useMutation({
         mutationFn: ({ provider }: { provider: 'kakao' }) => logout({ provider }),
         onSuccess: () => {
             router.push('/onboarding?reason=logout');
         },
         onError: () => {
-            showSnackBar('로그아웃 실패', 'caution', 'top');
+            showSnackbar({
+                message: '로그아웃 실패',
+                variant: 'caution',
+                position: 'top',
+            });
         },
     });
 
@@ -26,8 +31,15 @@ export default function LogoutButton() {
     };
 
     return (
-        <button className='text-[1.4rem] font-normal leading-[145%] text-(--moneed-gray-7)' onClick={handleLogout}>
-            로그아웃
+        <button
+            className={cn(
+                'text-[1.4rem] font-normal leading-[145%] text-moneed-gray-7',
+                isPending ? 'opacity-50 cursor-not-allowed' : 'hover:text-moneed-gray-9',
+            )}
+            onClick={handleLogout}
+            disabled={isPending}
+        >
+            {isPending ? '로그아웃 중...' : '로그아웃'}
         </button>
     );
 }

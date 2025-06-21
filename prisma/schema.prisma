@@ -9,79 +9,108 @@ datasource db {
   directUrl = env("DATABASE_URL")
 }
 
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model User {
+  nickname       String
+  profileImage   String
+  thumbnailImage String
+  ageRange       String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  birthday       String
+  birthyear      String
+  email          String          @unique
+  name           String
+  id             String          @id @default(cuid())
+  gender         String?
+  role           Role            @default(USER)
+  lastLoginAt    DateTime        @default(now()) @updatedAt
+  oauthAccounts  OAuthAccount[]
+  posts          Post[]
+  selectedStocks SelectedStock[]
+  comments Comment[]
+
+  @@map("users")
+}
+
 model Post {
-  id         BigInt    @id @default(autoincrement())
-  createdAt  DateTime  @default(now()) @db.Timestamptz(6)
-  authorId  BigInt?
-  title      String?
-  content    String?
-  updatedAt DateTime? @default(now()) @db.Timestamp(6)
-  views      BigInt?   @default(0)
-  likes      BigInt?   @default(0)
-  stockType String?
+  id        Int    @id @default(autoincrement())
+  title     String
+  content   String
+  views     Int       @default(0)
+  likes     Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @default(now())
+  userId    String
+  stockId   Int
+  stock     Stock     @relation(fields: [stockId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments  Comment[]
 
   @@map("posts")
 }
 
-model User {
-    id               String   @id @default(cuid())
-    name             String
-    nickname         String
-    email            String   @unique
-    birthyear        String
-    birthday         String
-    profileImage     String
-    thumbnailImage   String
-    ageRange         String?
-    gender           String? // male, female
-    createdAt        DateTime  @default(now())
-    updatedAt        DateTime  @updatedAt
-    lastLoginAt      DateTime @default(now())
-    role             Role @default(USER)
-    oauthAccounts    OAuthAccount[]
-    selectedStocks   SelectedStock[]
+model Comment {
+  id Int @id @default(autoincrement())
+  postId Int
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  content String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId String?
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@map("users")
+  @@map("comments")
 }
 
 model OAuthAccount {
-    id                String   @id @default(cuid())
-    provider          String // kakao, google, naver
-    providerUserId    String    // OAuth Provider의 사용자 ID
-    userId            String    // User 테이블의 ID
-    user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-    connectedAt       DateTime  @default(now())
-    synchedAt         DateTime  @default(now())
-    createdAt         DateTime  @default(now())
-    updatedAt         DateTime  @updatedAt
-    accessToken       String
-    refreshToken      String
-    accessTokenExpiresIn DateTime
-    refreshTokenExpiresIn DateTime
+  providerUserId        String
+  connectedAt           DateTime @default(now())
+  synchedAt             DateTime @default(now())
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  accessToken           String
+  refreshToken          String
+  id                    String   @id @default(cuid())
+  userId                String
+  provider              String
+  accessTokenExpiresIn  DateTime
+  refreshTokenExpiresIn DateTime
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@unique([provider, providerUserId])
-    @@map("oauth_accounts")
+  @@unique([provider, providerUserId])
+  @@map("oauth_accounts")
 }
 
 model Stock {
-  id Int @id @default(autoincrement())
-  name String
+  name           String
   thumbnailImage String
+  id             Int             @id @default(autoincrement())
+  posts          Post[]
   selectedStocks SelectedStock[]
 
   @@map("stocks")
 }
 
 model SelectedStock {
-    id Int @id @default(autoincrement())
-    user User @relation(fields: [userId], references: [id])
-    userId String
-    stock Stock @relation(fields: [stockId], references: [id])
-    stockId Int
+  userId  String
+  stockId Int
+  id      Int    @id @default(autoincrement())
+  stock   Stock  @relation(fields: [stockId], references: [id])
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@map("selected_stocks")
-    @@unique([userId, stockId])
+  @@unique([userId, stockId])
+  @@map("selected_stocks")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model chat_room {
+  id                 BigInt    @id @default(autoincrement())
+  roomName           String?   @db.VarChar
+  roomCreator        BigInt?
+  roomJoinLimitation Int?      @default(1)
+  createdAt          DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt          DateTime? @default(now()) @db.Timestamptz(6)
 }
 
 

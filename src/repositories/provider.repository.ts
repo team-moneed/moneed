@@ -1,5 +1,6 @@
 import { OAuthAccount } from '@/generated/prisma';
 import prisma from '@/lib/prisma';
+import { ProviderInfo } from '@/services/auth.service';
 import { Optional } from '@/types/util';
 
 export class ProviderRepository {
@@ -32,35 +33,64 @@ export class ProviderRepository {
         });
     }
 
-    async updateToken(
-        providerData: Optional<
-            Pick<
-                OAuthAccount,
-                | 'provider'
-                | 'providerUserId'
-                | 'accessToken'
-                | 'refreshToken'
-                | 'accessTokenExpiresIn'
-                | 'refreshTokenExpiresIn'
-            >,
+    async updateTokenData(
+        provider: ProviderInfo,
+        tokenData: Optional<
+            Pick<OAuthAccount, 'accessToken' | 'refreshToken' | 'accessTokenExpiresIn' | 'refreshTokenExpiresIn'>,
             'refreshToken' | 'refreshTokenExpiresIn'
+        >,
+    ) {
+        return this.prisma.oAuthAccount.update({
+            where: {
+                provider_providerUserId: {
+                    provider: provider.provider,
+                    providerUserId: provider.providerUserId,
+                },
+            },
+            data: tokenData,
+        });
+    }
+
+    async upsert(
+        userId: string,
+        providerData: Pick<
+            OAuthAccount,
+            | 'provider'
+            | 'providerUserId'
+            | 'accessToken'
+            | 'refreshToken'
+            | 'accessTokenExpiresIn'
+            | 'refreshTokenExpiresIn'
         >,
     ) {
         const { provider, providerUserId, accessToken, refreshToken, accessTokenExpiresIn, refreshTokenExpiresIn } =
             providerData;
 
-        return this.prisma.oAuthAccount.update({
+        return this.prisma.oAuthAccount.upsert({
             where: {
                 provider_providerUserId: {
                     provider,
                     providerUserId,
                 },
             },
-            data: {
+            update: {
                 accessToken,
                 refreshToken,
                 accessTokenExpiresIn,
                 refreshTokenExpiresIn,
+            },
+            create: {
+                provider,
+                providerUserId,
+                accessToken,
+                refreshToken,
+                accessTokenExpiresIn,
+                refreshTokenExpiresIn,
+                user: {
+                    connect: {
+                        id: userId,
+                    },
+                },
             },
         });
     }

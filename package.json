@@ -12,9 +12,10 @@
         "preview": "vite preview",
         "prepare": "husky install",
         "postinstall": "husky install && npm run prismaGenerate",
-        "prismaGenerate": "dotenv -e .env.local prisma generate",
-        "prismaPull": "dotenv -e .env.local prisma db pull",
-        "prismaDev": "dotenv -e .env.local prisma migrate dev"
+        "prismaGenerate": "dotenv -e .env.local -- npx prisma generate",
+        "prismaPull": "dotenv -e .env.local -- npx prisma db pull",
+        "prismaDev": "dotenv -e .env.local -- npx prisma migrate dev",
+        "prismaDiff": "dotenv -e .env.local -- npx prisma migrate diff"
     },
     "lint-staged": {
         "*.{js,jsx,ts,tsx}": []
@@ -49,6 +50,8 @@
         "@types/react": "^18.3.12",
         "@types/react-dom": "^18.3.1",
         "autoprefixer": "^10.4.20",
+        "class-variance-authority": "^0.7.1",
+        "clsx": "^2.1.1",
         "eslint": "^9.15.0",
         "eslint-config-next": "^15.3.2",
         "eslint-plugin-react-hooks": "^5.0.0",
@@ -60,6 +63,7 @@
         "postcss-loader": "^8.1.1",
         "prettier": "^3.5.3",
         "prisma": "^6.8.2",
+        "tailwind-merge": "^3.3.1",
         "tailwindcss": "^4.1.7",
         "typescript": "~5.6.2",
         "typescript-eslint": "^8.15.0"

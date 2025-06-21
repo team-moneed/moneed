@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
 
 type DateFormatterPropsType = {
-    createdAt: string;
+    createdAt: Date;
 };
 
 const DateFormatter = ({ createdAt }: DateFormatterPropsType) => {
     // 시간을 계산하는 함수
-    const changeFormatDate = (createdAt: string) => {
+    const changeFormatDate = (createdAt: Date) => {
         const now = new Date();
-        const diffInSeconds = Math.floor((now.getTime() - new Date(createdAt).getTime()) / 1000);
+        const diffInSeconds = Math.floor((now.getTime() - createdAt.getTime()) / 1000);
 
         // 30초 이내
         if (diffInSeconds <= 30) {
@@ -70,9 +70,7 @@ const DateFormatter = ({ createdAt }: DateFormatterPropsType) => {
     // formattedDate 값을 useMemo로 계산
     const formattedDate = useMemo(() => changeFormatDate(createdAt), [createdAt]);
 
-    return (
-        <span className='text-[1.4rem] font-normal leading-[142%] text-(--moneed-gray-7)'>{formattedDate}</span>
-    );
+    return <span className='text-[1.4rem] font-normal leading-[142%] text-moneed-gray-7'>{formattedDate}</span>;
 };
 
 export default DateFormatter;
