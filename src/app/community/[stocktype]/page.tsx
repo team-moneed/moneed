@@ -2,11 +2,12 @@ import CompanyInfoBox from '@/components/Community/CompanyInfoBox';
 import StockInfoBox from '@/components/Community/StockInfoBox';
 import Posts from '@/components/Community/Posts';
 import Vote from './Vote';
-import { getPosts } from '@/api/post.api';
+// import { getPosts } from '@/api/post.api';
 
+// TODO: 종목별 게시글 조회 (무한 스크롤롤
 export default async function CommunityPage({ params }: { params: Promise<{ stocktype: string }> }) {
     const { stocktype } = await params;
-    const posts = await getPosts(stocktype);
+    // const posts = await getPosts(stocktype);
 
     return (
         <div>
@@ -15,7 +16,7 @@ export default async function CommunityPage({ params }: { params: Promise<{ stoc
                 <StockInfoBox />
             </div>
             <Vote />
-            {posts && <Posts posts={posts} />}
+            {/* {posts && <Posts posts={posts} />} */}
         </div>
     );
 }

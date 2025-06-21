@@ -2,15 +2,15 @@
 
 import DateFormatter from '@/util/Dateformatter';
 
-interface MainThumbnailCardProps {
-    postId?: string | number;
-    userName?: string;
-    content?: string;
-    createdAt: string;
-    title?: string;
+interface PostThumbnailCardProps {
+    postId: string | number;
+    userName: string;
+    content: string;
+    createdAt: Date;
+    title: string;
 }
 
-const MainThumbnailCard = ({ userName, content, title, createdAt }: MainThumbnailCardProps) => {
+const PostThumbnailCard = ({ userName, content, title, createdAt }: PostThumbnailCardProps) => {
     return (
         <>
             <div className='border border-solid border-moneed-gray-5 p-[1.8rem] rounded-[1.8rem]'>
@@ -33,4 +33,4 @@ const MainThumbnailCard = ({ userName, content, title, createdAt }: MainThumbnai
     );
 };
 
-export default MainThumbnailCard;
+export default PostThumbnailCard;
