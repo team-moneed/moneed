@@ -1,15 +1,16 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import Chip from '@/components/Chip';
+import { ChipButton } from '@/components/Chip';
 import Button from '@/components/Button';
 import { useEffect, useState } from 'react';
 import PostThumbnailCard from '@/app/PostThumbnailCard';
 import { useQuery } from '@tanstack/react-query';
 import { getBoardRank } from '@/api/board.api';
-import { getPostsWithUserByBoardId } from '@/api/post.api';
+import { getTopPosts } from '@/api/post.api';
 import { BoardRankResponse } from '@/types/board';
 
+// TODO: 1시간마다 업데이트 해야함
 const TopStockRank = () => {
     const { data: boardList } = useQuery({
         queryKey: ['boardRank'],
@@ -20,7 +21,7 @@ const TopStockRank = () => {
 
     const { data: postsWithUser } = useQuery({
         queryKey: ['posts', selectedStockId],
-        queryFn: () => getPostsWithUserByBoardId(selectedStockId!, 3),
+        queryFn: () => getTopPosts({ boardId: selectedStockId!, limit: 3 }),
         enabled: !!selectedStockId,
     });
 
@@ -94,11 +95,11 @@ function StockRanks({
         <div className='flex gap-4'>
             {boardList.map((board, index) => {
                 return (
-                    <Chip
+                    <ChipButton
                         key={board.stockId}
                         label={rankMedal(index) + board.stockName}
-                        onClick={() => setSelectedStockId(board.stockId)}
                         active={selectedStockId === board.stockId}
+                        onClick={() => setSelectedStockId(board.stockId)}
                     />
                 );
             })}

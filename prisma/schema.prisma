@@ -24,16 +24,17 @@ model User {
   gender         String?
   role           Role            @default(USER)
   lastLoginAt    DateTime        @default(now()) @updatedAt
+  comments       Comment[]
   oauthAccounts  OAuthAccount[]
   posts          Post[]
   selectedStocks SelectedStock[]
-  comments Comment[]
+  likePosts      LikePost[]
 
   @@map("users")
 }
 
 model Post {
-  id        Int    @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   title     String
   content   String
   views     Int       @default(0)
@@ -43,21 +44,33 @@ model Post {
   userId    String
   stockId   Int
   stock     Stock     @relation(fields: [stockId], references: [id], onDelete: Cascade)
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   comments  Comment[]
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  thumbnailImage String?
+  likePosts LikePost[]
 
   @@map("posts")
 }
 
-model Comment {
+model LikePost {
   id Int @id @default(autoincrement())
   postId Int
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
-  content String
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("like_posts")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId String?
-  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("comments")
 }
@@ -113,8 +126,7 @@ model chat_room {
   updatedAt          DateTime? @default(now()) @db.Timestamptz(6)
 }
 
-
 enum Role {
-    ADMIN
-    USER
+  ADMIN
+  USER
 }

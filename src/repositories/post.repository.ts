@@ -10,15 +10,75 @@ export default class PostRepository {
      * @param limit 조회할 게시글 수
      * @returns 게시글 목록
      */
-    async getPostsWithUserByStockId({ stockId, limit }: { stockId: number; limit: number }) {
+    async getPostsWithUser({ stockId, limit }: { stockId: number; limit: number }) {
         const posts = await this.prisma.post.findMany({
             where: {
                 stockId,
             },
             select: {
+                id: true,
                 title: true,
                 content: true,
                 createdAt: true,
+                user: {
+                    select: {
+                        id: true,
+                        nickname: true,
+                        profileImage: true,
+                    },
+                },
+            },
+            orderBy: {
+                createdAt: 'desc',
+            },
+            take: limit,
+        });
+
+        return posts;
+    }
+
+    async getPostsWithUserExtended({
+        stockId,
+        cursor,
+        limit,
+        userId,
+    }: {
+        stockId: number;
+        cursor: number;
+        limit: number;
+        userId?: string;
+    }) {
+        const posts = await this.prisma.post.findMany({
+            where: {
+                stockId,
+                id: {
+                    gt: cursor,
+                },
+            },
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                createdAt: true,
+                thumbnailImage: true,
+                likes: true,
+                likePosts: userId
+                    ? {
+                          where: {
+                              userId,
+                          },
+                      }
+                    : undefined,
+                comments: {
+                    select: {
+                        id: true,
+                    },
+                },
+                stock: {
+                    select: {
+                        name: true,
+                    },
+                },
                 user: {
                     select: {
                         id: true,

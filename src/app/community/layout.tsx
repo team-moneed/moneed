@@ -1,4 +1,4 @@
-import StockTypeBar from '@/components/StockTypeBar';
+import StockTypeBar from './StockTypeBar';
 
 export default function CommunityLayout({ children }: { children: React.ReactNode }) {
     return (

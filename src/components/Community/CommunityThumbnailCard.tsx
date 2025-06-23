@@ -25,7 +25,7 @@ const CommunityThumbnailCard = ({ userName, content, title, createdAt }: Communi
                 </div>
                 <span className='text-[1.4rem] font-normal leading-[140%] text-moneed-black'>{userName}</span>
                 <i className='w-[.2rem] h-[.2rem] rounded-full bg-moneed-gray-5'></i>
-                <DateFormatter createdAt={createdAt} />
+                <DateFormatter createdAt={new Date(createdAt)} />
             </div>
         </div>
     );

@@ -134,7 +134,7 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                                 {userName}
                             </span>
                             <i className='w-[.2rem] h-[.2rem] rounded-full bg-moneed-gray-5'></i>
-                            <DateFormatter createdAt={createdAt} />
+                            <DateFormatter createdAt={new Date(createdAt)} />
                         </div>
                         <div className='relative ml-auto shrink-0 z-2'>
                             <button
@@ -162,15 +162,13 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                 </div>
                 <div className='flex pl-[1.6rem] pb-[1.6rem] pr-[1.2rem] pt-[.4rem]'>
                     <div className='relative z-2'>
-                        {isliked ? (
-                            <button type='button' onClick={toggleLike}>
-                                <Icon iconUrl='/heartIcon.svg' width={18} height={18}></Icon>
-                            </button>
-                        ) : (
-                            <button type='button' onClick={toggleLike}>
-                                <Icon iconUrl='/redHeartIcon.svg' width={18} height={18}></Icon>
-                            </button>
-                        )}
+                        <button type='button' onClick={toggleLike}>
+                            <Icon
+                                iconUrl={isliked ? '/redHeartIcon.svg' : '/heartIcon.svg'}
+                                width={18}
+                                height={18}
+                            ></Icon>
+                        </button>
                     </div>
                     <span className='relative z-2 mr-4 text-[1.4rem] font-normal leading-[140%] text-moneed-gray-8'>
                         6
@@ -187,6 +185,12 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                 </div>
             </div>
         </>
+    );
+};
+
+export const PostSkeleton = () => {
+    return (
+        <div className='relative border border-solid border-moneed-gray-5 rounded-[1.8rem] mb-[1.6rem] animate-pulse h-[20rem] bg-moneed-gray-5'></div>
     );
 };
 

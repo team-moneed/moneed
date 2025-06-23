@@ -1,28 +1,53 @@
 'use client';
-import { type Post as TPost } from '@/types/post';
-import Post from './Post';
+import Post, { PostSkeleton } from './Post';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { getPosts } from '@/api/post.api';
+import { PostThumbnail } from '@/types/post';
+import { Suspense } from 'react';
 
 type PostsProps = {
-    posts: TPost[];
+    stockId: number;
 };
 
-const Posts = ({ posts }: PostsProps) => {
+const Posts = ({ stockId }: PostsProps) => {
+    const { data: posts } = useSuspenseInfiniteQuery({
+        queryKey: ['posts', stockId],
+        queryFn: ({ pageParam = 0 }) => getPosts({ stockId, cursor: pageParam }),
+        getNextPageParam: lastPage => (lastPage.length > 0 ? lastPage[lastPage.length - 1].id : undefined),
+        initialPageParam: 0,
+        select: data => data.pages.flatMap(page => page),
+    });
+
     return (
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-y-[.6rem] gap-x-[1.2rem] mt-4 md:gap-y-[1.6rem] mb-[.6rem]'>
-            {posts.map((post: TPost) => (
+        <>
+            {posts.map((post: PostThumbnail) => (
                 <Post
-                    key={post.postId}
-                    userName={post.userName}
+                    key={post.id}
+                    userName={post.user.nickname}
                     content={post.content}
-                    isliked={post.isliked}
-                    postId={post.postId}
+                    isliked={post.isLiked}
+                    postId={post.id}
                     stocktype={post.stocktype}
-                    postImages={post.postImages}
-                    likes={post.likes}
+                    postImages={post.thumbnailImage ? [post.thumbnailImage] : []}
+                    likes={post.likeCount}
                     createdAt={post.createdAt}
                     title={post.title}
                 />
             ))}
+        </>
+    );
+};
+
+export const PostsWithSuspense = ({ stockId }: PostsProps) => {
+    return (
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-y-[.6rem] gap-x-[1.2rem] mt-4 md:gap-y-[1.6rem] mb-[.6rem]'>
+            <Suspense
+                fallback={Array.from({ length: 15 }).map((_, index) => (
+                    <PostSkeleton key={index} />
+                ))}
+            >
+                <Posts stockId={stockId} />
+            </Suspense>
         </div>
     );
 };

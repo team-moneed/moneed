@@ -195,7 +195,7 @@ export default function PostDetailPage() {
                                         {state.userName}
                                     </span>
                                     <i className='w-[.2rem] h-[.2rem] rounded-full bg-moneed-gray-5'></i>
-                                    <DateFormatter createdAt={state.createdAt} />
+                                    <DateFormatter createdAt={new Date(state.createdAt)} />
                                 </div>
                                 <div className='relative ml-auto shrink-0 z-2'>
                                     <div
