@@ -4,10 +4,10 @@ import Posts from '@/components/Community/Posts';
 
 const HotPosts = ({ ref }: { ref: React.RefObject<HTMLDivElement> }) => {
     const title = '인기 급상승 게시글';
-    const { data: posts } = useQuery<Post[]>({
-        queryKey: ['posts'],
-        queryFn: () => fetch('/api/posts').then(res => res.json()),
-    });
+    // const { data: posts } = useQuery<Post[]>({
+    //     queryKey: ['posts'],
+    //     queryFn: () => fetch('/api/posts').then(res => res.json()),
+    // });
 
     return (
         <section ref={ref} className='mt-[2.8rem]'>
@@ -16,7 +16,7 @@ const HotPosts = ({ ref }: { ref: React.RefObject<HTMLDivElement> }) => {
                     {title}
                 </h2>
             </div>
-            {posts && <Posts posts={posts} />}
+            {/* {posts && <Posts posts={posts} />} */}
         </section>
     );
 };

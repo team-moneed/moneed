@@ -4,18 +4,32 @@ import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { getPosts } from '@/api/post.api';
 import { PostThumbnail } from '@/types/post';
 import { Suspense } from 'react';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 
 type PostsProps = {
     stockId: number;
 };
 
 const Posts = ({ stockId }: PostsProps) => {
-    const { data: posts } = useSuspenseInfiniteQuery({
+    const {
+        data: posts,
+        fetchNextPage,
+        hasNextPage,
+    } = useSuspenseInfiniteQuery({
         queryKey: ['posts', stockId],
-        queryFn: ({ pageParam = 0 }) => getPosts({ stockId, cursor: pageParam }),
-        getNextPageParam: lastPage => (lastPage.length > 0 ? lastPage[lastPage.length - 1].id : undefined),
-        initialPageParam: 0,
+        queryFn: ({ pageParam = new Date() }) => getPosts({ stockId, cursor: pageParam }),
+        getNextPageParam: lastPage =>
+            lastPage.length > 0 ? new Date(lastPage[lastPage.length - 1].createdAt) : undefined,
+        initialPageParam: new Date(),
         select: data => data.pages.flatMap(page => page),
+    });
+
+    const ref = useIntersectionObserver({
+        onIntersect: () => {
+            if (hasNextPage) {
+                fetchNextPage();
+            }
+        },
     });
 
     return (
@@ -23,17 +37,19 @@ const Posts = ({ stockId }: PostsProps) => {
             {posts.map((post: PostThumbnail) => (
                 <Post
                     key={post.id}
-                    userName={post.user.nickname}
+                    user={post.user}
                     content={post.content}
-                    isliked={post.isLiked}
-                    postId={post.id}
+                    isLiked={post.isLiked}
+                    id={post.id}
                     stocktype={post.stocktype}
-                    postImages={post.thumbnailImage ? [post.thumbnailImage] : []}
-                    likes={post.likeCount}
+                    thumbnailImage={post.thumbnailImage}
+                    likeCount={post.likeCount}
+                    commentCount={post.commentCount}
                     createdAt={post.createdAt}
                     title={post.title}
                 />
             ))}
+            <div ref={ref}></div>
         </>
     );
 };

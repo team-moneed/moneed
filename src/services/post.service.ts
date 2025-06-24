@@ -18,12 +18,12 @@ export default class PostService {
 
     async getPostsWithUserExtended({
         stockId,
-        cursor = 0,
+        cursor = new Date(),
         limit = 15,
         userId,
     }: {
         stockId: number;
-        cursor?: number;
+        cursor?: Date;
         limit?: number;
         userId?: string;
     }): Promise<PostThumbnail[]> {

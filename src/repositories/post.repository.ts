@@ -44,15 +44,15 @@ export default class PostRepository {
         userId,
     }: {
         stockId: number;
-        cursor: number;
+        cursor: Date;
         limit: number;
         userId?: string;
     }) {
         const posts = await this.prisma.post.findMany({
             where: {
                 stockId,
-                id: {
-                    gt: cursor,
+                createdAt: {
+                    lt: cursor,
                 },
             },
             select: {

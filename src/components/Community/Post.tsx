@@ -9,20 +9,13 @@ import DateFormatter from '@/util/Dateformatter';
 import useSnackbarStore from '@/store/useSnackbarStore';
 import { useModal } from '@/context/ModalContext';
 import { useRouter } from 'next/navigation';
+import { PostThumbnail } from '@/types/post';
+import { cn } from '@/util/style';
 
-export type PostType = {
-    userName: string;
-    content: string;
-    isliked: boolean;
-    postId: number;
-    stocktype: string;
-    postImages: string[];
-    likes: number;
-    createdAt: string;
-    title: string;
-};
+const Post = (post: PostThumbnail) => {
+    const { user, content, isLiked, id, stocktype, thumbnailImage, likeCount, createdAt, title, commentCount } = post;
+    const postImages = thumbnailImage ? [thumbnailImage] : [];
 
-const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes, createdAt, title }: PostType) => {
     const OPTIONS: EmblaOptionsType = {
         slidesToScroll: 1,
         loop: true,
@@ -41,7 +34,7 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
             return;
         } else {
             router.push(
-                `/posts/${stocktype}/${postId}?userName=${userName}&content=${content}&isliked=${isliked}&postId=${postId}&stocktype=${stocktype}&postImages=${postImages}&createdAt=${createdAt}&title=${title}&likes=${likes}`,
+                `/posts/${stocktype}/${postId}?userName=${user.nickname}&content=${content}&isLiked=${isLiked}&postId=${id}&stocktype=${stocktype}&postImages=${postImages}&createdAt=${createdAt}&title=${title}&likes=${likeCount}`,
             );
         }
     };
@@ -93,7 +86,7 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
     const onEditPost = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         router.push(
-            `/editpost/${stocktype}?userName=${userName}&content=${content}&isliked=${isliked}&postId=${postId}&stocktype=${stocktype}&postImages=${postImages}&createdAt=${createdAt}&title=${title}&likes=${likes}`,
+            `/editpost/${stocktype}?userName=${user.nickname}&content=${content}&isLiked=${isLiked}&postId=${id}&stocktype=${stocktype}&postImages=${postImages}&createdAt=${createdAt}&title=${title}&likes=${likeCount}`,
         );
     };
 
@@ -115,23 +108,24 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
     return (
         <>
             <div
-                className={`relative border border-solid border-moneed-gray-5 rounded-[1.8rem] mb-[1.6rem] ${
-                    isDropdownOpen ? 'pointer-events-none' : ''
-                }`}
+                className={cn(
+                    'flex flex-col justify-between relative border border-solid border-moneed-gray-5 rounded-[1.8rem] mb-[1.6rem] cursor-pointer',
+                    isDropdownOpen && 'pointer-events-none',
+                )}
+                onClick={() => movetoDetail(stocktype, id)}
             >
-                <button
-                    type='button'
-                    onClick={() => movetoDetail(stocktype, postId)}
-                    className='absolute inset-0'
-                ></button>
                 <div className='pl-[1.8rem] pb-[1.3rem] pr-[1.2rem] pt-[1.4rem]'>
                     <div className='flex items-center justify-between'>
                         <div className='flex items-center gap-[.6rem] flex-1'>
                             <div className='rounded-full overflow-hidden aspect-square w-[3.2rem]'>
-                                <img src='/temp/sample3.png' alt='' className='w-full h-full object-cover' />
+                                <img
+                                    src={user.profileImage}
+                                    alt={user.nickname}
+                                    className='w-full h-full object-cover'
+                                />
                             </div>
                             <span className='text-[1.4rem] font-normal leading-[140%] text-moneed-black'>
-                                {userName}
+                                {user.nickname}
                             </span>
                             <i className='w-[.2rem] h-[.2rem] rounded-full bg-moneed-gray-5'></i>
                             <DateFormatter createdAt={new Date(createdAt)} />
@@ -164,20 +158,20 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
                     <div className='relative z-2'>
                         <button type='button' onClick={toggleLike}>
                             <Icon
-                                iconUrl={isliked ? '/redHeartIcon.svg' : '/heartIcon.svg'}
+                                iconUrl={isLiked ? '/redHeartIcon.svg' : '/heartIcon.svg'}
                                 width={18}
                                 height={18}
                             ></Icon>
                         </button>
                     </div>
                     <span className='relative z-2 mr-4 text-[1.4rem] font-normal leading-[140%] text-moneed-gray-8'>
-                        6
+                        {likeCount}
                     </span>
                     <div className=' relative z-2'>
                         <Icon iconUrl='/commentIcon.svg' width={20} height={20} />
                     </div>
                     <span className='relative z-2 mr-4 text-[1.4rem] font-normal leading-[140%] text-moneed-gray-8'>
-                        8{' '}
+                        {commentCount}
                     </span>
                     <div className=' relative z-2'>
                         <Icon onClick={() => handleCopyClipBoard()} iconUrl='/sharingIcon.svg' width={20} height={20} />

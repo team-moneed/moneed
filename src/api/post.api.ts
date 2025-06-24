@@ -13,11 +13,11 @@ export const getTopPosts = async ({ boardId, limit }: { boardId: number; limit?:
 
 export const getPosts = async ({
     stockId,
-    cursor = 0,
+    cursor = new Date(),
     limit = 15,
 }: {
     stockId: number;
-    cursor?: number;
+    cursor?: Date;
     limit?: number;
 }) => {
     const res = await axios.get<PostThumbnail[]>('/api/posts', {
