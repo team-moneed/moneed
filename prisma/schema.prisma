@@ -12,7 +12,6 @@ datasource db {
 model User {
   nickname       String
   profileImage   String
-  thumbnailImage String
   ageRange       String?
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt

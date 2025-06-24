@@ -7,6 +7,11 @@ import { createSession } from '@/lib/session';
 import { RequiredUserInfo } from '@/types/user';
 import { TokenPayload } from '@/types/auth';
 
+const getDefaultProfileImage = () => {
+    const randomNumber = Math.floor(Math.random() * 15) + 1;
+    return `${process.env.NEXT_PUBLIC_MONEED_BASE_URL}/profile/profile-${randomNumber}.svg`;
+};
+
 export async function POST(request: NextRequest) {
     try {
         const { code, state } = await request.json();
@@ -65,8 +70,7 @@ export async function POST(request: NextRequest) {
                 email: kakaoUserInfo.kakao_account.email,
                 birthyear: kakaoUserInfo.kakao_account.birthyear,
                 birthday: kakaoUserInfo.kakao_account.birthday,
-                profileImage: kakaoUserInfo.kakao_account.profile.profile_image_url,
-                thumbnailImage: kakaoUserInfo.kakao_account.profile.thumbnail_image_url,
+                profileImage: getDefaultProfileImage(),
                 ageRange: kakaoUserInfo.kakao_account.age_range,
                 gender: kakaoUserInfo.kakao_account.gender,
             };
