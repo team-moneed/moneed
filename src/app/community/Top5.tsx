@@ -4,7 +4,7 @@ import { getTopPosts } from '@/api/post.api';
 import PostCarousel from '@/components/Carousel/PostCarousel';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-const Top5 = () => {
+const Top5 = ({ id }: { id: string }) => {
     const title = 'Top 5';
     const standardDate = new Date().toLocaleDateString('ko-KR', { month: 'long' });
     const POSTOPTIONS = {
@@ -21,7 +21,7 @@ const Top5 = () => {
     });
 
     return (
-        <section id='top5' className='mt-[3.6rem]'>
+        <section id={id} className='mt-[3.6rem]'>
             <div className='flex items-baseline gap-[.8rem] mb-[1.6rem]'>
                 <h2 className='text-[2.2rem] leading-[145%] font-bold text-moneed-black sm:text-2xl sm:leading-[140%]'>
                     {title}

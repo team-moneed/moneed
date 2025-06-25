@@ -1,8 +1,8 @@
 'use client';
 
 import CategoryRankBox from '@/components/Community/CategoryRankBox';
-import { useQuery } from '@tanstack/react-query';
-import { getHotStock } from '@/api/hotStock.api';
+// import { useQuery } from '@tanstack/react-query';
+// import { getHotStock } from '@/api/hotStock.api';
 
 export type stockCagtegory = {
     categoryName: string;
@@ -14,7 +14,7 @@ export type stockCagtegory = {
     };
 };
 
-const TopCategory = ({ ref }: { ref: React.RefObject<HTMLDivElement> }) => {
+const TopCategory = ({ id }: { id: string }) => {
     // TODO: API 연결
     const stockCategories = [
         {
@@ -46,16 +46,14 @@ const TopCategory = ({ ref }: { ref: React.RefObject<HTMLDivElement> }) => {
         },
     ];
 
-    const { data } = useQuery({
-        queryKey: ['hotStock'],
-        queryFn: () => getHotStock({ market: 'NAS' }),
-    });
-
-    console.log(data);
+    // const { data } = useQuery({
+    //     queryKey: ['hotStock'],
+    //     queryFn: () => getHotStock({ market: 'NAS' }),
+    // });
 
     return (
         <>
-            <div ref={ref} className='mt-[2.8rem]'>
+            <div id={id} className='mt-[2.8rem]'>
                 <div className='flex items-baseline gap-[.8rem] mb-[1.8rem]'>
                     <h2 className='text-[2.2rem] leading-[145%] font-bold text-moneed-black lg:text-[2.4rem] lg:leading-[140%]'>
                         지금 뜨는 종목

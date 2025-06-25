@@ -1,8 +1,8 @@
-import { type Post } from '@/types/post';
-import { useQuery } from '@tanstack/react-query';
-import Posts from '@/components/Community/Posts';
+// import { type Post } from '@/types/post';
+// import { useQuery } from '@tanstack/react-query';
+// import Posts from '@/components/Community/Posts';
 
-const HotPosts = ({ ref }: { ref: React.RefObject<HTMLDivElement> }) => {
+const HotPosts = ({ id }: { id: string }) => {
     const title = '인기 급상승 게시글';
     // const { data: posts } = useQuery<Post[]>({
     //     queryKey: ['posts'],
@@ -10,9 +10,9 @@ const HotPosts = ({ ref }: { ref: React.RefObject<HTMLDivElement> }) => {
     // });
 
     return (
-        <section ref={ref} className='mt-[2.8rem]'>
+        <section id={id} className='mt-[2.8rem]'>
             <div className='flex items-baseline gap-[.8rem] mb-[1.8rem]'>
-                <h2 className='text-[2.2rem] leading-[145%] font-bold text-(--moneed-black) lg:text-[2.4rem] lg:leading-[140%]'>
+                <h2 className='text-[2.2rem] leading-[145%] font-bold text-moneed-black lg:text-[2.4rem] lg:leading-[140%]'>
                     {title}
                 </h2>
             </div>
