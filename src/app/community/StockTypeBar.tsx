@@ -8,7 +8,6 @@ import { useStocks } from '@/hooks/useStocks';
 
 export default function StockTypeBar() {
     const params = useParams();
-    // props로 받은 stockId가 있으면 사용, 없으면 URL에서 추출
     const stockId = params ? Number(params.stockId) : undefined;
     const { data: stocks, isLoading } = useStocks();
 

@@ -33,6 +33,11 @@
     --color-moneed-gray-1: #fdfdfe;
     --color-moneed-white: #ffffff;
     --container-7xl: calc(80rem * 1.6);
+    --text-2xl: 2.4rem;
+    --text-xl: 2rem;
+    --text-lg: 1.8rem;
+    --text-md: 1.6rem;
+    --text-sm: 1.4rem;
 }
 
 @utility mask-right {
@@ -95,5 +100,15 @@
     html {
         min-height: 100vh;
         font-size: 10px;
+    }
+    h2 {
+        font-weight: 700;
+        font-size: 2.2rem;
+        line-height: 145%;
+    }
+    h3 {
+        font-size: 2rem;
+        font-weight: 600;
+        line-height: 140%;
     }
 }
