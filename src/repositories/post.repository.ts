@@ -36,16 +36,87 @@ export default class PostRepository {
         return posts;
     }
 
+    async getPostsWithUserExtended({
+        stockId,
+        cursor,
+        limit,
+        userId,
+    }: {
+        stockId: number;
+        cursor: Date;
+        limit: number;
+        userId?: string;
+    }) {
+        const posts = await this.prisma.post.findMany({
+            where: {
+                stockId,
+                createdAt: {
+                    lt: cursor,
+                },
+            },
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                createdAt: true,
+                thumbnailImage: true,
+                postLikes: userId
+                    ? {
+                          where: {
+                              userId,
+                          },
+                      }
+                    : undefined,
+                comments: {
+                    select: {
+                        id: true,
+                    },
+                },
+                stock: {
+                    select: {
+                        name: true,
+                    },
+                },
+                user: {
+                    select: {
+                        id: true,
+                        nickname: true,
+                        profileImage: true,
+                    },
+                },
+            },
+            orderBy: {
+                createdAt: 'desc',
+            },
+            take: limit,
+        });
+
+        return posts;
+    }
+
     async getBoardRank({ limit }: { limit: number }): Promise<BoardRankResponse[]> {
         const twentyFourHoursAgo = new Date(Date.now() - 1000 * 60 * 60 * 24);
-
         const result = (await this.prisma.$queryRaw`
             SELECT 
                 p."stockId",
                 (SELECT s.name FROM stocks s WHERE s.id = p."stockId") as "stockName",
                 COUNT(DISTINCT p.id) as "postCount",
-                COALESCE(SUM(p.views), 0) as "totalViews",
-                COALESCE(SUM(p.likes), 0) as "totalLikes",
+                COALESCE(
+                    (SELECT COUNT(pl.id) 
+                     FROM post_likes pl 
+                     JOIN posts p2 ON pl."postId" = p2.id 
+                     WHERE p2."stockId" = p."stockId" 
+                     AND pl."createdAt" >= ${twentyFourHoursAgo}), 
+                    0
+                ) as "totalLikes",
+                COALESCE(
+                    (SELECT COUNT(pv.id) 
+                     FROM post_views pv 
+                     JOIN posts p2 ON pv."postId" = p2.id 
+                     WHERE p2."stockId" = p."stockId" 
+                     AND pv."createdAt" >= ${twentyFourHoursAgo}), 
+                    0
+                ) as "totalViews",
                 COALESCE(
                     (SELECT COUNT(c.id) 
                      FROM comments c 

@@ -27,7 +27,8 @@ model User {
   oauthAccounts  OAuthAccount[]
   posts          Post[]
   selectedStocks SelectedStock[]
-  comments Comment[]
+  postLikes      PostLike[]
+  postViews      PostViews[]
 
   @@map("users")
 }
@@ -36,24 +37,45 @@ model Post {
   id        Int    @id @default(autoincrement())
   title     String
   content   String
-  views     Int       @default(0)
-  likes     Int       @default(0)
   createdAt DateTime  @default(now())
   updatedAt DateTime? @default(now())
   userId    String
   stockId   Int
   stock     Stock     @relation(fields: [stockId], references: [id], onDelete: Cascade)
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  comments  Comment[]
+  thumbnailImage String?
+  postLikes PostLike[]
+  postViews PostViews[]
 
   @@map("posts")
 }
 
-model Comment {
+model PostLike {
   id Int @id @default(autoincrement())
   postId Int
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
-  content String
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@map("post_likes")
+}
+
+model PostViews {
+  id Int @id @default(autoincrement())
+  postId Int
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@map("post_views")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId String?

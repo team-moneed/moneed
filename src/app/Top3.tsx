@@ -4,33 +4,42 @@ import { useRouter } from 'next/navigation';
 import Chip from '@/components/Chip';
 import Button from '@/components/Button';
 import { useEffect, useState } from 'react';
-import PostThumbnailCard from '@/app/PostThumbnailCard';
+import PostThumbnailCard from '@/components/PostThumbnailCard';
 import { useQuery } from '@tanstack/react-query';
 import { getBoardRank } from '@/api/board.api';
-import { getPostsWithUserByBoardId } from '@/api/post.api';
+import { getTopBoardPosts } from '@/api/post.api';
 import { BoardRankResponse } from '@/types/board';
 
-const TopStockRank = () => {
+// TODO: 1시간마다 업데이트 해야함
+const Top3 = () => {
+    const anHour = 1000 * 60 * 60;
     const { data: boardList } = useQuery({
-        queryKey: ['boardRank'],
+        queryKey: ['board-rank-top3'],
         queryFn: () => getBoardRank({ limit: 3 }),
+        staleTime: anHour,
     });
 
     const [selectedStockId, setSelectedStockId] = useState<number | undefined>(boardList?.[0]?.stockId);
 
-    const { data: postsWithUser } = useQuery({
+    const { data: postsWithUser, isLoading: isPostsLoading } = useQuery({
         queryKey: ['posts', selectedStockId],
-        queryFn: () => getPostsWithUserByBoardId(selectedStockId!, 3),
-        enabled: !!selectedStockId,
+        queryFn: () => getTopBoardPosts({ boardId: selectedStockId!, limit: 3 }),
+        enabled: !!selectedStockId && boardList && boardList.length > 0,
+        staleTime: anHour,
     });
 
     const router = useRouter();
+
+    const moveToDetail = (stockId: number) => {
+        router.push(`/posts/${stockId}`);
+    };
+
     const movecommunity = (stockId: number) => {
         router.push(`/community/${stockId}`);
     };
 
     useEffect(() => {
-        if (boardList) {
+        if (boardList && boardList.length > 0) {
             setSelectedStockId(boardList[0].stockId);
         }
     }, [boardList]);
@@ -43,30 +52,40 @@ const TopStockRank = () => {
                 setSelectedStockId={setSelectedStockId}
             />
             <div>
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-[.6rem] gap-x-[1.6rem] mt-4 md:gap-y-[1.2rem]'>
-                    {postsWithUser?.map(post => (
-                        <PostThumbnailCard
-                            key={post.id}
-                            postId={post.id}
-                            userName={post.user.nickname}
-                            content={post.content}
-                            title={post.title}
-                            createdAt={new Date(post.createdAt)}
-                        />
-                    ))}
-                </div>
-                <div className='flex justify-center mt-[1.8rem] lg:justify-start lg:mt-[2.6rem]'>
+                {!isPostsLoading && (postsWithUser === undefined || postsWithUser.length === 0) ? (
+                    <div className='text-[2.4rem] text-moneed-gray-6 leading-[140%] text-center'>
+                        24시간 내에 올라온 게시물이 없습니다.
+                    </div>
+                ) : (
+                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-[.6rem] gap-x-[1.6rem] mt-4 md:gap-y-[1.2rem]'>
+                        {postsWithUser?.map(post => (
+                            <PostThumbnailCard key={post.id} onClick={() => moveToDetail(post.id)}>
+                                <PostThumbnailCard.Body>
+                                    <PostThumbnailCard.Title title={post.title} />
+                                    <PostThumbnailCard.Content content={post.content} />
+                                </PostThumbnailCard.Body>
+                                <PostThumbnailCard.Footer>
+                                    <PostThumbnailCard.AuthorWithDate
+                                        user={post.user}
+                                        createdAt={new Date(post.createdAt)}
+                                    />
+                                </PostThumbnailCard.Footer>
+                            </PostThumbnailCard>
+                        ))}
+                    </div>
+                )}
+                <div className='flex justify-center mt-[1.8rem] sm:justify-start sm:mt-[2.6rem]'>
                     <Button
                         theme='ghost'
                         textcolor='primary'
                         onClick={() => movecommunity(selectedStockId!)}
-                        className='flex items-center gap-[.8rem] py-0 lg:pl-0'
+                        className='flex items-center gap-[.8rem] py-0 sm:pl-0'
                         disabled={!selectedStockId}
                     >
                         <span className='text-[1.4rem] text-moneed-gray-8 font-semibold leading-[135%]'>
                             해당 게시판 더보기
                         </span>
-                        <img src='/icon/icon-arrow-right.svg' alt='' />
+                        <img src='/icon/icon-arrow-right.svg' alt='게시판 더보기' />
                     </Button>
                 </div>
             </div>
@@ -106,4 +125,4 @@ function StockRanks({
     );
 }
 
-export default TopStockRank;
+export default Top3;

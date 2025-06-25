@@ -9,9 +9,8 @@ export default class PostService {
         return boardRank;
     }
 
-    // 게시판별 게시글 조회
-    async getPostsWithUserByStockId({ stockId, limit }: { stockId: number; limit: number }) {
-        const postList = await this.postRepository.getPostsWithUserByStockId({ stockId, limit });
+    async getBoardTopPosts({ boardId, limit }: { boardId: number; limit: number }) {
+        const postList = await this.postRepository.getPostsWithUser({ stockId: boardId, limit });
         return postList;
     }
 }

@@ -1,11 +1,37 @@
 import { PostWithUser } from '@/types/post';
-import { http } from './request';
+import { http } from '@/api/client';
 
-// TODO: cursor pagination 적용
-export const getPostsWithUserByBoardId = async (boardId: number, limit?: number) => {
-    const res = await http.get<PostWithUser[]>('/api/posts', {
+export const getTopBoardPosts = async ({ boardId, limit }: { boardId: number; limit?: number }) => {
+    const res = await axios.get<TopBoardPostThumbnail[]>(`/api/posts/top/${boardId}`, {
         params: {
-            boardId,
+            limit,
+        },
+    });
+    return res.data;
+};
+
+export const getTopPosts = async ({ limit }: { limit?: number } = {}) => {
+    const res = await axios.get<PostThumbnail[]>('/api/posts/top', {
+        params: {
+            limit,
+        },
+    });
+    return res.data;
+};
+
+export const getPosts = async ({
+    stockId,
+    cursor = new Date(),
+    limit = 15,
+}: {
+    stockId: number;
+    cursor?: Date;
+    limit?: number;
+}) => {
+    const res = await axios.get<PostThumbnail[]>('/api/posts', {
+        params: {
+            stockId,
+            cursor,
             limit,
         },
     });
