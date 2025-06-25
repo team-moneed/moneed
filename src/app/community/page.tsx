@@ -1,55 +1,75 @@
 'use client';
 
-import useMoveScroll from '@/hooks/useMoveScroll';
 import TopCategory from '@/app/community/TopCategory';
-import { useRef } from 'react';
+import { useEffect, useState } from 'react';
 import Top5 from './Top5';
 import HotPosts from './HotPosts';
 import Vote from './Vote';
+import { cn } from '@/util/style';
+
+const hashObj = {
+    top5: '#top5',
+    category: '#category',
+    vote: '#vote',
+    hotPosts: '#hotPosts',
+};
 
 export default function CommunityPage() {
-    const top5Ref = useRef<HTMLDivElement>(null);
-    const categoryRef = useRef<HTMLDivElement>(null);
-    const hotPostsRef = useRef<HTMLDivElement>(null);
-    const voteRef = useRef<HTMLDivElement>(null);
+    const [hash, setHash] = useState('');
+    const handleHashChange = () => {
+        const hash = window.location.hash;
+        setHash(hash);
+    };
 
-    const { onMoveToElement: moveToTop5 } = useMoveScroll(top5Ref);
-    const { onMoveToElement: moveToCategory } = useMoveScroll(categoryRef);
-    const { onMoveToElement: moveToHotPosts } = useMoveScroll(hotPostsRef);
-    const { onMoveToElement: moveToVote } = useMoveScroll(voteRef);
+    useEffect(() => {
+        window.addEventListener('hashchange', handleHashChange);
 
+        return () => window.removeEventListener('hashchange', handleHashChange);
+    }, []);
     return (
         <div>
-            <div className='flex gap-4 pt-8 items-start'>
-                <button
-                    onClick={moveToTop5}
-                    className='text-[1.4rem] leading-[140%] font-normal text-moneed-gray-7 mr-[1.2rem]'
+            <div className='flex gap-4 pt-8 items-start border-b-2 border-moneed-gray-5'>
+                <a
+                    href={hashObj.top5}
+                    className={cn(
+                        'text-moneed-gray-7 mr-[1.2rem] sm:text-lg sm:leading-[140%] cursor-pointer pb-[.3rem]',
+                        hash === hashObj.top5 && 'text-moneed-black border-b-[3px] border-b-moneed-brand',
+                    )}
                 >
                     Top 5
-                </button>
-                <button
-                    onClick={moveToCategory}
-                    className='text-[1.4rem] leading-[140%] font-normal text-moneed-gray-7 mr-[1.2rem]'
+                </a>
+                <a
+                    href={hashObj.category}
+                    className={cn(
+                        'text-moneed-gray-7 mr-[1.2rem] sm:text-lg sm:leading-[140%] cursor-pointer pb-[.3rem]',
+                        hash === hashObj.category && 'text-moneed-black border-b-[3px] border-b-moneed-brand',
+                    )}
                 >
                     지금 뜨는 종목
-                </button>
-                <button
-                    onClick={moveToVote}
-                    className='text-[1.4rem] leading-[140%] font-normal text-moneed-gray-7 mr-[1.2rem]'
+                </a>
+                <a
+                    href={hashObj.vote}
+                    className={cn(
+                        'text-moneed-gray-7 mr-[1.2rem] sm:text-lg sm:leading-[140%] cursor-pointer pb-[.3rem]',
+                        hash === hashObj.vote && 'text-moneed-black border-b-[3px] border-b-moneed-brand',
+                    )}
                 >
                     지금 핫한 투표
-                </button>
-                <button
-                    onClick={moveToHotPosts}
-                    className='text-[1.4rem] leading-[140%] font-normal text-moneed-gray-7'
+                </a>
+                <a
+                    href={hashObj.hotPosts}
+                    className={cn(
+                        'text-moneed-gray-7 mr-[1.2rem] sm:text-lg sm:leading-[140%] cursor-pointer pb-[.3rem]',
+                        hash === hashObj.hotPosts && 'text-moneed-black border-b-[3px] border-b-moneed-brand',
+                    )}
                 >
                     인기 급상승 게시글
-                </button>
+                </a>
             </div>
-            <Top5 ref={top5Ref} />
-            <TopCategory ref={categoryRef} />
-            <Vote ref={voteRef} />
-            <HotPosts ref={hotPostsRef} />
+            <Top5 />
+            <TopCategory />
+            <Vote />
+            <HotPosts />
         </div>
     );
 }
