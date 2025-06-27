@@ -11,7 +11,7 @@
         "lint:fix": "next lint --fix",
         "preview": "vite preview",
         "prepare": "husky install",
-        "postinstall": "husky install && prisma generate"
+        "postinstall": "husky install && npm run prismaGenerate"
     },
     "lint-staged": {
         "*.{js,jsx,ts,tsx}": []
