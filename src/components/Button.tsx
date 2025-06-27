@@ -1,6 +1,6 @@
 'use client';
 
-type Props = {
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     theme: 'primary' | 'secondary' | 'ghost' | 'brand';
     children: React.ReactNode;
     textcolor: 'primary' | 'secondary' | 'ghost' | 'brand';
@@ -8,7 +8,7 @@ type Props = {
     onClick?: () => void;
     disabled?: boolean;
     type?: 'button' | 'submit' | 'reset';
-};
+}
 
 const Button = ({ type = 'button', theme, textcolor, children, className, onClick, disabled = false }: Props) => {
     const buttonTheme = {
