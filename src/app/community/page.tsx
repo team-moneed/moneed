@@ -1,6 +1,6 @@
 'use client';
 
-import TopCategory from '@/app/community/TopCategory';
+import HotStocks from '@/app/community/HotStocks';
 import { useEffect, useState } from 'react';
 import Top5 from './Top5';
 import HotPosts from './HotPosts';
@@ -73,7 +73,7 @@ export default function CommunityPage() {
                 </a>
             </div>
             <Top5 id={hashObj.top5} />
-            <TopCategory id={hashObj.category} />
+            <HotStocks id={hashObj.category} />
             <Vote id={hashObj.vote} />
             <HotPosts id={hashObj.hotPosts} />
         </div>

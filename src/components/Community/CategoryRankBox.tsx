@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { stockCagtegory } from '../../app/community/TopCategory';
+import { stockCagtegory } from '@/app/community/HotStocks';
 
 type StockInfoProps = {
     categoryData: stockCagtegory;

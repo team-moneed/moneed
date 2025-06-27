@@ -14,7 +14,7 @@ export type stockCagtegory = {
     };
 };
 
-const TopCategory = ({ id }: { id: string }) => {
+const HotStocks = ({ id }: { id: string }) => {
     // TODO: API 연결
     const stockCategories = [
         {
@@ -72,4 +72,4 @@ const TopCategory = ({ id }: { id: string }) => {
     );
 };
 
-export default TopCategory;
+export default HotStocks;
