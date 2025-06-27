@@ -13,6 +13,7 @@ const Dropdown = ({ children, onClose }: DropdownProps) => {
     useEffect(() => {
         const handleOutsideClick = (e: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                e.stopPropagation();
                 onClose();
             }
         };
@@ -42,7 +43,10 @@ export const PrimaryDropdown = ({ dropdownMenus, closeDropdown }: PrimaryDropdow
                                 key={menu.text}
                                 type='button'
                                 className='cursor-pointer flex items-center mb-[2.4rem] whitespace-nowrap'
-                                onClick={menu.onClick}
+                                onClick={e => {
+                                    e.stopPropagation();
+                                    menu.onClick(e);
+                                }}
                             >
                                 <div className='overflow-hidden aspect-square w-[1.8rem] mr-[.6rem] '>
                                     <img src={menu.icon} alt={menu.text} className='w-full h-full object-cover' />

@@ -1,5 +1,5 @@
 import PostRepository from '@/repositories/post.repository';
-import { PostThumbnail } from '@/types/post';
+import { PostThumbnail, TopPostThumbnail } from '@/types/post';
 
 export default class PostService {
     private readonly postRepository = new PostRepository();
@@ -13,6 +13,24 @@ export default class PostService {
     async getBoardTopPosts({ boardId, limit }: { boardId: number; limit: number }) {
         const postList = await this.postRepository.getPostsWithUser({ stockId: boardId, limit });
         return postList;
+    }
+
+    async getTopPosts({ limit = 5 }: { limit?: number } = {}): Promise<TopPostThumbnail[]> {
+        const postList = await this.postRepository.getTopPosts({ limit });
+
+        const postThumbnailList: TopPostThumbnail[] = postList.map(post => ({
+            id: post.id,
+            title: post.title,
+            content: post.content,
+            createdAt: post.createdAt,
+            user: {
+                id: post.user.id,
+                nickname: post.user.nickname,
+                profileImage: post.user.profileImage,
+            },
+        }));
+
+        return postThumbnailList;
     }
 
     async getPostsWithUserExtended({
@@ -32,8 +50,8 @@ export default class PostService {
             title: post.title,
             content: post.content,
             createdAt: post.createdAt.toISOString(),
-            isLiked: userId ? post.likePosts.some(like => like.userId === userId) : false,
-            likeCount: post.likes,
+            isLiked: userId ? post.postLikes.some(like => like.userId === userId) : false,
+            likeCount: post.postLikes.length,
             commentCount: post.comments.length,
             stocktype: post.stock.name,
             thumbnailImage: post.thumbnailImage ?? undefined,

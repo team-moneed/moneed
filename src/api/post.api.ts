@@ -11,7 +11,7 @@ export const getTopBoardPosts = async ({ boardId, limit }: { boardId: number; li
 };
 
 export const getTopPosts = async ({ limit }: { limit?: number } = {}) => {
-    const res = await axios.get<PostThumbnail[]>('/api/posts/top', {
+    const res = await axios.get<PostThumbnail[]>(`${process.env.NEXT_PUBLIC_MONEED_BASE_URL}/api/posts/top`, {
         params: {
             limit,
         },

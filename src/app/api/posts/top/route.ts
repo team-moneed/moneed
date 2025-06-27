@@ -1,21 +1,17 @@
 import PostService from '@/services/post.service';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest) {
+export async function GET(request: NextRequest) {
     try {
-        const limit = Number(req.nextUrl.searchParams.get('limit')) || 10;
-        const stockId = Number(req.nextUrl.searchParams.get('stockId')) || null;
+        const limit = Number(request.nextUrl.searchParams.get('limit')) || 5;
 
         const postService = new PostService();
 
-        if (stockId) {
-            const postList = await postService.getPostsWithUser({ stockId, limit });
-            return NextResponse.json(postList);
-        }
-
-        return NextResponse.json([]);
+        // 점수 기반 상위 게시물 조회
+        const postList = await postService.getTopPosts({ limit });
+        return NextResponse.json(postList);
     } catch (error) {
-        console.error('게시글 조회 오류', error);
-        return NextResponse.json({ error: '게시글 조회 오류' }, { status: 500 });
+        console.error('상위 게시글 조회 오류', error);
+        return NextResponse.json({ error: '상위 게시글 조회 오류' }, { status: 500 });
     }
 }

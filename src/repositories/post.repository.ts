@@ -1,5 +1,27 @@
 import prisma from '@/lib/prisma';
 import { BoardRankResponse } from '@/types/board';
+import { TopPostThumbnail } from '@/types/post';
+
+function calculateRank({
+    views,
+    likes,
+    comments,
+    createdAt,
+}: {
+    views: number;
+    likes: number;
+    comments: number;
+    createdAt: Date;
+}): number {
+    const now = new Date();
+    const timeDiffMs = now.getTime() - createdAt.getTime();
+    const timeDiffDays = timeDiffMs / (1000 * 60 * 60 * 24); // 일 단위로 변환
+
+    // Score = (V + 3L + 5C) × 1 / (T + 2)^1.8
+    const score = (views + 3 * likes + 5 * comments) * (1 / Math.pow(timeDiffDays + 2, 1.8));
+
+    return score;
+}
 
 export default class PostRepository {
     private prisma = prisma;
@@ -35,6 +57,75 @@ export default class PostRepository {
         });
 
         return posts;
+    }
+
+    /**
+     * 점수 기반 상위 게시물 조회
+     * Score = (V + 3L + 5C) × 1 / (T + 2)^1.8
+     * @param limit 조회할 게시글 수
+     * @returns 점수순으로 정렬된 게시글 목록
+     */
+    async getTopPosts({ limit }: { limit: number }): Promise<(TopPostThumbnail & { score: number })[]> {
+        // 모든 게시물을 조회 (최근 30일 이내)
+        const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+
+        const posts = await this.prisma.post.findMany({
+            where: {
+                createdAt: {
+                    gte: thirtyDaysAgo,
+                },
+            },
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                postViews: {
+                    select: {
+                        id: true,
+                    },
+                },
+                postLikes: {
+                    select: {
+                        id: true,
+                    },
+                },
+                createdAt: true,
+                user: {
+                    select: {
+                        id: true,
+                        nickname: true,
+                        profileImage: true,
+                    },
+                },
+                stock: {
+                    select: {
+                        name: true,
+                    },
+                },
+                comments: {
+                    select: {
+                        id: true,
+                    },
+                },
+            },
+        });
+
+        // 각 게시물의 점수를 계산하고 정렬
+        const postsWithScores: (TopPostThumbnail & { score: number })[] = posts.map(post => ({
+            id: post.id,
+            title: post.title,
+            content: post.content,
+            createdAt: post.createdAt.toISOString(),
+            user: post.user,
+            score: calculateRank({
+                views: post.postViews.length,
+                likes: post.postLikes.length,
+                comments: post.comments.length,
+                createdAt: post.createdAt,
+            }),
+        }));
+
+        return postsWithScores.sort((a, b) => b.score - a.score).slice(0, limit);
     }
 
     async getPostsWithUserExtended({

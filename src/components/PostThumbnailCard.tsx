@@ -1,10 +1,14 @@
 import { cn } from '@/util/style';
-import { useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { PrimaryDropdown, PrimaryDropdownProps } from './Dropdown';
 import DateFormatter from '@/util/Dateformatter';
 import Icon from './Icon';
 import ImageCarousel from './Carousel/ImageCarousel';
 import { EmblaOptionsType } from 'embla-carousel';
+import { useModal } from '@/context/ModalContext';
+import useSnackbarStore from '@/store/useSnackbarStore';
+import { useRouter } from 'next/navigation';
+import { PostThumbnail } from '@/types/post';
 
 export const PostTitle = ({ title }: { title: string }) => {
     return <h3 className='text-[2rem] font-bold leading-[140%] text-moneed-black line-clamp-1 mb-[.6rem]'>{title}</h3>;
@@ -34,8 +38,8 @@ export const PostActions = ({
     isLiked: boolean;
     likeCount: number;
     commentCount: number;
-    toggleLike: () => void;
-    handleCopyClipBoard: () => void;
+    toggleLike: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    handleCopyClipBoard: (e: React.MouseEvent<HTMLDivElement>) => void;
 }) => {
     return (
         <div className='flex pl-[1.6rem] pb-[1.6rem] pr-[1.2rem] pt-[.4rem]'>
@@ -54,7 +58,7 @@ export const PostActions = ({
                 {commentCount}
             </span>
             <div className=' relative z-2'>
-                <Icon onClick={() => handleCopyClipBoard()} iconUrl='/sharingIcon.svg' width={20} height={20} />
+                <Icon onClick={handleCopyClipBoard} iconUrl='/sharingIcon.svg' width={20} height={20} />
             </div>
         </div>
     );
@@ -79,49 +83,86 @@ export const PostAuthorWithDate = ({
     );
 };
 
-export const PostDropdown = ({
-    dropdownMenus,
-    isDropdownOpen,
-    setIsDropdownOpen,
-}: {
-    dropdownMenus: PrimaryDropdownProps['dropdownMenus'];
-    isDropdownOpen: boolean;
-    setIsDropdownOpen: (isDropdownOpen: boolean) => void;
-}) => {
-    const dropdownRef = useRef<HTMLDivElement>(null);
+export const PostDropdown = ({ post }: { post: PostThumbnail }) => {
+    const showSnackbar = useSnackbarStore(state => state.showSnackbar);
+    const { confirm } = useModal();
+    const router = useRouter();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    // console.log('isDropdownOpen', isDropdownOpen);
 
-    const handleOpenDropdown = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const { stocktype, user, content, isLiked, id, thumbnailImage, createdAt, title, likeCount } = post;
+    const postImages = thumbnailImage ? [thumbnailImage] : [];
+
+    const onEditPost = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        setIsDropdownOpen(true);
+        router.push(
+            `/editpost/${stocktype}?userName=${user.nickname}&content=${content}&isLiked=${isLiked}&postId=${id}&stocktype=${stocktype}&postImages=${postImages}&createdAt=${createdAt}&title=${title}&likes=${likeCount}`,
+        );
     };
 
-    const closeDropdown = () => {
+    //게시글 삭제할건지 묻는 모달
+    const openpostDeletemodal = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        const result = confirm(
+            <span>
+                삭제된 내용은 복구되지 않아요.
+                <br />
+                정말 삭제하실건가요?
+            </span>,
+        );
+        result.then(confirmed => {
+            if (confirmed) {
+                handledeletePost();
+            }
+        });
         setIsDropdownOpen(false);
     };
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setIsDropdownOpen(false);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [setIsDropdownOpen]);
+    //게시글 삭제 api 연동
+    const handledeletePost = () => {
+        showSnackbar({
+            message: '게시글이 삭제되었습니다.',
+            variant: 'action',
+            position: 'bottom',
+        });
+    };
+
+    // TODO: 자기 게시글인 경우에만 표시하도록 수정
+    const dropdownMenus: PrimaryDropdownProps['dropdownMenus'] = [
+        {
+            icon: '/icon/icon-scissors.svg',
+            text: '게시글 수정',
+            onClick: onEditPost,
+        },
+        {
+            icon: '/icon/icon-trashcan.svg',
+            text: '게시글 삭제',
+            onClick: openpostDeletemodal,
+        },
+    ];
+
+    const toggleDropdown = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        setIsDropdownOpen(prev => !prev);
+        console.log('isDropdownOpen', isDropdownOpen);
+    };
+
+    const closeDropdown = (e?: Event) => {
+        if (e) {
+            e.stopPropagation();
+        }
+        setIsDropdownOpen(false);
+    };
 
     return (
         <div className='relative ml-auto shrink-0 z-2'>
             <button
                 className='cursor-pointer rounded-full overflow-hidden aspect-square w-[2.4rem]'
-                onClick={handleOpenDropdown}
+                onClick={toggleDropdown}
             >
                 <img src='/icon/icon-more.svg' alt='' className='w-full h-full object-cover' />
             </button>
-            {isDropdownOpen && (
-                <div ref={dropdownRef}>
-                    <PrimaryDropdown dropdownMenus={dropdownMenus} closeDropdown={closeDropdown} />
-                </div>
-            )}
+            {isDropdownOpen && <PrimaryDropdown dropdownMenus={dropdownMenus} closeDropdown={closeDropdown} />}
         </div>
     );
 };

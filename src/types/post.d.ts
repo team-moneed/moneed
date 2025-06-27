@@ -21,3 +21,11 @@ export type TopBoardPostThumbnail = Omit<
     PostThumbnail,
     'stocktype' | 'postImages' | 'isLiked' | 'likeCount' | 'commentCount'
 >;
+
+export type TopPostThumbnail = {
+    id: number;
+    title: string;
+    content: string;
+    createdAt: string;
+    user: PostUser;
+};

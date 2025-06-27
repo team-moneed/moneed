@@ -14,6 +14,10 @@ const hashObj = {
     hotPosts: 'hotPosts',
 };
 
+const stringToHash = (str: string) => {
+    return `#${str}`;
+};
+
 export default function CommunityPage() {
     const [hash, setHash] = useState('');
     const handleHashChange = () => {
@@ -30,46 +34,48 @@ export default function CommunityPage() {
         <div>
             <div className='flex gap-4 pt-8 items-start border-b-2 border-moneed-gray-5'>
                 <a
-                    href={`#${hashObj.top5}`}
+                    href={stringToHash(hashObj.top5)}
                     className={cn(
                         'text-moneed-gray-7 mr-[1.2rem] sm:text-lg sm:leading-[140%] cursor-pointer pb-[.3rem]',
-                        hash === hashObj.top5 && 'text-moneed-black border-b-[3px] border-b-moneed-brand',
+                        hash === stringToHash(hashObj.top5) && 'text-moneed-black border-b-[3px] border-b-moneed-brand',
                     )}
                 >
                     Top 5
                 </a>
                 <a
-                    href={`#${hashObj.category}`}
+                    href={stringToHash(hashObj.category)}
                     className={cn(
                         'text-moneed-gray-7 mr-[1.2rem] sm:text-lg sm:leading-[140%] cursor-pointer pb-[.3rem]',
-                        hash === hashObj.category && 'text-moneed-black border-b-[3px] border-b-moneed-brand',
+                        hash === stringToHash(hashObj.category) &&
+                            'text-moneed-black border-b-[3px] border-b-moneed-brand',
                     )}
                 >
                     지금 뜨는 종목
                 </a>
                 <a
-                    href={`#${hashObj.vote}`}
+                    href={stringToHash(hashObj.vote)}
                     className={cn(
                         'text-moneed-gray-7 mr-[1.2rem] sm:text-lg sm:leading-[140%] cursor-pointer pb-[.3rem]',
-                        hash === hashObj.vote && 'text-moneed-black border-b-[3px] border-b-moneed-brand',
+                        hash === stringToHash(hashObj.vote) && 'text-moneed-black border-b-[3px] border-b-moneed-brand',
                     )}
                 >
                     지금 핫한 투표
                 </a>
                 <a
-                    href={`#${hashObj.hotPosts}`}
+                    href={stringToHash(hashObj.hotPosts)}
                     className={cn(
                         'text-moneed-gray-7 mr-[1.2rem] sm:text-lg sm:leading-[140%] cursor-pointer pb-[.3rem]',
-                        hash === hashObj.hotPosts && 'text-moneed-black border-b-[3px] border-b-moneed-brand',
+                        hash === stringToHash(hashObj.hotPosts) &&
+                            'text-moneed-black border-b-[3px] border-b-moneed-brand',
                     )}
                 >
                     인기 급상승 게시글
                 </a>
             </div>
-            <Top5 />
-            <TopCategory />
-            <Vote />
-            <HotPosts />
+            <Top5 id={hashObj.top5} />
+            <TopCategory id={hashObj.category} />
+            <Vote id={hashObj.vote} />
+            <HotPosts id={hashObj.hotPosts} />
         </div>
     );
 }

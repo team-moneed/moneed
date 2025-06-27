@@ -51,7 +51,16 @@ function KakaoCallback() {
 
 export default function KakaoCallbackPage() {
     return (
-        <Suspense fallback={<div>리다이렉트 중...</div>}>
+        <Suspense
+            fallback={
+                <div className='flex items-center justify-center min-h-screen'>
+                    <div className='text-center'>
+                        <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4'></div>
+                        <p className='text-gray-600'>페이지 로딩 중...</p>
+                    </div>
+                </div>
+            }
+        >
             <KakaoCallback />
         </Suspense>
     );
