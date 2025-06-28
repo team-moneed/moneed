@@ -5,8 +5,6 @@ import axios from 'axios';
 
 // 한국 투자증권 API
 
-type MarketCode = 'NYS' | 'NAS' | 'AMS' | 'TSE' | 'HKS' | 'SHS' | 'SZS' | 'HSX' | 'HNX';
-
 const accessTokenUrl = '/oauth2/tokenP';
 const searchByConditionUrl = '/uapi/overseas-price/v1/quotations/inquire-search';
 
@@ -23,15 +21,21 @@ export const getAccessToken = async () => {
     return response.data;
 };
 
-export const getHotStock = async ({ market }: { market: MarketCode }) => {
-    const response = await kis.get(searchByConditionUrl, {
+/**
+ * 해외주식조건검색[v1_해외주식-015]
+ * {@link https://apiportal.koreainvestment.com/apiservice-apiservice?/uapi/overseas-price/v1/quotations/inquire-search API DOCS}
+ */
+export const getOverseasStockByCondition = async ({ market }: { market: MarketCode }) => {
+    const response = await kis.get<OverseasStockConditionSearchResponse>(searchByConditionUrl, {
         params: {
             AUTH: '',
             EXCD: market,
-            CO_YN_RATE: 'Y',
+            CO_YN_RATE: '1', // 등락율 조건 사용 여부 (1: 사용, 0: 사용안함)
+            CO_ST_RATE: '0.1', // 등락율 시작율
+            CO_EN_RATE: String(10_000), // 등락율 끝율
         },
         headers: {
-            Tr_id: 'HHDFS76410000',
+            tr_id: 'HHDFS76410000',
         },
     });
     return response.data;
