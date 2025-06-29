@@ -140,33 +140,32 @@ async function seedPosts() {
     // 50개의 더미 포스트 생성
     const postsToCreate = 50;
     let postsCreated = 0;
+    const createdPosts: { id: number; userId: string }[] = [];
 
     for (let i = 0; i < postsToCreate; i++) {
         const randomUser = users[Math.floor(Math.random() * users.length)];
         const randomStock = stocks[Math.floor(Math.random() * stocks.length)];
         const randomTitle = postTitles[Math.floor(Math.random() * postTitles.length)];
         const randomContent = postContents[Math.floor(Math.random() * postContents.length)];
-        const randomViews = Math.floor(Math.random() * 1000);
-        const randomLikes = Math.floor(Math.random() * 100);
 
         const randomDate = new Date();
         randomDate.setDate(randomDate.getDate() - Math.floor(Math.random() * 30));
 
         try {
-            await prisma.post.create({
+            const post = await prisma.post.create({
                 data: {
                     title: `${randomTitle} - ${randomStock.name}`,
                     content: randomContent,
-                    views: randomViews,
-                    likes: randomLikes,
                     userId: randomUser.id,
                     stockId: randomStock.id,
                     createdAt: randomDate,
                     updatedAt: randomDate,
                     thumbnailImage: null,
+                    score: 0,
                 },
             });
 
+            createdPosts.push({ id: post.id, userId: randomUser.id });
             postsCreated++;
             if (postsCreated % 10 === 0) {
                 console.log(`✅ ${postsCreated}/${postsToCreate} Posts 생성 중...`);
@@ -177,6 +176,109 @@ async function seedPosts() {
     }
 
     console.log(`📊 Posts 생성 완료: ${postsCreated}개 추가됨`);
+    return createdPosts;
+}
+
+async function seedPostLikes(posts: { id: number; userId: string }[]) {
+    console.log('❤️ PostLikes 더미 데이터 생성 시작...');
+
+    const users = await prisma.user.findMany({
+        select: { id: true },
+    });
+
+    if (users.length === 0) {
+        console.log('❌ User 데이터가 없습니다. PostLikes 생성을 건너뜁니다.');
+        return;
+    }
+
+    let likesCreated = 0;
+    const totalLikesToCreate = Math.floor(posts.length * 0.7); // 70%의 포스트에 좋아요
+
+    for (let i = 0; i < totalLikesToCreate; i++) {
+        const randomPost = posts[Math.floor(Math.random() * posts.length)];
+        const randomUser = users[Math.floor(Math.random() * users.length)];
+
+        // 같은 사용자가 같은 포스트에 좋아요를 중복으로 누르지 않도록 체크
+        const existingLike = await prisma.postLike.findFirst({
+            where: {
+                postId: randomPost.id,
+                userId: randomUser.id,
+            },
+        });
+
+        if (existingLike) {
+            continue;
+        }
+
+        try {
+            await prisma.postLike.create({
+                data: {
+                    postId: randomPost.id,
+                    userId: randomUser.id,
+                },
+            });
+
+            likesCreated++;
+            if (likesCreated % 20 === 0) {
+                console.log(`✅ ${likesCreated}/${totalLikesToCreate} PostLikes 생성 중...`);
+            }
+        } catch (error) {
+            console.error(`❌ PostLike 생성 실패:`, error);
+        }
+    }
+
+    console.log(`📊 PostLikes 생성 완료: ${likesCreated}개 추가됨`);
+}
+
+async function seedPostViews(posts: { id: number; userId: string }[]) {
+    console.log('👁️ PostViews 더미 데이터 생성 시작...');
+
+    const users = await prisma.user.findMany({
+        select: { id: true },
+    });
+
+    if (users.length === 0) {
+        console.log('❌ User 데이터가 없습니다. PostViews 생성을 건너뜁니다.');
+        return;
+    }
+
+    let viewsCreated = 0;
+    const totalViewsToCreate = Math.floor(posts.length * 2); // 각 포스트당 평균 2개의 조회수
+
+    for (let i = 0; i < totalViewsToCreate; i++) {
+        const randomPost = posts[Math.floor(Math.random() * posts.length)];
+        const randomUser = users[Math.floor(Math.random() * users.length)];
+
+        // 같은 사용자가 같은 포스트를 중복으로 조회하지 않도록 체크
+        const existingView = await prisma.postViews.findFirst({
+            where: {
+                postId: randomPost.id,
+                userId: randomUser.id,
+            },
+        });
+
+        if (existingView) {
+            continue;
+        }
+
+        try {
+            await prisma.postViews.create({
+                data: {
+                    postId: randomPost.id,
+                    userId: randomUser.id,
+                },
+            });
+
+            viewsCreated++;
+            if (viewsCreated % 30 === 0) {
+                console.log(`✅ ${viewsCreated}/${totalViewsToCreate} PostViews 생성 중...`);
+            }
+        } catch (error) {
+            console.error(`❌ PostView 생성 실패:`, error);
+        }
+    }
+
+    console.log(`📊 PostViews 생성 완료: ${viewsCreated}개 추가됨`);
 }
 
 async function main() {
@@ -186,7 +288,17 @@ async function main() {
     await seedStocks();
 
     // 2단계: Posts 데이터 생성
-    await seedPosts();
+    const createdPosts = await seedPosts();
+
+    // 3단계: PostLikes 데이터 생성
+    if (createdPosts && createdPosts.length > 0) {
+        await seedPostLikes(createdPosts);
+    }
+
+    // 4단계: PostViews 데이터 생성
+    if (createdPosts && createdPosts.length > 0) {
+        await seedPostViews(createdPosts);
+    }
 
     console.log('\n🎉 모든 시드 데이터 생성이 완료되었습니다!');
 }

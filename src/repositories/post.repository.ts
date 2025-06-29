@@ -1,8 +1,7 @@
 import prisma from '@/lib/prisma';
 import { BoardRankResponse } from '@/types/board';
-import { TopPostThumbnail } from '@/types/post';
 
-function calculateRank({
+function calcScore({
     views,
     likes,
     comments,
@@ -63,19 +62,18 @@ export default class PostRepository {
      * 점수 기반 상위 게시물 조회
      * Score = (V + 3L + 5C) × 1 / (T + 2)^1.8
      * @param limit 조회할 게시글 수
+     * @param cursor 점수 기준 커서
      * @returns 점수순으로 정렬된 게시글 목록
      */
-    async getTopPosts({ limit }: { limit: number }): Promise<(TopPostThumbnail & { score: number })[]> {
-        // 모든 게시물을 조회 (최근 30일 이내)
-        const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-
+    async getPostsByScore({ limit, cursor }: { limit: number; cursor?: number }) {
         const posts = await this.prisma.post.findMany({
             where: {
-                createdAt: {
-                    gte: thirtyDaysAgo,
+                score: {
+                    gt: cursor,
                 },
             },
             select: {
+                score: true,
                 id: true,
                 title: true,
                 content: true,
@@ -87,6 +85,7 @@ export default class PostRepository {
                 postLikes: {
                     select: {
                         id: true,
+                        userId: true,
                     },
                 },
                 createdAt: true,
@@ -108,24 +107,43 @@ export default class PostRepository {
                     },
                 },
             },
+            orderBy: {
+                score: 'desc',
+            },
         });
 
         // 각 게시물의 점수를 계산하고 정렬
-        const postsWithScores: (TopPostThumbnail & { score: number })[] = posts.map(post => ({
-            id: post.id,
-            title: post.title,
-            content: post.content,
-            createdAt: post.createdAt.toISOString(),
-            user: post.user,
-            score: calculateRank({
-                views: post.postViews.length,
-                likes: post.postLikes.length,
-                comments: post.comments.length,
-                createdAt: post.createdAt,
-            }),
-        }));
+        const postsWithScores = posts.map(post => {
+            const score =
+                post.score ||
+                calcScore({
+                    views: post.postViews.length,
+                    likes: post.postLikes.length,
+                    comments: post.comments.length,
+                    createdAt: post.createdAt,
+                });
+
+            return {
+                ...post,
+                createdAt: post.createdAt.toISOString(),
+                score,
+            };
+        });
+
+        await Promise.all(postsWithScores.map(post => this.setPostsScore({ postId: post.id, score: post.score })));
 
         return postsWithScores.sort((a, b) => b.score - a.score).slice(0, limit);
+    }
+
+    async setPostsScore({ postId, score }: { postId: number; score: number }) {
+        await this.prisma.post.update({
+            where: {
+                id: postId,
+            },
+            data: {
+                score,
+            },
+        });
     }
 
     async getPostsWithUserExtended({

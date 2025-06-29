@@ -25,50 +25,51 @@ model User {
   lastLoginAt    DateTime        @default(now()) @updatedAt
   comments       Comment[]
   oauthAccounts  OAuthAccount[]
-  posts          Post[]
-  selectedStocks SelectedStock[]
   postLikes      PostLike[]
   postViews      PostViews[]
+  posts          Post[]
+  selectedStocks SelectedStock[]
 
   @@map("users")
 }
 
 model Post {
-  id        Int       @id @default(autoincrement())
-  title     String
-  content   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @default(now())
-  userId    String
-  stockId   Int
-  stock     Stock     @relation(fields: [stockId], references: [id], onDelete: Cascade)
-  comments  Comment[]
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id             Int         @id @default(autoincrement())
+  title          String
+  content        String
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime?   @default(now())
+  userId         String
+  stockId        Int
   thumbnailImage String?
-  postLikes PostLike[]
-  postViews PostViews[]
+  comments       Comment[]
+  postLikes      PostLike[]
+  postViews      PostViews[]
+  stock          Stock       @relation(fields: [stockId], references: [id], onDelete: Cascade)
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  score          Int         @default(0)
 
   @@map("posts")
 }
 
 model PostLike {
-  id Int @id @default(autoincrement())
-  postId Int
-  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
-  userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  userId    String
   createdAt DateTime @default(now())
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("post_likes")
 }
 
 model PostViews {
-  id Int @id @default(autoincrement())
-  postId Int
-  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
-  userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  userId    String
   createdAt DateTime @default(now())
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("post_views")
 }

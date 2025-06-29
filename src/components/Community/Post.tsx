@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { PostThumbnail } from '@/types/post';
 import PostThumbnailCard from '../PostThumbnailCard';
 
-const Post = (post: PostThumbnail) => {
+const Post = ({ post }: { post: PostThumbnail }) => {
     const { user, content, isLiked, id, stocktype, thumbnailImage, likeCount, createdAt, title, commentCount } = post;
     const postImages = thumbnailImage ? [thumbnailImage] : [];
 

@@ -1,5 +1,5 @@
 import PostRepository from '@/repositories/post.repository';
-import { PostThumbnail, TopPostThumbnail } from '@/types/post';
+import { HotPostThumbnail, PostThumbnail, TopPostThumbnail } from '@/types/post';
 
 export default class PostService {
     private readonly postRepository = new PostRepository();
@@ -16,7 +16,7 @@ export default class PostService {
     }
 
     async getTopPosts({ limit = 5 }: { limit?: number } = {}): Promise<TopPostThumbnail[]> {
-        const postList = await this.postRepository.getTopPosts({ limit });
+        const postList = await this.postRepository.getPostsByScore({ limit });
 
         const postThumbnailList: TopPostThumbnail[] = postList.map(post => ({
             id: post.id,
@@ -28,8 +28,27 @@ export default class PostService {
                 nickname: post.user.nickname,
                 profileImage: post.user.profileImage,
             },
+            score: post.score,
         }));
 
+        return postThumbnailList;
+    }
+
+    async getHotPosts({
+        limit = 15,
+        cursor = 0,
+        userId,
+    }: { limit?: number; cursor?: number; userId?: string } = {}): Promise<HotPostThumbnail[]> {
+        const postList = await this.postRepository.getPostsByScore({ limit, cursor });
+
+        const postThumbnailList: HotPostThumbnail[] = postList.map(post => ({
+            ...post,
+            isLiked: post.postLikes.some(like => like.userId === userId),
+            likeCount: post.postLikes.length,
+            commentCount: post.comments.length,
+            stocktype: post.stock.name,
+            thumbnailImage: undefined,
+        }));
         return postThumbnailList;
     }
 

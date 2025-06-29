@@ -1,7 +1,7 @@
 import HotStocks from '@/app/community/HotStocks';
 import CommunityTabNav from '@/app/community/CommunityTabNav';
 import Top5 from './Top5';
-import HotPosts from './HotPosts';
+import HotPostsWithSuspense from './HotPosts';
 import Vote from './Vote';
 
 const hashObj = {
@@ -45,7 +45,7 @@ export default function CommunityPage() {
             <Top5 id={hashObj.top5} />
             <HotStocks id={hashObj.category} />
             <Vote id={hashObj.vote} />
-            <HotPosts id={hashObj.hotPosts} />
+            <HotPostsWithSuspense id={hashObj.hotPosts} />
         </div>
     );
 }

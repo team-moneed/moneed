@@ -17,6 +17,10 @@ export interface PostThumbnail {
     user: PostUser;
 }
 
+export type HotPostThumbnail = PostThumbnail & {
+    score: number;
+};
+
 export type TopBoardPostThumbnail = Omit<
     PostThumbnail,
     'stocktype' | 'postImages' | 'isLiked' | 'likeCount' | 'commentCount'
@@ -28,4 +32,5 @@ export type TopPostThumbnail = {
     content: string;
     createdAt: string;
     user: PostUser;
+    score: number;
 };

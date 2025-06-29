@@ -1,9 +1,8 @@
 'use client';
-import Post, { PostSkeleton } from './Post';
+import Post from './Post';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { getPosts } from '@/api/post.api';
 import { PostThumbnail } from '@/types/post';
-import { Suspense } from 'react';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 
 type PostsProps = {
@@ -35,36 +34,10 @@ const Posts = ({ stockId }: PostsProps) => {
     return (
         <>
             {posts.map((post: PostThumbnail) => (
-                <Post
-                    key={post.id}
-                    user={post.user}
-                    content={post.content}
-                    isLiked={post.isLiked}
-                    id={post.id}
-                    stocktype={post.stocktype}
-                    thumbnailImage={post.thumbnailImage}
-                    likeCount={post.likeCount}
-                    commentCount={post.commentCount}
-                    createdAt={post.createdAt}
-                    title={post.title}
-                />
+                <Post key={post.id} post={post} />
             ))}
             <div ref={ref}></div>
         </>
-    );
-};
-
-export const PostsWithSuspense = ({ stockId }: PostsProps) => {
-    return (
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-y-[.6rem] gap-x-[1.2rem] mt-4 md:gap-y-[1.6rem] mb-[.6rem]'>
-            <Suspense
-                fallback={Array.from({ length: 15 }).map((_, index) => (
-                    <PostSkeleton key={index} />
-                ))}
-            >
-                <Posts stockId={stockId} />
-            </Suspense>
-        </div>
     );
 };
 
