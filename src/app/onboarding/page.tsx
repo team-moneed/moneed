@@ -4,12 +4,6 @@ export default function Onboarding() {
     return (
         <>
             <div className="relative h-screen overflow-hidden px-[1.8rem] pt-8 bg-[url('/line-bg.png')] bg-size-[8rem_8rem] lg:bg-[url('/line-bg-pc.png')]">
-                <div className='flex'>
-                    <div className='w-[2.8rem] h-[2.8rem] bg-(--moneed-black) rounded-full flex items-center justify-center'>
-                        <img className='w-[1.4rem] h-[1.2rem]' src='/icon/icon-logo.svg' alt='' />
-                    </div>
-                    <span className='font-semibold leading-[140%] text-[1.8rem] ml-[.8rem]'>moneed</span>
-                </div>
                 <div className='pt-[14.3rem]'>
                     <div className='relative z-2 text-[3.2rem] text-moneed-black font-bold leading-[145%]'>
                         당신의 니즈를
