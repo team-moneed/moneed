@@ -27,4 +27,15 @@ export class StockRepository {
             skipDuplicates: true,
         });
     }
+
+    async getStocks(count: number, cursor: number) {
+        return this.prisma.stock.findMany({
+            where: {
+                id: {
+                    gt: cursor,
+                },
+            },
+            take: count,
+        });
+    }
 }

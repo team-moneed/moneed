@@ -15,4 +15,9 @@ export class StockService {
     async selectStock(userId: string, stockIds: number[]) {
         await this.stockRepository.selectStock(userId, stockIds);
     }
+
+    async getStocks(count: number, cursor: number) {
+        const stocks = await this.stockRepository.getStocks(count, cursor);
+        return stocks;
+    }
 }
