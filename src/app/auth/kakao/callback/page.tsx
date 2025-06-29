@@ -30,7 +30,7 @@ function KakaoCallback() {
             if (isExistingUser) {
                 router.push('/');
             } else {
-                router.push('/selectstocktype');
+                router.push(`/selectstocktype?url=${encodeURIComponent('/signupsuccess')}`);
             }
         }
     }, [token, router]);

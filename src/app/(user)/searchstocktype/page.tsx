@@ -50,7 +50,7 @@ export default function SearchStockType() {
                         placeholder='게시판 종목을 검색 해 주세요.'
                         value={searchStockType}
                         onChange={e => setsearchStockType(e.target.value)}
-                        className='pl-12 pr-4 py-[.8rem] w-full border border-solid border-(--moneed-gray-5) bg-(--moneed-black-3) rounded-[1.6rem] text-[1.6rem] text-(--moneed-gray-7)'
+                        className='pl-12 pr-4 py-[.8rem] w-full border border-solid border-moneed-gray-5 bg-moneed-black-3 rounded-[1.6rem] text-[1.6rem] text-moneed-gray-7'
                     />
                 </div>
                 <div className='text-[1.6rem] font-semibold leading-[140%] pb-4 pt-[2.2rem]'>

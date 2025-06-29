@@ -27,14 +27,22 @@ export default function SnackBar() {
     let textColor = '';
 
     if (type === 'normal') {
-        backgroundColor = 'bg-(--moneed-gray-7)';
-        textColor = 'text-(--moneed-white)';
+        backgroundColor = 'bg-moneed-gray-7';
+        textColor = 'text-moneed-white';
     } else if (type === 'action') {
+<<<<<<< HEAD
         backgroundColor = 'bg-(--moneed-blue-light)';
         textColor = 'text-(--moneed-blue)';
     } else if (type === 'cancel') {
         backgroundColor = 'bg-(--moneed-red-light)';
         textColor = 'text-(--moneed-red)';
+=======
+        backgroundColor = 'bg-moneed-blue-light';
+        textColor = 'text-moneed-blue';
+    } else if (type === 'caution') {
+        backgroundColor = 'bg-moneed-red-light';
+        textColor = 'text-moneed-red';
+>>>>>>> b634e4c ([Style] :root 변수를 Theme variables로 수정)
     }
 
     if (!portalRoot) return null;
