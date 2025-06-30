@@ -42,7 +42,7 @@ model Post {
   userId         String
   stockId        Int
   thumbnailImage String?
-  score          Int         @default(0)
+  score          Float         @default(0)
   comments       Comment[]
   postLikes      PostLike[]
   postViews      PostViews[]
