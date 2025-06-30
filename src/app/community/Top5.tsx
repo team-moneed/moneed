@@ -2,11 +2,30 @@
 
 import { getTopPosts } from '@/api/post.api';
 import PostCarousel from '@/components/Carousel/PostCarousel';
+import CommunityThumbnailCard from '@/components/Community/CommunityThumbnailCard';
+import { PostSkeleton } from '@/components/Community/Post';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { Suspense } from 'react';
 
-const Top5 = ({ id }: { id: string }) => {
-    const title = 'Top 5';
-    const standardDate = new Date().toLocaleDateString('ko-KR', { month: 'long' });
+export default function Top5WithSuspense() {
+    return (
+        <Suspense
+            fallback={
+                <PostCarousel>
+                    {Array.from({ length: 5 }).map((_, index) => (
+                        <div key={index} className='shrink-0 w-[calc(85%-1.6rem)] lg:w-[calc(50%+.8rem)]'>
+                            <PostSkeleton />
+                        </div>
+                    ))}
+                </PostCarousel>
+            }
+        >
+            <Top5 />
+        </Suspense>
+    );
+}
+
+function Top5() {
     const POSTOPTIONS = {
         slidesToScroll: 1,
         loop: false,
@@ -21,16 +40,17 @@ const Top5 = ({ id }: { id: string }) => {
     });
 
     return (
-        <section id={id} className='mt-[3.6rem]'>
-            <div className='flex items-baseline gap-[.8rem] mb-[1.6rem]'>
-                <h2 className='text-[2.2rem] leading-[145%] font-bold text-moneed-black sm:text-2xl sm:leading-[140%]'>
-                    {title}
-                </h2>
-                <span className='text-moneed-gray-7 text-[1.2rem] font-normal leading-[135%]'>{standardDate} 기준</span>
-            </div>
-            <PostCarousel posts={topPosts} options={POSTOPTIONS} />
-        </section>
+        <PostCarousel options={POSTOPTIONS}>
+            {topPosts.map(post => (
+                <div key={post.id} className='shrink-0 w-[calc(85%-1.6rem)] lg:w-[calc(50%+.8rem)]'>
+                    <CommunityThumbnailCard
+                        userName={post.user.nickname}
+                        content={post.content}
+                        title={post.title}
+                        createdAt={post.createdAt}
+                    ></CommunityThumbnailCard>
+                </div>
+            ))}
+        </PostCarousel>
     );
-};
-
-export default Top5;
+}
