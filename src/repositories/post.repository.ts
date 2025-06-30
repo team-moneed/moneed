@@ -98,6 +98,7 @@ export default class PostRepository {
                 },
                 stock: {
                     select: {
+                        id: true,
                         name: true,
                     },
                 },

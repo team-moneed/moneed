@@ -1,11 +1,9 @@
-'use client';
-
+import PostThumbnailCard from '@/components/PostThumbnailCard';
+import { HotPostThumbnail as THotPostThumbnail } from '@/types/post';
 import { EmblaOptionsType } from 'embla-carousel';
 import { useRouter } from 'next/navigation';
-import { PostThumbnail } from '@/types/post';
-import PostThumbnailCard from '../PostThumbnailCard';
 
-const Post = ({ post }: { post: PostThumbnail }) => {
+export default function HotPostThumbnail({ post }: { post: THotPostThumbnail }) {
     const { user, content, isLiked, id, stocktype, thumbnailImage, likeCount, createdAt, title, commentCount } = post;
     const postImages = thumbnailImage ? [thumbnailImage] : [];
 
@@ -56,12 +54,4 @@ const Post = ({ post }: { post: PostThumbnail }) => {
             </PostThumbnailCard>
         </>
     );
-};
-
-export const PostSkeleton = () => {
-    return (
-        <div className='relative border border-solid border-moneed-gray-5 rounded-[1.8rem] mb-[1.6rem] animate-pulse h-[20rem] bg-moneed-gray-5'></div>
-    );
-};
-
-export default Post;
+}

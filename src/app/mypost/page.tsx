@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Posts from '@/components/Community/Posts';
+import Posts from '@/app/community/[stockId]/Posts';
 
 const MyPost = () => {
     const [activeTab, setActiveTab] = useState('thisWeek');
@@ -100,7 +100,7 @@ const MyPost = () => {
         },
     ];
 
-    const thisweekPosts = allPosts.filter(post => post.postId === 4);
+    // const thisweekPosts = allPosts.filter(post => post.postId === 4);
 
     return (
         <>
@@ -131,7 +131,8 @@ const MyPost = () => {
                         이전 게시글
                     </button>
                 </div>
-                {activeTab == 'thisWeek' ? <Posts posts={thisweekPosts} /> : <Posts posts={allPosts} />}
+                {/* TODO: 에러 해결 */}
+                {/* {activeTab == 'thisWeek' ? <Posts posts={thisweekPosts} /> : <Posts posts={allPosts} />} */}
             </div>
         </>
     );

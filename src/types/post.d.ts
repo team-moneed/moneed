@@ -33,4 +33,5 @@ export type TopPostThumbnail = {
     createdAt: string;
     user: PostUser;
     score: number;
+    stockId: number;
 };

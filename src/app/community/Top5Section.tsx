@@ -1,4 +1,7 @@
-import Top5WithSuspense from './Top5';
+import { Suspense } from 'react';
+import PostCarousel from '@/components/Carousel/PostCarousel';
+import PostThumbnailSkeleton from '@/components/Skeleton/PostThumbnail';
+import Top5 from './Top5';
 
 export default function Top5Section({ id }: { id: string }) {
     const title = 'Top 5';
@@ -14,5 +17,23 @@ export default function Top5Section({ id }: { id: string }) {
             </div>
             <Top5WithSuspense />
         </section>
+    );
+}
+
+function Top5WithSuspense() {
+    return (
+        <Suspense
+            fallback={
+                <PostCarousel>
+                    {Array.from({ length: 5 }).map((_, index) => (
+                        <div key={index} className='shrink-0 w-[calc(85%-1.6rem)] lg:w-[calc(50%+.8rem)]'>
+                            <PostThumbnailSkeleton />
+                        </div>
+                    ))}
+                </PostCarousel>
+            }
+        >
+            <Top5 />
+        </Suspense>
     );
 }

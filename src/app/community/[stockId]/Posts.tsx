@@ -1,9 +1,8 @@
 'use client';
-import Post from './Post';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { getPosts } from '@/api/post.api';
-import { PostThumbnail } from '@/types/post';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+import PostThumbnail from '@/app/community/[stockId]/PostThumbnail';
 
 type PostsProps = {
     stockId: number;
@@ -33,8 +32,8 @@ const Posts = ({ stockId }: PostsProps) => {
 
     return (
         <>
-            {posts.map((post: PostThumbnail) => (
-                <Post key={post.id} post={post} />
+            {posts.map(post => (
+                <PostThumbnail key={post.id} post={post} />
             ))}
             <div ref={ref}></div>
         </>

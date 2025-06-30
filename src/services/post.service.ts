@@ -29,6 +29,7 @@ export default class PostService {
                 profileImage: post.user.profileImage,
             },
             score: post.score,
+            stockId: post.stock.id,
         }));
 
         return postThumbnailList;
