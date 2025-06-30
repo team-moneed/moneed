@@ -69,7 +69,7 @@ export default class PostRepository {
         const posts = await this.prisma.post.findMany({
             where: {
                 score: {
-                    gt: cursor,
+                    gt: cursor === 0 ? undefined : cursor,
                 },
             },
             select: {
