@@ -20,7 +20,7 @@ function KakaoCallback() {
 
     const { data: token } = useQuery({
         queryKey: ['kakao', code, state],
-        queryFn: () => login({ code: code!, state: state }),
+        queryFn: () => login({ code: code!, state: state, provider: 'kakao' }),
         enabled: !!code,
     });
 
