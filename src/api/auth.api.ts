@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { http } from './request';
 
 type KakaoTokenParams = {
     code: string;
@@ -17,4 +18,9 @@ export const loginWithKakao = async ({ code, state }: KakaoTokenParams) => {
 export const refreshToken = async () => {
     const res = await axios.post<LoginResponse>('/api/auth/kakao/refresh');
     return res.data;
+};
+
+export const logout = async ({ provider }: { provider: 'kakao' }) => {
+    const res = await http.post(`/api/auth/${provider}/logout`);
+    return res;
 };
