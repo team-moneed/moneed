@@ -10,7 +10,7 @@ type LoginResponse = {
     isExistingUser: boolean;
 };
 
-export const loginWithKakao = async ({ code, state }: KakaoTokenParams) => {
+export const login = async ({ code, state }: KakaoTokenParams) => {
     const res = await axios.post<LoginResponse>('/api/auth/kakao/login', { code, state });
     return res.data;
 };
