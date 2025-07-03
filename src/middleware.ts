@@ -12,7 +12,7 @@ const protectedRoutes = [
     '/writepost',
 ];
 
-const guestOnlyRoutes = ['/onboarding', '/oauth2/callback/kakao'];
+const guestOnlyRoutes = ['/onboarding', '/auth/kakao/callback'];
 
 export async function middleware(req: NextRequest) {
     const path = req.nextUrl.pathname;
