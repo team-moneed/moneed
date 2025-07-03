@@ -6,11 +6,7 @@ import { ProviderRepository } from '@/repositories/provider.repository';
 import { AxiosError } from 'axios';
 import { RequiredUserInfo, UserInfo } from '@/types/user';
 import { NicknameService } from '@/services/nickname.service';
-
-export interface ProviderInfo {
-    provider: string;
-    providerUserId: string;
-}
+import { ProviderInfo } from '@/types/auth';
 
 // TODO: 추상화 (카카오 로그인 외 다른 로그인 추가 시 수정 필요)
 export class AuthService {
