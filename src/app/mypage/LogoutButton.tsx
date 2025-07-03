@@ -1,6 +1,7 @@
 'use client';
 
 import { logout } from '@/api/auth.api';
+import { REASON_CODES } from '@/constants/snackbar';
 import useSnackbarStore from '@/store/useSnackbarStore';
 import { cn } from '@/util/style';
 import { useMutation } from '@tanstack/react-query';
@@ -12,7 +13,7 @@ export default function LogoutButton() {
     const { mutate: mutateLogout, isPending } = useMutation({
         mutationFn: ({ provider }: { provider: 'kakao' }) => logout({ provider }),
         onSuccess: () => {
-            router.push('/onboarding?reason=logout');
+            router.push(`/onboarding?reason=${REASON_CODES.LOGOUT}`);
         },
         onError: () => {
             showSnackbar({
