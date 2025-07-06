@@ -21,7 +21,7 @@ const Top3 = () => {
 
     const [selectedStockId, setSelectedStockId] = useState<number | undefined>(boardList?.[0]?.stockId);
 
-    const { data: postsWithUser, isLoading: isPostsLoading } = useQuery({
+    const { data: postsWithUser } = useQuery({
         queryKey: ['posts', selectedStockId],
         queryFn: () => getTopBoardPosts({ boardId: selectedStockId!, limit: 3 }),
         enabled: !!selectedStockId && boardList && boardList.length > 0,
@@ -52,28 +52,22 @@ const Top3 = () => {
                 setSelectedStockId={setSelectedStockId}
             />
             <div>
-                {!isPostsLoading && (postsWithUser === undefined || postsWithUser.length === 0) ? (
-                    <div className='text-[2.4rem] text-moneed-gray-6 leading-[140%] text-center'>
-                        24시간 내에 올라온 게시물이 없습니다.
-                    </div>
-                ) : (
-                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-[.6rem] gap-x-[1.6rem] mt-4 md:gap-y-[1.2rem]'>
-                        {postsWithUser?.map(post => (
-                            <PostThumbnailCard key={post.id} onClick={() => moveToDetail(post.id)}>
-                                <PostThumbnailCard.Body>
-                                    <PostThumbnailCard.Title title={post.title} />
-                                    <PostThumbnailCard.Content content={post.content} />
-                                </PostThumbnailCard.Body>
-                                <PostThumbnailCard.Footer>
-                                    <PostThumbnailCard.AuthorWithDate
-                                        user={post.user}
-                                        createdAt={new Date(post.createdAt)}
-                                    />
-                                </PostThumbnailCard.Footer>
-                            </PostThumbnailCard>
-                        ))}
-                    </div>
-                )}
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-[.6rem] gap-x-[1.6rem] mt-4 md:gap-y-[1.2rem]'>
+                    {postsWithUser?.map(post => (
+                        <PostThumbnailCard key={post.id} onClick={() => moveToDetail(post.id)}>
+                            <PostThumbnailCard.Body>
+                                <PostThumbnailCard.Title title={post.title} />
+                                <PostThumbnailCard.Content content={post.content} />
+                            </PostThumbnailCard.Body>
+                            <PostThumbnailCard.Footer>
+                                <PostThumbnailCard.AuthorWithDate
+                                    user={post.user}
+                                    createdAt={new Date(post.createdAt)}
+                                />
+                            </PostThumbnailCard.Footer>
+                        </PostThumbnailCard>
+                    ))}
+                </div>
                 <div className='flex justify-center mt-[1.8rem] sm:justify-start sm:mt-[2.6rem]'>
                     <Button
                         theme='ghost'
