@@ -1,6 +1,6 @@
-import MainNews from '@/components/Main/MainNews';
-import MainShortforms from '@/components/Main/MainShortforms';
-import TopStockRank from '@/components/Main/TopStockRank';
+import MainNews from '@/app/MainNews';
+import MainShortforms from '@/app/MainShortforms';
+import TopStockRank from '@/app/TopStockRank';
 import Link from 'next/link';
 import { SnackbarTrigger } from '@/components/Snackbar';
 
