@@ -15,4 +15,12 @@ export class StockService {
     async selectStock(userId: string, stockIds: number[]) {
         await this.stockRepository.selectStock(userId, stockIds);
     }
+
+    async getStock(stockId: number) {
+        const stock = await this.stockRepository.getStock(stockId);
+        if (!stock) {
+            throw new Error('Stock not found');
+        }
+        return stock;
+    }
 }
