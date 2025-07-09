@@ -18,6 +18,7 @@ model chat_room {
   roomJoinLimitation Int?      @default(1)
   createdAt          DateTime  @default(now()) @db.Timestamptz(6)
   updatedAt          DateTime? @default(now()) @db.Timestamptz(6)
+  chat_messages      chat_message[]
 }
 
 model comments {
@@ -127,6 +128,17 @@ model users {
   post_views      post_views[]
   posts           posts[]
   selected_stocks selected_stocks[]
+  chat_messages   chat_message[]    @relation("UserMessages")
+}
+
+model chat_message {
+  id         BigInt    @id @default(autoincrement())
+  roomId     BigInt
+  senderId   String
+  content    String
+  createdAt  DateTime  @default(now()) @db.Timestamptz(6)
+  chat_room  chat_room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  users      users     @relation("UserMessages", fields: [senderId], references: [id], onDelete: Cascade)
 }
 
 enum Role {
