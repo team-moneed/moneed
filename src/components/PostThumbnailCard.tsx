@@ -1,7 +1,7 @@
 import { cn } from '@/util/style';
 import { useState } from 'react';
 import { PrimaryDropdown, PrimaryDropdownProps } from './Dropdown';
-import DateFormatter from '@/util/Dateformatter';
+import DateFormatter from '@/components/Dateformatter';
 import Icon from './Icon';
 import ImageCarousel from './Carousel/ImageCarousel';
 import { EmblaOptionsType } from 'embla-carousel';
