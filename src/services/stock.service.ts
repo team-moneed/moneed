@@ -1,3 +1,4 @@
+import { getOverseasStockPrice } from '@/api/kis.api';
 import { StockRepository } from '@/repositories/stock.repository';
 
 export class StockService {
@@ -22,5 +23,9 @@ export class StockService {
             throw new Error('Stock not found');
         }
         return stock;
+    }
+
+    async getOverseasStockPrice(symbol: string) {
+        return await getOverseasStockPrice({ symbol });
     }
 }

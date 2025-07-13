@@ -1,18 +1,43 @@
+'use client';
+
+import { getOverseasStockPrice } from '@/api/stock.api';
 import { Stock } from '@/generated/prisma';
-import { ReactNode } from 'react';
+import { cn } from '@/util/style';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { ReactNode, Suspense } from 'react';
 
 type StockInfoProps = {
     infoBoxImgages?: string[] | string;
     stock: Stock;
-    priceKRW?: string;
-    priceUSD?: string;
-    rate?: string;
     children?: ReactNode;
     className?: string;
-    englishName?: string;
+};
+
+const StockInfoBoxSkeleton = () => {
+    return (
+        <div className='flex justify-between px-[1.2rem] py-[1.8rem] border border-solid border-moneed-gray-5 rounded-[1.6rem] animate-pulse'>
+            <div className='flex items-center gap-[.6rem]'>
+                <div className='rounded-full w-[3.6rem] h-[3.6rem] bg-moneed-gray-5'></div>
+                <div className='flex flex-col gap-[.4rem]'>
+                    <div className='w-[8rem] h-[1.8rem] bg-moneed-gray-5 rounded-[.4rem]'></div>
+                    <div className='w-[12rem] h-[1.4rem] bg-moneed-gray-5 rounded-[.4rem]'></div>
+                </div>
+            </div>
+            <div className='flex items-center gap-[.6rem]'>
+                <div className='w-[6rem] h-[1.8rem] bg-moneed-gray-5 rounded-[.4rem]'></div>
+                <div className='w-[5rem] h-[2.6rem] bg-moneed-gray-5 rounded-[.8rem]'></div>
+            </div>
+        </div>
+    );
 };
 
 const StockInfoBox = ({ stock, children }: StockInfoProps) => {
+    const { data } = useSuspenseQuery({
+        queryKey: ['stock', stock.symbol],
+        queryFn: () => getOverseasStockPrice({ symbol: stock.symbol }),
+        refetchInterval: 1000 * 60, // 1분마다 리패칭
+    });
+
     return (
         <>
             <div className='flex justify-between px-[1.2rem] py-[1.8rem] border border-solid border-moneed-gray-5 rounded-[1.6rem]'>
@@ -28,9 +53,18 @@ const StockInfoBox = ({ stock, children }: StockInfoProps) => {
                     </div>
                 </div>
                 <div className='flex items-center gap-[.6rem]'>
-                    <div className='text-[1.4rem] font-semibold leading-[140%] text-moneed-black'>$504.99</div>
-                    <div className='text-[1.4rem] font-semibold leading-[140%] text-moneed-green rounded-[.8rem] bg-moneed-green-light p-[.4rem]'>
-                        16.3%
+                    <div className={cn('text-[1.4rem] font-semibold leading-[140%] text-moneed-black')}>
+                        ${Number(data.output.last).toFixed(2)}
+                    </div>
+                    <div
+                        className={cn(
+                            'text-[1.4rem] font-semibold leading-[140%] rounded-[.8rem] p-[.4rem]',
+                            data.output.sign === '2' && 'text-moneed-red bg-moneed-red-light',
+                            data.output.sign === '3' && 'text-moneed-black bg-moneed-gray-2',
+                            data.output.sign === '5' && 'text-moneed-blue bg-moneed-blue-light',
+                        )}
+                    >
+                        {data.output.rate}%
                     </div>
                 </div>
             </div>
@@ -39,4 +73,12 @@ const StockInfoBox = ({ stock, children }: StockInfoProps) => {
     );
 };
 
-export default StockInfoBox;
+const StockInfoBoxWithSuspense = ({ stock, children }: StockInfoProps) => {
+    return (
+        <Suspense fallback={<StockInfoBoxSkeleton />}>
+            <StockInfoBox stock={stock}>{children}</StockInfoBox>
+        </Suspense>
+    );
+};
+
+export default StockInfoBoxWithSuspense;

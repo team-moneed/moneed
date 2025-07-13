@@ -1,12 +1,18 @@
 import 'server-only';
 import { kis } from './server';
-import { KISAccessTokenResponse, OverseasStockConditionSearchResponse, MarketCode } from '@/types/kis';
+import {
+    KISAccessTokenResponse,
+    OverseasStockConditionSearchResponse,
+    MarketCode,
+    OverseasStockPriceResponse,
+} from '@/types/kis';
 import axios from 'axios';
 
 // 한국 투자증권 API
 
 const accessTokenUrl = '/oauth2/tokenP';
 const searchByConditionUrl = '/uapi/overseas-price/v1/quotations/inquire-search';
+const overseasStockPriceUrl = '/uapi/overseas-price/v1/quotations/price';
 
 /**
  * 접근토큰발급(P)[인증-001]
@@ -39,6 +45,24 @@ export const getOverseasStockByCondition = async ({ market }: { market: MarketCo
         },
         headers: {
             tr_id: 'HHDFS76410000',
+        },
+    });
+    return response.data;
+};
+
+/**
+ * 해외주식 현재체결가[v1_해외주식-009]
+ * {@link https://apiportal.koreainvestment.com/apiservice-apiservice?/uapi/overseas-price/v1/quotations/price API DOCS}
+ */
+export const getOverseasStockPrice = async ({ symbol }: { symbol: string }) => {
+    const response = await kis.get<OverseasStockPriceResponse>(overseasStockPriceUrl, {
+        params: {
+            AUTH: '',
+            EXCD: 'NAS',
+            SYMB: symbol,
+        },
+        headers: {
+            tr_id: 'HHDFS00000300',
         },
     });
     return response.data;
