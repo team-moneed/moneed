@@ -29,6 +29,7 @@ model User {
   selectedStocks SelectedStock[]
   postLikes      PostLike[]
   postViews      PostViews[]
+  comments       Comment[]
 
   @@map("users")
 }
