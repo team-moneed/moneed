@@ -1,40 +1,7 @@
 import { PrismaClient } from '../src/generated/prisma';
+import { stockData } from './stockdata';
 
 const prisma = new PrismaClient();
-
-// Stock 데이터
-const stockData = [
-    { name: '애플', thumbnailImage: '' },
-    { name: '마이크로소프트', thumbnailImage: '' },
-    { name: '엔비디아', thumbnailImage: '' },
-    { name: '아마존닷컴', thumbnailImage: '' },
-    { name: '알파벳 C', thumbnailImage: '' },
-    { name: '알파벳 A', thumbnailImage: '' },
-    { name: '메타 플랫폼스(페이스북)', thumbnailImage: '' },
-    { name: '테슬라', thumbnailImage: '' },
-    { name: '브로드컴', thumbnailImage: '' },
-    { name: 'TSMC(ADR)', thumbnailImage: '' },
-    { name: '버크셔 헤서웨이 B', thumbnailImage: '' },
-    { name: '월마트', thumbnailImage: '' },
-    { name: '일라이 릴리', thumbnailImage: '' },
-    { name: '제이피모간 체이스', thumbnailImage: '' },
-    { name: '비자', thumbnailImage: '' },
-    { name: '마스타카드', thumbnailImage: '' },
-    { name: '오라클', thumbnailImage: '' },
-    { name: '엑슨 모빌', thumbnailImage: '' },
-    { name: '유나이티드헬스 그룹', thumbnailImage: '' },
-    { name: '코스트코 홀세일', thumbnailImage: '' },
-    { name: '프록터 앤드 갬블', thumbnailImage: '' },
-    { name: '넷플릭스', thumbnailImage: '' },
-    { name: '홈 디포', thumbnailImage: '' },
-    { name: '존슨 앤드 존슨', thumbnailImage: '' },
-    { name: '노보노디스크(ADR)', thumbnailImage: '' },
-    { name: '뱅크오브아메리카', thumbnailImage: '' },
-    { name: '세일스포스', thumbnailImage: '' },
-    { name: '애브비', thumbnailImage: '' },
-    { name: 'SAP(ADR)', thumbnailImage: '' },
-    { name: 'ASML 홀딩(ADR)', thumbnailImage: '' },
-];
 
 // Posts 데이터
 const postTitles = [
@@ -94,16 +61,28 @@ async function seedStocks() {
     let stocksCreated = 0;
     for (const stock of stockData) {
         const existingStock = await prisma.stock.findFirst({
-            where: { name: stock.name },
+            where: {
+                OR: [{ symbol: stock.symbol }, { name: stock.name }],
+            },
         });
 
         if (existingStock) {
-            console.log(`⚠️  '${stock.name}'은(는) 이미 존재합니다.`);
+            console.log(`⚠️  '${stock.name}' (${stock.symbol})은(는) 이미 존재합니다.`);
             continue;
         }
 
-        await prisma.stock.create({ data: stock });
-        console.log(`✅ '${stock.name}' 생성 완료`);
+        await prisma.stock.create({
+            data: {
+                symbol: stock.symbol,
+                name: stock.name,
+                sector: stock.sector,
+                subSector: stock.subSector ?? '',
+                summary: stock.summary,
+                logoUrl: stock.logoUrl ?? '',
+                refUrl: stock.refUrl,
+            },
+        });
+        console.log(`✅ '${stock.name}' (${stock.symbol}) 생성 완료`);
         stocksCreated++;
     }
 

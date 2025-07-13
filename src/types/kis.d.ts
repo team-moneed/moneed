@@ -41,3 +41,22 @@ export type OverseasStockConditionSearchResponse = {
         e_ordyn: string; // 매매가능
     }[];
 };
+
+export type OverseasStockPriceResponse = {
+    rt_cd: string; // 성공 실패 여부 (0: 성공, 0이외의 값: 실패)
+    msg_cd: string; // 응답코드
+    msg1: string; // 응답메세지
+    output: {
+        rsym: string; // 종목코드 D + 시장구분(3자리) + 종목코드 (예: DNASAAPL)
+        zdiv: string; // 소수점 자리수
+        base: string; // 전일종가
+        pvol: string; // 전일거래량
+        last: string; // 현재가
+        sign: '1' | '2' | '3' | '4' | '5'; // 대비기호 (1: 상한, 2: 상승, 3:보합, 4:하한, 5:하락)
+        diff: string; // 대비
+        rate: string; // 등락율
+        tvol: string; // 거래량
+        tamt: string; // 거래대금
+        ordy: string; // 매수가능여부
+    };
+};

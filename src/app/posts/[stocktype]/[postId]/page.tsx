@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import useSnackbarStore from '@/store/useSnackbarStore';
 import ImageCarousel from '@/components/Carousel/ImageCarousel';
 import { useModal } from '@/context/ModalContext';
-import DateFormatter from '@/util/Dateformatter';
+import DateFormatter from '@/components/Dateformatter';
 import Icon from '@/components/Icon';
 import { PrimaryDropdown, PrimaryDropdownProps } from '@/components/Dropdown';
 import Comment from '@/components/Community/Comment';

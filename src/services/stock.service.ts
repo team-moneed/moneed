@@ -1,3 +1,4 @@
+import { getOverseasStockPrice } from '@/api/kis.api';
 import { StockRepository } from '@/repositories/stock.repository';
 
 export class StockService {
@@ -14,5 +15,17 @@ export class StockService {
 
     async selectStock(userId: string, stockIds: number[]) {
         await this.stockRepository.selectStock(userId, stockIds);
+    }
+
+    async getStock(stockId: number) {
+        const stock = await this.stockRepository.getStock(stockId);
+        if (!stock) {
+            throw new Error('Stock not found');
+        }
+        return stock;
+    }
+
+    async getOverseasStockPrice(symbol: string) {
+        return await getOverseasStockPrice({ symbol });
     }
 }

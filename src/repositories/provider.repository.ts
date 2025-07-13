@@ -1,6 +1,6 @@
 import { OAuthAccount } from '@/generated/prisma';
 import prisma from '@/lib/prisma';
-import { ProviderInfo } from '@/services/auth.service';
+import { ProviderInfo } from '@/types/auth';
 import { Optional } from '@/types/util';
 
 export class ProviderRepository {
