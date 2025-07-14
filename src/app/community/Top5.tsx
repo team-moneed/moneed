@@ -28,7 +28,6 @@ export default function Top5() {
                         content={post.content}
                         title={post.title}
                         createdAt={post.createdAt}
-                        stockId={post.stockId}
                         postId={post.id}
                     />
                 </div>

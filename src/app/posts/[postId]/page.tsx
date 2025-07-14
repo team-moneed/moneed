@@ -9,6 +9,7 @@ import Icon from '@/components/Icon';
 import { PrimaryDropdown, PrimaryDropdownProps } from '@/components/Dropdown';
 import Comment from '@/components/Community/Comment';
 import { EmblaOptionsType } from 'embla-carousel';
+import { SnackbarTrigger } from '@/components/Snackbar';
 
 type PostDetailState = {
     userName: string;
@@ -25,7 +26,8 @@ type PostDetailState = {
 export default function PostDetailPage() {
     const inputRef = useRef<HTMLInputElement>(null);
     const searchParams = useSearchParams();
-    const postImages = searchParams.get('postImages')?.split(',');
+    const reason = searchParams.get('reason') ?? undefined;
+    const postImages = searchParams.get('postImages')?.split(',') ?? [];
     const state = {
         ...Object.fromEntries(searchParams.entries()),
         postImages,
@@ -50,7 +52,7 @@ export default function PostDetailPage() {
         containScroll: 'trimSnaps',
     };
 
-    //postId에 해당하는 댓글 가져오기
+    //TODO: postId에 해당하는 댓글 가져오기
     const PostDetail = [
         {
             commentId: 1,
@@ -276,6 +278,7 @@ export default function PostDetailPage() {
                     </div>
                 </div>
             </div>
+            <SnackbarTrigger reason={reason} />
         </>
     );
 }

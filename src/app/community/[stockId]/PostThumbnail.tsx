@@ -6,7 +6,7 @@ import { PostThumbnail as TPostThumbnail } from '@/types/post';
 import PostThumbnailCard from '@/components/PostThumbnailCard';
 
 const PostThumbnail = ({ post }: { post: TPostThumbnail }) => {
-    const { user, content, isLiked, id, stocktype, thumbnailImage, likeCount, createdAt, title, commentCount } = post;
+    const { user, content, isLiked, id, thumbnailImage, likeCount, createdAt, title, commentCount } = post;
     const postImages = thumbnailImage ? [thumbnailImage] : [];
 
     const OPTIONS: EmblaOptionsType = {
@@ -18,10 +18,8 @@ const PostThumbnail = ({ post }: { post: TPostThumbnail }) => {
     };
 
     const router = useRouter();
-    const movetoDetail = (stocktype: string, postId: number) => {
-        router.push(
-            `/posts/${stocktype}/${postId}?userName=${user.nickname}&content=${content}&isLiked=${isLiked}&postId=${id}&stocktype=${stocktype}&postImages=${postImages}&createdAt=${createdAt}&title=${title}&likes=${likeCount}`,
-        );
+    const movetoDetail = (postId: number) => {
+        router.push(`/posts/${postId}`);
     };
 
     const toggleLike = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -33,7 +31,7 @@ const PostThumbnail = ({ post }: { post: TPostThumbnail }) => {
 
     return (
         <>
-            <PostThumbnailCard onClick={() => movetoDetail(stocktype, id)}>
+            <PostThumbnailCard onClick={() => movetoDetail(id)}>
                 <PostThumbnailCard.Header>
                     <PostThumbnailCard.AuthorWithDate user={user} createdAt={new Date(createdAt)} />
                     {/* TODO: 드롭다운 토글시 닫혔다 열림 현상 고치기*/}

@@ -4,7 +4,7 @@ import { EmblaOptionsType } from 'embla-carousel';
 import { useRouter } from 'next/navigation';
 
 export default function HotPostThumbnail({ post }: { post: THotPostThumbnail }) {
-    const { user, content, isLiked, id, stock, thumbnailImage, likeCount, createdAt, title, commentCount } = post;
+    const { user, content, isLiked, id, thumbnailImage, likeCount, createdAt, title, commentCount } = post;
     const postImages = thumbnailImage ? [thumbnailImage] : [];
 
     const OPTIONS: EmblaOptionsType = {
@@ -16,8 +16,8 @@ export default function HotPostThumbnail({ post }: { post: THotPostThumbnail }) 
     };
 
     const router = useRouter();
-    const movetoDetail = ({ stockId, postId }: { stockId: number; postId: number }) => {
-        router.push(`/posts/${stockId}/${postId}`);
+    const movetoDetail = ({ postId }: { postId: number }) => {
+        router.push(`/posts/${postId}`);
     };
 
     // TODO: 좋아요 기능 추가
@@ -31,7 +31,7 @@ export default function HotPostThumbnail({ post }: { post: THotPostThumbnail }) 
 
     return (
         <>
-            <PostThumbnailCard onClick={() => movetoDetail({ stockId: stock.id, postId: id })}>
+            <PostThumbnailCard onClick={() => movetoDetail({ postId: id })}>
                 <PostThumbnailCard.Header>
                     <PostThumbnailCard.AuthorWithDate user={user} createdAt={new Date(createdAt)} />
                     {/* TODO: 드롭다운 토글시 닫혔다 열림 현상 고치기*/}
