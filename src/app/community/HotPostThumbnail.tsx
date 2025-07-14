@@ -4,7 +4,7 @@ import { EmblaOptionsType } from 'embla-carousel';
 import { useRouter } from 'next/navigation';
 
 export default function HotPostThumbnail({ post }: { post: THotPostThumbnail }) {
-    const { user, content, isLiked, id, stocktype, thumbnailImage, likeCount, createdAt, title, commentCount } = post;
+    const { user, content, isLiked, id, stock, thumbnailImage, likeCount, createdAt, title, commentCount } = post;
     const postImages = thumbnailImage ? [thumbnailImage] : [];
 
     const OPTIONS: EmblaOptionsType = {
@@ -16,22 +16,22 @@ export default function HotPostThumbnail({ post }: { post: THotPostThumbnail }) 
     };
 
     const router = useRouter();
-    const movetoDetail = (stocktype: string, postId: number) => {
-        router.push(
-            `/posts/${stocktype}/${postId}?userName=${user.nickname}&content=${content}&isLiked=${isLiked}&postId=${id}&stocktype=${stocktype}&postImages=${postImages}&createdAt=${createdAt}&title=${title}&likes=${likeCount}`,
-        );
+    const movetoDetail = ({ stockId, postId }: { stockId: number; postId: number }) => {
+        router.push(`/posts/${stockId}/${postId}`);
     };
 
+    // TODO: 좋아요 기능 추가
     const toggleLike = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         console.log('좋아요!');
     };
 
+    // TODO: 클립보드 복사 기능 추가
     const handleCopyClipBoard = () => {};
 
     return (
         <>
-            <PostThumbnailCard onClick={() => movetoDetail(stocktype, id)}>
+            <PostThumbnailCard onClick={() => movetoDetail({ stockId: stock.id, postId: id })}>
                 <PostThumbnailCard.Header>
                     <PostThumbnailCard.AuthorWithDate user={user} createdAt={new Date(createdAt)} />
                     {/* TODO: 드롭다운 토글시 닫혔다 열림 현상 고치기*/}

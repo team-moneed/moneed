@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma';
 import { BoardRankResponse } from '@/types/board';
-import { CreatePost } from '@/types/post';
+import { CreatePostRequest } from '@/types/post';
 
 export default class PostRepository {
     private prisma = prisma;
@@ -183,13 +183,12 @@ export default class PostRepository {
                 content: true,
                 createdAt: true,
                 thumbnailImage: true,
-                postLikes: userId
-                    ? {
-                          where: {
-                              userId,
+                postLikes: {
+                    select: {
+                        id: true,
+                        userId: true,
                           },
-                      }
-                    : undefined,
+                },
                 comments: {
                     select: {
                         id: true,
@@ -197,6 +196,7 @@ export default class PostRepository {
                 },
                 stock: {
                     select: {
+                        id: true,
                         name: true,
                     },
                 },

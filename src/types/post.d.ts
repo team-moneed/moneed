@@ -12,7 +12,10 @@ export interface PostThumbnail {
     isLiked: boolean;
     likeCount: number;
     commentCount: number;
-    stocktype: string;
+    stock: {
+        id: number;
+        name: string;
+    };
     thumbnailImage?: string;
     user: PostUser;
 }
@@ -33,7 +36,10 @@ export type TopPostThumbnail = {
     createdAt: string;
     user: PostUser;
     score: number;
-    stockId: number;
+    stock: {
+        id: number;
+        name: string;
+    };
 };
 
 export type CreatePostRequest = {
