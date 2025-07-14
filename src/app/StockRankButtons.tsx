@@ -1,4 +1,5 @@
 import { ChipButton } from '@/components/Chip';
+import StockRankButtonSkeleton from '@/components/Skeletons/StockRankButtonSkeleton';
 import { BoardRankResponse } from '@/types/board';
 import { Suspense } from 'react';
 
@@ -34,14 +35,6 @@ function StockRankButtons({
     );
 }
 
-function StockRankSkeleton() {
-    return (
-        <div
-            className={`rounded-[1.2rem] px-[1.6rem] py-[.7rem] flex items-center text-[1.4rem] font-semibold bg-moneed-gray-4 animate-pulse`}
-        />
-    );
-}
-
 export default function StockRankButtonsWithSuspense({
     stockList,
     selectedStock,
@@ -56,7 +49,7 @@ export default function StockRankButtonsWithSuspense({
             fallback={
                 <div className='flex gap-4'>
                     {Array.from({ length: 3 }).map((_, index) => (
-                        <StockRankSkeleton key={index} />
+                        <StockRankButtonSkeleton key={index} />
                     ))}
                 </div>
             }

@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import PostCarousel from '@/components/Carousel/PostCarousel';
-import PostThumbnailSkeleton from '@/components/Skeleton/PostThumbnail';
+import PostThumbnailSkeleton from '@/components/Skeletons/PostThumbnailSkeleton';
 import Top5 from './Top5';
 
 export default function Top5Section({ id }: { id: string }) {
