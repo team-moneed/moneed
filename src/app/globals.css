@@ -101,4 +101,14 @@
         min-height: 100vh;
         font-size: 10px;
     }
+    h2 {
+        font-weight: 700;
+        font-size: 2.2rem;
+        line-height: 145%;
+    }
+    h3 {
+        font-size: 2rem;
+        font-weight: 600;
+        line-height: 140%;
+    }
 }

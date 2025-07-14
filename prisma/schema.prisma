@@ -6,12 +6,13 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
   nickname       String
   profileImage   String
+  thumbnailImage String
   ageRange       String?
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
@@ -24,9 +25,64 @@ model User {
   role           Role            @default(USER)
   lastLoginAt    DateTime        @default(now()) @updatedAt
   oauthAccounts  OAuthAccount[]
+  posts          Post[]
   selectedStocks SelectedStock[]
+  postLikes      PostLike[]
+  postViews      PostViews[]
+  comments       Comment[]
 
   @@map("users")
+}
+
+model Post {
+  id        Int    @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @default(now())
+  userId    String
+  stockId   Int
+  stock     Stock     @relation(fields: [stockId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  thumbnailImage String?
+  postLikes PostLike[]
+  postViews PostViews[]
+
+  @@map("posts")
+}
+
+model PostLike {
+  id Int @id @default(autoincrement())
+  postId Int
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@map("post_likes")
+}
+
+model PostViews {
+  id Int @id @default(autoincrement())
+  postId Int
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@map("post_views")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId String?
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
 }
 
 model OAuthAccount {
@@ -69,7 +125,19 @@ model SelectedStock {
   @@map("selected_stocks")
 }
 
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model chat_room {
+  id                 BigInt    @id @default(autoincrement())
+  roomName           String?   @db.VarChar
+  roomCreator        BigInt?
+  roomJoinLimitation Int?      @default(1)
+  createdAt          DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt          DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+
 enum Role {
-  ADMIN
-  USER
+    ADMIN
+    USER
 }

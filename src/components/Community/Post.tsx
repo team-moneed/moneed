@@ -6,7 +6,7 @@ import { EmblaOptionsType } from 'embla-carousel';
 import { useState } from 'react';
 import { PrimaryDropdown, PrimaryDropdownProps } from '@/components/Dropdown';
 import DateFormatter from '@/util/Dateformatter';
-import useSnackBarStore from '@/store/useSnackBarStore';
+import useSnackbarStore from '@/store/useSnackbarStore';
 import { useModal } from '@/context/ModalContext';
 import { useRouter } from 'next/navigation';
 
@@ -31,7 +31,7 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
         containScroll: 'trimSnaps',
     };
 
-    const { showSnackBar } = useSnackBarStore();
+    const showSnackbar = useSnackbarStore(state => state.showSnackbar);
     const { confirm } = useModal();
 
     const router = useRouter();
@@ -79,7 +79,11 @@ const Post = ({ userName, content, isliked, postId, stocktype, postImages, likes
 
     //게시글 삭제 api 연동
     const handledeletePost = () => {
-        showSnackBar('게시글이 삭제되었습니다.', 'action', 'bottom', '');
+        showSnackbar({
+            message: '게시글이 삭제되었습니다.',
+            variant: 'action',
+            position: 'bottom',
+        });
     };
 
     const closeDropdown = () => {

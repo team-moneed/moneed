@@ -1,16 +1,15 @@
 'use client';
+
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import RandomNickname from './RandomNickname';
+import { useEffect } from 'react';
 
 export default function Welcome() {
     const router = useRouter();
-
     useEffect(() => {
         const timer = setTimeout(() => {
             router.push('/');
         }, 2000);
-
         return () => clearTimeout(timer);
     }, [router]);
 
