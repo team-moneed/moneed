@@ -336,6 +336,17 @@ export default class PostRepository {
         });
         return post;
     }
+
+    async deletePost({ postId, userId }: { postId: number; userId: string }) {
+        return await this.prisma.post.delete({
+            where: {
+                id: postId,
+                userId,
+            },
+        });
+    }
+
+    
 }
 
 function calcScore({

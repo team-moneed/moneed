@@ -96,4 +96,10 @@ export default class PostService {
         const post = await this.postRepository.createPost({ userId, title, content, stockId, thumbnailImage });
         return post;
     }
+
+    async deletePost({ postId, userId }: { postId: number; userId: string }) {
+        return await this.postRepository.deletePost({ postId, userId });
+    }
+
+
 }

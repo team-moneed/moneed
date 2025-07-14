@@ -5,6 +5,8 @@ import {
     HotPostThumbnail,
     CreatePostRequest,
     CreatePostResponse,
+    DeletePostResponse,
+
 } from '@/types/post';
 import { http } from './client';
 
@@ -63,3 +65,9 @@ export const createPost = async ({ title, content, stockId, thumbnailImage }: Cr
         thumbnailImage,
     });
 };
+
+export const deletePost = async ({ postId }: { postId: number }) => {
+    return await http.delete<DeletePostResponse>(`/api/posts/${postId}`);
+};
+
+

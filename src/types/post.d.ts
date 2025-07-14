@@ -48,3 +48,15 @@ export type CreatePostResponse = {
     stockId: number;
     postId: number;
 };
+
+export type DeletePostRequest = {
+    postId: number;
+};
+
+export type DeletePostResponse = {
+    message: string;
+    stockId: number;
+    postId: number;
+};
+
+
