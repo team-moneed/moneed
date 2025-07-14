@@ -5,7 +5,6 @@ import BottomModal from '@/components/BottomModal';
 import UploadImage from '@/components/UploadImage';
 import useSnackbarStore from '@/store/useSnackbarStore';
 import { useForm } from 'react-hook-form';
-import { useKeyboardOffset } from '@/hooks/useKeyboardOffset';
 import { redirect, useRouter, useSearchParams } from 'next/navigation';
 
 type FieldData = {
@@ -17,8 +16,6 @@ const WritePost = () => {
     const searchParams = useSearchParams();
     const stocktype = searchParams.get('stocktype');
     const [isBottomModalOpen, setIsBottomModalOpen] = useState(false);
-
-    const bottomOffset = useKeyboardOffset();
 
     const [postImages] = useState<string[]>([]);
     const [, setFormImg] = useState<FormData | string[]>([]);
@@ -171,9 +168,7 @@ const WritePost = () => {
                     onFocus={() => handleFocus('content')}
                 />
                 <div
-                    className={`fixed left-0 right-0 z-20 h-[5.2rem] px-8 bg-white flex items-center justify-between transition-all duration-300 ${
-                        bottomOffset > 0 ? `bottom-[${bottomOffset}px]` : 'bottom-0'
-                    }`}
+                    className={`fixed left-0 right-0 z-20 h-[5.2rem] px-8 bg-white flex items-center justify-between transition-all duration-300 bottom-0`}
                 >
                     <UploadImage
                         id='blog'

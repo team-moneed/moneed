@@ -4,7 +4,6 @@ import { use, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 import UploadImage from '@/components/UploadImage';
-import { useKeyboardOffset } from '@/hooks/useKeyboardOffset';
 import useSnackbarStore from '@/store/useSnackbarStore';
 
 type FieldData = {
@@ -25,7 +24,6 @@ const EditPost = ({ params }: { params: Promise<{ stocktype: string }> }) => {
     const { state } = useLocation();
 
     const showSnackbar = useSnackbarStore(state => state.showSnackbar);
-    const bottomOffset = useKeyboardOffset();
 
     const content = watch('content', '');
     const initialContent = state?.content || '';
@@ -133,9 +131,7 @@ const EditPost = ({ params }: { params: Promise<{ stocktype: string }> }) => {
                     maxLength={1000}
                 />
                 <div
-                    className={`fixed left-0 right-0 z-20 h-[5.2rem] px-8 bg-white flex items-center justify-between transition-all duration-300 ${
-                        bottomOffset > 0 ? `bottom-[${bottomOffset}px]` : 'bottom-0'
-                    }`}
+                    className={`fixed left-0 right-0 z-20 h-[5.2rem] px-8 bg-white flex items-center justify-between transition-all duration-300 bottom-0`}
                 >
                     <UploadImage
                         id='blog'

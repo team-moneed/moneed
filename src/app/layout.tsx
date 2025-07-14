@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
     width: 'device-width',
     initialScale: 1,
+    interactiveWidget: 'resizes-content',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -33,7 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     ></iframe>
                 </noscript>
 
-                <div id='root' className='mx-auto min-h-screen max-w-7xl flex flex-col'>
+                <div id='root' className='mx-auto h-screen max-w-7xl flex flex-col'>
                     <QueryClientProvider>
                         <ModalProvider>
                             <Header />
