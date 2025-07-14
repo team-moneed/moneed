@@ -23,6 +23,7 @@ model User {
   gender         String?
   role           Role            @default(USER)
   lastLoginAt    DateTime        @default(now()) @updatedAt
+  chat_message   chat_message[]
   comments       Comment[]
   oauthAccounts  OAuthAccount[]
   postLikes      PostLike[]
@@ -42,7 +43,7 @@ model Post {
   userId         String
   stockId        Int
   thumbnailImage String?
-  score          Float         @default(0)
+  score          Float       @default(0)
   comments       Comment[]
   postLikes      PostLike[]
   postViews      PostViews[]
@@ -107,15 +108,15 @@ model OAuthAccount {
 }
 
 model Stock {
-  id             Int             @id @default(autoincrement())
-  symbol         String
   name           String
-  logoUrl      String
-  posts          Post[]
-  summary        String
+  id             Int             @id @default(autoincrement())
+  logoUrl        String
+  refUrl         String?
   sector         String
   subSector      String
-  refUrl         String?
+  summary        String
+  symbol         String
+  posts          Post[]
   selectedStocks SelectedStock[]
 
   @@map("stocks")
@@ -135,12 +136,23 @@ model SelectedStock {
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model chat_room {
-  id                 BigInt    @id @default(autoincrement())
-  roomName           String?   @db.VarChar
+  id                 BigInt         @id @default(autoincrement())
+  roomName           String?        @db.VarChar
   roomCreator        BigInt?
-  roomJoinLimitation Int?      @default(1)
-  createdAt          DateTime  @default(now()) @db.Timestamptz(6)
-  updatedAt          DateTime? @default(now()) @db.Timestamptz(6)
+  roomJoinLimitation Int?           @default(1)
+  createdAt          DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt          DateTime?      @default(now()) @db.Timestamptz(6)
+  chat_message       chat_message[]
+}
+
+model chat_message {
+  id        BigInt    @id @default(autoincrement())
+  roomId    BigInt
+  senderId  String
+  content   String
+  createdAt DateTime  @default(now()) @db.Timestamptz(6)
+  chat_room chat_room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  users     User      @relation(fields: [senderId], references: [id], onDelete: Cascade)
 }
 
 enum Role {

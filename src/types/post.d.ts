@@ -35,3 +35,16 @@ export type TopPostThumbnail = {
     score: number;
     stockId: number;
 };
+
+export type CreatePostRequest = {
+    title: string;
+    content: string;
+    stockId: number;
+    thumbnailImage?: string;
+};
+
+export type CreatePostResponse = {
+    message: string;
+    stockId: number;
+    postId: number;
+};

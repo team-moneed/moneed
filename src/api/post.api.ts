@@ -1,4 +1,11 @@
-import { TopBoardPostThumbnail, PostThumbnail, TopPostThumbnail, HotPostThumbnail } from '@/types/post';
+import {
+    TopBoardPostThumbnail,
+    PostThumbnail,
+    TopPostThumbnail,
+    HotPostThumbnail,
+    CreatePostRequest,
+    CreatePostResponse,
+} from '@/types/post';
 import { http } from './client';
 
 export const getTopBoardPosts = async ({ boardId, limit }: { boardId: number; limit?: number }) => {
@@ -46,4 +53,13 @@ export const getPosts = async ({
         },
     });
     return res.data;
+};
+
+export const createPost = async ({ title, content, stockId, thumbnailImage }: CreatePostRequest) => {
+    return await http.post<CreatePostResponse>(`/api/posts`, {
+        title,
+        content,
+        stockId,
+        thumbnailImage,
+    });
 };

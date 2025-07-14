@@ -324,7 +324,7 @@ export default class PostRepository {
         }));
     }
 
-    async createPost({ userId, title, content, stockId, thumbnailImage }: CreatePost & { userId: string }) {
+    async createPost({ userId, title, content, stockId, thumbnailImage }: CreatePostRequest & { userId: string }) {
         const post = await this.prisma.post.create({
             data: {
                 userId,

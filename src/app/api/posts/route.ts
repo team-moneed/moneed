@@ -1,5 +1,6 @@
 import { getSession } from '@/lib/session';
 import PostService from '@/services/post.service';
+import { CreatePostRequest } from '@/types/post';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
@@ -30,22 +31,23 @@ export async function GET(req: NextRequest) {
 }
 
 // 게시글 작성
-// export async function POST(req: NextRequest) {
-// const { title, content, stocktype } = await req.json();
-// try {
-//     const post = await prisma.post.create({
-//         data: {
-//             userId: '1', // 임시 작성자 id
-//             title,
-//             content,
-//             stockId: stocktype,
-//         },
-//     });
-//     console.log('게시글 작성', post);
-// } catch (error) {
-//     console.error('게시글 작성 오류', error);
-//     return NextResponse.json({ error: '게시글 작성 오류' }, { status: 500 });
-// }
-// const url = new URL(`/community/${stocktype}`, req.url);
-//     return NextResponse.redirect(url);
-// }
+export async function POST(req: NextRequest) {
+    const { title, content, stockId, thumbnailImage } = (await req.json()) as CreatePostRequest;
+    const payload = await getSession();
+    if (!payload) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const postService = new PostService();
+    const post = await postService.createPost({
+        userId: payload.userId,
+        title,
+        content,
+        stockId,
+        thumbnailImage,
+    });
+
+    return NextResponse.json(
+        { message: '게시글이 작성되었습니다.', stockId: post.stockId, postId: post.id },
+        { status: 201 },
+    );
+}

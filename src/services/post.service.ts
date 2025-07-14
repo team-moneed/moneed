@@ -91,4 +91,9 @@ export default class PostService {
         }));
         return postThumbnailList;
     }
+
+    async createPost({ userId, title, content, stockId, thumbnailImage }: CreatePostRequest & { userId: string }) {
+        const post = await this.postRepository.createPost({ userId, title, content, stockId, thumbnailImage });
+        return post;
+    }
 }
