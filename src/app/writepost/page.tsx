@@ -26,7 +26,7 @@ const WritePost = () => {
     const content = watch('content', '');
     const title = watch('title', '');
 
-    const showSnackBar = useSnackbarStore(state => state.showSnackbar);
+    const showSnackbar = useSnackbarStore(state => state.showSnackbar);
 
     const handleFileUpload = (formData: FormData) => {
         setFormImg(formData);
@@ -43,7 +43,7 @@ const WritePost = () => {
 
     useEffect(() => {
         if (title.trim().length >= 50) {
-            showSnackBar({
+            showSnackbar({
                 message: '제목은 공백 포함 50자 제한입니다.',
                 variant: 'normal',
                 position: 'bottom',
@@ -52,14 +52,14 @@ const WritePost = () => {
         }
 
         if (content.trim().length >= 1000) {
-            showSnackBar({
+            showSnackbar({
                 message: '본문은 최대 1000자 입니다.',
                 variant: 'normal',
                 position: 'bottom',
                 icon: '/icon/icon-snackbar.svg',
             });
         }
-    }, [content, title, showSnackBar]);
+    }, [content, title, showSnackbar]);
 
     const movetoSearchStocktype = () => {
         router.push('/searchstocktype');
@@ -67,7 +67,7 @@ const WritePost = () => {
 
     const handleFocus = (field: string) => {
         if (!stocktype) {
-            showSnackBar({
+            showSnackbar({
                 message: '커뮤니티 종목을 먼저 선택해주세요.',
                 variant: 'normal',
                 position: 'top',
@@ -87,7 +87,7 @@ const WritePost = () => {
         const formData = { ...data, stocktype };
 
         if (!stocktype) {
-            showSnackBar({
+            showSnackbar({
                 message: '커뮤니티 종목을 선택해주세요.',
                 variant: 'normal',
                 position: 'bottom',
@@ -97,7 +97,7 @@ const WritePost = () => {
         }
 
         if (!title.trim()) {
-            showSnackBar({
+            showSnackbar({
                 message: '제목을 입력해주세요.',
                 variant: 'normal',
                 position: 'bottom',
@@ -107,7 +107,7 @@ const WritePost = () => {
         }
 
         if (content.trim().length == 0) {
-            showSnackBar({
+            showSnackbar({
                 message: '내용을 입력해주세요.',
                 variant: 'normal',
                 position: 'bottom',
@@ -121,7 +121,7 @@ const WritePost = () => {
             body: JSON.stringify(formData),
         });
 
-        showSnackBar({
+        showSnackbar({
             message: '게시글이 작성되었습니다.',
             variant: 'action',
             position: 'bottom',

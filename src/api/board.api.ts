@@ -1,8 +1,8 @@
-import axios from 'axios';
 import { BoardRankResponse } from '@/types/board';
+import { http } from './client';
 
 export const getBoardRank = async ({ limit }: { limit: number }) => {
-    const response = await axios.get<Pick<BoardRankResponse, 'stockId' | 'stockName'>[]>('/api/board/rank', {
+    const response = await http.get<BoardRankResponse[]>(`/api/board/rank`, {
         params: {
             limit,
         },

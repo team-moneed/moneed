@@ -25,6 +25,11 @@ export class StockService {
         return stock;
     }
 
+    async getStocks(count: number, cursor: number) {
+        const stocks = await this.stockRepository.getStocks(count, cursor);
+        return stocks;
+    }
+
     async getOverseasStockPrice(symbol: string) {
         return await getOverseasStockPrice({ symbol });
     }
