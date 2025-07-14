@@ -1,5 +1,5 @@
 import PostRepository from '@/repositories/post.repository';
-import { HotPostThumbnail, PostThumbnail, TopPostThumbnail } from '@/types/post';
+import { CreatePostRequest, HotPostThumbnail, PostThumbnail, TopPostThumbnail } from '@/types/post';
 
 export default class PostService {
     private readonly postRepository = new PostRepository();
@@ -37,7 +37,10 @@ export default class PostService {
                 profileImage: post.user.profileImage,
             },
             score: post.score,
-            stockId: post.stock.id,
+            stock: {
+                id: post.stock.id,
+                name: post.stock.name,
+            },
         }));
 
         return postThumbnailList;
@@ -50,12 +53,15 @@ export default class PostService {
     }: { limit?: number; cursor?: number; userId?: string } = {}): Promise<HotPostThumbnail[]> {
         const postList = await this.postRepository.getPostsByScore({ limit, cursor });
 
-        const postThumbnailList: HotPostThumbnail[] = postList.map(post => ({
+        const postThumbnailList = postList.map(post => ({
             ...post,
             isLiked: post.postLikes.some(like => like.userId === userId),
             likeCount: post.postLikes.length,
             commentCount: post.comments.length,
-            stocktype: post.stock.name,
+            stock: {
+                id: post.stock.id,
+                name: post.stock.name,
+            },
             thumbnailImage: undefined,
         }));
         return postThumbnailList;
@@ -72,16 +78,19 @@ export default class PostService {
         limit?: number;
         userId?: string;
     }): Promise<PostThumbnail[]> {
-        const postList = await this.postRepository.getPostsWithUserExtended({ stockId, cursor, limit, userId });
+        const postList = await this.postRepository.getPostsWithUserExtended({ stockId, cursor, limit });
         const postThumbnailList: PostThumbnail[] = postList.map(post => ({
             id: post.id,
             title: post.title,
             content: post.content,
             createdAt: post.createdAt.toISOString(),
-            isLiked: userId ? post.postLikes.some(like => like.userId === userId) : false,
+            isLiked: post.postLikes.some(like => like.userId === userId),
             likeCount: post.postLikes.length,
             commentCount: post.comments.length,
-            stocktype: post.stock.name,
+            stock: {
+                id: post.stock.id,
+                name: post.stock.name,
+            },
             thumbnailImage: post.thumbnailImage ?? undefined,
             user: {
                 id: post.user.id,

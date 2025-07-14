@@ -163,7 +163,6 @@ export default class PostRepository {
         stockId,
         cursor,
         limit,
-        userId,
     }: {
         stockId: number;
         cursor: Date;
