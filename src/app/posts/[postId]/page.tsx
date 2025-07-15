@@ -4,7 +4,6 @@ import { Suspense, useRef, useState } from 'react';
 import useSnackbarStore from '@/store/useSnackbarStore';
 import { useModal } from '@/context/ModalContext';
 import DateFormatter from '@/components/Dateformatter';
-import Icon from '@/components/Icon';
 import { PrimaryDropdown, PrimaryDropdownProps } from '@/components/Dropdown';
 import Comment from '@/components/Community/Comment';
 import { SnackbarTrigger } from '@/components/Snackbar';
@@ -12,6 +11,10 @@ import { deletePost, getPost } from '@/api/post.api';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import PostDetailSkeleton from '@/components/Skeletons/PostDetailSkeleton';
 import { REASON_CODES } from '@/constants/snackbar';
+import Image from 'next/image';
+import PostLikeButton from '@/components/Post/PostLikeButton';
+import PostCommentButton from '@/components/Post/PostCommentButton';
+import PostClipBoardButton from '@/components/Post/PostClipBoardButton';
 
 function PostDetail() {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -148,22 +151,34 @@ function PostDetail() {
                     <div className='lg:w-[60%] lg:border lg:border-moneed-gray-4 rounded-[1.2rem] lg:p-8'>
                         <div className='pb-[1.3rem] pt-[1.4rem]'>
                             <div className='flex items-center justify-between'>
-                                <div className='flex items-center gap-[.6rem]'>
-                                    <div className='rounded-full overflow-hidden aspect-square w-[2.4rem]'>
-                                        <img src='/temp/sample3.png' alt='' className='w-full h-full object-cover' />
-                                    </div>
+                                <div className='flex items-center gap-[.6rem] lg:gap-[.8rem]'>
+                                    <Image
+                                        src={user.profileImage}
+                                        alt='profile'
+                                        className='rounded-full size-[2.4rem] lg:size-[3.2rem]'
+                                        width={32}
+                                        height={32}
+                                    />
+                                    <div className='flex items-center gap-[.4rem]'>
                                     <span className='text-[1.4rem] font-normal leading-[140%] text-moneed-black'>
                                         {user.nickname}
                                     </span>
-                                    <i className='w-[.2rem] h-[.2rem] rounded-full bg-moneed-gray-5'></i>
+                                        <i className='size-[.4rem] rounded-full bg-moneed-gray-5'></i>
                                     <DateFormatter createdAt={new Date(createdAt)} />
+                                </div>
                                 </div>
                                 <div className='relative ml-auto shrink-0 z-2'>
                                     <div
                                         className='cursor-pointer rounded-full overflow-hidden aspect-square w-[2.4rem]'
                                         onClick={handleOpendropdown}
                                     >
-                                        <img src='/icon/icon-more.svg' alt='' className='w-full h-full object-cover' />
+                                        <Image
+                                            src='/icon/icon-more.svg'
+                                            alt=''
+                                            className='w-full h-full object-cover'
+                                            width={24}
+                                            height={24}
+                                        />
                                     </div>
                                     {isDropdownOpen && (
                                         <PrimaryDropdown dropdownMenus={dropdownMenus} closeDropdown={closeDropdown} />
@@ -178,19 +193,9 @@ function PostDetail() {
                             </p>
                         </div>
                         <div className='flex pb-[1.6rem] pt-[.4rem]'>
-                            {isLiked ? (
-                                <Icon iconUrl='/redHeartIcon.svg' width={18} height={18}></Icon>
-                            ) : (
-                                <Icon iconUrl='/heartIcon.svg' width={18} height={18}></Icon>
-                            )}
-                            <span className='mr-4 text-[1.4rem] font-normal leading-[140%] text-moneed-gray-8'>
-                                {likeCount}
-                            </span>
-                            <Icon iconUrl='/commentIcon.svg' width={20} height={20} />
-                            <span className='mr-4 text-[1.4rem] font-normal leading-[140%] text-moneed-gray-8'>
-                                {comments.length}
-                            </span>
-                            <Icon iconUrl='/sharingIcon.svg' width={20} height={20} />
+                            <PostLikeButton isLiked={isLiked} likeCount={likeCount} />
+                            <PostCommentButton commentCount={comments.length} />
+                            <PostClipBoardButton />
                         </div>
                     </div>
                     <div className='lg:w-[40%] lg:ml-auto flex flex-col'>

@@ -22,13 +22,6 @@ const PostThumbnail = ({ post }: { post: TPostThumbnail }) => {
         router.push(`/posts/${postId}`);
     };
 
-    const toggleLike = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        console.log('좋아요!');
-    };
-
-    const handleCopyClipBoard = () => {};
-
     return (
         <>
             <PostThumbnailCard onClick={() => movetoDetail(id)}>
@@ -43,13 +36,7 @@ const PostThumbnail = ({ post }: { post: TPostThumbnail }) => {
                     <PostThumbnailCard.Images postImages={postImages} options={OPTIONS} />
                 </PostThumbnailCard.Body>
                 <PostThumbnailCard.Footer>
-                    <PostThumbnailCard.Actions
-                        isLiked={isLiked}
-                        likeCount={likeCount}
-                        commentCount={commentCount}
-                        toggleLike={toggleLike}
-                        handleCopyClipBoard={handleCopyClipBoard}
-                    />
+                    <PostThumbnailCard.Actions isLiked={isLiked} likeCount={likeCount} commentCount={commentCount} />
                 </PostThumbnailCard.Footer>
             </PostThumbnailCard>
         </>

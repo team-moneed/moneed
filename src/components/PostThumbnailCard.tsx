@@ -2,7 +2,6 @@ import { cn } from '@/util/style';
 import { useState } from 'react';
 import { PrimaryDropdown, PrimaryDropdownProps } from './Dropdown';
 import DateFormatter from '@/components/Dateformatter';
-import Icon from './Icon';
 import ImageCarousel from './Carousel/ImageCarousel';
 import { EmblaOptionsType } from 'embla-carousel';
 import { useModal } from '@/context/ModalContext';
@@ -11,6 +10,9 @@ import { PostThumbnail } from '@/types/post';
 import { deletePost } from '@/api/post.api';
 import { REASON_CODES } from '@/constants/snackbar';
 import { queryClient } from './QueryClientProvider';
+import PostLikeButton from './Post/PostLikeButton';
+import PostCommentButton from './Post/PostCommentButton';
+import PostClipBoardButton from './Post/PostClipBoardButton';
 
 export const PostTitle = ({ title }: { title: string }) => {
     return <h3 className='text-[2rem] font-bold leading-[140%] text-moneed-black line-clamp-1 mb-[.6rem]'>{title}</h3>;
@@ -34,33 +36,21 @@ export const PostActions = ({
     isLiked,
     likeCount,
     commentCount,
-    toggleLike,
-    handleCopyClipBoard,
 }: {
     isLiked: boolean;
     likeCount: number;
     commentCount: number;
-    toggleLike: (e: React.MouseEvent<HTMLButtonElement>) => void;
-    handleCopyClipBoard: (e: React.MouseEvent<HTMLDivElement>) => void;
 }) => {
     return (
         <div className='flex pl-[1.6rem] pb-[1.6rem] pr-[1.2rem] pt-[.4rem]'>
             <div className='relative z-2'>
-                <button type='button' onClick={toggleLike}>
-                    <Icon iconUrl={isLiked ? '/redHeartIcon.svg' : '/heartIcon.svg'} width={18} height={18}></Icon>
-                </button>
+                <PostLikeButton isLiked={isLiked} likeCount={likeCount} />
             </div>
-            <span className='relative z-2 mr-4 text-[1.4rem] font-normal leading-[140%] text-moneed-gray-8'>
-                {likeCount}
-            </span>
-            <div className=' relative z-2'>
-                <Icon iconUrl='/commentIcon.svg' width={20} height={20} />
+            <div className='relative z-2'>
+                <PostCommentButton commentCount={commentCount} />
             </div>
-            <span className='relative z-2 mr-4 text-[1.4rem] font-normal leading-[140%] text-moneed-gray-8'>
-                {commentCount}
-            </span>
-            <div className=' relative z-2'>
-                <Icon onClick={handleCopyClipBoard} iconUrl='/sharingIcon.svg' width={20} height={20} />
+            <div className='relative z-2'>
+                <PostClipBoardButton />
             </div>
         </div>
     );

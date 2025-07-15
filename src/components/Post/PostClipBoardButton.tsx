@@ -6,7 +6,8 @@ import useSnackbarStore from '@/store/useSnackbarStore';
 export default function PostClipBoardButton() {
     const { showSnackbar } = useSnackbarStore();
 
-    const handleCopyUrl = async () => {
+    const handleCopyUrl = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
         try {
             const currentUrl = window.location.href;
             await navigator.clipboard.writeText(currentUrl);
@@ -27,7 +28,7 @@ export default function PostClipBoardButton() {
     };
 
     return (
-        <button onClick={handleCopyUrl}>
+        <button onClick={handleCopyUrl} type='button'>
             <Icon iconUrl='/sharingIcon.svg' width={20} height={20} />
         </button>
     );
