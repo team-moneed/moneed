@@ -155,11 +155,8 @@ export default function PostDetailPage() {
     };
 
     const onEditPost = (e: React.MouseEvent<HTMLButtonElement>) => {
-        const { userName, content, isliked, postId, stocktype, postImages, createdAt, title, likes } = state;
         e.stopPropagation();
-        router.push(
-            `/editpost/${stocktype}?userName=${userName}&content=${content}&isliked=${isliked}&postId=${postId}&stocktype=${stocktype}&postImages=${postImages}&createdAt=${createdAt}&title=${title}&likes=${likes}`,
-        );
+        router.push(`/editpost/${state.postId}`);
     };
 
     const onEditComment = (content: string) => {

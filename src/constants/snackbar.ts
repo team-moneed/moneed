@@ -8,6 +8,7 @@ export const REASON_CODES = {
     LEAVE: 'leave',
     POST_CREATED: 'post_created',
     POST_DELETED: 'post_deleted',
+    POST_UPDATED: 'post_updated',
 };
 
 export const REASONS: Record<string, SnackbarConfig> = {
@@ -22,4 +23,5 @@ export const REASONS: Record<string, SnackbarConfig> = {
     leave: { message: '탈퇴가 완료되었습니다.', variant: 'action', position: 'top' },
     post_created: { message: '게시글이 작성되었습니다.', variant: 'action', position: 'bottom' },
     post_deleted: { message: '게시글이 삭제되었습니다.', variant: 'action', position: 'bottom' },
+    post_updated: { message: '게시글이 수정되었습니다.', variant: 'action', position: 'bottom' },
 };

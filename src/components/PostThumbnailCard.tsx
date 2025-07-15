@@ -92,7 +92,7 @@ export const PostDropdown = ({ post }: { post: PostThumbnail }) => {
 
     const onEditPost = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        router.push(`/editpost/${post.stock.id}/${post.id}`);
+        router.push(`/editpost/${post.id}`);
     };
 
     //게시글 삭제할건지 묻는 모달
