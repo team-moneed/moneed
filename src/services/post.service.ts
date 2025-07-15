@@ -110,5 +110,19 @@ export default class PostService {
         return await this.postRepository.deletePost({ postId, userId });
     }
 
-
+    async updatePost({
+        postId,
+        userId,
+        title,
+        content,
+        thumbnailImage,
+    }: {
+        postId: number;
+        userId: string;
+        title: string;
+        content: string;
+        thumbnailImage?: string | null;
+    }) {
+        return await this.postRepository.updatePost({ postId, userId, title, content, thumbnailImage });
+    }
 }

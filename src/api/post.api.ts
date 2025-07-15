@@ -6,7 +6,7 @@ import {
     CreatePostRequest,
     CreatePostResponse,
     DeletePostResponse,
-
+    UpdatePostResponse,
 } from '@/types/post';
 import { http } from './client';
 
@@ -69,5 +69,20 @@ export const createPost = async ({ title, content, stockId, thumbnailImage }: Cr
 export const deletePost = async ({ postId }: { postId: number }) => {
     return await http.delete<DeletePostResponse>(`/api/posts/${postId}`);
 };
-
-
+export const updatePost = async ({
+    postId,
+    title,
+    content,
+    thumbnailImage,
+}: {
+    postId: number;
+    title: string;
+    content: string;
+    thumbnailImage?: string | null;
+}) => {
+    return await http.put<UpdatePostResponse>(`/api/posts/${postId}`, {
+        title,
+        content,
+        thumbnailImage,
+    });
+};

@@ -345,6 +345,32 @@ export default class PostRepository {
         });
     }
 
+    async updatePost({
+        postId,
+        userId,
+        title,
+        content,
+        thumbnailImage,
+    }: {
+        postId: number;
+        userId: string;
+        title: string;
+        content: string;
+        thumbnailImage?: string | null;
+    }) {
+        return await this.prisma.post.update({
+            where: {
+                id: postId,
+                userId,
+            },
+            data: {
+                title,
+                content,
+                thumbnailImage: thumbnailImage,
+            },
+        });
+    }
+
     
 }
 

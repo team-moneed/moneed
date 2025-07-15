@@ -65,4 +65,15 @@ export type DeletePostResponse = {
     postId: number;
 };
 
+export type UpdatePostRequest = {
+    postId: number;
+    title: string;
+    content: string;
+    thumbnailImage?: string | null;
+};
 
+export type UpdatePostResponse = {
+    message: string;
+    stockId: number;
+    postId: number;
+};
