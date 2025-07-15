@@ -186,7 +186,7 @@ export default class PostRepository {
                     select: {
                         id: true,
                         userId: true,
-                          },
+                    },
                 },
                 comments: {
                     select: {
@@ -371,7 +371,44 @@ export default class PostRepository {
         });
     }
 
-    
+    async getPost({ postId }: { postId: number }) {
+        return await this.prisma.post.findUnique({
+            where: {
+                id: postId,
+            },
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                createdAt: true,
+                thumbnailImage: true,
+                postLikes: {
+                    select: {
+                        id: true,
+                        userId: true,
+                    },
+                },
+                comments: {
+                    select: {
+                        id: true,
+                    },
+                },
+                stock: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
+                user: {
+                    select: {
+                        id: true,
+                        nickname: true,
+                        profileImage: true,
+                    },
+                },
+            },
+        });
+    }
 }
 
 function calcScore({

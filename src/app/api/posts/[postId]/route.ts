@@ -2,6 +2,14 @@ import PostService from '@/services/post.service';
 import { getSession } from '@/lib/session';
 import { NextRequest, NextResponse } from 'next/server';
 
+export async function GET(_: NextRequest, { params }: { params: Promise<{ postId: string }> }) {
+    const { postId } = await params;
+    const payload = await getSession();
+    const postService = new PostService();
+    const post = await postService.getPost({ userId: payload?.userId, postId: Number(postId) });
+    return NextResponse.json(post);
+}
+
 export async function DELETE(_: NextRequest, { params }: { params: Promise<{ postId: string }> }) {
     const { postId } = await params;
     const payload = await getSession();

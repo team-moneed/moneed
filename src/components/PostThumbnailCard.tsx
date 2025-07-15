@@ -96,7 +96,7 @@ export const PostDropdown = ({ post }: { post: PostThumbnail }) => {
     };
 
     //게시글 삭제할건지 묻는 모달
-    const openpostDeletemodal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const openPostDeletemodal = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         const result = confirm(
             <span>
@@ -107,14 +107,14 @@ export const PostDropdown = ({ post }: { post: PostThumbnail }) => {
         );
         result.then(confirmed => {
             if (confirmed) {
-                handledeletePost();
+                handleDeletePost();
             }
         });
         setIsDropdownOpen(false);
     };
 
     //게시글 삭제 api 연동
-    const handledeletePost = async () => {
+    const handleDeletePost = async () => {
         const res = await deletePost({ postId: post.id });
         if (res.status === 200) {
             // TODO: 연속 두 개의 게시글 삭제 시 쿼리 파라미터(?reason)이 변경되지 않아 스낵바가 표시되지 않음
@@ -133,7 +133,7 @@ export const PostDropdown = ({ post }: { post: PostThumbnail }) => {
         {
             icon: '/icon/icon-trashcan.svg',
             text: '게시글 삭제',
-            onClick: openpostDeletemodal,
+            onClick: openPostDeletemodal,
         },
     ];
 

@@ -38,6 +38,11 @@ export const getHotPosts = async ({ limit = 15, cursor = 0 }: { limit?: number; 
     return res.data;
 };
 
+export const getPost = async ({ postId }: { postId: number }) => {
+    const res = await http.get<PostThumbnail>(`/api/posts/${postId}`);
+    return res.data;
+};
+
 export const getPosts = async ({
     stockId,
     cursor = new Date(),

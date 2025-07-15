@@ -67,6 +67,30 @@ export default class PostService {
         return postThumbnailList;
     }
 
+    async getPost({ userId, postId }: { userId?: string; postId: number }): Promise<PostThumbnail> {
+        const post = await this.postRepository.getPost({ postId });
+        if (!post) {
+            throw new Error('Post not found');
+        }
+        return {
+            ...post,
+            createdAt: post.createdAt.toISOString(),
+            isLiked: post.postLikes.some(like => like.userId === userId),
+            likeCount: post.postLikes.length,
+            commentCount: post.comments.length,
+            thumbnailImage: post.thumbnailImage ?? undefined,
+            user: {
+                id: post.user.id,
+                nickname: post.user.nickname,
+                profileImage: post.user.profileImage,
+            },
+            stock: {
+                id: post.stock.id,
+                name: post.stock.name,
+            },
+        };
+    }
+
     async getPostsWithUserExtended({
         stockId,
         cursor = new Date(),
