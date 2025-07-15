@@ -6,6 +6,7 @@ import { useModal } from '@/context/ModalContext';
 import useSnackbarStore from '@/store/useSnackbarStore';
 import Image from 'next/image';
 import { Comment as TComment } from '@/types/post';
+import DateFormatter from '../Dateformatter';
 
 type CommentType = {
     comment: TComment;
@@ -86,11 +87,7 @@ const Comment = ({ comment, onEditComment }: CommentType) => {
                     <span className='text-[1.4rem] font-bold leading-[140%] text-moneed-black'>{user.nickname}</span>
                     <i className='w-[.2rem] h-[.2rem] mx-[.8rem] mb-[.2rem] rounded-full bg-moneed-gray-5 inline-block '></i>
                     <span className='text-[1.4rem] font-normal leading-[142%] text-moneed-gray-7'>
-                        {new Date(createdAt).toLocaleString('ko-KR', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                        })}
+                        <DateFormatter createdAt={new Date(createdAt)} />
                     </span>
                     <div className='text-[1.4rem] font-normal leading-[140%]'>{content}</div>
                 </div>
