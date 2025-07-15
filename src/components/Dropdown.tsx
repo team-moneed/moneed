@@ -18,9 +18,9 @@ const Dropdown = ({ children, onClose }: DropdownProps) => {
             }
         };
 
-        document.addEventListener('mousedown', handleOutsideClick);
+        document.addEventListener('click', handleOutsideClick);
         return () => {
-            document.removeEventListener('mousedown', handleOutsideClick);
+            document.removeEventListener('click', handleOutsideClick);
         };
     }, [onClose]);
 

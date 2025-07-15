@@ -27,7 +27,6 @@ const PostThumbnail = ({ post }: { post: TPostThumbnail }) => {
             <PostThumbnailCard onClick={() => movetoDetail(id)}>
                 <PostThumbnailCard.Header>
                     <PostThumbnailCard.AuthorWithDate user={user} createdAt={new Date(createdAt)} />
-                    {/* TODO: 드롭다운 토글시 닫혔다 열림 현상 고치기*/}
                     <PostThumbnailCard.Dropdown post={post} />
                 </PostThumbnailCard.Header>
                 <PostThumbnailCard.Body>
