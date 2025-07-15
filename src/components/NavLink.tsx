@@ -20,11 +20,7 @@ const NavLink = ({ className, icon, activeIcon, href, children }: NavLinkType) =
     return (
         <Link href={href} className={cn('text-[1rem]', active ? 'text-moneed-black' : 'text-moneed-gray-6', className)}>
             {icon ? (
-                <img
-                    src={active ? activeIcon || icon : icon}
-                    alt='icon'
-                    className='w-[2.4rem] h-[2.4rem] text-inherit'
-                />
+                <img src={active ? activeIcon || icon : icon} alt='icon' className='size-[2.4rem] text-inherit' />
             ) : (
                 icon
             )}

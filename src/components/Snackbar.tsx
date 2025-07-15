@@ -6,6 +6,7 @@ import { SnackbarConfig } from '@/types/snackbar';
 import { cn } from '@/util/style';
 import ReactDOM from 'react-dom';
 import { useEffect, useState } from 'react';
+import { REASONS } from '@/constants/snackbar';
 
 const SnackbarVariants = cva(
     'fixed z-150 flex h-16 py-[.8rem] w-[90%] max-w-292 rounded-2xl opacity-97 shadow-[0px_2px_8px_rgba(0,0,0,0.25)] items-center justify-center',
@@ -63,15 +64,7 @@ export function SnackbarProvider() {
     );
 }
 
-const reasons: Record<string, SnackbarConfig> = {
-    logged_in: { message: '이미 로그인 상태입니다.', variant: 'normal', position: 'top' },
-    no_session: { message: '로그인이 필요합니다.', variant: 'caution', position: 'top' },
-    expired_session: { message: '세션이 만료되었습니다. 다시 로그인해주세요.', variant: 'caution', position: 'top' },
-    logout: { message: '로그아웃 되었습니다.', variant: 'action', position: 'top' },
-    leave: { message: '탈퇴가 완료되었습니다.', variant: 'action', position: 'top' },
-};
-
-export function SnackbarTrigger({ reason }: { reason?: keyof typeof reasons }) {
+export function SnackbarTrigger({ reason }: { reason?: keyof typeof REASONS }) {
     const showSnackbar = useSnackbarStore(state => state.showSnackbar);
     const hideSnackbar = useSnackbarStore(state => state.hideSnackbar);
 
@@ -80,7 +73,7 @@ export function SnackbarTrigger({ reason }: { reason?: keyof typeof reasons }) {
         if (reason) {
             showSnackbar({
                 id,
-                ...reasons[reason],
+                ...REASONS[reason],
             });
         }
         return () => {

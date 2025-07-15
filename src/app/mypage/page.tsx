@@ -4,7 +4,7 @@ import MypageBox from '@/components/Mypage/MypageBox';
 import MyStockBox from '@/components/Mypage/MyStockBox';
 import { useSelectedStock } from '@/hooks/useSelectedStock';
 import LogoutButton from '@/app/mypage/LogoutButton';
-import LeaveButton from '@/app/mypage/LeaveButton';
+import LeaveButton from './LeaveButton';
 
 export default function Mypage() {
     const { data: selectedStocks } = useSelectedStock();

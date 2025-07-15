@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import HotPosts from './HotPosts';
-import PostThumbnailSkeleton from '@/components/Skeleton/PostThumbnail';
+import PostThumbnailSkeleton from '@/components/Skeletons/PostThumbnailSkeleton';
 
 export default function HotPostsSection({ id }: { id: string }) {
     const title = '인기 급상승 게시글';

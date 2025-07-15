@@ -1,37 +1,49 @@
 'use client';
 
-import { use, useEffect, useState } from 'react';
+import { use, useEffect, useState, Suspense } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLocation } from 'react-router-dom';
 import UploadImage from '@/components/UploadImage';
-import { useKeyboardOffset } from '@/hooks/useKeyboardOffset';
 import useSnackbarStore from '@/store/useSnackbarStore';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { getPost, updatePost } from '@/api/post.api';
+import { REASON_CODES } from '@/constants/snackbar';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import EditPostSkeleton from '@/components/Skeletons/EditPostSkeleton';
 
 type FieldData = {
     title: string;
     content: string;
 };
 
-const EditPost = ({ params }: { params: Promise<{ stocktype: string }> }) => {
-    const { stocktype } = use(params);
-    const { register, handleSubmit, watch, setValue } = useForm<FieldData>({
+const EditPostContent = ({ postId }: { postId: string }) => {
+    const router = useRouter();
+    const {
+        register,
+        handleSubmit,
+        watch,
+        setValue,
+        formState: { errors },
+    } = useForm<FieldData>({
         defaultValues: {
             title: '',
             content: '',
         },
     });
 
-    // 상태
-    const { state } = useLocation();
+    // Changed to useSuspenseQuery
+    const { data: post } = useSuspenseQuery({
+        queryKey: ['post', postId],
+        queryFn: () => getPost({ postId: Number(postId) }),
+    });
 
     const showSnackbar = useSnackbarStore(state => state.showSnackbar);
-    const bottomOffset = useKeyboardOffset();
 
     const content = watch('content', '');
-    const initialContent = state?.content || '';
+    const initialContent = post?.content || '';
 
     const title = watch('title', '');
-    const initialTitle = state?.title || '';
+    const initialTitle = post?.title || '';
 
     const [postImages] = useState<string[]>([]);
     const [, setFormImg] = useState<FormData | string[]>([]);
@@ -59,20 +71,20 @@ const EditPost = ({ params }: { params: Promise<{ stocktype: string }> }) => {
     }, [content, title, initialContent, initialTitle, showSnackbar]);
 
     useEffect(() => {
-        if (state) {
-            setValue('title', state.title);
-            setValue('content', state.content);
+        if (post) {
+            setValue('title', post.title);
+            setValue('content', post.content);
         }
-    }, [state, setValue]);
+    }, [post, setValue]);
 
     const handleFileUpload = (formData: FormData) => {
         setFormImg(formData);
     };
 
-    const onSubmit = (data: FieldData) => {
-        const formData = { ...data, stocktype };
+    const onSubmit = async (data: FieldData) => {
+        const formData = { ...data, stockId: post?.stock.id };
 
-        if (!title.trim()) {
+        if (errors.title) {
             showSnackbar({
                 message: '제목을 입력해주세요.',
                 variant: 'normal',
@@ -82,7 +94,7 @@ const EditPost = ({ params }: { params: Promise<{ stocktype: string }> }) => {
             return;
         }
 
-        if (content.trim().length == 0) {
+        if (errors.content) {
             showSnackbar({
                 message: '내용을 입력해주세요.',
                 variant: 'normal',
@@ -92,30 +104,18 @@ const EditPost = ({ params }: { params: Promise<{ stocktype: string }> }) => {
             return;
         }
 
-        console.log('게시글수정', formData);
+        const res = await updatePost({ postId: Number(postId), ...formData });
 
-        showSnackbar({
-            message: '게시글이 수정되었습니다.',
-            variant: 'action',
-            position: 'bottom',
-        });
+        if (res.status === 200) {
+            router.push(`/posts/${postId}?reason=${REASON_CODES.POST_UPDATED}`);
+        }
     };
 
     return (
         <div className='px-8 max-w-512 mx-auto'>
-            <div className='flex items-center justify-between gap-[.6rem] mt-4'>
-                <button className='bg-moneed-shade-bg py-[1.2rem] px-[1.6rem] rounded-[.8rem] flex items-center gap-[0.6rem]'>
-                    <span
-                        className={`text-[1.4rem] font-normal ${
-                            stocktype ? 'text-moneed-black' : 'text-moneed-gray-7'
-                        }`}
-                    >
-                        {stocktype || '글을 쓸 커뮤니티 종목을 선택해주세요.'}
-                    </span>
-                    <div className='overflow-hidden aspect-square w-[1.2rem]'>
-                        <img src='/icon/icon-arrow-down.svg' alt='' className='w-full h-full object-cover' />
-                    </div>
-                </button>
+            <div className='flex py-[.8rem] leading-[140%] items-center gap-[.4rem]'>
+                <Image src={post.user.profileImage} alt='profile' width={24} height={24} className='rounded-full' />
+                <span className='text-[1.4rem] font-semibold text-moneed-black'>{post.user.nickname}</span>
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input
@@ -127,15 +127,12 @@ const EditPost = ({ params }: { params: Promise<{ stocktype: string }> }) => {
                 />
                 <textarea
                     {...register('content', { required: '의견을 입력해주세요.' })}
-                    // type="text"
                     placeholder='의견을 입력해주세요'
                     className='w-full h-120 py-[1.6rem] text-[1.6rem] font-normal leading-[140%] placeholder:text-moneed-gray-7 focus:outline-none'
                     maxLength={1000}
                 />
                 <div
-                    className={`fixed left-0 right-0 z-20 h-[5.2rem] px-8 bg-white flex items-center justify-between transition-all duration-300 ${
-                        bottomOffset > 0 ? `bottom-[${bottomOffset}px]` : 'bottom-0'
-                    }`}
+                    className={`fixed left-0 right-0 z-20 h-[5.2rem] px-8 bg-white flex items-center justify-between transition-all duration-300 bottom-0`}
                 >
                     <UploadImage
                         id='blog'
@@ -165,6 +162,16 @@ const EditPost = ({ params }: { params: Promise<{ stocktype: string }> }) => {
                 </div>
             </form>
         </div>
+    );
+};
+
+const EditPost = ({ params }: { params: Promise<{ postId: string }> }) => {
+    const { postId } = use(params);
+
+    return (
+        <Suspense fallback={<EditPostSkeleton />}>
+            <EditPostContent postId={postId} />
+        </Suspense>
     );
 };
 
