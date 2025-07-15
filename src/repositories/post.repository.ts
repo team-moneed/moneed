@@ -391,6 +391,21 @@ export default class PostRepository {
                 comments: {
                     select: {
                         id: true,
+                        content: true,
+                        createdAt: true,
+                        userId: true,
+                        postId: true,
+                        updatedAt: true,
+                        user: {
+                            select: {
+                                id: true,
+                                nickname: true,
+                                profileImage: true,
+                            },
+                        },
+                    },
+                    orderBy: {
+                        createdAt: 'desc',
                     },
                 },
                 stock: {

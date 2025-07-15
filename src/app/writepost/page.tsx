@@ -125,14 +125,14 @@ const WritePost = () => {
         }
 
         const res = await createPost({
-            title,
-            content: JSON.stringify(formData),
+            title: formData.title,
+            content: formData.content,
             stockId: Number(stockId),
         });
 
         if (res.status === 201) {
-            const { stockId, postId } = res.data;
-            router.push(`/posts/${stockId}/${postId}?reason=${REASON_CODES.POST_CREATED}`);
+            const { postId } = res.data;
+            router.push(`/posts/${postId}?reason=${REASON_CODES.POST_CREATED}`);
         }
     };
 

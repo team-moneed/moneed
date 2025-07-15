@@ -14,7 +14,7 @@ model User {
   profileImage   String
   ageRange       String?
   createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  updatedAt      DateTime        @default(now()) @updatedAt
   birthday       String
   birthyear      String
   email          String          @unique
@@ -39,7 +39,7 @@ model Post {
   title          String
   content        String
   createdAt      DateTime    @default(now())
-  updatedAt      DateTime?   @default(now())
+  updatedAt      DateTime?   @default(now()) @updatedAt
   userId         String
   stockId        Int
   thumbnailImage String?
@@ -80,10 +80,10 @@ model Comment {
   postId    Int
   content   String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userId    String?
+  updatedAt DateTime @default(now()) @updatedAt
+  userId    String
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("comments")
 }
@@ -93,11 +93,11 @@ model OAuthAccount {
   connectedAt           DateTime @default(now())
   synchedAt             DateTime @default(now())
   createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  updatedAt             DateTime @default(now()) @updatedAt
   accessToken           String
   refreshToken          String
   id                    String   @id @default(cuid())
-  userId                String
+  userId                String  
   provider              String
   accessTokenExpiresIn  DateTime
   refreshTokenExpiresIn DateTime

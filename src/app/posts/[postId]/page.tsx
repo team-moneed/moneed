@@ -1,37 +1,29 @@
 'use client';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useRef, useState } from 'react';
 import useSnackbarStore from '@/store/useSnackbarStore';
-import ImageCarousel from '@/components/Carousel/ImageCarousel';
 import { useModal } from '@/context/ModalContext';
 import DateFormatter from '@/components/Dateformatter';
 import Icon from '@/components/Icon';
 import { PrimaryDropdown, PrimaryDropdownProps } from '@/components/Dropdown';
 import Comment from '@/components/Community/Comment';
-import { EmblaOptionsType } from 'embla-carousel';
 import { SnackbarTrigger } from '@/components/Snackbar';
+import { deletePost, getPost } from '@/api/post.api';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import PostDetailSkeleton from '@/components/Skeletons/PostDetailSkeleton';
+import { REASON_CODES } from '@/constants/snackbar';
 
-type PostDetailState = {
-    userName: string;
-    content: string;
-    isliked: boolean;
-    postId: number;
-    stocktype: string;
-    postImages: string[];
-    createdAt: string;
-    title: string;
-    likes: number;
-};
-
-export default function PostDetailPage() {
+function PostDetail() {
     const inputRef = useRef<HTMLInputElement>(null);
     const searchParams = useSearchParams();
+    const { postId } = useParams<{ postId: string }>();
     const reason = searchParams.get('reason') ?? undefined;
-    const postImages = searchParams.get('postImages')?.split(',') ?? [];
-    const state = {
-        ...Object.fromEntries(searchParams.entries()),
-        postImages,
-    } as PostDetailState;
+    const { data: post } = useSuspenseQuery({
+        queryKey: ['post', postId],
+        queryFn: () => getPost({ postId: Number(postId) }),
+    });
+
+    const { user, stock, comments, title, content, createdAt, isLiked, likeCount } = post;
     const [newComment, setNewComment] = useState('');
 
     const [isEdit, setIsEdit] = useState(false);
@@ -43,33 +35,6 @@ export default function PostDetailPage() {
     const { confirm } = useModal();
 
     const router = useRouter();
-
-    const OPTIONS: EmblaOptionsType = {
-        slidesToScroll: 1,
-        loop: true,
-        align: 'center',
-        // dragga ble: true,
-        containScroll: 'trimSnaps',
-    };
-
-    //TODO: postId에 해당하는 댓글 가져오기
-    const PostDetail = [
-        {
-            commentId: 1,
-            content: '좋은 정보 감사합니다!',
-            parentId: null,
-            userName: '사용자2',
-            createdAt: '2024-12-10T10:15:00Z',
-        },
-        {
-            commentId: 3,
-            content:
-                '대댓글까지 만들 수 있다니 대단해요.대댓글까지 만들 수 있다니 대단해요.대댓글까지 만들 수 있다니 대단해요.대댓글까지 만들 수 있다니 대단해요.',
-            parentId: null,
-            userName: '사용자4',
-            createdAt: '2024-12-10T10:25:00Z',
-        },
-    ];
 
     //댓글 추가/수정 창
     const handleWriteComment = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,12 +101,9 @@ export default function PostDetailPage() {
     };
 
     //게시글 삭제 api 연동
-    const handledeletePost = (e: React.MouseEvent<HTMLButtonElement>) => {
-        showSnackbar({
-            message: '게시글이 삭제되었습니다.',
-            variant: 'action',
-            position: 'bottom',
-        });
+    const handledeletePost = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        await deletePost({ postId: Number(postId) });
+        router.push(`/community/${stock.id}?reason=${REASON_CODES.POST_DELETED}`);
         e.stopPropagation();
     };
 
@@ -156,7 +118,7 @@ export default function PostDetailPage() {
 
     const onEditPost = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        router.push(`/editpost/${state.postId}`);
+        router.push(`/editpost/${postId}`);
     };
 
     const onEditComment = (content: string) => {
@@ -180,7 +142,7 @@ export default function PostDetailPage() {
         <>
             <div className='px-8 max-w-512 mx-auto'>
                 <div className='hidden lg:block font-semibold leading-[140%] text-[1.6rem] ml-[.4rem] text-moneed-gray-9 mb-4'>
-                    {state.stocktype}커뮤니티
+                    {stock.name}커뮤니티
                 </div>
                 <div className='lg:flex gap-12'>
                     <div className='lg:w-[60%] lg:border lg:border-moneed-gray-4 rounded-[1.2rem] lg:p-8'>
@@ -191,10 +153,10 @@ export default function PostDetailPage() {
                                         <img src='/temp/sample3.png' alt='' className='w-full h-full object-cover' />
                                     </div>
                                     <span className='text-[1.4rem] font-normal leading-[140%] text-moneed-black'>
-                                        {state.userName}
+                                        {user.nickname}
                                     </span>
                                     <i className='w-[.2rem] h-[.2rem] rounded-full bg-moneed-gray-5'></i>
-                                    <DateFormatter createdAt={new Date(state.createdAt)} />
+                                    <DateFormatter createdAt={new Date(createdAt)} />
                                 </div>
                                 <div className='relative ml-auto shrink-0 z-2'>
                                     <div
@@ -209,26 +171,25 @@ export default function PostDetailPage() {
                                 </div>
                             </div>
                             <p className='mt-[2.4rem] text-[1.6rem] font-semibold leading-[140%] text-moneed-black'>
-                                {state.title}
+                                {title}
                             </p>
                             <p className='mt-[2.4rem] mb-[.8rem] text-[1.6rem] font-normal leading-[145%] text-moneed-gray-9'>
-                                {state.content}
+                                {content}
                             </p>
-                            {state.postImages.length > 0 && (
-                                <div className='mt-[2.4rem]'>
-                                    <ImageCarousel slides={state.postImages} options={OPTIONS} />
-                                </div>
-                            )}
                         </div>
                         <div className='flex pb-[1.6rem] pt-[.4rem]'>
-                            {state.isliked ? (
-                                <Icon iconUrl='/heartIcon.svg' width={18} height={18}></Icon>
-                            ) : (
+                            {isLiked ? (
                                 <Icon iconUrl='/redHeartIcon.svg' width={18} height={18}></Icon>
+                            ) : (
+                                <Icon iconUrl='/heartIcon.svg' width={18} height={18}></Icon>
                             )}
-                            <span className='mr-4 text-[1.4rem] font-normal leading-[140%] text-moneed-gray-8'>6</span>
+                            <span className='mr-4 text-[1.4rem] font-normal leading-[140%] text-moneed-gray-8'>
+                                {likeCount}
+                            </span>
                             <Icon iconUrl='/commentIcon.svg' width={20} height={20} />
-                            <span className='mr-4 text-[1.4rem] font-normal leading-[140%] text-moneed-gray-8'>8 </span>
+                            <span className='mr-4 text-[1.4rem] font-normal leading-[140%] text-moneed-gray-8'>
+                                {comments.length}
+                            </span>
                             <Icon iconUrl='/sharingIcon.svg' width={20} height={20} />
                         </div>
                     </div>
@@ -238,20 +199,26 @@ export default function PostDetailPage() {
                             <div className='text-[1.8rem] font-semibold leading-[140%] text-moneed-black'>8</div>
                         </div>
                         <div className='order-2 lg:order-3 flex flex-col gap-[3.6rem]'>
-                            {PostDetail.length == 0 ? (
+                            {comments.length == 0 ? (
                                 <div>
                                     <div className='flex justify-center items-center mt-8'>
                                         <img src='/cta-2.svg' alt='' className='w-116' />
                                     </div>
                                 </div>
                             ) : (
-                                PostDetail.map(item => (
+                                comments.map(comment => (
                                     <Comment
-                                        key={item.commentId}
-                                        userName={item.userName}
-                                        content={item.content}
-                                        createdAt={item.createdAt}
-                                        onEditComment={() => onEditComment(item.content)}
+                                        key={comment.id}
+                                        userName={comment.user.nickname}
+                                        content={comment.content}
+                                        createdAt={comment.createdAt.toLocaleString('ko-KR', {
+                                            year: 'numeric',
+                                            month: '2-digit',
+                                            day: '2-digit',
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                        })}
+                                        onEditComment={() => onEditComment(comment.content)}
                                     ></Comment>
                                 ))
                             )}
@@ -279,3 +246,13 @@ export default function PostDetailPage() {
         </>
     );
 }
+
+function PostDetailWithSuspense() {
+    return (
+        <Suspense fallback={<PostDetailSkeleton />}>
+            <PostDetail />
+        </Suspense>
+    );
+}
+
+export default PostDetailWithSuspense;

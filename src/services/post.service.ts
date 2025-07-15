@@ -1,5 +1,5 @@
 import PostRepository from '@/repositories/post.repository';
-import { CreatePostRequest, HotPostThumbnail, PostThumbnail, TopPostThumbnail } from '@/types/post';
+import { CreatePostRequest, HotPostThumbnail, PostDetail, PostThumbnail, TopPostThumbnail } from '@/types/post';
 
 export default class PostService {
     private readonly postRepository = new PostRepository();
@@ -67,17 +67,17 @@ export default class PostService {
         return postThumbnailList;
     }
 
-    async getPost({ userId, postId }: { userId?: string; postId: number }): Promise<PostThumbnail> {
+    async getPost({ userId, postId }: { userId?: string; postId: number }): Promise<PostDetail> {
         const post = await this.postRepository.getPost({ postId });
         if (!post) {
             throw new Error('Post not found');
         }
         return {
             ...post,
-            createdAt: post.createdAt.toISOString(),
+            createdAt: post.createdAt,
             isLiked: post.postLikes.some(like => like.userId === userId),
             likeCount: post.postLikes.length,
-            commentCount: post.comments.length,
+            comments: post.comments,
             thumbnailImage: post.thumbnailImage ?? undefined,
             user: {
                 id: post.user.id,

@@ -7,6 +7,7 @@ import {
     CreatePostResponse,
     DeletePostResponse,
     UpdatePostResponse,
+    PostDetail,
 } from '@/types/post';
 import { http } from './client';
 
@@ -39,7 +40,7 @@ export const getHotPosts = async ({ limit = 15, cursor = 0 }: { limit?: number; 
 };
 
 export const getPost = async ({ postId }: { postId: number }) => {
-    const res = await http.get<PostThumbnail>(`/api/posts/${postId}`);
+    const res = await http.get<PostDetail>(`/api/posts/${postId}`);
     return res.data;
 };
 
