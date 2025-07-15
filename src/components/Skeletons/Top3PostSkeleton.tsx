@@ -1,4 +1,4 @@
-export default function Top3PostSkeleton() {
+export function Top3PostSkeleton() {
     return (
         <div className='flex flex-col justify-between relative border border-solid border-moneed-gray-5 rounded-[1.8rem] mb-[1.6rem] cursor-pointer py-[2.4rem] px-[3.2rem]'>
             <div className='mb-[1.2rem] sm:mb-[1.6rem]'>
@@ -13,6 +13,16 @@ export default function Top3PostSkeleton() {
                     <div className='w-[10rem] h-[1.6rem] bg-gray-200 rounded-md animate-pulse'></div>
                 </div>
             </div>
+        </div>
+    );
+}
+
+export function Top3PostsSkeleton({ count }: { count: number }) {
+    return (
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-[.6rem] gap-x-[1.6rem] mt-4 md:gap-y-[1.2rem]'>
+            {Array.from({ length: count }).map((_, index) => (
+                <Top3PostSkeleton key={index} />
+            ))}
         </div>
     );
 }

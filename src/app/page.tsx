@@ -36,7 +36,13 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ r
                     <div className='flex items-center gap-[.8rem] mb-[1.8rem]'>
                         <h2 className='text-moneed-black sm:text-2xl sm:leading-[140%]'>TOP 3 종목 게시판</h2>
                         <span className='text-moneed-gray-6 text-[1.2rem] font-normal leading-[135%]'>
-                            12월 21일 9시 기준
+                            {new Date().toLocaleDateString('ko-KR', {
+                                month: 'long',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                hourCycle: 'h23',
+                            })}{' '}
+                            기준
                         </span>
                     </div>
                     <Top3 />

@@ -1,8 +1,5 @@
 import { ChipButton } from '@/components/Chip';
-import StockRankButtonSkeleton from '@/components/Skeletons/StockRankButtonSkeleton';
 import { BoardRankResponse } from '@/types/board';
-import { Suspense } from 'react';
-
 const rankMedal = (index: number) => {
     if (index === 0) return '🥇';
     if (index === 1) return '🥈';
@@ -10,7 +7,7 @@ const rankMedal = (index: number) => {
     return '';
 };
 
-function StockRankButtons({
+export default function StockRankButtons({
     stockList,
     selectedStock,
     setSelectedStock,
@@ -32,29 +29,5 @@ function StockRankButtons({
                 );
             })}
         </div>
-    );
-}
-
-export default function StockRankButtonsWithSuspense({
-    stockList,
-    selectedStock,
-    setSelectedStock,
-}: {
-    stockList: BoardRankResponse[];
-    selectedStock: BoardRankResponse | undefined;
-    setSelectedStock: (stock: BoardRankResponse) => void;
-}) {
-    return (
-        <Suspense
-            fallback={
-                <div className='flex gap-4'>
-                    {Array.from({ length: 3 }).map((_, index) => (
-                        <StockRankButtonSkeleton key={index} />
-                    ))}
-                </div>
-            }
-        >
-            <StockRankButtons stockList={stockList} selectedStock={selectedStock} setSelectedStock={setSelectedStock} />
-        </Suspense>
     );
 }

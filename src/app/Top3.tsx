@@ -1,15 +1,16 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import Button from '@/components/Button';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getBoardRank } from '@/api/board.api';
 import { BoardRankResponse } from '@/types/board';
-import Top3PostsWithSuspense from './Top3Posts';
-import StockRankButtonsWithSuspense from './StockRankButtons';
+import MoveToCommunityButton from './MoveToCommunitButton';
+import { StockRankButtonsSkeleton } from '@/components/Skeletons/StockRankButtonSkeleton';
+import StockRankButtons from './StockRankButtons';
+import { Top3PostsSkeleton } from '@/components/Skeletons/Top3PostSkeleton';
+import Top3Posts from './Top3Posts';
 
-// TODO: 1시간마다 업데이트 해야함
+// TODO: 1시간마다 서버에서 업데이트 해야함
 const Top3 = () => {
     const anHour = 1000 * 60 * 60;
     const { data: stockList } = useSuspenseQuery({
@@ -26,41 +27,36 @@ const Top3 = () => {
         }
     }, [stockList]);
 
+    if (stockList.length === 0 || !stockList) {
+        return <div className='text-4xl text-center text-moneed-gray-8'>게시글이 존재하지 않습니다</div>;
+    }
+
     return (
         <>
-            <StockRankButtonsWithSuspense
+            <StockRankButtons
                 stockList={stockList ?? []}
                 selectedStock={selectedStock}
                 setSelectedStock={setSelectedStock}
             />
-            <Top3PostsWithSuspense selectedStock={selectedStock} />
+            <Top3Posts selectedStock={selectedStock} />
             <MoveToCommunityButton selectedStock={selectedStock} />
         </>
     );
 };
 
-function MoveToCommunityButton({ selectedStock }: { selectedStock: BoardRankResponse }) {
-    const router = useRouter();
-    const movecommunity = (stockId: number) => {
-        router.push(`/community/${stockId}`);
-    };
+const Top3WithSuspense = () => {
     return (
-        <div>
-            <div className='flex justify-center mt-[1.8rem] sm:justify-start sm:mt-[2.6rem]'>
-                <Button
-                    theme='ghost'
-                    textcolor='primary'
-                    onClick={() => movecommunity(selectedStock.stockId!)}
-                    className='flex items-center gap-[.8rem] py-0 sm:pl-0'
-                >
-                    <span className='text-[1.4rem] text-moneed-gray-8 font-semibold leading-[135%]'>
-                        {selectedStock.stockName} 게시판 더보기
-                    </span>
-                    <img src='/icon/icon-arrow-right.svg' alt='게시판 더보기' />
-                </Button>
-            </div>
-        </div>
+        <Suspense
+            fallback={
+                <>
+                    <StockRankButtonsSkeleton count={3} />
+                    <Top3PostsSkeleton count={3} />
+                </>
+            }
+        >
+            <Top3 />
+        </Suspense>
     );
-}
+};
 
-export default Top3;
+export default Top3WithSuspense;

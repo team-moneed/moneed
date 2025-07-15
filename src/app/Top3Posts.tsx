@@ -5,10 +5,8 @@ import { getTopBoardPosts } from '@/api/post.api';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { BoardRankResponse } from '@/types/board';
 import { useRouter } from 'next/navigation';
-import { Suspense } from 'react';
-import Top3PostSkeleton from '@/components/Skeletons/Top3PostSkeleton';
 
-function Top3Posts({ selectedStock }: { selectedStock: BoardRankResponse }) {
+export default function Top3Posts({ selectedStock }: { selectedStock: BoardRankResponse }) {
     const router = useRouter();
     const anHour = 1000 * 60 * 60;
 
@@ -36,21 +34,5 @@ function Top3Posts({ selectedStock }: { selectedStock: BoardRankResponse }) {
                 </PostThumbnailCard>
             ))}
         </div>
-    );
-}
-
-export default function Top3PostsWithSuspense({ selectedStock }: { selectedStock: BoardRankResponse }) {
-    return (
-        <Suspense
-            fallback={
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-[.6rem] gap-x-[1.6rem] mt-4 md:gap-y-[1.2rem]'>
-                    {Array.from({ length: 3 }).map((_, index) => (
-                        <Top3PostSkeleton key={index} />
-                    ))}
-                </div>
-            }
-        >
-            <Top3Posts selectedStock={selectedStock} />
-        </Suspense>
     );
 }
