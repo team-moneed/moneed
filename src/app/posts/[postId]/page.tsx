@@ -83,7 +83,7 @@ function PostDetail() {
     };
 
     //게시글 삭제할건지 묻는 모달
-    const openpostDeletemodal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const openPostDeletemodal = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         const result = confirm(
             <span>
@@ -94,14 +94,14 @@ function PostDetail() {
         );
         result.then(confirmed => {
             if (confirmed) {
-                handledeletePost(e);
+                handleDeletePost(e);
             }
         });
         setIsdropdownOpen(prev => !prev);
     };
 
     //게시글 삭제 api 연동
-    const handledeletePost = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleDeletePost = async (e: React.MouseEvent<HTMLButtonElement>) => {
         await deletePost({ postId: Number(postId) });
         router.push(`/community/${stock.id}?reason=${REASON_CODES.POST_DELETED}`);
         e.stopPropagation();
@@ -134,7 +134,7 @@ function PostDetail() {
         {
             icon: '/icon/icon-trashcan.svg',
             text: '게시글 삭제',
-            onClick: openpostDeletemodal,
+            onClick: openPostDeletemodal,
         },
     ];
 
