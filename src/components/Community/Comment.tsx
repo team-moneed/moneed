@@ -4,15 +4,16 @@ import { useState } from 'react';
 import { PrimaryDropdown, PrimaryDropdownProps } from '@/components/Dropdown';
 import { useModal } from '@/context/ModalContext';
 import useSnackbarStore from '@/store/useSnackbarStore';
+import Image from 'next/image';
+import { Comment as TComment } from '@/types/post';
 
 type CommentType = {
-    userName: string;
-    content: string;
-    createdAt: string;
+    comment: TComment;
     onEditComment: (e?: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const Comment = ({ userName, content, createdAt, onEditComment }: CommentType) => {
+const Comment = ({ comment, onEditComment }: CommentType) => {
+    const { content, createdAt, user } = comment;
     const [isDropdownOpen, setIsdropdownOpen] = useState(false);
 
     const showSnackbar = useSnackbarStore(state => state.showSnackbar);
@@ -73,14 +74,24 @@ const Comment = ({ userName, content, createdAt, onEditComment }: CommentType) =
     return (
         <>
             <div className='relative flex items-start gap-[.6rem] w-full'>
-                <i className='absolute block w-[.1rem] top-0 bottom-0 left-[1.6rem] bg-moneed-gray-5'></i>
-                <div className='relative rounded-full overflow-hidden aspect-square w-[3.2rem] shrink-0'>
-                    <img src='/temp/sample3.png' alt='' className='w-full h-full object-cover' />
-                </div>
+                <i className='absolute block w-[.1rem] top-0 bottom-0 left-[1.2rem] lg:left-[1.6rem] bg-moneed-gray-5'></i>
+                <Image
+                    src={user.profileImage}
+                    alt='profile'
+                    className='relative rounded-full size-[2.4rem] lg:size-[3.2rem] shrink-0'
+                    width={32}
+                    height={32}
+                />
                 <div className='flex-1'>
-                    <span className='text-[1.4rem] font-bold leading-[140%] text-moneed-black'>{userName}</span>
+                    <span className='text-[1.4rem] font-bold leading-[140%] text-moneed-black'>{user.nickname}</span>
                     <i className='w-[.2rem] h-[.2rem] mx-[.8rem] mb-[.2rem] rounded-full bg-moneed-gray-5 inline-block '></i>
-                    <span className='text-[1.4rem] font-normal leading-[142%] text-moneed-gray-7'>{createdAt}</span>
+                    <span className='text-[1.4rem] font-normal leading-[142%] text-moneed-gray-7'>
+                        {new Date(createdAt).toLocaleString('ko-KR', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                        })}
+                    </span>
                     <div className='text-[1.4rem] font-normal leading-[140%]'>{content}</div>
                 </div>
                 <div className='relative'>
@@ -88,7 +99,7 @@ const Comment = ({ userName, content, createdAt, onEditComment }: CommentType) =
                         className='relative cursor-pointer rounded-full overflow-hidden aspect-square w-[2.4rem] shrink-0 ml-auto'
                         onClick={handleOpendropdown}
                     >
-                        <img src='/icon/icon-more.svg' alt='' className='w-full h-full object-cover' />
+                        <img src='/icon/icon-more.svg' alt='more' className='w-full h-full object-cover' />
                     </div>
                     {isDropdownOpen && <PrimaryDropdown dropdownMenus={dropdownMenus} closeDropdown={closeDropdown} />}
                 </div>

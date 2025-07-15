@@ -160,12 +160,12 @@ function PostDetail() {
                                         height={32}
                                     />
                                     <div className='flex items-center gap-[.4rem]'>
-                                    <span className='text-[1.4rem] font-normal leading-[140%] text-moneed-black'>
-                                        {user.nickname}
-                                    </span>
+                                        <span className='text-[1.4rem] font-normal leading-[140%] text-moneed-black'>
+                                            {user.nickname}
+                                        </span>
                                         <i className='size-[.4rem] rounded-full bg-moneed-gray-5'></i>
-                                    <DateFormatter createdAt={new Date(createdAt)} />
-                                </div>
+                                        <DateFormatter createdAt={new Date(createdAt)} />
+                                    </div>
                                 </div>
                                 <div className='relative ml-auto shrink-0 z-2'>
                                     <div
@@ -214,15 +214,7 @@ function PostDetail() {
                                 comments.map(comment => (
                                     <Comment
                                         key={comment.id}
-                                        userName={comment.user.nickname}
-                                        content={comment.content}
-                                        createdAt={comment.createdAt.toLocaleString('ko-KR', {
-                                            year: 'numeric',
-                                            month: '2-digit',
-                                            day: '2-digit',
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                        })}
+                                        comment={comment}
                                         onEditComment={() => onEditComment(comment.content)}
                                     ></Comment>
                                 ))
