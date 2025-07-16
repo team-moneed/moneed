@@ -15,7 +15,7 @@
         "prismaGenerate": "prisma generate"
     },
     "prisma": {
-        "seed": "tsx prisma/seed.ts"
+        "seed": "tsx prisma/post.seed.ts"
     },
     "lint-staged": {
         "*.{js,jsx,ts,tsx}": []
