@@ -7,6 +7,9 @@ import useSnackbarStore from '@/store/useSnackbarStore';
 import Image from 'next/image';
 import { Comment as TComment } from '@/types/post';
 import DateFormatter from '../Dateformatter';
+import { useMutation } from '@tanstack/react-query';
+import { deleteComment } from '@/api/comment.api';
+import { queryClient } from '../QueryClientProvider';
 
 type CommentType = {
     comment: TComment;
@@ -19,6 +22,12 @@ const Comment = ({ comment, onEditComment }: CommentType) => {
 
     const showSnackbar = useSnackbarStore(state => state.showSnackbar);
     const { confirm } = useModal();
+    const { mutate: deleteCommentMutation } = useMutation({
+        mutationFn: deleteComment,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['post', Number(comment.postId)] });
+        },
+    });
 
     //댓글 수정/삭제 드롭다운
     const handleOpendropdown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -47,6 +56,7 @@ const Comment = ({ comment, onEditComment }: CommentType) => {
     //댓글 삭제 api 연동
     const handledeleteComment = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
+        deleteCommentMutation({ commentId: comment.id });
         showSnackbar({
             message: '댓글이 삭제되었습니다.',
             variant: 'action',

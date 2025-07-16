@@ -4,3 +4,8 @@ export const createComment = async ({ postId, content }: { postId: number; conte
     const response = await http.post('/api/comments', { postId, content });
     return response.data;
 };
+
+export const deleteComment = async ({ commentId }: { commentId: number }) => {
+    const response = await http.delete(`/api/comments/${commentId}`);
+    return response.data;
+};

@@ -8,4 +8,10 @@ export default class CommentRepository {
             data: { postId, content, userId },
         });
     }
+
+    async deleteComment({ commentId, userId }: { commentId: number; userId: string }) {
+        return this.prisma.comment.delete({
+            where: { id: commentId, userId },
+        });
+    }
 }
