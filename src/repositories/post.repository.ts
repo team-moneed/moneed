@@ -405,7 +405,7 @@ export default class PostRepository {
                         },
                     },
                     orderBy: {
-                        createdAt: 'desc',
+                        createdAt: 'asc',
                     },
                 },
                 stock: {
