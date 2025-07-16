@@ -5,7 +5,7 @@ import useSnackbarStore from '@/store/useSnackbarStore';
 import { useModal } from '@/context/ModalContext';
 import DateFormatter from '@/components/Dateformatter';
 import { PrimaryDropdown, PrimaryDropdownProps } from '@/components/Dropdown';
-import Comment from '@/components/Community/Comment';
+import Comment from '@/components/Comment/Comment';
 import { SnackbarTrigger } from '@/components/Snackbar';
 import { deletePost, getPost } from '@/api/post.api';
 import { useSuspenseQuery } from '@tanstack/react-query';
