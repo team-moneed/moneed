@@ -26,6 +26,7 @@ function PostDetail() {
     });
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
+    const [editCommentId, setEditCommentId] = useState<number | null>(null);
     const [editContent, setEditContent] = useState('');
 
     const { user, stock, comments, title, content, createdAt, isLiked, likeCount } = post;
@@ -71,15 +72,6 @@ function PostDetail() {
     const onEditPost = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         router.push(`/editpost/${postId}`);
-    };
-
-    const handleEditComment = (content: string) => {
-        setIsEdit(true);
-        setEditContent(content);
-    };
-
-    const onEditComment = (content: string) => {
-        handleEditComment(content);
     };
 
     const dropdownMenus: PrimaryDropdownProps['dropdownMenus'] = [
@@ -169,7 +161,9 @@ function PostDetail() {
                                     <Comment
                                         key={comment.id}
                                         comment={comment}
-                                        onEditComment={() => onEditComment(comment.content)}
+                                        setEditContent={setEditContent}
+                                        setIsEdit={setIsEdit}
+                                        setEditCommentId={setEditCommentId}
                                     ></Comment>
                                 ))
                             )}
@@ -182,6 +176,7 @@ function PostDetail() {
                                 editContent={editContent}
                                 setEditContent={setEditContent}
                                 postId={Number(postId)}
+                                editCommentId={editCommentId}
                             />
                         </div>
                     </div>

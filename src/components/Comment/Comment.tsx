@@ -13,10 +13,12 @@ import { queryClient } from '../QueryClientProvider';
 
 type CommentType = {
     comment: TComment;
-    onEditComment: (e?: React.MouseEvent<HTMLButtonElement>) => void;
+    setEditContent: (content: string) => void;
+    setIsEdit: (isEdit: boolean) => void;
+    setEditCommentId: (commentId: number) => void;
 };
 
-const Comment = ({ comment, onEditComment }: CommentType) => {
+const Comment = ({ comment, setEditContent, setIsEdit, setEditCommentId }: CommentType) => {
     const { content, createdAt, user } = comment;
     const [isDropdownOpen, setIsdropdownOpen] = useState(false);
 
@@ -24,19 +26,33 @@ const Comment = ({ comment, onEditComment }: CommentType) => {
     const { confirm } = useModal();
     const { mutate: deleteCommentMutation } = useMutation({
         mutationFn: deleteComment,
-        onSuccess: () => {
+        onSuccess: data => {
             queryClient.invalidateQueries({ queryKey: ['post', Number(comment.postId)] });
+            showSnackbar({
+                message: data.message,
+                variant: 'action',
+                position: 'bottom',
+                icon: '',
+            });
         },
     });
 
+    const handleEditComment = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        setIsEdit(true);
+        setEditContent(comment.content);
+        setEditCommentId(comment.id);
+        setIsdropdownOpen(prev => !prev);
+    };
+
     //댓글 수정/삭제 드롭다운
-    const handleOpendropdown = (e: React.MouseEvent<HTMLDivElement>) => {
+    const handleOpenDropdown = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         setIsdropdownOpen(prev => !prev);
     };
 
     //댓글 삭제할건지 묻는 모달
-    const opencommentDeletemodal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const openCommentDeletemodal = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         const result = confirm(
             <span>
@@ -47,14 +63,14 @@ const Comment = ({ comment, onEditComment }: CommentType) => {
         );
         result.then(confirmed => {
             if (confirmed) {
-                handledeleteComment(e);
+                handleDeleteComment(e);
             }
         });
         setIsdropdownOpen(prev => !prev);
     };
 
     //댓글 삭제 api 연동
-    const handledeleteComment = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleDeleteComment = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         deleteCommentMutation({ commentId: comment.id });
         showSnackbar({
@@ -73,12 +89,12 @@ const Comment = ({ comment, onEditComment }: CommentType) => {
         {
             icon: '/icon/icon-scissors.svg',
             text: '댓글 수정',
-            onClick: onEditComment,
+            onClick: handleEditComment,
         },
         {
             icon: '/icon/icon-trashcan.svg',
             text: '댓글 삭제',
-            onClick: opencommentDeletemodal,
+            onClick: openCommentDeletemodal,
         },
     ];
 
@@ -104,7 +120,7 @@ const Comment = ({ comment, onEditComment }: CommentType) => {
                 <div className='relative'>
                     <div
                         className='relative cursor-pointer rounded-full overflow-hidden aspect-square w-[2.4rem] shrink-0 ml-auto'
-                        onClick={handleOpendropdown}
+                        onClick={handleOpenDropdown}
                     >
                         <img src='/icon/icon-more.svg' alt='more' className='w-full h-full object-cover' />
                     </div>

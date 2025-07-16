@@ -10,4 +10,8 @@ export default class CommentService {
     async deleteComment({ commentId, userId }: { commentId: number; userId: string }) {
         return this.commentRepository.deleteComment({ commentId, userId });
     }
+
+    async updateComment({ commentId, content }: { commentId: number; content: string }) {
+        return this.commentRepository.updateComment({ commentId, content });
+    }
 }

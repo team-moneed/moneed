@@ -14,3 +14,17 @@ export async function DELETE(_: NextRequest, { params }: { params: Promise<{ com
 
     return NextResponse.json({ message: 'Comment deleted successfully' }, { status: 200 });
 }
+
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ commentId: string }> }) {
+    const { commentId } = await params;
+    const { content } = (await req.json()) as { content: string };
+    const session = await getSession();
+    if (!session) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const commentService = new CommentService();
+    await commentService.updateComment({ commentId: Number(commentId), content });
+
+    return NextResponse.json({ message: 'Comment updated successfully' }, { status: 200 });
+}

@@ -9,3 +9,8 @@ export const deleteComment = async ({ commentId }: { commentId: number }) => {
     const response = await http.delete(`/api/comments/${commentId}`);
     return response.data;
 };
+
+export const updateComment = async ({ commentId, content }: { commentId: number; content: string }) => {
+    const response = await http.put(`/api/comments/${commentId}`, { content });
+    return response.data;
+};

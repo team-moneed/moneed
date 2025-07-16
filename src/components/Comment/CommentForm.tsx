@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import useSnackbarStore from '@/store/useSnackbarStore';
-import { createComment } from '@/api/comment.api';
+import { createComment, updateComment } from '@/api/comment.api';
 import { queryClient } from '@/components/QueryClientProvider';
 import { useMutation } from '@tanstack/react-query';
 
@@ -10,15 +10,36 @@ type CommentFormProps = {
     editContent: string;
     setEditContent: (editContent: string) => void;
     postId: number;
+    editCommentId: number | null;
 };
 
-export default function CommentForm({ isEdit, setIsEdit, editContent, setEditContent, postId }: CommentFormProps) {
+export default function CommentForm({
+    isEdit,
+    setIsEdit,
+    editContent,
+    setEditContent,
+    postId,
+    editCommentId,
+}: CommentFormProps) {
     const inputRef = useRef<HTMLInputElement>(null);
     const [newComment, setNewComment] = useState('');
     const { mutate: createCommentMutation } = useMutation({
         mutationFn: createComment,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['post', postId] });
+        },
+    });
+
+    const { mutate: updateCommentMutation } = useMutation({
+        mutationFn: updateComment,
+        onSuccess: data => {
+            showSnackbar({
+                message: data.message,
+                variant: 'action',
+                position: 'bottom',
+                icon: '',
+            });
+            queryClient.invalidateQueries({ queryKey: ['post', Number(postId)] });
         },
     });
 
@@ -45,8 +66,8 @@ export default function CommentForm({ isEdit, setIsEdit, editContent, setEditCon
     //댓글 수정/삭제 후  제출
     const handleSubmitComment = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (isEdit) {
-            console.log(editContent, '댓글 수정!');
+        if (isEdit && editCommentId) {
+            updateCommentMutation({ commentId: editCommentId, content: editContent });
             showSnackbar({
                 message: '댓글이 수정되었습니다.',
                 variant: 'action',

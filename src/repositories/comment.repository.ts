@@ -14,4 +14,11 @@ export default class CommentRepository {
             where: { id: commentId, userId },
         });
     }
+
+    async updateComment({ commentId, content }: { commentId: number; content: string }) {
+        return this.prisma.comment.update({
+            where: { id: commentId },
+            data: { content },
+        });
+    }
 }
