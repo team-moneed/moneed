@@ -25,8 +25,15 @@ export default function CommentForm({
     const [newComment, setNewComment] = useState('');
     const { mutate: createCommentMutation } = useMutation({
         mutationFn: createComment,
-        onSuccess: () => {
+        onSuccess: data => {
+            showSnackbar({
+                message: data.message,
+                variant: 'action',
+                position: 'bottom',
+                icon: '',
+            });
             queryClient.invalidateQueries({ queryKey: ['post', postId] });
+            setNewComment('');
         },
     });
 
@@ -40,6 +47,8 @@ export default function CommentForm({
                 icon: '',
             });
             queryClient.invalidateQueries({ queryKey: ['post', Number(postId)] });
+            setEditContent('');
+            setIsEdit(false);
         },
     });
 
@@ -68,21 +77,8 @@ export default function CommentForm({
         e.preventDefault();
         if (isEdit && editCommentId) {
             updateCommentMutation({ commentId: editCommentId, content: editContent });
-            showSnackbar({
-                message: '댓글이 수정되었습니다.',
-                variant: 'action',
-                position: 'bottom',
-            });
-            setEditContent('');
-            setIsEdit(false);
         } else {
             createCommentMutation({ postId, content: newComment });
-            showSnackbar({
-                message: '댓글이 작성되었습니다.',
-                variant: 'action',
-                position: 'bottom',
-            });
-            setNewComment('');
         }
     };
     return (

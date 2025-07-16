@@ -73,12 +73,6 @@ const Comment = ({ comment, setEditContent, setIsEdit, setEditCommentId }: Comme
     const handleDeleteComment = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         deleteCommentMutation({ commentId: comment.id });
-        showSnackbar({
-            message: '댓글이 삭제되었습니다.',
-            variant: 'action',
-            position: 'bottom',
-            icon: '',
-        });
     };
 
     const closeDropdown = () => {

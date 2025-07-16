@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     }
 
     const commentService = new CommentService();
-    const comment = await commentService.createComment({ postId, content, userId: session.userId });
+    await commentService.createComment({ postId, content, userId: session.userId });
 
-    return NextResponse.json(comment, { status: 201 });
+    return NextResponse.json({ message: '댓글이 작성되었습니다.' }, { status: 201 });
 }

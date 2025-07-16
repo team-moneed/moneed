@@ -12,7 +12,7 @@ export async function DELETE(_: NextRequest, { params }: { params: Promise<{ com
     const commentService = new CommentService();
     await commentService.deleteComment({ commentId: Number(commentId), userId: session.userId });
 
-    return NextResponse.json({ message: 'Comment deleted successfully' }, { status: 200 });
+    return NextResponse.json({ message: '댓글이 삭제되었습니다.' }, { status: 200 });
 }
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ commentId: string }> }) {
@@ -26,5 +26,5 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ comm
     const commentService = new CommentService();
     await commentService.updateComment({ commentId: Number(commentId), content });
 
-    return NextResponse.json({ message: 'Comment updated successfully' }, { status: 200 });
+    return NextResponse.json({ message: '댓글이 수정되었습니다.' }, { status: 200 });
 }
