@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PrimaryDropdown, PrimaryDropdownProps } from '@/components/Dropdown';
 import { useModal } from '@/context/ModalContext';
 import useSnackbarStore from '@/store/useSnackbarStore';
@@ -10,6 +10,10 @@ import DateFormatter from '../Dateformatter';
 import { useMutation } from '@tanstack/react-query';
 import { deleteComment } from '@/api/comment.api';
 import { queryClient } from '../QueryClientProvider';
+import { getCookie } from '@/util/cookie';
+import { TOKEN_KEY } from '@/constants/token';
+import { decodeJwt } from 'jose';
+import { TokenPayload } from '@/types/auth';
 
 type CommentType = {
     comment: TComment;
@@ -20,6 +24,9 @@ type CommentType = {
 
 const Comment = ({ comment, setEditContent, setIsEdit, setEditCommentId }: CommentType) => {
     const { content, createdAt, user, updatedAt, postId, id } = comment;
+    const [decodedToken, setDecodedToken] = useState<TokenPayload | null>(null);
+    const isMyComment = decodedToken?.userId === user.id;
+
     const [isDropdownOpen, setIsdropdownOpen] = useState(false);
     const isEdited = updatedAt !== createdAt;
 
@@ -93,6 +100,13 @@ const Comment = ({ comment, setEditContent, setIsEdit, setEditCommentId }: Comme
         },
     ];
 
+    useEffect(() => {
+        const accessToken = getCookie(TOKEN_KEY.ACCESS_TOKEN);
+        if (accessToken) {
+            setDecodedToken(decodeJwt<TokenPayload>(accessToken));
+        }
+    }, []);
+
     return (
         <>
             <div className='relative flex items-start gap-[.6rem] w-full'>
@@ -113,15 +127,19 @@ const Comment = ({ comment, setEditContent, setIsEdit, setEditCommentId }: Comme
                     </span>
                     <div className='text-[1.4rem] font-normal leading-[140%]'>{content}</div>
                 </div>
-                <div className='relative'>
-                    <div
-                        className='relative cursor-pointer rounded-full overflow-hidden aspect-square w-[2.4rem] shrink-0 ml-auto'
-                        onClick={handleOpenDropdown}
-                    >
-                        <img src='/icon/icon-more.svg' alt='more' className='w-full h-full object-cover' />
+                {isMyComment && (
+                    <div className='relative'>
+                        <div
+                            className='relative cursor-pointer rounded-full overflow-hidden aspect-square w-[2.4rem] shrink-0 ml-auto'
+                            onClick={handleOpenDropdown}
+                        >
+                            <img src='/icon/icon-more.svg' alt='more' className='w-full h-full object-cover' />
+                        </div>
+                        {isDropdownOpen && (
+                            <PrimaryDropdown dropdownMenus={dropdownMenus} closeDropdown={closeDropdown} />
+                        )}
                     </div>
-                    {isDropdownOpen && <PrimaryDropdown dropdownMenus={dropdownMenus} closeDropdown={closeDropdown} />}
-                </div>
+                )}
             </div>
         </>
     );
