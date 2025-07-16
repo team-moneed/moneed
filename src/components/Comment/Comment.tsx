@@ -19,16 +19,16 @@ type CommentType = {
 };
 
 const Comment = ({ comment, setEditContent, setIsEdit, setEditCommentId }: CommentType) => {
-    const { content, createdAt, user } = comment;
+    const { content, createdAt, user, updatedAt, postId, id } = comment;
     const [isDropdownOpen, setIsdropdownOpen] = useState(false);
-    const isEdited = comment.updatedAt !== comment.createdAt;
+    const isEdited = updatedAt !== createdAt;
 
     const showSnackbar = useSnackbarStore(state => state.showSnackbar);
     const { confirm } = useModal();
     const { mutate: deleteCommentMutation } = useMutation({
         mutationFn: deleteComment,
         onSuccess: data => {
-            queryClient.invalidateQueries({ queryKey: ['post', Number(comment.postId)] });
+            queryClient.invalidateQueries({ queryKey: ['post', Number(postId)] });
             showSnackbar({
                 message: data.message,
                 variant: 'action',
@@ -41,8 +41,8 @@ const Comment = ({ comment, setEditContent, setIsEdit, setEditCommentId }: Comme
     const handleEditComment = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         setIsEdit(true);
-        setEditContent(comment.content);
-        setEditCommentId(comment.id);
+        setEditContent(content);
+        setEditCommentId(id);
         setIsdropdownOpen(prev => !prev);
     };
 
@@ -73,7 +73,7 @@ const Comment = ({ comment, setEditContent, setIsEdit, setEditCommentId }: Comme
     //댓글 삭제 api 연동
     const handleDeleteComment = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        deleteCommentMutation({ commentId: comment.id });
+        deleteCommentMutation({ commentId: id });
     };
 
     const closeDropdown = () => {
@@ -108,7 +108,7 @@ const Comment = ({ comment, setEditContent, setIsEdit, setEditCommentId }: Comme
                     <span className='text-[1.4rem] font-bold leading-[140%] text-moneed-black'>{user.nickname}</span>
                     <i className='w-[.2rem] h-[.2rem] mx-[.8rem] mb-[.2rem] rounded-full bg-moneed-gray-5 inline-block '></i>
                     <span className='text-[1.4rem] font-normal leading-[142%] text-moneed-gray-7'>
-                        <DateFormatter createdAt={new Date(createdAt)} />
+                        <DateFormatter createdAt={new Date(isEdited ? updatedAt : createdAt)} />
                         {isEdited && <span className='text-moneed-gray-7'> (수정됨)</span>}
                     </span>
                     <div className='text-[1.4rem] font-normal leading-[140%]'>{content}</div>
