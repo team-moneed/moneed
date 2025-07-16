@@ -21,6 +21,7 @@ type CommentType = {
 const Comment = ({ comment, setEditContent, setIsEdit, setEditCommentId }: CommentType) => {
     const { content, createdAt, user } = comment;
     const [isDropdownOpen, setIsdropdownOpen] = useState(false);
+    const isEdited = comment.updatedAt !== comment.createdAt;
 
     const showSnackbar = useSnackbarStore(state => state.showSnackbar);
     const { confirm } = useModal();
@@ -108,6 +109,7 @@ const Comment = ({ comment, setEditContent, setIsEdit, setEditCommentId }: Comme
                     <i className='w-[.2rem] h-[.2rem] mx-[.8rem] mb-[.2rem] rounded-full bg-moneed-gray-5 inline-block '></i>
                     <span className='text-[1.4rem] font-normal leading-[142%] text-moneed-gray-7'>
                         <DateFormatter createdAt={new Date(createdAt)} />
+                        {isEdited && <span className='text-moneed-gray-7'> (수정됨)</span>}
                     </span>
                     <div className='text-[1.4rem] font-normal leading-[140%]'>{content}</div>
                 </div>
