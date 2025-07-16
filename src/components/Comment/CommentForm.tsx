@@ -75,10 +75,19 @@ export default function CommentForm({
     //댓글 수정/삭제 후  제출
     const handleSubmitComment = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const currentContent = isEdit ? editContent : newComment;
+        if (currentContent.trim() === '') {
+            showSnackbar({
+                message: '댓글을 입력해주세요.',
+                variant: 'caution',
+                position: 'top',
+            });
+            return;
+        }
         if (isEdit && editCommentId) {
-            updateCommentMutation({ commentId: editCommentId, content: editContent });
+            updateCommentMutation({ commentId: editCommentId, content: currentContent });
         } else {
-            createCommentMutation({ postId, content: newComment });
+            createCommentMutation({ postId, content: currentContent });
         }
     };
     return (
