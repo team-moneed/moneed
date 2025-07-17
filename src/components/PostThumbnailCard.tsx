@@ -36,7 +36,9 @@ export const PostActions = ({
     isLiked,
     likeCount,
     commentCount,
+    postId,
 }: {
+    postId: number;
     isLiked: boolean;
     likeCount: number;
     commentCount: number;
@@ -44,7 +46,7 @@ export const PostActions = ({
     return (
         <div className='flex'>
             <div className='relative z-2'>
-                <PostLikeButton isLiked={isLiked} likeCount={likeCount} />
+                <PostLikeButton postId={postId} isLiked={isLiked} likeCount={likeCount} />
             </div>
             <div className='relative z-2'>
                 <PostCommentButton commentCount={commentCount} />
