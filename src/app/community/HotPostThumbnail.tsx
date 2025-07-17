@@ -47,7 +47,12 @@ export default function HotPostThumbnail({ post }: { post: THotPostThumbnail }) 
                     <PostThumbnailCard.Images postImages={postImages} options={OPTIONS} />
                 </PostThumbnailCard.Body>
                 <PostThumbnailCard.Footer>
-                    <PostThumbnailCard.Actions isLiked={isLiked} likeCount={likeCount} commentCount={commentCount} />
+                    <PostThumbnailCard.Actions
+                        postId={Number(id)}
+                        isLiked={isLiked}
+                        likeCount={likeCount}
+                        commentCount={commentCount}
+                    />
                 </PostThumbnailCard.Footer>
             </PostThumbnailCard>
         </>

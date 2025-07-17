@@ -99,3 +99,11 @@ export type UpdatePostResponse = {
     stockId: number;
     postId: number;
 };
+
+export type LikePostResponse = {
+    message: string;
+};
+
+export type UnlikePostResponse = {
+    message: string;
+};

@@ -424,6 +424,23 @@ export default class PostRepository {
             },
         });
     }
+
+    async likePost({ postId, userId }: { postId: number; userId: string }) {
+        return await this.prisma.postLike.create({
+            data: { postId, userId },
+        });
+    }
+
+    async unlikePost({ postId, userId }: { postId: number; userId: string }) {
+        return await this.prisma.postLike.delete({
+            where: {
+                postId_userId: {
+                    postId,
+                    userId,
+                },
+            },
+        });
+    }
 }
 
 function calcScore({

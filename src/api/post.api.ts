@@ -8,6 +8,8 @@ import {
     DeletePostResponse,
     UpdatePostResponse,
     PostDetail,
+    LikePostResponse,
+    UnlikePostResponse,
 } from '@/types/post';
 import { http } from './client';
 
@@ -75,6 +77,7 @@ export const createPost = async ({ title, content, stockId, thumbnailImage }: Cr
 export const deletePost = async ({ postId }: { postId: number }) => {
     return await http.delete<DeletePostResponse>(`/api/posts/${postId}`);
 };
+
 export const updatePost = async ({
     postId,
     title,
@@ -91,4 +94,12 @@ export const updatePost = async ({
         content,
         thumbnailImage,
     });
+};
+
+export const likePost = async ({ postId }: { postId: number }) => {
+    return await http.post<LikePostResponse>(`/api/posts/${postId}/like`);
+};
+
+export const unlikePost = async ({ postId }: { postId: number }) => {
+    return await http.delete<UnlikePostResponse>(`/api/posts/${postId}/like`);
 };
