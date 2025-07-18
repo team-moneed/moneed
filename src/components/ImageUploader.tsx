@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 
-type UploadImageProps = {
+type ImageUploaderProps = {
     onUploadFiles: ((formData: FormData) => void) | (() => void);
     multiple?: boolean;
     uploadfileLength?: number;
@@ -12,10 +12,9 @@ type UploadImageProps = {
     imgClassName?: string;
     buttonpositionClassName?: string;
     showPreview?: boolean;
-    imgUrl?: string[];
 };
 
-const UploadImage = ({
+const ImageUploader = ({
     id,
     onUploadFiles,
     multiple,
@@ -25,9 +24,8 @@ const UploadImage = ({
     imgClassName,
     buttonpositionClassName,
     showPreview = true,
-    imgUrl,
-}: UploadImageProps) => {
-    const [uploadedFiles, setUploadedFiles] = useState<(string | File)[]>(imgUrl || []);
+}: ImageUploaderProps) => {
+    const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
     const ref = useRef<HTMLInputElement | null>(null);
 
     const handleuploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +37,7 @@ const UploadImage = ({
             setUploadedFiles(updatedFiles);
 
             const formData = new FormData();
-            updatedFiles.forEach(file => formData.append('files', file));
+            updatedFiles.forEach(file => formData.append('files', file, file.name));
 
             onUploadFiles(formData);
         }
@@ -61,6 +59,7 @@ const UploadImage = ({
                 <input
                     id={id}
                     type='file'
+                    accept='image/*'
                     className='hidden'
                     onChange={handleuploadFile}
                     multiple={multiple}
@@ -123,4 +122,4 @@ const UploadImage = ({
     );
 };
 
-export default UploadImage;
+export default ImageUploader;

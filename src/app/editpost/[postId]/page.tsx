@@ -2,7 +2,7 @@
 
 import { use, useEffect, useState, Suspense } from 'react';
 import { useForm } from 'react-hook-form';
-import UploadImage from '@/components/UploadImage';
+import ImageUploader from '@/components/ImageUploader';
 import useSnackbarStore from '@/store/useSnackbarStore';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getPost, updatePost } from '@/api/post.api';
@@ -45,7 +45,6 @@ const EditPostContent = ({ postId }: { postId: string }) => {
     const title = watch('title', '');
     const initialTitle = post?.title || '';
 
-    const [postImages] = useState<string[]>([]);
     const [, setFormImg] = useState<FormData | string[]>([]);
 
     useEffect(() => {
@@ -134,7 +133,7 @@ const EditPostContent = ({ postId }: { postId: string }) => {
                 <div
                     className={`fixed left-0 right-0 z-20 h-[5.2rem] px-8 bg-white flex items-center justify-between transition-all duration-300 bottom-0`}
                 >
-                    <UploadImage
+                    <ImageUploader
                         id='blog'
                         onUploadFiles={handleFileUpload}
                         multiple={true}
@@ -143,8 +142,6 @@ const EditPostContent = ({ postId }: { postId: string }) => {
                         imgpreviewHeight={60}
                         imgClassName='object-cover w-full h-full'
                         buttonpositionClassName='mr-0'
-                        imgUrl={postImages}
-                        // buttonProps={{ type: "button" }}
                     />
                     <div className='text-right text-[1.4rem] text-moneed-gray-7 w-full mx-4'>
                         {content.length} / 1000자
