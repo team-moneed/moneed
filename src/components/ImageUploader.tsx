@@ -1,125 +1,81 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { PostFieldData } from '@/types/fieldData';
+import { cn } from '@/util/style';
+import { forwardRef, useState } from 'react';
+import { UseFormSetValue } from 'react-hook-form';
 
-type ImageUploaderProps = {
-    onUploadFiles: ((formData: FormData) => void) | (() => void);
-    multiple?: boolean;
-    uploadfileLength?: number;
+interface ImageUploaderProps {
     id: string;
-    imgpreviewWidth?: number;
-    imgpreviewHeight?: number;
     imgClassName?: string;
     buttonpositionClassName?: string;
-    showPreview?: boolean;
-};
+    thumbnailImage: PostFieldData['thumbnailImage'];
+    name: keyof PostFieldData;
+    setValue: UseFormSetValue<PostFieldData>;
+}
 
-const ImageUploader = ({
-    id,
-    onUploadFiles,
-    multiple,
-    uploadfileLength = 5,
-    imgpreviewWidth,
-    imgpreviewHeight,
-    imgClassName,
-    buttonpositionClassName,
-    showPreview = true,
-}: ImageUploaderProps) => {
-    const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-    const ref = useRef<HTMLInputElement | null>(null);
+const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
+    ({ id, imgClassName, buttonpositionClassName, thumbnailImage, name, setValue }, ref) => {
+        const [previewImage, setPreviewImage] = useState<File | null>(null);
 
-    const handleuploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if (files) {
-            const newFiles = Array.from(files);
+        const handleuploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+            const file = e.target.files?.[0];
+            if (file) {
+                setValue(name, file);
+                setPreviewImage(file);
+            }
+        };
 
-            const updatedFiles = [...uploadedFiles, ...newFiles];
-            setUploadedFiles(updatedFiles);
+        const handledeleteFile = () => {
+            setValue(name, null);
+        };
 
-            const formData = new FormData();
-            updatedFiles.forEach(file => formData.append('files', file, file.name));
-
-            onUploadFiles(formData);
-        }
-    };
-
-    const handledeleteFile = (index: number) => {
-        const updatedFiles = uploadedFiles.filter((_, i) => i !== index);
-        setUploadedFiles(updatedFiles);
-
-        const formData = new FormData();
-        updatedFiles.forEach(file => formData.append('files', file));
-
-        onUploadFiles(formData);
-    };
-
-    return (
-        <>
-            <div className='relative flex flex-row gap-2 items-start'>
-                <input
-                    id={id}
-                    type='file'
-                    accept='image/*'
-                    className='hidden'
-                    onChange={handleuploadFile}
-                    multiple={multiple}
-                    ref={ref}
-                />
-                <div className='absolute flex gap-x-[9px] bottom-16 z-10'>
-                    {showPreview &&
-                        uploadedFiles?.map((file, index) => (
-                            <div
-                                key={index}
-                                className='relative '
-                                style={{
-                                    width: `${imgpreviewWidth}px`,
-                                    height: `${imgpreviewHeight}px`,
-                                }}
-                            >
-                                {typeof file === 'string' ? (
-                                    <img src={file} alt={`uploaded-${index}`} className={imgClassName} />
-                                ) : (
-                                    <img
-                                        src={URL.createObjectURL(file)}
-                                        alt={`uploaded-${index}`}
-                                        className={imgClassName}
-                                    />
-                                )}
+        return (
+            <>
+                <div className='relative flex flex-row gap-2 items-start'>
+                    <input
+                        id={id}
+                        name={name}
+                        type='file'
+                        accept='image/*'
+                        className='hidden'
+                        onChange={handleuploadFile}
+                        multiple={false}
+                        ref={ref}
+                    />
+                    <div className='absolute flex gap-x-[9px] bottom-16 z-10'>
+                        {previewImage && (
+                            <div key={previewImage.name} className='relative size-[6rem]'>
+                                <img
+                                    src={URL.createObjectURL(previewImage)}
+                                    alt={`uploaded-${previewImage.name}`}
+                                    className={imgClassName}
+                                />
                                 <button
                                     type='button'
-                                    onClick={() => handledeleteFile(index)}
+                                    onClick={() => handledeleteFile()}
                                     className='absolute top-0 right-0 bg-red-500 text-white rounded-full w-[20px] h-[20px] flex items-center justify-center'
                                 >
                                     x
                                 </button>
                             </div>
-                        ))}
-                </div>
-                {uploadedFiles.length < uploadfileLength && (
-                    <label
-                        className={`cursor-pointer ${buttonpositionClassName} ml-auto`}
-                        onClick={event => {
-                            event.stopPropagation();
-                            ref.current?.click();
-                        }}
-                    >
-                        <button
-                            className='rounded-full overflow-hidden aspect-square w-[3.6rem] cursor-pointer'
-                            type='button'
-                        >
-                            <img
-                                src='/icon/icon-gallery.svg'
-                                alt='gallery'
-                                className='w-full h-full object-cover p-[.6rem]'
-                                width={36}
-                                height={36}
-                            />
-                        </button>
+                        )}
+                    </div>
+                    <label className={cn('cursor-pointer ml-auto', buttonpositionClassName)} htmlFor={id}>
+                        <img
+                            src='/icon/icon-gallery.svg'
+                            alt='gallery'
+                            className='w-full h-full object-cover p-[.6rem]'
+                            width={36}
+                            height={36}
+                        />
                     </label>
-                )}
-            </div>
-        </>
-    );
-};
+                </div>
+            </>
+        );
+    },
+);
+
+ImageUploader.displayName = 'ImageUploader';
 
 export default ImageUploader;

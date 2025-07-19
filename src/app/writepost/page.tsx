@@ -8,19 +8,14 @@ import { useForm } from 'react-hook-form';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createPost } from '@/api/post.api';
 import { REASON_CODES } from '@/constants/snackbar';
+import { PostFieldData } from '@/types/fieldData';
 
-type FieldData = {
-    title: string;
-    content: string;
-};
-
+// TODO: 리팩토링 필요 (searchStockType 페이지로 꼭 이동해야 할까?)
 const WritePost = () => {
     const searchParams = useSearchParams();
     const stockId = searchParams.get('stockId');
     const stockName = searchParams.get('stockName');
     const [isBottomModalOpen, setIsBottomModalOpen] = useState(false);
-
-    const [, setFormImg] = useState<FormData | string[]>([]);
 
     const router = useRouter();
 
@@ -28,16 +23,13 @@ const WritePost = () => {
         register,
         handleSubmit,
         watch,
+        setValue,
         formState: { errors },
-    } = useForm<FieldData>();
+    } = useForm<PostFieldData>();
     const content = watch('content', '');
     const title = watch('title', '');
 
     const showSnackbar = useSnackbarStore(state => state.showSnackbar);
-
-    const handleFileUpload = (formData: FormData) => {
-        setFormImg(formData);
-    };
 
     useEffect(() => {
         const isModalShown = localStorage.getItem('bottomModalShown');
@@ -46,6 +38,8 @@ const WritePost = () => {
             setIsBottomModalOpen(true);
             localStorage.setItem('bottomModalShown', 'true');
         }
+
+        return () => localStorage.removeItem('bottomModalShown');
     }, [content, title]);
 
     useEffect(() => {
@@ -90,9 +84,7 @@ const WritePost = () => {
         }
     };
 
-    const onSubmit = async (data: FieldData) => {
-        const formData = { ...data, stockId };
-
+    const onSubmit = async (data: PostFieldData) => {
         if (!stockId) {
             showSnackbar({
                 message: '커뮤니티 종목을 선택해주세요.',
@@ -124,8 +116,7 @@ const WritePost = () => {
         }
 
         const res = await createPost({
-            title: formData.title,
-            content: formData.content,
+            ...data,
             stockId: Number(stockId),
         });
 
@@ -136,7 +127,7 @@ const WritePost = () => {
     };
 
     return (
-        <div className='px-8 max-w-512 mx-auto flex flex-col h-full'>
+        <div className='px-8 max-w-512 mx-auto flex flex-col h-full pb-[8rem]'>
             <div className='flex items-center justify-between gap-[.6rem] mt-4'>
                 <button
                     className='bg-moneed-shade-bg py-[1.2rem] px-[1.6rem] rounded-[.8rem] flex items-center gap-[0.6rem]'
@@ -152,7 +143,7 @@ const WritePost = () => {
                     </div>
                 </button>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col flex-1'>
+            <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col flex-1 w-full'>
                 <input
                     {...register('title', { required: true })}
                     placeholder='제목을 입력해주세요'
@@ -168,17 +159,14 @@ const WritePost = () => {
                     onFocus={() => handleFocus('content')}
                 />
                 <div
-                    className={`fixed left-0 right-0 z-20 h-[5.2rem] px-8 bg-white flex items-center justify-between transition-all duration-300 bottom-0`}
+                    className={`h-[5.2rem] bg-white flex items-center justify-between transition-all duration-300 bottom-0 w-full`}
                 >
                     <ImageUploader
-                        id='blog'
-                        onUploadFiles={handleFileUpload}
-                        multiple={true}
-                        uploadfileLength={4}
-                        imgpreviewWidth={60}
-                        imgpreviewHeight={60}
+                        id='thumbnailImage'
                         imgClassName='object-cover w-full h-full'
                         buttonpositionClassName='mr-0'
+                        setValue={setValue}
+                        {...register('thumbnailImage')}
                     />
                     <div className='text-right text-[1.4rem] text-moneed-gray-7 w-full mx-4'>
                         {content.length} / 1000자

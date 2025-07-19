@@ -63,13 +63,16 @@ export const getPosts = async ({
     return res.data;
 };
 
-export const createPost = async ({ title, content, stockId, thumbnailImage }: CreatePostRequest) => {
-    return await http.post<CreatePostResponse>(`/api/posts`, {
-        title,
-        content,
-        stockId,
-        thumbnailImage,
-    });
+export const createPost = async (data: CreatePostRequest) => {
+    const formData = new FormData();
+    formData.append('title', data.title);
+    formData.append('content', data.content);
+    formData.append('stockId', data.stockId.toString());
+    if (data.thumbnailImage) {
+        formData.append('thumbnailImage', data.thumbnailImage, data.thumbnailImage.name);
+    }
+
+    return await http.post<CreatePostResponse>(`/api/posts`, formData);
 };
 
 export const deletePost = async ({ postId }: { postId: number }) => {
