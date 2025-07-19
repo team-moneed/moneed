@@ -72,7 +72,9 @@ export const createPost = async (data: CreatePostRequest) => {
         formData.append('thumbnailImage', data.thumbnailImage, data.thumbnailImage.name);
     }
 
-    return await http.post<CreatePostResponse>(`/api/posts`, formData);
+    return await http.post<CreatePostResponse>(`/api/posts`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
 };
 
 export const deletePost = async ({ postId }: { postId: number }) => {
