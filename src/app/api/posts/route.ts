@@ -1,6 +1,5 @@
 import { getSession } from '@/lib/session';
 import PostService from '@/services/post.service';
-import { CreatePostRequest } from '@/types/post';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
@@ -32,7 +31,13 @@ export async function GET(req: NextRequest) {
 
 // 게시글 작성
 export async function POST(req: NextRequest) {
-    const { title, content, stockId, thumbnailImage } = (await req.json()) as CreatePostRequest;
+    const formData = await req.formData();
+    console.log('✅ formData', formData);
+    const title = formData.get('title') as string;
+    const content = formData.get('content') as string;
+    const stockId = Number(formData.get('stockId'));
+    const thumbnailImage = formData.get('thumbnailImage') as File;
+
     const payload = await getSession();
     if (!payload) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

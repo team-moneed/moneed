@@ -1,6 +1,5 @@
 import prisma from '@/lib/prisma';
 import { BoardRankResponse } from '@/types/board';
-import { CreatePostRequest } from '@/types/post';
 
 export default class PostRepository {
     private prisma = prisma;
@@ -323,7 +322,19 @@ export default class PostRepository {
         }));
     }
 
-    async createPost({ userId, title, content, stockId, thumbnailImage }: CreatePostRequest & { userId: string }) {
+    async createPost({
+        userId,
+        title,
+        content,
+        stockId,
+        thumbnailImage,
+    }: {
+        userId: string;
+        title: string;
+        content: string;
+        stockId: number;
+        thumbnailImage: string | null;
+    }) {
         const post = await this.prisma.post.create({
             data: {
                 userId,
