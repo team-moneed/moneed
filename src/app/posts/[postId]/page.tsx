@@ -26,7 +26,7 @@ function PostDetail() {
         queryFn: () => getPost({ postId: Number(postId) }),
     });
 
-    const { user, stock, comments, title, content, createdAt, isLiked, likeCount } = post;
+    const { user, stock, comments, title, content, createdAt, isLiked, likeCount, thumbnailImage } = post;
     const [newComment, setNewComment] = useState('');
 
     const [isEdit, setIsEdit] = useState(false);
@@ -188,9 +188,22 @@ function PostDetail() {
                             <p className='mt-[2.4rem] text-[1.6rem] font-semibold leading-[140%] text-moneed-black'>
                                 {title}
                             </p>
-                            <p className='mt-[2.4rem] mb-[.8rem] text-[1.6rem] font-normal leading-[145%] text-moneed-gray-9'>
-                                {content}
-                            </p>
+                            <div className='w-full'>
+                                {thumbnailImage && (
+                                    <div className='w-full flex justify-center items-center relative'>
+                                        <Image
+                                            src={thumbnailImage}
+                                            alt='thumbnail'
+                                            className='rounded-[.8rem] max-w-full object-cover'
+                                            width={100}
+                                            height={100}
+                                        />
+                                    </div>
+                                )}
+                                <p className='mt-[2.4rem] mb-[.8rem] text-[1.6rem] font-normal leading-[145%] text-moneed-gray-9'>
+                                    {content}
+                                </p>
+                            </div>
                         </div>
                         <div className='flex pb-[1.6rem] pt-[.4rem]'>
                             <PostLikeButton isLiked={isLiked} likeCount={likeCount} />
