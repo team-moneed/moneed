@@ -1,6 +1,7 @@
 'use client';
 
 import { PostFieldData } from '@/types/fieldData';
+import { compressImage, COMPRESSION_OPTIONS } from '@/util/optimizeImage';
 import { cn } from '@/util/style';
 import { forwardRef, useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
@@ -9,25 +10,26 @@ interface ImageUploaderProps {
     id: string;
     imgClassName?: string;
     buttonpositionClassName?: string;
-    thumbnailImage: PostFieldData['thumbnailImage'];
     name: keyof PostFieldData;
     setValue: UseFormSetValue<PostFieldData>;
 }
 
 const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
-    ({ id, imgClassName, buttonpositionClassName, thumbnailImage, name, setValue }, ref) => {
+    ({ id, imgClassName, buttonpositionClassName, name, setValue }, ref) => {
         const [previewImage, setPreviewImage] = useState<File | null>(null);
 
         const handleuploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
             const file = e.target.files?.[0];
             if (file) {
-                setValue(name, file);
-                setPreviewImage(file);
+                const optimizedImage = await compressImage(file, COMPRESSION_OPTIONS.THUMBNAIL);
+                setValue(name, optimizedImage);
+                setPreviewImage(optimizedImage);
             }
         };
 
         const handledeleteFile = () => {
             setValue(name, null);
+            setPreviewImage(null);
         };
 
         return (

@@ -1,7 +1,6 @@
 import PostRepository from '@/repositories/post.repository';
 import { CreatePostRequest, HotPostThumbnail, PostDetail, PostThumbnail, TopPostThumbnail } from '@/types/post';
-import { PutObjectCommand } from '@aws-sdk/client-s3';
-import { S3 } from '@/s3';
+import S3Service from './s3.service';
 
 export default class PostService {
     private readonly postRepository = new PostRepository();
@@ -128,32 +127,10 @@ export default class PostService {
     }
 
     async createPost({ userId, title, content, stockId, thumbnailImage }: CreatePostRequest & { userId: string }) {
-        let uploadedImageUrl: string | null = null;
-
-        // 썸네일 이미지가 있는 경우에만 S3에 업로드
+        const s3Service = new S3Service();
+        let uploadedImageUrl: string | undefined;
         if (thumbnailImage) {
-            const fileName = `posts/${Date.now()}-${thumbnailImage.name}`;
-
-            // File 객체를 ArrayBuffer로 변환
-            const buffer = await thumbnailImage.arrayBuffer();
-
-            const command = new PutObjectCommand({
-                Bucket: process.env.AWS_BUCKET_NAME,
-                Key: fileName,
-                Body: new Uint8Array(buffer),
-                ContentType: thumbnailImage.type,
-            });
-
-            try {
-                const res = await S3.send(command);
-                console.log('✅ S3 업로드 성공:', res.$metadata);
-                uploadedImageUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION || 'ap-northeast-2'}.amazonaws.com/${fileName}`;
-            } catch (error) {
-                console.error('❌ S3 업로드 실패:', error);
-                throw new Error(
-                    `이미지 업로드에 실패했습니다: ${error instanceof Error ? error.message : 'Unknown error'}`,
-                );
-            }
+            uploadedImageUrl = await s3Service.uploadPostImage(thumbnailImage);
         }
 
         const post = await this.postRepository.createPost({

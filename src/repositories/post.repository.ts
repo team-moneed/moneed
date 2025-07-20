@@ -333,7 +333,7 @@ export default class PostRepository {
         title: string;
         content: string;
         stockId: number;
-        thumbnailImage: string | null;
+        thumbnailImage?: string;
     }) {
         const post = await this.prisma.post.create({
             data: {
