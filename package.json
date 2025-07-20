@@ -21,10 +21,13 @@
         "*.{js,jsx,ts,tsx}": []
     },
     "dependencies": {
+        "@aws-sdk/client-s3": "^3.848.0",
         "@prisma/client": "^6.8.2",
         "@tanstack/react-query": "^5.62.7",
         "@tanstack/react-query-devtools": "^5.81.2",
+        "@types/browser-image-compression": "^1.0.1",
         "axios": "^1.7.9",
+        "browser-image-compression": "^2.0.2",
         "dotenv-cli": "^8.0.0",
         "embla-carousel-react": "^8.5.1",
         "hangul-js": "^0.2.6",
