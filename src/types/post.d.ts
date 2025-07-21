@@ -1,3 +1,5 @@
+import { Comment as PrismaComment } from '@/generated/prisma';
+
 export interface PostUser {
     id: string;
     nickname: string;
@@ -12,9 +14,32 @@ export interface PostThumbnail {
     isLiked: boolean;
     likeCount: number;
     commentCount: number;
-    stocktype: string;
+    stock: {
+        id: number;
+        name: string;
+    };
     thumbnailImage?: string;
     user: PostUser;
+}
+
+export interface Comment extends PrismaComment {
+    user: PostUser;
+}
+
+export interface PostDetail {
+    id: number;
+    title: string;
+    content: string;
+    createdAt: Date;
+    isLiked: boolean;
+    comments: Comment[];
+    likeCount: number;
+    stock: {
+        id: number;
+        name: string;
+    };
+    user: PostUser;
+    thumbnailImage?: string;
 }
 
 export type HotPostThumbnail = PostThumbnail & {
@@ -33,5 +58,44 @@ export type TopPostThumbnail = {
     createdAt: string;
     user: PostUser;
     score: number;
+    stock: {
+        id: number;
+        name: string;
+    };
+};
+
+export type CreatePostRequest = {
+    title: string;
+    content: string;
     stockId: number;
+    thumbnailImage?: string;
+};
+
+export type CreatePostResponse = {
+    message: string;
+    stockId: number;
+    postId: number;
+};
+
+export type DeletePostRequest = {
+    postId: number;
+};
+
+export type DeletePostResponse = {
+    message: string;
+    stockId: number;
+    postId: number;
+};
+
+export type UpdatePostRequest = {
+    postId: number;
+    title: string;
+    content: string;
+    thumbnailImage?: string | null;
+};
+
+export type UpdatePostResponse = {
+    message: string;
+    stockId: number;
+    postId: number;
 };

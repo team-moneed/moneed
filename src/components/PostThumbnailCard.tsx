@@ -2,13 +2,17 @@ import { cn } from '@/util/style';
 import { useState } from 'react';
 import { PrimaryDropdown, PrimaryDropdownProps } from './Dropdown';
 import DateFormatter from '@/components/Dateformatter';
-import Icon from './Icon';
 import ImageCarousel from './Carousel/ImageCarousel';
 import { EmblaOptionsType } from 'embla-carousel';
 import { useModal } from '@/context/ModalContext';
-import useSnackbarStore from '@/store/useSnackbarStore';
 import { useRouter } from 'next/navigation';
 import { PostThumbnail } from '@/types/post';
+import { deletePost } from '@/api/post.api';
+import { REASON_CODES } from '@/constants/snackbar';
+import { queryClient } from './QueryClientProvider';
+import PostLikeButton from './Post/PostLikeButton';
+import PostCommentButton from './Post/PostCommentButton';
+import PostClipBoardButton from './Post/PostClipBoardButton';
 
 export const PostTitle = ({ title }: { title: string }) => {
     return <h3 className='text-[2rem] font-bold leading-[140%] text-moneed-black line-clamp-1 mb-[.6rem]'>{title}</h3>;
@@ -32,33 +36,21 @@ export const PostActions = ({
     isLiked,
     likeCount,
     commentCount,
-    toggleLike,
-    handleCopyClipBoard,
 }: {
     isLiked: boolean;
     likeCount: number;
     commentCount: number;
-    toggleLike: (e: React.MouseEvent<HTMLButtonElement>) => void;
-    handleCopyClipBoard: (e: React.MouseEvent<HTMLDivElement>) => void;
 }) => {
     return (
-        <div className='flex pl-[1.6rem] pb-[1.6rem] pr-[1.2rem] pt-[.4rem]'>
+        <div className='flex'>
             <div className='relative z-2'>
-                <button type='button' onClick={toggleLike}>
-                    <Icon iconUrl={isLiked ? '/redHeartIcon.svg' : '/heartIcon.svg'} width={18} height={18}></Icon>
-                </button>
+                <PostLikeButton isLiked={isLiked} likeCount={likeCount} />
             </div>
-            <span className='relative z-2 mr-4 text-[1.4rem] font-normal leading-[140%] text-moneed-gray-8'>
-                {likeCount}
-            </span>
-            <div className=' relative z-2'>
-                <Icon iconUrl='/commentIcon.svg' width={20} height={20} />
+            <div className='relative z-2'>
+                <PostCommentButton commentCount={commentCount} />
             </div>
-            <span className='relative z-2 mr-4 text-[1.4rem] font-normal leading-[140%] text-moneed-gray-8'>
-                {commentCount}
-            </span>
-            <div className=' relative z-2'>
-                <Icon onClick={handleCopyClipBoard} iconUrl='/sharingIcon.svg' width={20} height={20} />
+            <div className='relative z-2'>
+                <PostClipBoardButton />
             </div>
         </div>
     );
@@ -84,24 +76,17 @@ export const PostAuthorWithDate = ({
 };
 
 export const PostDropdown = ({ post }: { post: PostThumbnail }) => {
-    const showSnackbar = useSnackbarStore(state => state.showSnackbar);
     const { confirm } = useModal();
     const router = useRouter();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    // console.log('isDropdownOpen', isDropdownOpen);
-
-    const { stocktype, user, content, isLiked, id, thumbnailImage, createdAt, title, likeCount } = post;
-    const postImages = thumbnailImage ? [thumbnailImage] : [];
 
     const onEditPost = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        router.push(
-            `/editpost/${stocktype}?userName=${user.nickname}&content=${content}&isLiked=${isLiked}&postId=${id}&stocktype=${stocktype}&postImages=${postImages}&createdAt=${createdAt}&title=${title}&likes=${likeCount}`,
-        );
+        router.push(`/editpost/${post.id}`);
     };
 
     //게시글 삭제할건지 묻는 모달
-    const openpostDeletemodal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const openPostDeletemodal = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         const result = confirm(
             <span>
@@ -112,19 +97,20 @@ export const PostDropdown = ({ post }: { post: PostThumbnail }) => {
         );
         result.then(confirmed => {
             if (confirmed) {
-                handledeletePost();
+                handleDeletePost();
             }
         });
         setIsDropdownOpen(false);
     };
 
     //게시글 삭제 api 연동
-    const handledeletePost = () => {
-        showSnackbar({
-            message: '게시글이 삭제되었습니다.',
-            variant: 'action',
-            position: 'bottom',
-        });
+    const handleDeletePost = async () => {
+        const res = await deletePost({ postId: post.id });
+        if (res.status === 200) {
+            // TODO: 연속 두 개의 게시글 삭제 시 쿼리 파라미터(?reason)이 변경되지 않아 스낵바가 표시되지 않음
+            router.push(`/community/${post.stock.id}?reason=${REASON_CODES.POST_DELETED}`);
+            queryClient.invalidateQueries({ queryKey: ['posts'] });
+        }
     };
 
     // TODO: 자기 게시글인 경우에만 표시하도록 수정
@@ -137,7 +123,7 @@ export const PostDropdown = ({ post }: { post: PostThumbnail }) => {
         {
             icon: '/icon/icon-trashcan.svg',
             text: '게시글 삭제',
-            onClick: openpostDeletemodal,
+            onClick: openPostDeletemodal,
         },
     ];
 

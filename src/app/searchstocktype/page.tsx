@@ -15,8 +15,8 @@ export default function SearchStockType() {
         queryFn: () => getStocks(),
     });
 
-    const selectStocktype = (stocktype: string) => {
-        router.push(`/writepost?stocktype=${stocktype}`);
+    const selectStocktype = (stock: Stock) => {
+        router.push(`/writepost?stockId=${stock.id}&stockName=${stock.name}`);
     };
 
     const getInitialConsonant = (str: string) => {
@@ -25,7 +25,7 @@ export default function SearchStockType() {
             .join('');
     };
 
-    const filteredStockData = stockData?.filter(item => {
+    const filteredStockData = stockData?.filter(stock => {
         if (!searchStockType) {
             return true;
         }
@@ -33,8 +33,8 @@ export default function SearchStockType() {
         // console.log(Hangul.disassemble(item.name).includes(Hangul.disassemble(searchStockType)))
 
         return (
-            item.name.toLowerCase().includes(searchStockType) ||
-            getInitialConsonant(item.name).includes(getInitialConsonant(searchStockType))
+            stock.name.toLowerCase().includes(searchStockType) ||
+            getInitialConsonant(stock.name).includes(getInitialConsonant(searchStockType))
         );
     });
     return (
@@ -56,13 +56,13 @@ export default function SearchStockType() {
                 </div>
                 <div className='text-[1.6rem] font-semibold leading-[140%] pb-4 pt-[2.2rem]'>나의 선호 종목 [10]개</div>
                 <div className='px-[2.4rem] py-[.8rem]'>
-                    {filteredStockData?.map(item => (
+                    {filteredStockData?.map(stock => (
                         <MyStockBox
-                            key={item.name}
-                            onClick={() => selectStocktype(item.name)}
+                            key={stock.id}
+                            onClick={() => selectStocktype(stock)}
                             className=''
                             isSelectCategory={true}
-                            name={item.name}
+                            name={stock.name}
                         ></MyStockBox>
                     ))}
                 </div>

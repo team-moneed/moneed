@@ -3,9 +3,17 @@ import StockInfoBox from '@/components/Community/StockInfoBox';
 import Vote from './Vote';
 import PostSection from './PostsSection';
 import { StockService } from '@/services/stock.service';
+import { SnackbarTrigger } from '@/components/Snackbar';
 
-export default async function CommunityPage({ params }: { params: Promise<{ stockId: string }> }) {
+export default async function CommunityPage({
+    params,
+    searchParams,
+}: {
+    params: Promise<{ stockId: string }>;
+    searchParams: Promise<{ reason: string }>;
+}) {
     const { stockId } = await params;
+    const { reason } = await searchParams;
     const stockService = new StockService();
     const stock = await stockService.getStock(Number(stockId));
 
@@ -17,6 +25,7 @@ export default async function CommunityPage({ params }: { params: Promise<{ stoc
             </div>
             <Vote />
             <PostSection stockId={Number(stockId)} />
+            <SnackbarTrigger reason={reason} />
         </div>
     );
 }

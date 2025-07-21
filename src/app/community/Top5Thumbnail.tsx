@@ -9,17 +9,16 @@ type Top5ThumbnailProps = {
     content: string;
     title: string;
     createdAt: string;
-    stockId: number;
     postId: number;
 };
 
-const Top5Thumbnail = ({ user, content, title, createdAt, stockId, postId }: Top5ThumbnailProps) => {
+const Top5Thumbnail = ({ user, content, title, createdAt, postId }: Top5ThumbnailProps) => {
     const router = useRouter();
-    const movetoDetail = (stockId: number, postId: number) => {
-        router.push(`/posts/${stockId}/${postId}`);
+    const movetoDetail = (postId: number) => {
+        router.push(`/posts/${postId}`);
     };
     return (
-        <PostThumbnailCard onClick={() => movetoDetail(stockId, postId)}>
+        <PostThumbnailCard onClick={() => movetoDetail(postId)}>
             <PostThumbnailCard.Body>
                 <PostThumbnailCard.Title title={title} />
                 <PostThumbnailCard.Content content={content} />
