@@ -38,7 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <QueryClientProvider>
                         <ModalProvider>
                             <Header />
-                            <main className='flex-1 pb-[8rem]'>{children}</main>
+                            <main className='flex-1'>{children}</main>
                             <Footer />
                             <MobileNav />
                             <SnackbarProvider />

@@ -15,8 +15,8 @@ const Footer = () => {
     // 모바일 일때만 Footer를 표시하면 안되는 경로
     const hideFooterPathsInMobile = ['/welcome'];
 
-    const shouldHide = hideFooterPaths.includes(pathname);
-    const shouldHideOnlyMobile = hideFooterPathsInMobile.includes(pathname);
+    const shouldHide = hideFooterPaths.some(path => pathname.startsWith(path));
+    const shouldHideOnlyMobile = hideFooterPathsInMobile.some(path => pathname.startsWith(path));
 
     if (shouldHide) {
         return null;
