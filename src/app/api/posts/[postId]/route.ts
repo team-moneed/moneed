@@ -1,6 +1,7 @@
 import PostService from '@/services/post.service';
 import { getSession } from '@/lib/session';
 import { NextRequest, NextResponse } from 'next/server';
+import { isFile } from '@/util/typeChecker';
 
 export async function GET(_: NextRequest, { params }: { params: Promise<{ postId: string }> }) {
     const { postId } = await params;
@@ -26,11 +27,21 @@ export async function DELETE(_: NextRequest, { params }: { params: Promise<{ pos
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ postId: string }> }) {
     const { postId } = await params;
-    const { title, content, thumbnailImage } = (await req.json()) as {
-        title: string;
-        content: string;
-        thumbnailImage?: string | null;
-    };
+    const formData = await req.formData();
+    const title = formData.get('title') as string;
+    const content = formData.get('content') as string;
+    const thumbnailImage = formData.get('thumbnailImage') as File | '' | null;
+    const prevThumbnailImageUrl = formData.get('prevThumbnailImageUrl') as string | null;
+
+    let parsedThumbnailImage: File | null | undefined;
+    if (isFile(thumbnailImage)) {
+        parsedThumbnailImage = thumbnailImage;
+    } else if (thumbnailImage === '') {
+        parsedThumbnailImage = null;
+    } else {
+        parsedThumbnailImage = undefined;
+    }
+
     const payload = await getSession();
     if (!payload) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -41,7 +52,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ post
         userId: payload.userId,
         title,
         content,
-        thumbnailImage,
+        thumbnailImage: parsedThumbnailImage,
+        prevThumbnailImageUrl: prevThumbnailImageUrl ?? undefined,
     });
     return NextResponse.json(
         { message: '게시글이 수정되었습니다.', stockId: post.stockId, postId: post.id },

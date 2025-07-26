@@ -9,7 +9,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ r
 
     return (
         <>
-            <div className='px-8 max-w-512 mx-auto'>
+            <div className='px-8 max-w-512 mx-auto pb-[8rem]'>
                 <div className='mt-[.7rem] lg:mt-4 aspect-350/106 rounded-[.8rem] overflow-hidden lg:aspect-941/151'>
                     <img src='/temp/main-bn-m.png' alt='' className='w-full h-full object-cover lg:hidden' />
                     <img src='/temp/main-bn-pc.png' alt='' className='hidden w-full h-full object-cover lg:block' />

@@ -65,10 +65,10 @@ export type TopPostThumbnail = {
 };
 
 export type CreatePostRequest = {
+    stockId: number;
     title: string;
     content: string;
-    stockId: number;
-    thumbnailImage?: string;
+    thumbnailImage?: File | null;
 };
 
 export type CreatePostResponse = {
@@ -91,7 +91,8 @@ export type UpdatePostRequest = {
     postId: number;
     title: string;
     content: string;
-    thumbnailImage?: string | null;
+    thumbnailImage?: File | null;
+    prevThumbnailImageUrl?: string;
 };
 
 export type UpdatePostResponse = {

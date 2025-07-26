@@ -22,11 +22,11 @@ function PostDetail() {
     const { postId } = useParams<{ postId: string }>();
     const reason = searchParams.get('reason') ?? undefined;
     const { data: post } = useSuspenseQuery({
-        queryKey: ['post', postId],
+        queryKey: ['post', Number(postId)],
         queryFn: () => getPost({ postId: Number(postId) }),
     });
 
-    const { user, stock, comments, title, content, createdAt, isLiked, likeCount } = post;
+    const { user, stock, comments, title, content, createdAt, isLiked, likeCount, thumbnailImage } = post;
     const [newComment, setNewComment] = useState('');
 
     const [isEdit, setIsEdit] = useState(false);
@@ -160,12 +160,12 @@ function PostDetail() {
                                         height={32}
                                     />
                                     <div className='flex items-center gap-[.4rem]'>
-                                    <span className='text-[1.4rem] font-normal leading-[140%] text-moneed-black'>
-                                        {user.nickname}
-                                    </span>
+                                        <span className='text-[1.4rem] font-normal leading-[140%] text-moneed-black'>
+                                            {user.nickname}
+                                        </span>
                                         <i className='size-[.4rem] rounded-full bg-moneed-gray-5'></i>
-                                    <DateFormatter createdAt={new Date(createdAt)} />
-                                </div>
+                                        <DateFormatter createdAt={new Date(createdAt)} />
+                                    </div>
                                 </div>
                                 <div className='relative ml-auto shrink-0 z-2'>
                                     <div
@@ -188,9 +188,22 @@ function PostDetail() {
                             <p className='mt-[2.4rem] text-[1.6rem] font-semibold leading-[140%] text-moneed-black'>
                                 {title}
                             </p>
-                            <p className='mt-[2.4rem] mb-[.8rem] text-[1.6rem] font-normal leading-[145%] text-moneed-gray-9'>
-                                {content}
-                            </p>
+                            <div className='w-full'>
+                                {thumbnailImage && (
+                                    <div className='w-full flex justify-center items-center relative'>
+                                        <Image
+                                            src={thumbnailImage}
+                                            alt='thumbnail'
+                                            className='rounded-[.8rem] max-w-full object-cover'
+                                            width={100}
+                                            height={100}
+                                        />
+                                    </div>
+                                )}
+                                <p className='mt-[2.4rem] mb-[.8rem] text-[1.6rem] font-normal leading-[145%] text-moneed-gray-9'>
+                                    {content}
+                                </p>
+                            </div>
                         </div>
                         <div className='flex pb-[1.6rem] pt-[.4rem]'>
                             <PostLikeButton isLiked={isLiked} likeCount={likeCount} />
