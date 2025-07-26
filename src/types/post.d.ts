@@ -1,4 +1,3 @@
-import { PostFieldData } from '@/types/fieldData';
 import { Comment as PrismaComment } from '@/generated/prisma';
 
 export interface PostUser {
@@ -67,7 +66,10 @@ export type TopPostThumbnail = {
 
 export type CreatePostRequest = {
     stockId: number;
-} & PostFieldData;
+    title: string;
+    content: string;
+    thumbnailImage?: File | null;
+};
 
 export type CreatePostResponse = {
     message: string;
@@ -89,7 +91,8 @@ export type UpdatePostRequest = {
     postId: number;
     title: string;
     content: string;
-    thumbnailImage?: string | null;
+    thumbnailImage?: File | null;
+    prevThumbnailImageUrl?: string;
 };
 
 export type UpdatePostResponse = {

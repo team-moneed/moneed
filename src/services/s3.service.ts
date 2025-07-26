@@ -1,5 +1,5 @@
 import { S3 } from '@/s3';
-import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, GetObjectCommand, PutObjectCommand, waitUntilObjectNotExists } from '@aws-sdk/client-s3';
 
 export default class S3Service {
     private S3 = S3;
@@ -22,8 +22,7 @@ export default class S3Service {
             });
 
             try {
-                const res = await this.S3.send(command);
-                console.log('✅ S3 업로드 성공:', res.$metadata);
+                await this.S3.send(command);
                 uploadedImageUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION || 'ap-northeast-2'}.amazonaws.com/${fileName}`;
             } catch (error) {
                 console.error('❌ S3 업로드 실패:', error);
@@ -34,5 +33,39 @@ export default class S3Service {
         }
 
         return uploadedImageUrl;
+    }
+
+    async getPostImage(fileName: string) {
+        const command = new GetObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: fileName,
+        });
+
+        try {
+            const res = await this.S3.send(command);
+            return res.Body;
+        } catch (error) {
+            console.error('❌ S3 이미지 가져오기 실패:', error);
+            throw new Error('이미지 가져오기에 실패했습니다.');
+        }
+    }
+
+    async deletePostImage(fileName: string) {
+        const command = new DeleteObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: fileName,
+        });
+
+        try {
+            const res = await this.S3.send(command);
+            await waitUntilObjectNotExists(
+                { client: this.S3, maxWaitTime: 10000 },
+                { Bucket: process.env.AWS_BUCKET_NAME, Key: fileName },
+            );
+            return res.$metadata;
+        } catch (error) {
+            console.error('❌ S3 이미지 삭제 실패:', error);
+            throw new Error('이미지 삭제에 실패했습니다.');
+        }
     }
 }

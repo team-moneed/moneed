@@ -361,13 +361,13 @@ export default class PostRepository {
         userId,
         title,
         content,
-        thumbnailImage,
+        thumbnailImageUrl,
     }: {
         postId: number;
         userId: string;
         title: string;
         content: string;
-        thumbnailImage?: string | null;
+        thumbnailImageUrl?: string | null;
     }) {
         return await this.prisma.post.update({
             where: {
@@ -377,7 +377,7 @@ export default class PostRepository {
             data: {
                 title,
                 content,
-                thumbnailImage: thumbnailImage,
+                thumbnailImage: thumbnailImageUrl,
             },
         });
     }

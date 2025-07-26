@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createPost } from '@/api/post.api';
 import { REASON_CODES } from '@/constants/snackbar';
-import { PostFieldData } from '@/types/fieldData';
+import { CreatePostField } from '@/types/fieldData';
 
 // TODO: 리팩토링 필요 (searchStockType 페이지로 꼭 이동해야 할까?)
 const WritePost = () => {
@@ -25,7 +25,7 @@ const WritePost = () => {
         watch,
         setValue,
         formState: { errors },
-    } = useForm<PostFieldData>();
+    } = useForm<CreatePostField>();
     const content = watch('content', '');
     const title = watch('title', '');
 
@@ -84,7 +84,7 @@ const WritePost = () => {
         }
     };
 
-    const onSubmit = async (data: PostFieldData) => {
+    const onSubmit = async (data: CreatePostField) => {
         if (!stockId) {
             showSnackbar({
                 message: '커뮤니티 종목을 선택해주세요.',

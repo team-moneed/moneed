@@ -1,6 +1,14 @@
 import PostRepository from '@/repositories/post.repository';
-import { CreatePostRequest, HotPostThumbnail, PostDetail, PostThumbnail, TopPostThumbnail } from '@/types/post';
+import {
+    CreatePostRequest,
+    HotPostThumbnail,
+    PostDetail,
+    PostThumbnail,
+    TopPostThumbnail,
+    UpdatePostRequest,
+} from '@/types/post';
 import S3Service from './s3.service';
+import { urlToS3FileName } from '@/util/parser';
 
 export default class PostService {
     private readonly postRepository = new PostRepository();
@@ -153,13 +161,39 @@ export default class PostService {
         title,
         content,
         thumbnailImage,
-    }: {
-        postId: number;
-        userId: string;
-        title: string;
-        content: string;
-        thumbnailImage?: string | null;
-    }) {
-        return await this.postRepository.updatePost({ postId, userId, title, content, thumbnailImage });
+        prevThumbnailImageUrl,
+    }: UpdatePostRequest & { userId: string }) {
+        const thumbnailImageUrl = await this.getThumbnailImageUrl({
+            thumbnailImage,
+        });
+
+        // 썸네일 이미지를 교체했거나 제거한 경우 이전 썸네일 이미지 삭제
+        if (thumbnailImageUrl || thumbnailImage === null) {
+            await this.deletePrevThumbnailImage({ prevThumbnailImageUrl });
+        }
+
+        return await this.postRepository.updatePost({
+            postId,
+            userId,
+            title,
+            content,
+            thumbnailImageUrl,
+        });
+    }
+
+    async getThumbnailImageUrl({ thumbnailImage }: { thumbnailImage?: File | null }) {
+        const s3Service = new S3Service();
+        if (thumbnailImage instanceof File) {
+            return await s3Service.uploadPostImage(thumbnailImage);
+        }
+        return thumbnailImage;
+    }
+
+    async deletePrevThumbnailImage({ prevThumbnailImageUrl }: { prevThumbnailImageUrl?: string | null }) {
+        const s3Service = new S3Service();
+        if (prevThumbnailImageUrl) {
+            const fileName = urlToS3FileName(prevThumbnailImageUrl);
+            await s3Service.deletePostImage(fileName);
+        }
     }
 }

@@ -32,7 +32,6 @@ export async function GET(req: NextRequest) {
 // 게시글 작성
 export async function POST(req: NextRequest) {
     const formData = await req.formData();
-    console.log('✅ formData', formData);
     const title = formData.get('title') as string;
     const content = formData.get('content') as string;
     const stockId = Number(formData.get('stockId'));
