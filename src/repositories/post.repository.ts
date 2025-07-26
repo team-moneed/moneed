@@ -435,6 +435,13 @@ export default class PostRepository {
             },
         });
     }
+
+    async getPostImageUrl({ postId }: { postId: number }) {
+        return await this.prisma.post.findUnique({
+            where: { id: postId },
+            select: { thumbnailImage: true },
+        });
+    }
 }
 
 function calcScore({

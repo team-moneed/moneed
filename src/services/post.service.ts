@@ -152,6 +152,10 @@ export default class PostService {
     }
 
     async deletePost({ postId, userId }: { postId: number; userId: string }) {
+        const postImageUrl = await this.postRepository.getPostImageUrl({ postId });
+        if (postImageUrl?.thumbnailImage) {
+            await this.deletePrevThumbnailImage({ prevThumbnailImageUrl: postImageUrl.thumbnailImage });
+        }
         return await this.postRepository.deletePost({ postId, userId });
     }
 
