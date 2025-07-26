@@ -71,7 +71,7 @@ export default class PostService {
                 id: post.stock.id,
                 name: post.stock.name,
             },
-            thumbnailImage: undefined,
+            thumbnailImage: post.thumbnailImage ?? undefined,
         }));
         return postThumbnailList;
     }

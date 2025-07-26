@@ -56,6 +56,7 @@ export default class PostRepository {
                 id: true,
                 title: true,
                 content: true,
+                thumbnailImage: true,
                 postViews: {
                     select: {
                         id: true,
