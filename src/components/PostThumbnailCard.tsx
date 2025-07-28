@@ -19,7 +19,9 @@ export const PostTitle = ({ title }: { title: string }) => {
 };
 
 export const PostContent = ({ content }: { content: string }) => {
-    return <p className='font-normal text-lg leading-[140%] text-moneed-gray-9 line-clamp-3'>{content}</p>;
+    return (
+        <p className='font-normal text-lg leading-[140%] text-moneed-gray-9 line-clamp-3 min-h-[7.6rem]'>{content}</p>
+    );
 };
 
 export const PostImages = ({ postImages, options }: { postImages: string[]; options: EmblaOptionsType }) => {

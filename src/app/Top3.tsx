@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getBoardRank } from '@/api/board.api';
 import { BoardRankResponse } from '@/types/board';
@@ -20,12 +20,6 @@ const Top3 = () => {
     });
 
     const [selectedStock, setSelectedStock] = useState<BoardRankResponse>(stockList[0]);
-
-    useEffect(() => {
-        if (stockList && stockList.length > 0) {
-            setSelectedStock(stockList[0]);
-        }
-    }, [stockList]);
 
     if (stockList.length === 0 || !stockList) {
         return <div className='text-4xl text-center text-moneed-gray-8'>게시글이 존재하지 않습니다</div>;
