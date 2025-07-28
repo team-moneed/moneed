@@ -28,8 +28,8 @@ function PostDetail() {
     const { user, stock, comments, title, content, createdAt, isLiked, likeCount, thumbnailImage } = post;
 
     const [isEdit, setIsEdit] = useState(false);
-    const [editContent, setEditContent] = useState('');
     const [editCommentId, setEditCommentId] = useState<number | null>(null);
+    const [editContent, setEditContent] = useState('');
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
