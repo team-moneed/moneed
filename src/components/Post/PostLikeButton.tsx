@@ -1,10 +1,39 @@
+'use client';
+import { useMutation } from '@tanstack/react-query';
 import Icon from '../Icon';
+import { likePost, unlikePost } from '@/api/post.api';
+import { queryClient } from '../QueryClientProvider';
 
-export default function PostLikeButton({ isLiked, likeCount }: { isLiked: boolean; likeCount: number }) {
-    // TODO: 좋아요 API 연동
+export default function PostLikeButton({
+    postId,
+    isLiked,
+    likeCount,
+}: {
+    postId: number;
+    isLiked: boolean;
+    likeCount: number;
+}) {
+    const { mutate: likePostMutation } = useMutation({
+        mutationFn: likePost,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['post', postId] });
+        },
+    });
+
+    const { mutate: unlikePostMutation } = useMutation({
+        mutationFn: unlikePost,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['post', postId] });
+        },
+    });
+
     const toggleLike = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        console.log('좋아요!');
+        if (isLiked) {
+            unlikePostMutation({ postId });
+        } else {
+            likePostMutation({ postId });
+        }
     };
 
     return (

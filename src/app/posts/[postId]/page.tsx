@@ -139,7 +139,7 @@ function PostDetail() {
                             </p>
                         </div>
                         <div className='flex pb-[1.6rem] pt-[.4rem]'>
-                            <PostLikeButton isLiked={isLiked} likeCount={likeCount} />
+                            <PostLikeButton postId={Number(postId)} isLiked={isLiked} likeCount={likeCount} />
                             <PostCommentButton commentCount={comments.length} />
                             <PostClipBoardButton />
                         </div>
