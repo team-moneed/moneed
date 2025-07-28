@@ -1,11 +1,10 @@
 'use client';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { Suspense, useRef, useState } from 'react';
-import useSnackbarStore from '@/store/useSnackbarStore';
+import { Suspense, useState } from 'react';
 import { useModal } from '@/context/ModalContext';
 import DateFormatter from '@/components/Dateformatter';
 import { PrimaryDropdown, PrimaryDropdownProps } from '@/components/Dropdown';
-import Comment from '@/components/Community/Comment';
+import Comment from '@/components/Comment/Comment';
 import { SnackbarTrigger } from '@/components/Snackbar';
 import { deletePost, getPost } from '@/api/post.api';
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -15,74 +14,32 @@ import Image from 'next/image';
 import PostLikeButton from '@/components/Post/PostLikeButton';
 import PostCommentButton from '@/components/Post/PostCommentButton';
 import PostClipBoardButton from '@/components/Post/PostClipBoardButton';
+import CommentForm from '@/components/Comment/CommentForm';
 
 function PostDetail() {
-    const inputRef = useRef<HTMLInputElement>(null);
     const searchParams = useSearchParams();
     const { postId } = useParams<{ postId: string }>();
     const reason = searchParams.get('reason') ?? undefined;
     const { data: post } = useSuspenseQuery({
-        queryKey: ['post', postId],
+        queryKey: ['post', Number(postId)],
         queryFn: () => getPost({ postId: Number(postId) }),
     });
 
-    const { user, stock, comments, title, content, createdAt, isLiked, likeCount } = post;
-    const [newComment, setNewComment] = useState('');
+    const { user, stock, comments, title, content, createdAt, isLiked, likeCount, thumbnailImage } = post;
 
     const [isEdit, setIsEdit] = useState(false);
+    const [editCommentId, setEditCommentId] = useState<number | null>(null);
     const [editContent, setEditContent] = useState('');
 
-    const [isDropdownOpen, setIsdropdownOpen] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-    const showSnackbar = useSnackbarStore(state => state.showSnackbar);
     const { confirm } = useModal();
 
     const router = useRouter();
 
-    //댓글 추가/수정 창
-    const handleWriteComment = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (isEdit) {
-            setEditContent(e.target.value);
-        } else {
-            setNewComment(e.target.value);
-        }
-
-        if (inputRef.current) {
-            const rect = inputRef.current.getBoundingClientRect();
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            window.scrollTo({
-                top: scrollTop + rect.top - window.innerHeight / 3,
-                behavior: 'smooth',
-            });
-        }
-    };
-
-    //댓글 수정/삭제 후  제출
-    const handleSubmitComment = () => {
-        setNewComment('');
-        if (isEdit) {
-            console.log(editContent, '댓글 수정!');
-            showSnackbar({
-                message: '댓글이 수정되었습니다.',
-                variant: 'action',
-                position: 'bottom',
-            });
-            setEditContent('');
-            setIsEdit(false);
-        } else {
-            console.log(newComment, '댓글 추가!');
-            showSnackbar({
-                message: '댓글이 작성되었습니다.',
-                variant: 'action',
-                position: 'bottom',
-            });
-            setNewComment('');
-        }
-    };
-
     const handleOpendropdown = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-        setIsdropdownOpen(true);
+        setIsDropdownOpen(true);
     };
 
     //게시글 삭제할건지 묻는 모달
@@ -100,7 +57,7 @@ function PostDetail() {
                 handleDeletePost(e);
             }
         });
-        setIsdropdownOpen(prev => !prev);
+        setIsDropdownOpen(prev => !prev);
     };
 
     //게시글 삭제 api 연동
@@ -111,21 +68,12 @@ function PostDetail() {
     };
 
     const closeDropdown = () => {
-        setIsdropdownOpen(false);
-    };
-
-    const handleEditComment = (content: string) => {
-        setIsEdit(true);
-        setEditContent(content);
+        setIsDropdownOpen(false);
     };
 
     const onEditPost = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         router.push(`/editpost/${postId}`);
-    };
-
-    const onEditComment = (content: string) => {
-        handleEditComment(content);
     };
 
     const dropdownMenus: PrimaryDropdownProps['dropdownMenus'] = [
@@ -145,7 +93,7 @@ function PostDetail() {
         <>
             <div className='px-8 max-w-512 mx-auto'>
                 <div className='hidden lg:block font-semibold leading-[140%] text-[1.6rem] ml-[.4rem] text-moneed-gray-9 mb-4'>
-                    {stock.name}커뮤니티
+                    {stock.name} 커뮤니티
                 </div>
                 <div className='lg:flex gap-12'>
                     <div className='lg:w-[60%] lg:border lg:border-moneed-gray-4 rounded-[1.2rem] lg:p-8'>
@@ -160,12 +108,12 @@ function PostDetail() {
                                         height={32}
                                     />
                                     <div className='flex items-center gap-[.4rem]'>
-                                    <span className='text-[1.4rem] font-normal leading-[140%] text-moneed-black'>
-                                        {user.nickname}
-                                    </span>
+                                        <span className='text-[1.4rem] font-normal leading-[140%] text-moneed-black'>
+                                            {user.nickname}
+                                        </span>
                                         <i className='size-[.4rem] rounded-full bg-moneed-gray-5'></i>
-                                    <DateFormatter createdAt={new Date(createdAt)} />
-                                </div>
+                                        <DateFormatter createdAt={new Date(createdAt)} />
+                                    </div>
                                 </div>
                                 <div className='relative ml-auto shrink-0 z-2'>
                                     <div
@@ -188,12 +136,25 @@ function PostDetail() {
                             <p className='mt-[2.4rem] text-[1.6rem] font-semibold leading-[140%] text-moneed-black'>
                                 {title}
                             </p>
-                            <p className='mt-[2.4rem] mb-[.8rem] text-[1.6rem] font-normal leading-[145%] text-moneed-gray-9'>
-                                {content}
-                            </p>
+                            <div className='w-full'>
+                                {thumbnailImage && (
+                                    <div className='w-full flex justify-center items-center relative'>
+                                        <Image
+                                            src={thumbnailImage}
+                                            alt='thumbnail'
+                                            className='rounded-[.8rem] max-w-full object-cover'
+                                            width={100}
+                                            height={100}
+                                        />
+                                    </div>
+                                )}
+                                <p className='mt-[2.4rem] mb-[.8rem] text-[1.6rem] font-normal leading-[145%] text-moneed-gray-9'>
+                                    {content}
+                                </p>
+                            </div>
                         </div>
                         <div className='flex pb-[1.6rem] pt-[.4rem]'>
-                            <PostLikeButton isLiked={isLiked} likeCount={likeCount} />
+                            <PostLikeButton postId={Number(postId)} isLiked={isLiked} likeCount={likeCount} />
                             <PostCommentButton commentCount={comments.length} />
                             <PostClipBoardButton />
                         </div>
@@ -214,35 +175,24 @@ function PostDetail() {
                                 comments.map(comment => (
                                     <Comment
                                         key={comment.id}
-                                        userName={comment.user.nickname}
-                                        content={comment.content}
-                                        createdAt={comment.createdAt.toLocaleString('ko-KR', {
-                                            year: 'numeric',
-                                            month: '2-digit',
-                                            day: '2-digit',
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                        })}
-                                        onEditComment={() => onEditComment(comment.content)}
+                                        comment={comment}
+                                        setEditContent={setEditContent}
+                                        setIsEdit={setIsEdit}
+                                        setEditCommentId={setEditCommentId}
                                     ></Comment>
                                 ))
                             )}
                         </div>
+                        {/* 모바일 UI 수정: 댓글 입력창이 가장 아래에 붙도록*/}
                         <div className='order-3 lg:order-1 mt-16 lg:mt-4 relative flex items-center bg-moneed-gray-4 rounded-[1.2rem]'>
-                            <input
-                                ref={inputRef}
-                                type='text'
-                                onChange={handleWriteComment}
-                                className='bg-transparent text-[1.6rem] text-moneed-black placeholder:text-moneed-gray-7 px-[1.8rem] py-[1.2rem] w-full focus:outline-none'
-                                placeholder='의견을 공유해보세요.(최대 300자)'
-                                value={isEdit ? editContent : newComment}
+                            <CommentForm
+                                isEdit={isEdit}
+                                setIsEdit={setIsEdit}
+                                editContent={editContent}
+                                setEditContent={setEditContent}
+                                postId={Number(postId)}
+                                editCommentId={editCommentId}
                             />
-                            <div
-                                className='absolute right-4 rounded-full aspect-square w-[3.6rem] bg-moneed-gray-6 cursor-pointer hover:bg-moneed-brand'
-                                onClick={handleSubmitComment}
-                            >
-                                <img src='/icon/icon-submit-comment.svg' alt='' className='p-[.6rem]' />
-                            </div>
                         </div>
                     </div>
                 </div>

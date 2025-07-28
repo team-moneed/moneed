@@ -61,6 +61,7 @@ model PostLike {
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@unique([postId, userId])
   @@map("post_likes")
 }
 
@@ -72,6 +73,7 @@ model PostViews {
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@unique([postId, userId])
   @@map("post_views")
 }
 
@@ -117,6 +119,10 @@ model Stock {
   summary        String
   symbol         String
   posts          Post[]
+  summary        String
+  sector         String
+  subSector      String
+  refUrl         String?
   selectedStocks SelectedStock[]
 
   @@map("stocks")

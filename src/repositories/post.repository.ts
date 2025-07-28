@@ -1,6 +1,5 @@
 import prisma from '@/lib/prisma';
 import { BoardRankResponse } from '@/types/board';
-import { CreatePostRequest } from '@/types/post';
 
 export default class PostRepository {
     private prisma = prisma;
@@ -57,6 +56,7 @@ export default class PostRepository {
                 id: true,
                 title: true,
                 content: true,
+                thumbnailImage: true,
                 postViews: {
                     select: {
                         id: true,
@@ -323,7 +323,19 @@ export default class PostRepository {
         }));
     }
 
-    async createPost({ userId, title, content, stockId, thumbnailImage }: CreatePostRequest & { userId: string }) {
+    async createPost({
+        userId,
+        title,
+        content,
+        stockId,
+        thumbnailImage,
+    }: {
+        userId: string;
+        title: string;
+        content: string;
+        stockId: number;
+        thumbnailImage?: string;
+    }) {
         const post = await this.prisma.post.create({
             data: {
                 userId,
@@ -350,13 +362,13 @@ export default class PostRepository {
         userId,
         title,
         content,
-        thumbnailImage,
+        thumbnailImageUrl,
     }: {
         postId: number;
         userId: string;
         title: string;
         content: string;
-        thumbnailImage?: string | null;
+        thumbnailImageUrl?: string | null;
     }) {
         return await this.prisma.post.update({
             where: {
@@ -366,7 +378,7 @@ export default class PostRepository {
             data: {
                 title,
                 content,
-                thumbnailImage: thumbnailImage,
+                thumbnailImage: thumbnailImageUrl,
             },
         });
     }
@@ -405,7 +417,7 @@ export default class PostRepository {
                         },
                     },
                     orderBy: {
-                        createdAt: 'desc',
+                        createdAt: 'asc',
                     },
                 },
                 stock: {
@@ -420,6 +432,30 @@ export default class PostRepository {
                         nickname: true,
                         profileImage: true,
                     },
+                },
+            },
+        });
+    }
+
+    async getPostImageUrl({ postId }: { postId: number }) {
+        return await this.prisma.post.findUnique({
+            where: { id: postId },
+            select: { thumbnailImage: true },
+        });
+    }
+
+    async likePost({ postId, userId }: { postId: number; userId: string }) {
+        return await this.prisma.postLike.create({
+            data: { postId, userId },
+        });
+    }
+
+    async unlikePost({ postId, userId }: { postId: number; userId: string }) {
+        return await this.prisma.postLike.delete({
+            where: {
+                postId_userId: {
+                    postId,
+                    userId,
                 },
             },
         });
