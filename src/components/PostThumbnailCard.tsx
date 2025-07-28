@@ -42,7 +42,7 @@ export const PostActions = ({
     commentCount: number;
 }) => {
     return (
-        <div className='flex pl-[1.6rem] pb-[1.6rem] pr-[1.2rem] pt-[.4rem]'>
+        <div className='flex'>
             <div className='relative z-2'>
                 <PostLikeButton isLiked={isLiked} likeCount={likeCount} />
             </div>
