@@ -1,6 +1,6 @@
-import MainNews from '@/components/Main/MainNews';
-import MainShortforms from '@/components/Main/MainShortforms';
-import TopStockRank from '@/components/Main/TopStockRank';
+import MainNews from '@/app/MainNews';
+import MainShortforms from '@/app/MainShortforms';
+import Top3 from '@/app/Top3';
 import Link from 'next/link';
 import { SnackbarTrigger } from '@/components/Snackbar';
 
@@ -39,7 +39,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ r
                             12월 21일 9시 기준
                         </span>
                     </div>
-                    <TopStockRank />
+                    <Top3 />
                 </div>
 
                 <div className='mt-[3.6rem] lg:mt-[5.2rem]'>
