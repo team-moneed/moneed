@@ -9,6 +9,8 @@ import {
     UpdatePostResponse,
     PostDetail,
     UpdatePostRequest,
+    LikePostResponse,
+    UnlikePostResponse,
 } from '@/types/post';
 import { http } from './client';
 import { isFile } from '@/util/typeChecker';
@@ -104,4 +106,12 @@ export const updatePost = async ({
     return await http.put<UpdatePostResponse>(`/api/posts/${postId}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
+};
+
+export const likePost = async ({ postId }: { postId: number }) => {
+    return await http.post<LikePostResponse>(`/api/posts/${postId}/like`);
+};
+
+export const unlikePost = async ({ postId }: { postId: number }) => {
+    return await http.delete<UnlikePostResponse>(`/api/posts/${postId}/like`);
 };

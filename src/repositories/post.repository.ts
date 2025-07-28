@@ -417,7 +417,7 @@ export default class PostRepository {
                         },
                     },
                     orderBy: {
-                        createdAt: 'desc',
+                        createdAt: 'asc',
                     },
                 },
                 stock: {
@@ -441,6 +441,23 @@ export default class PostRepository {
         return await this.prisma.post.findUnique({
             where: { id: postId },
             select: { thumbnailImage: true },
+        });
+    }
+
+    async likePost({ postId, userId }: { postId: number; userId: string }) {
+        return await this.prisma.postLike.create({
+            data: { postId, userId },
+        });
+    }
+
+    async unlikePost({ postId, userId }: { postId: number; userId: string }) {
+        return await this.prisma.postLike.delete({
+            where: {
+                postId_userId: {
+                    postId,
+                    userId,
+                },
+            },
         });
     }
 }
