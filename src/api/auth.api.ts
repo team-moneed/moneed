@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { http } from './request';
+import { http } from './client';
 
 type KakaoTokenParams = {
     code: string;
