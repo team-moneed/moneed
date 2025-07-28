@@ -1,4 +1,14 @@
-import { TopBoardPostThumbnail, PostThumbnail, TopPostThumbnail } from '@/types/post';
+import {
+    TopBoardPostThumbnail,
+    PostThumbnail,
+    TopPostThumbnail,
+    HotPostThumbnail,
+    CreatePostRequest,
+    CreatePostResponse,
+    DeletePostResponse,
+    UpdatePostResponse,
+    PostDetail,
+} from '@/types/post';
 import { http } from './client';
 
 export const getTopBoardPosts = async ({ boardId, limit }: { boardId: number; limit?: number }) => {
@@ -19,6 +29,21 @@ export const getTopPosts = async ({ limit = 5 }: { limit?: number } = {}) => {
     return res.data;
 };
 
+export const getHotPosts = async ({ limit = 15, cursor = 0 }: { limit?: number; cursor?: number } = {}) => {
+    const res = await http.get<HotPostThumbnail[]>(`/api/posts/hot`, {
+        params: {
+            limit,
+            cursor,
+        },
+    });
+    return res.data;
+};
+
+export const getPost = async ({ postId }: { postId: number }) => {
+    const res = await http.get<PostDetail>(`/api/posts/${postId}`);
+    return res.data;
+};
+
 export const getPosts = async ({
     stockId,
     cursor = new Date(),
@@ -36,4 +61,34 @@ export const getPosts = async ({
         },
     });
     return res.data;
+};
+
+export const createPost = async ({ title, content, stockId, thumbnailImage }: CreatePostRequest) => {
+    return await http.post<CreatePostResponse>(`/api/posts`, {
+        title,
+        content,
+        stockId,
+        thumbnailImage,
+    });
+};
+
+export const deletePost = async ({ postId }: { postId: number }) => {
+    return await http.delete<DeletePostResponse>(`/api/posts/${postId}`);
+};
+export const updatePost = async ({
+    postId,
+    title,
+    content,
+    thumbnailImage,
+}: {
+    postId: number;
+    title: string;
+    content: string;
+    thumbnailImage?: string | null;
+}) => {
+    return await http.put<UpdatePostResponse>(`/api/posts/${postId}`, {
+        title,
+        content,
+        thumbnailImage,
+    });
 };

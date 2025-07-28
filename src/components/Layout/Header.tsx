@@ -163,9 +163,9 @@ const Header = () => {
 
     const pathname = usePathname();
 
-    if (noMenuHeaderPaths.includes(pathname)) {
+    if (noMenuHeaderPaths.some(path => pathname.startsWith(path))) {
         return <NoMenuHeader />;
-    } else if (menuHeaderPaths.includes(pathname)) {
+    } else if (menuHeaderPaths.some(path => pathname.startsWith(path))) {
         return <MenuHeader />;
     } else {
         return <CommonHeader />;

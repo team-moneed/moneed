@@ -1,10 +1,18 @@
 import { cn } from '@/util/style';
-import { useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { PrimaryDropdown, PrimaryDropdownProps } from './Dropdown';
-import DateFormatter from '@/util/Dateformatter';
-import Icon from './Icon';
+import DateFormatter from '@/components/Dateformatter';
 import ImageCarousel from './Carousel/ImageCarousel';
 import { EmblaOptionsType } from 'embla-carousel';
+import { useModal } from '@/context/ModalContext';
+import { useRouter } from 'next/navigation';
+import { PostThumbnail } from '@/types/post';
+import { deletePost } from '@/api/post.api';
+import { REASON_CODES } from '@/constants/snackbar';
+import { queryClient } from './QueryClientProvider';
+import PostLikeButton from './Post/PostLikeButton';
+import PostCommentButton from './Post/PostCommentButton';
+import PostClipBoardButton from './Post/PostClipBoardButton';
 
 export const PostTitle = ({ title }: { title: string }) => {
     return <h3 className='text-[2rem] font-bold leading-[140%] text-moneed-black line-clamp-1 mb-[.6rem]'>{title}</h3>;
@@ -28,33 +36,21 @@ export const PostActions = ({
     isLiked,
     likeCount,
     commentCount,
-    toggleLike,
-    handleCopyClipBoard,
 }: {
     isLiked: boolean;
     likeCount: number;
     commentCount: number;
-    toggleLike: () => void;
-    handleCopyClipBoard: () => void;
 }) => {
     return (
         <div className='flex pl-[1.6rem] pb-[1.6rem] pr-[1.2rem] pt-[.4rem]'>
             <div className='relative z-2'>
-                <button type='button' onClick={toggleLike}>
-                    <Icon iconUrl={isLiked ? '/redHeartIcon.svg' : '/heartIcon.svg'} width={18} height={18}></Icon>
-                </button>
+                <PostLikeButton isLiked={isLiked} likeCount={likeCount} />
             </div>
-            <span className='relative z-2 mr-4 text-[1.4rem] font-normal leading-[140%] text-moneed-gray-8'>
-                {likeCount}
-            </span>
-            <div className=' relative z-2'>
-                <Icon iconUrl='/commentIcon.svg' width={20} height={20} />
+            <div className='relative z-2'>
+                <PostCommentButton commentCount={commentCount} />
             </div>
-            <span className='relative z-2 mr-4 text-[1.4rem] font-normal leading-[140%] text-moneed-gray-8'>
-                {commentCount}
-            </span>
-            <div className=' relative z-2'>
-                <Icon onClick={() => handleCopyClipBoard()} iconUrl='/sharingIcon.svg' width={20} height={20} />
+            <div className='relative z-2'>
+                <PostClipBoardButton />
             </div>
         </div>
     );
@@ -79,49 +75,80 @@ export const PostAuthorWithDate = ({
     );
 };
 
-export const PostDropdown = ({
-    dropdownMenus,
-    isDropdownOpen,
-    setIsDropdownOpen,
-}: {
-    dropdownMenus: PrimaryDropdownProps['dropdownMenus'];
-    isDropdownOpen: boolean;
-    setIsDropdownOpen: (isDropdownOpen: boolean) => void;
-}) => {
-    const dropdownRef = useRef<HTMLDivElement>(null);
+export const PostDropdown = ({ post }: { post: PostThumbnail }) => {
+    const { confirm } = useModal();
+    const router = useRouter();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-    const handleOpenDropdown = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const onEditPost = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        setIsDropdownOpen(true);
+        router.push(`/editpost/${post.id}`);
     };
 
-    const closeDropdown = () => {
+    //게시글 삭제할건지 묻는 모달
+    const openPostDeletemodal = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        const result = confirm(
+            <span>
+                삭제된 내용은 복구되지 않아요.
+                <br />
+                정말 삭제하실건가요?
+            </span>,
+        );
+        result.then(confirmed => {
+            if (confirmed) {
+                handleDeletePost();
+            }
+        });
         setIsDropdownOpen(false);
     };
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setIsDropdownOpen(false);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [setIsDropdownOpen]);
+    //게시글 삭제 api 연동
+    const handleDeletePost = async () => {
+        const res = await deletePost({ postId: post.id });
+        if (res.status === 200) {
+            // TODO: 연속 두 개의 게시글 삭제 시 쿼리 파라미터(?reason)이 변경되지 않아 스낵바가 표시되지 않음
+            router.push(`/community/${post.stock.id}?reason=${REASON_CODES.POST_DELETED}`);
+            queryClient.invalidateQueries({ queryKey: ['posts'] });
+        }
+    };
+
+    // TODO: 자기 게시글인 경우에만 표시하도록 수정
+    const dropdownMenus: PrimaryDropdownProps['dropdownMenus'] = [
+        {
+            icon: '/icon/icon-scissors.svg',
+            text: '게시글 수정',
+            onClick: onEditPost,
+        },
+        {
+            icon: '/icon/icon-trashcan.svg',
+            text: '게시글 삭제',
+            onClick: openPostDeletemodal,
+        },
+    ];
+
+    const toggleDropdown = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        setIsDropdownOpen(prev => !prev);
+        console.log('isDropdownOpen', isDropdownOpen);
+    };
+
+    const closeDropdown = (e?: Event) => {
+        if (e) {
+            e.stopPropagation();
+        }
+        setIsDropdownOpen(false);
+    };
 
     return (
         <div className='relative ml-auto shrink-0 z-2'>
             <button
                 className='cursor-pointer rounded-full overflow-hidden aspect-square w-[2.4rem]'
-                onClick={handleOpenDropdown}
+                onClick={toggleDropdown}
             >
                 <img src='/icon/icon-more.svg' alt='' className='w-full h-full object-cover' />
             </button>
-            {isDropdownOpen && (
-                <div ref={dropdownRef}>
-                    <PrimaryDropdown dropdownMenus={dropdownMenus} closeDropdown={closeDropdown} />
-                </div>
-            )}
+            {isDropdownOpen && <PrimaryDropdown dropdownMenus={dropdownMenus} closeDropdown={closeDropdown} />}
         </div>
     );
 };

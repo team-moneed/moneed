@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import { BoardRankResponse } from '@/types/board';
+import { CreatePostRequest } from '@/types/post';
 
 export default class PostRepository {
     private prisma = prisma;
@@ -36,6 +37,96 @@ export default class PostRepository {
 
         return posts;
     }
+
+    /**
+     * 점수 기반 상위 게시물 조회
+     * Score = (V + 3L + 5C) × 1 / (T + 2)^1.8
+     * @param limit 조회할 게시글 수
+     * @param cursor 점수 기준 커서
+     * @returns 점수순으로 정렬된 게시글 목록
+     */
+    async getPostsByScore({ limit, cursor }: { limit: number; cursor?: number }) {
+        const posts = await this.prisma.post.findMany({
+            where: {
+                score: {
+                    gt: cursor === 0 ? undefined : cursor,
+                },
+            },
+            select: {
+                score: true,
+                id: true,
+                title: true,
+                content: true,
+                postViews: {
+                    select: {
+                        id: true,
+                    },
+                },
+                postLikes: {
+                    select: {
+                        id: true,
+                        userId: true,
+                    },
+                },
+                createdAt: true,
+                user: {
+                    select: {
+                        id: true,
+                        nickname: true,
+                        profileImage: true,
+                    },
+                },
+                stock: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
+                comments: {
+                    select: {
+                        id: true,
+                    },
+                },
+            },
+            orderBy: {
+                score: 'desc',
+            },
+        });
+
+        // 각 게시물의 점수를 계산하고 정렬
+        const postsWithScores = posts.map(post => {
+            const score =
+                post.score ||
+                calcScore({
+                    views: post.postViews.length,
+                    likes: post.postLikes.length,
+                    comments: post.comments.length,
+                    createdAt: post.createdAt,
+                });
+
+            return {
+                ...post,
+                createdAt: post.createdAt.toISOString(),
+                score,
+            };
+        });
+
+        await Promise.all(postsWithScores.map(post => this.setPostsScore({ postId: post.id, score: post.score })));
+
+        return postsWithScores.sort((a, b) => b.score - a.score).slice(0, limit);
+    }
+
+    async setPostsScore({ postId, score }: { postId: number; score: number }) {
+        await this.prisma.post.update({
+            where: {
+                id: postId,
+            },
+            data: {
+                score,
+            },
+        });
+    }
+
     /**
      * 종목별 게시글 조회
      * @param stockId 종목 ID
@@ -72,7 +163,6 @@ export default class PostRepository {
         stockId,
         cursor,
         limit,
-        userId,
     }: {
         stockId: number;
         cursor: Date;
@@ -92,13 +182,12 @@ export default class PostRepository {
                 content: true,
                 createdAt: true,
                 thumbnailImage: true,
-                postLikes: userId
-                    ? {
-                          where: {
-                              userId,
-                          },
-                      }
-                    : undefined,
+                postLikes: {
+                    select: {
+                        id: true,
+                        userId: true,
+                    },
+                },
                 comments: {
                     select: {
                         id: true,
@@ -106,6 +195,7 @@ export default class PostRepository {
                 },
                 stock: {
                     select: {
+                        id: true,
                         name: true,
                     },
                 },
@@ -232,4 +322,127 @@ export default class PostRepository {
             totalComments: Number(item.totalComments),
         }));
     }
+
+    async createPost({ userId, title, content, stockId, thumbnailImage }: CreatePostRequest & { userId: string }) {
+        const post = await this.prisma.post.create({
+            data: {
+                userId,
+                title,
+                content,
+                stockId,
+                thumbnailImage,
+            },
+        });
+        return post;
+    }
+
+    async deletePost({ postId, userId }: { postId: number; userId: string }) {
+        return await this.prisma.post.delete({
+            where: {
+                id: postId,
+                userId,
+            },
+        });
+    }
+
+    async updatePost({
+        postId,
+        userId,
+        title,
+        content,
+        thumbnailImage,
+    }: {
+        postId: number;
+        userId: string;
+        title: string;
+        content: string;
+        thumbnailImage?: string | null;
+    }) {
+        return await this.prisma.post.update({
+            where: {
+                id: postId,
+                userId,
+            },
+            data: {
+                title,
+                content,
+                thumbnailImage: thumbnailImage,
+            },
+        });
+    }
+
+    async getPost({ postId }: { postId: number }) {
+        return await this.prisma.post.findUnique({
+            where: {
+                id: postId,
+            },
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                createdAt: true,
+                thumbnailImage: true,
+                postLikes: {
+                    select: {
+                        id: true,
+                        userId: true,
+                    },
+                },
+                comments: {
+                    select: {
+                        id: true,
+                        content: true,
+                        createdAt: true,
+                        userId: true,
+                        postId: true,
+                        updatedAt: true,
+                        user: {
+                            select: {
+                                id: true,
+                                nickname: true,
+                                profileImage: true,
+                            },
+                        },
+                    },
+                    orderBy: {
+                        createdAt: 'desc',
+                    },
+                },
+                stock: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
+                user: {
+                    select: {
+                        id: true,
+                        nickname: true,
+                        profileImage: true,
+                    },
+                },
+            },
+        });
+    }
+}
+
+function calcScore({
+    views,
+    likes,
+    comments,
+    createdAt,
+}: {
+    views: number;
+    likes: number;
+    comments: number;
+    createdAt: Date;
+}): number {
+    const now = new Date();
+    const timeDiffMs = now.getTime() - createdAt.getTime();
+    const timeDiffDays = timeDiffMs / (1000 * 60 * 60 * 24); // 일 단위로 변환
+
+    // Score = (V + 3L + 5C) × 1 / (T + 2)^1.8
+    const score = (views + 3 * likes + 5 * comments) * (1 / Math.pow(timeDiffDays + 2, 1.8));
+
+    return score;
 }

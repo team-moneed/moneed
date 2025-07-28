@@ -18,6 +18,7 @@ export default function Welcome() {
             <div className='px-8 max-w-512 mx-auto'>
                 <div className='text-[2.4rem] text-moneed-black font-bold text-center mt-36 leading-[140%]'>
                     <RandomNickname />
+                    님,
                     <br />
                     회원가입을 축하합니다.
                 </div>

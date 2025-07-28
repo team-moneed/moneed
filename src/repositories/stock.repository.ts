@@ -28,6 +28,14 @@ export class StockRepository {
         });
     }
 
+    async getStock(stockId: number) {
+        return this.prisma.stock.findUnique({
+            where: {
+                id: stockId,
+            },
+        });
+    }
+
     async getStocks(count: number, cursor: number) {
         return this.prisma.stock.findMany({
             where: {

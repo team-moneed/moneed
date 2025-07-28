@@ -2,40 +2,6 @@ import { PrismaClient } from '../src/generated/prisma';
 
 const prisma = new PrismaClient();
 
-// Stock 데이터
-const stockData = [
-    { name: '애플', thumbnailImage: '' },
-    { name: '마이크로소프트', thumbnailImage: '' },
-    { name: '엔비디아', thumbnailImage: '' },
-    { name: '아마존닷컴', thumbnailImage: '' },
-    { name: '알파벳 C', thumbnailImage: '' },
-    { name: '알파벳 A', thumbnailImage: '' },
-    { name: '메타 플랫폼스(페이스북)', thumbnailImage: '' },
-    { name: '테슬라', thumbnailImage: '' },
-    { name: '브로드컴', thumbnailImage: '' },
-    { name: 'TSMC(ADR)', thumbnailImage: '' },
-    { name: '버크셔 헤서웨이 B', thumbnailImage: '' },
-    { name: '월마트', thumbnailImage: '' },
-    { name: '일라이 릴리', thumbnailImage: '' },
-    { name: '제이피모간 체이스', thumbnailImage: '' },
-    { name: '비자', thumbnailImage: '' },
-    { name: '마스타카드', thumbnailImage: '' },
-    { name: '오라클', thumbnailImage: '' },
-    { name: '엑슨 모빌', thumbnailImage: '' },
-    { name: '유나이티드헬스 그룹', thumbnailImage: '' },
-    { name: '코스트코 홀세일', thumbnailImage: '' },
-    { name: '프록터 앤드 갬블', thumbnailImage: '' },
-    { name: '넷플릭스', thumbnailImage: '' },
-    { name: '홈 디포', thumbnailImage: '' },
-    { name: '존슨 앤드 존슨', thumbnailImage: '' },
-    { name: '노보노디스크(ADR)', thumbnailImage: '' },
-    { name: '뱅크오브아메리카', thumbnailImage: '' },
-    { name: '세일스포스', thumbnailImage: '' },
-    { name: '애브비', thumbnailImage: '' },
-    { name: 'SAP(ADR)', thumbnailImage: '' },
-    { name: 'ASML 홀딩(ADR)', thumbnailImage: '' },
-];
-
 // Posts 데이터
 const postTitles = [
     '애플 주가 전망 어떻게 보시나요?',
@@ -88,29 +54,41 @@ const postContents = [
     '최근 업계 트렌드를 선도하고 있고, 혁신적인 비즈니스 모델로 차별화되어 있어서 긍정적으로 봅니다.',
 ];
 
-async function seedStocks() {
-    console.log('🚀 Stock 데이터 생성 시작...');
+// Comments 더미 데이터
+const commentContents = [
+    '좋은 분석이네요! 동감합니다.',
+    '저도 비슷하게 생각하고 있었는데, 좋은 정보 감사합니다.',
+    '다른 관점에서 보면 어떨까요?',
+    '정말 유용한 글입니다. 참고하겠습니다.',
+    '추가로 고려해봐야 할 부분이 있을 것 같은데요.',
+    '훌륭한 인사이트입니다!',
+    '이런 시각으로 봐야겠네요.',
+    '공감합니다. 저도 같은 생각이었어요.',
+    '흥미로운 분석이네요. 더 자세히 알고 싶습니다.',
+    '좋은 정보 공유 감사합니다.',
+    '이 부분에 대해서는 조금 다르게 생각해요.',
+    '정말 도움이 되는 내용이네요!',
+    '새로운 관점을 배웠습니다.',
+    '구체적인 데이터가 있으면 더 좋겠어요.',
+    '경험상 이런 케이스도 있었습니다.',
+    '앞으로 지켜봐야겠네요.',
+    '좋은 지적이세요!',
+    '이런 분석 너무 좋아요.',
+    '더 많은 의견을 듣고 싶습니다.',
+    '정말 인상적인 내용입니다.',
+    '저도 이 종목에 관심이 있어요.',
+    '시장 상황을 잘 분석하신 것 같아요.',
+    '투자에 참고하겠습니다.',
+    '전문적인 분석 감사합니다.',
+    '다음 글도 기대하겠습니다!',
+    '정말 유익한 정보네요.',
+    '이런 관점은 처음 봅니다.',
+    '수고하셨습니다!',
+    '좋은 자료 공유 감사해요.',
+    '계속 관심 갖고 지켜보겠습니다.',
+];
 
-    let stocksCreated = 0;
-    for (const stock of stockData) {
-        const existingStock = await prisma.stock.findFirst({
-            where: { name: stock.name },
-        });
-
-        if (existingStock) {
-            console.log(`⚠️  '${stock.name}'은(는) 이미 존재합니다.`);
-            continue;
-        }
-
-        await prisma.stock.create({ data: stock });
-        console.log(`✅ '${stock.name}' 생성 완료`);
-        stocksCreated++;
-    }
-
-    console.log(`📊 Stock 생성 완료: ${stocksCreated}개 추가됨\n`);
-}
-
-async function seedPosts() {
+export async function seedPosts() {
     console.log('📝 Posts 더미 데이터 생성 시작...');
 
     // User와 Stock 데이터 확인
@@ -124,12 +102,12 @@ async function seedPosts() {
 
     if (users.length === 0) {
         console.log('❌ User 데이터가 없습니다. Posts 생성을 건너뜁니다.');
-        return;
+        return [];
     }
 
     if (stocks.length === 0) {
         console.log('❌ Stock 데이터가 없습니다. Posts 생성을 건너뜁니다.');
-        return;
+        return [];
     }
 
     console.log(`✅ Users: ${users.length}개, Stocks: ${stocks.length}개 발견`);
@@ -179,7 +157,7 @@ async function seedPosts() {
     return createdPosts;
 }
 
-async function seedPostLikes(posts: { id: number; userId: string }[]) {
+export async function seedPostLikes(posts: { id: number; userId: string }[]) {
     console.log('❤️ PostLikes 더미 데이터 생성 시작...');
 
     const users = await prisma.user.findMany({
@@ -230,7 +208,7 @@ async function seedPostLikes(posts: { id: number; userId: string }[]) {
     console.log(`📊 PostLikes 생성 완료: ${likesCreated}개 추가됨`);
 }
 
-async function seedPostViews(posts: { id: number; userId: string }[]) {
+export async function seedPostViews(posts: { id: number; userId: string }[]) {
     console.log('👁️ PostViews 더미 데이터 생성 시작...');
 
     const users = await prisma.user.findMany({
@@ -281,26 +259,72 @@ async function seedPostViews(posts: { id: number; userId: string }[]) {
     console.log(`📊 PostViews 생성 완료: ${viewsCreated}개 추가됨`);
 }
 
+export async function seedComments(posts: { id: number; userId: string }[]) {
+    console.log('💬 Comments 더미 데이터 생성 시작...');
+
+    const users = await prisma.user.findMany({
+        select: { id: true, nickname: true },
+    });
+
+    if (users.length === 0) {
+        console.log('❌ User 데이터가 없습니다. Comments 생성을 건너뜁니다.');
+        return;
+    }
+
+    if (posts.length === 0) {
+        console.log('❌ Post 데이터가 없습니다. Comments 생성을 건너뜁니다.');
+        return;
+    }
+
+    let commentsCreated = 0;
+    const totalCommentsToCreate = Math.floor(posts.length * 1.5); // 각 포스트당 평균 1.5개의 댓글
+
+    for (let i = 0; i < totalCommentsToCreate; i++) {
+        const randomPost = posts[Math.floor(Math.random() * posts.length)];
+        const randomUser = users[Math.floor(Math.random() * users.length)];
+        const randomContent = commentContents[Math.floor(Math.random() * commentContents.length)];
+
+        // 댓글 생성 시간을 포스트 생성 시간 이후로 설정
+        const randomDate = new Date();
+        randomDate.setDate(randomDate.getDate() - Math.floor(Math.random() * 25)); // 0~25일 전
+
+        try {
+            await prisma.comment.create({
+                data: {
+                    postId: randomPost.id,
+                    userId: randomUser.id,
+                    content: randomContent,
+                    createdAt: randomDate,
+                    updatedAt: randomDate,
+                },
+            });
+
+            commentsCreated++;
+            if (commentsCreated % 20 === 0) {
+                console.log(`✅ ${commentsCreated}/${totalCommentsToCreate} Comments 생성 중...`);
+            }
+        } catch (error) {
+            console.error(`❌ Comment 생성 실패:`, error);
+        }
+    }
+
+    console.log(`📊 Comments 생성 완료: ${commentsCreated}개 추가됨`);
+}
+
 async function main() {
-    console.log('🌱 전체 시드 데이터 생성을 시작합니다...\n');
-
-    // 1단계: Stock 데이터 생성
-    await seedStocks();
-
-    // 2단계: Posts 데이터 생성
     const createdPosts = await seedPosts();
 
-    // 3단계: PostLikes 데이터 생성
     if (createdPosts && createdPosts.length > 0) {
         await seedPostLikes(createdPosts);
     }
 
-    // 4단계: PostViews 데이터 생성
     if (createdPosts && createdPosts.length > 0) {
         await seedPostViews(createdPosts);
     }
 
-    console.log('\n🎉 모든 시드 데이터 생성이 완료되었습니다!');
+    if (createdPosts && createdPosts.length > 0) {
+        await seedComments(createdPosts);
+    }
 }
 
 main()

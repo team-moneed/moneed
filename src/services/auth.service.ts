@@ -89,28 +89,6 @@ export class AuthService {
         return this.userRepository.create(providerData, userWithNickname);
     }
 
-    async getTokenWithKakao(code: string) {
-        const kakaoToken = await getKakaoToken(code);
-        const {
-            access_token: accessToken,
-            refresh_token: refreshToken,
-            expires_in: accessTokenExpiresInSec,
-            refresh_token_expires_in: refreshTokenExpiresInSec,
-        } = kakaoToken;
-
-        return {
-            accessToken,
-            refreshToken,
-            accessTokenExpiresInSec,
-            refreshTokenExpiresInSec,
-        };
-    }
-
-    async getKakaoUserInfo(kakaoAccessToken: string) {
-        const kakaoUserInfo = await getKakaoUserInfo(kakaoAccessToken);
-        return kakaoUserInfo;
-    }
-
     async logoutWithKakao(userId: string) {
         try {
             const providerInfo = await this.providerRepository.findProviderInfo(userId, 'kakao');
@@ -174,6 +152,28 @@ export class AuthService {
             ok: false,
             reason: 'Failed to process leave request',
         };
+    }
+
+    async getTokenWithKakao(code: string) {
+        const kakaoToken = await getKakaoToken(code);
+        const {
+            access_token: accessToken,
+            refresh_token: refreshToken,
+            expires_in: accessTokenExpiresInSec,
+            refresh_token_expires_in: refreshTokenExpiresInSec,
+        } = kakaoToken;
+
+        return {
+            accessToken,
+            refreshToken,
+            accessTokenExpiresInSec,
+            refreshTokenExpiresInSec,
+        };
+    }
+
+    async getKakaoUserInfo(kakaoAccessToken: string) {
+        const kakaoUserInfo = await getKakaoUserInfo(kakaoAccessToken);
+        return kakaoUserInfo;
     }
 
     async leave(userId: string) {
