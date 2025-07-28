@@ -200,4 +200,12 @@ export default class PostService {
             await s3Service.deletePostImage(fileName);
         }
     }
+
+    async likePost({ postId, userId }: { postId: number; userId: string }) {
+        return await this.postRepository.likePost({ postId, userId });
+    }
+
+    async unlikePost({ postId, userId }: { postId: number; userId: string }) {
+        return await this.postRepository.unlikePost({ postId, userId });
+    }
 }

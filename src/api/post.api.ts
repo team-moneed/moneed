@@ -84,6 +84,7 @@ export const createPost = async ({ stockId, title, content, thumbnailImage }: Cr
 export const deletePost = async ({ postId }: { postId: number }) => {
     return await http.delete<DeletePostResponse>(`/api/posts/${postId}`);
 };
+
 export const updatePost = async ({
     postId,
     title,
