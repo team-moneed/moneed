@@ -107,10 +107,15 @@ model OAuthAccount {
 }
 
 model Stock {
-  name           String
-  thumbnailImage String
   id             Int             @id @default(autoincrement())
+  symbol         String
+  name           String
+  logoUrl      String
   posts          Post[]
+  summary        String
+  sector         String
+  subSector      String
+  refUrl         String?
   selectedStocks SelectedStock[]
 
   @@map("stocks")
