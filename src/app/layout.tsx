@@ -6,6 +6,8 @@ import Header from '@/components/Layout/Header';
 import MobileNav from '@/components/Layout/MobileNav';
 import Footer from '@/components/Layout/Footer';
 import QueryClientProvider from '@/components/QueryClientProvider';
+import { SnackbarProvider } from '@/components/Snackbar';
+import ReactQueryDevtools from '@/components/ReactQueryDevtools';
 
 export const metadata: Metadata = {
     title: 'Moneed',
@@ -38,7 +40,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                             <main className='flex-1 pb-[8rem]'>{children}</main>
                             <Footer />
                             <MobileNav />
+                            <SnackbarProvider />
                         </ModalProvider>
+                        <ReactQueryDevtools />
                     </QueryClientProvider>
                 </div>
 
