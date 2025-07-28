@@ -1,10 +1,11 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { ChipLink, ChipSkeleton } from '@/components/Chip';
+import { ChipLink } from '@/components/Chip';
 import Icon from '@/components/Icon';
 import Link from 'next/link';
 import { useStocks } from '@/hooks/useStocks';
+import ChipSkeleton from '@/components/Skeletons/ChipSkeleton';
 
 export default function StockTypeBar() {
     const params = useParams();

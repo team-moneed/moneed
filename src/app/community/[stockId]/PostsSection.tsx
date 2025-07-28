@@ -1,4 +1,4 @@
-import PostThumbnailSkeleton from '@/components/Skeleton/PostThumbnail';
+import PostThumbnailSkeleton from '@/components/Skeletons/PostThumbnailSkeleton';
 import { Suspense } from 'react';
 import Posts from './Posts';
 

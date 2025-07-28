@@ -1,13 +1,21 @@
 import PostRepository from '@/repositories/post.repository';
-import { HotPostThumbnail, PostThumbnail, TopPostThumbnail } from '@/types/post';
+import { CreatePostRequest, HotPostThumbnail, PostDetail, PostThumbnail, TopPostThumbnail } from '@/types/post';
 
 export default class PostService {
     private readonly postRepository = new PostRepository();
 
     // 24시간 내 게시판 순위 조회 (게시글 수 > 조회수 > 좋아요수 > 댓글수)
     async getBoardRank({ limit }: { limit: number }) {
-        const boardRank = await this.postRepository.getBoardRank({ limit });
-        return boardRank;
+        const boardRankWithInHours = await this.postRepository.getBoardRankWithInHours({ limit, hours: 24 });
+        if (boardRankWithInHours.length === limit) {
+            return boardRankWithInHours;
+        } else {
+            const boardRank = await this.postRepository.getBoardRank({
+                offset: boardRankWithInHours.length,
+                limit: limit - boardRankWithInHours.length,
+            });
+            return [...boardRankWithInHours, ...boardRank];
+        }
     }
 
     async getBoardTopPosts({ boardId, limit }: { boardId: number; limit: number }) {
@@ -29,7 +37,10 @@ export default class PostService {
                 profileImage: post.user.profileImage,
             },
             score: post.score,
-            stockId: post.stock.id,
+            stock: {
+                id: post.stock.id,
+                name: post.stock.name,
+            },
         }));
 
         return postThumbnailList;
@@ -42,15 +53,42 @@ export default class PostService {
     }: { limit?: number; cursor?: number; userId?: string } = {}): Promise<HotPostThumbnail[]> {
         const postList = await this.postRepository.getPostsByScore({ limit, cursor });
 
-        const postThumbnailList: HotPostThumbnail[] = postList.map(post => ({
+        const postThumbnailList = postList.map(post => ({
             ...post,
             isLiked: post.postLikes.some(like => like.userId === userId),
             likeCount: post.postLikes.length,
             commentCount: post.comments.length,
-            stocktype: post.stock.name,
+            stock: {
+                id: post.stock.id,
+                name: post.stock.name,
+            },
             thumbnailImage: undefined,
         }));
         return postThumbnailList;
+    }
+
+    async getPost({ userId, postId }: { userId?: string; postId: number }): Promise<PostDetail> {
+        const post = await this.postRepository.getPost({ postId });
+        if (!post) {
+            throw new Error('Post not found');
+        }
+        return {
+            ...post,
+            createdAt: post.createdAt,
+            isLiked: post.postLikes.some(like => like.userId === userId),
+            likeCount: post.postLikes.length,
+            comments: post.comments,
+            thumbnailImage: post.thumbnailImage ?? undefined,
+            user: {
+                id: post.user.id,
+                nickname: post.user.nickname,
+                profileImage: post.user.profileImage,
+            },
+            stock: {
+                id: post.stock.id,
+                name: post.stock.name,
+            },
+        };
     }
 
     async getPostsWithUserExtended({
@@ -64,16 +102,19 @@ export default class PostService {
         limit?: number;
         userId?: string;
     }): Promise<PostThumbnail[]> {
-        const postList = await this.postRepository.getPostsWithUserExtended({ stockId, cursor, limit, userId });
+        const postList = await this.postRepository.getPostsWithUserExtended({ stockId, cursor, limit });
         const postThumbnailList: PostThumbnail[] = postList.map(post => ({
             id: post.id,
             title: post.title,
             content: post.content,
             createdAt: post.createdAt.toISOString(),
-            isLiked: userId ? post.postLikes.some(like => like.userId === userId) : false,
+            isLiked: post.postLikes.some(like => like.userId === userId),
             likeCount: post.postLikes.length,
             commentCount: post.comments.length,
-            stocktype: post.stock.name,
+            stock: {
+                id: post.stock.id,
+                name: post.stock.name,
+            },
             thumbnailImage: post.thumbnailImage ?? undefined,
             user: {
                 id: post.user.id,
@@ -82,5 +123,30 @@ export default class PostService {
             },
         }));
         return postThumbnailList;
+    }
+
+    async createPost({ userId, title, content, stockId, thumbnailImage }: CreatePostRequest & { userId: string }) {
+        const post = await this.postRepository.createPost({ userId, title, content, stockId, thumbnailImage });
+        return post;
+    }
+
+    async deletePost({ postId, userId }: { postId: number; userId: string }) {
+        return await this.postRepository.deletePost({ postId, userId });
+    }
+
+    async updatePost({
+        postId,
+        userId,
+        title,
+        content,
+        thumbnailImage,
+    }: {
+        postId: number;
+        userId: string;
+        title: string;
+        content: string;
+        thumbnailImage?: string | null;
+    }) {
+        return await this.postRepository.updatePost({ postId, userId, title, content, thumbnailImage });
     }
 }

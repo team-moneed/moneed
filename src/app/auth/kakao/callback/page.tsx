@@ -4,9 +4,6 @@ import { Suspense, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { login } from '@/api/auth.api';
 import { useQuery } from '@tanstack/react-query';
-import useAuthStore from '@/store/useAuthStore';
-// import useUserStore from '@/store/useUserStore';
-import { getCookie } from '@/util/cookie';
 
 function KakaoCallback() {
     const searchParams = useSearchParams();
@@ -21,46 +18,29 @@ function KakaoCallback() {
         router.push(`/auth/error?error=${error}&description=${errorDescription}`);
     }
 
-    const setAccessToken = useAuthStore(state => state.setAccessToken);
-    // TODO: 유저 정보 로직 추가
-    // const setUserInfo = useUserStore(state => state.setUserInfo);
-
-    const { data } = useQuery({
+    const { data: token } = useQuery({
         queryKey: ['kakao', code, state],
         queryFn: () => login({ code: code!, state: state, provider: 'kakao' }),
         enabled: !!code,
     });
 
     useEffect(() => {
-        if (data) {
-            const { isExistingUser } = data;
-            const accessToken = getCookie('access_token');
-            if (!accessToken) return;
-
-            setAccessToken(accessToken);
+        if (token) {
+            const { isExistingUser } = token;
             if (isExistingUser) {
                 router.push('/');
             } else {
                 router.push(`/selectstocktype?url=${encodeURIComponent('/welcome')}`);
             }
         }
-    }, [data, setAccessToken, router]);
+    }, [token, router]);
 
     return <div>리다이렉트 중...</div>;
 }
 
-export default function KakaoCallbackPage() {
+export default function KakaoCallbackWrapper() {
     return (
-        <Suspense
-            fallback={
-                <div className='flex items-center justify-center min-h-screen'>
-                    <div className='text-center'>
-                        <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4'></div>
-                        <p className='text-gray-600'>페이지 로딩 중...</p>
-                    </div>
-                </div>
-            }
-        >
+        <Suspense>
             <KakaoCallback />
         </Suspense>
     );
