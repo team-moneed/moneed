@@ -119,6 +119,10 @@ model Stock {
   summary        String
   symbol         String
   posts          Post[]
+  summary        String
+  sector         String
+  subSector      String
+  refUrl         String?
   selectedStocks SelectedStock[]
 
   @@map("stocks")
