@@ -17,7 +17,7 @@ const Posts = ({ stockId }: PostsProps) => {
         queryKey: ['posts', stockId],
         queryFn: ({ pageParam = new Date() }) => getPosts({ stockId, cursor: pageParam }),
         getNextPageParam: lastPage =>
-            lastPage.length > 0 ? new Date(lastPage[lastPage.length - 1].createdAt) : undefined,
+            lastPage?.length > 0 ? new Date(lastPage[lastPage.length - 1].createdAt) : undefined,
         initialPageParam: new Date(),
         select: data => data.pages.flatMap(page => page),
     });

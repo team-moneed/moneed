@@ -27,4 +27,12 @@ export class StockRepository {
             skipDuplicates: true,
         });
     }
+
+    async getStock(stockId: number) {
+        return this.prisma.stock.findUnique({
+            where: {
+                id: stockId,
+            },
+        });
+    }
 }
