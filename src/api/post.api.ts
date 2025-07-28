@@ -8,8 +8,10 @@ import {
     DeletePostResponse,
     UpdatePostResponse,
     PostDetail,
+    UpdatePostRequest,
 } from '@/types/post';
 import { http } from './client';
+import { isFile } from '@/util/typeChecker';
 
 export const getTopBoardPosts = async ({ boardId, limit }: { boardId: number; limit?: number }) => {
     const res = await http.get<TopBoardPostThumbnail[]>(`/api/posts/top/${boardId}`, {
@@ -63,12 +65,17 @@ export const getPosts = async ({
     return res.data;
 };
 
-export const createPost = async ({ title, content, stockId, thumbnailImage }: CreatePostRequest) => {
-    return await http.post<CreatePostResponse>(`/api/posts`, {
-        title,
-        content,
-        stockId,
-        thumbnailImage,
+export const createPost = async ({ stockId, title, content, thumbnailImage }: CreatePostRequest) => {
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('stockId', stockId.toString());
+    if (thumbnailImage) {
+        formData.append('thumbnailImage', thumbnailImage, thumbnailImage.name);
+    }
+
+    return await http.post<CreatePostResponse>(`/api/posts`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
     });
 };
 
@@ -80,15 +87,21 @@ export const updatePost = async ({
     title,
     content,
     thumbnailImage,
-}: {
-    postId: number;
-    title: string;
-    content: string;
-    thumbnailImage?: string | null;
-}) => {
-    return await http.put<UpdatePostResponse>(`/api/posts/${postId}`, {
-        title,
-        content,
-        thumbnailImage,
+    prevThumbnailImageUrl,
+}: UpdatePostRequest) => {
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    if (isFile(thumbnailImage)) {
+        formData.append('thumbnailImage', thumbnailImage, thumbnailImage.name);
+    } else if (thumbnailImage === null) {
+        // 썸네일 이미지 삭제한 경우
+        formData.append('thumbnailImage', '');
+    }
+    if (prevThumbnailImageUrl) {
+        formData.append('prevThumbnailImageUrl', prevThumbnailImageUrl);
+    }
+    return await http.put<UpdatePostResponse>(`/api/posts/${postId}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
     });
 };
