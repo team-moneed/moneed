@@ -1,0 +1,18 @@
+import { youtube } from '@/api/server';
+import { YouTubeSearchResponse } from '@/types/youtube';
+
+export const fetchVideos = async ({ q, count, page }: { q: string; count: number; page: string | null }) => {
+    const response = await youtube.get<YouTubeSearchResponse>('/v3/search', {
+        params: {
+            part: 'snippet',
+            q,
+            type: 'video',
+            videoDuration: 'short',
+            maxResults: count,
+            pageToken: page,
+            key: process.env.YOUTUBE_API_KEY,
+        },
+    });
+
+    return response;
+};

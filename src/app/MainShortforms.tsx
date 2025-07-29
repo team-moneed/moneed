@@ -2,8 +2,7 @@
 
 import VideoCarousel from '@/components/Carousel/VideoCarousel';
 import { EmblaOptionsType } from 'embla-carousel';
-import { useQuery } from '@tanstack/react-query';
-import { shorts } from '@/api/shorts/shortsQueries';
+import { useShorts } from '@/queries/shorts.query';
 
 const MainShortforms = () => {
     const VIDEOOPTIONS: EmblaOptionsType = {
@@ -14,11 +13,12 @@ const MainShortforms = () => {
         containScroll: 'trimSnaps',
     };
 
-    const { data: videoData = [] } = useQuery(shorts.getYoutubeStockshorts());
+    const { data } = useShorts({ q: '주식 쇼츠', count: 10 });
+    const videos = data?.items;
 
     return (
         <>
-            <div className='mt-4'>{videoData && <VideoCarousel videos={videoData} options={VIDEOOPTIONS} />}</div>
+            <div className='mt-4'>{videos && <VideoCarousel videos={videos} options={VIDEOOPTIONS} />}</div>
         </>
     );
 };

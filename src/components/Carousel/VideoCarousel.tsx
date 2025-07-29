@@ -2,12 +2,15 @@
 
 import { EmblaOptionsType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
-import { NextButton } from '@/components/Carousel/CarouselArrowButton';
+import { NextButton, PrevButton } from '@/components/Carousel/CarouselArrowButton';
 import { usePrevNextButtons } from '@/hooks/usePrevNextButtons';
-import { useRouter } from 'next/navigation';
-import { Video } from '@/types/video';
+import { YouTubeSearchResult } from '@/types/youtube';
+import { useState } from 'react';
+import ShortformDetail from '@/app/shortform/ShortformDetail';
+import { cn } from '@/util/style';
+
 type PropType = {
-    videos: Video[];
+    videos: YouTubeSearchResult[];
     options?: EmblaOptionsType;
     slidesToShow?: number;
 };
@@ -19,13 +22,9 @@ const VideoCarousel = (props: PropType) => {
         // wrapAround: true,
         // slidesToShow,
     });
-    const { nextBtnDisabled, onNextButtonClick } = usePrevNextButtons(emblaApi);
-
-    const router = useRouter();
-
-    const movetoshortformDetail = () => {
-        router.push('/shortform');
-    };
+    const { nextBtnDisabled, onNextButtonClick, prevBtnDisabled, onPrevButtonClick } = usePrevNextButtons(emblaApi);
+    const [videoId, setVideoId] = useState<string | null>(null);
+    const video = videos.find(video => video.id.videoId === videoId);
 
     return (
         <div className='relative lg:pr-[5.6rem]'>
@@ -36,7 +35,7 @@ const VideoCarousel = (props: PropType) => {
                             className='w-[calc(30%-1.6rem)] lg:w-[calc(20%-1.6rem)] shrink-0 cursor-pointer'
                             key={index}
                             style={{ aspectRatio: '9/16' }}
-                            onClick={movetoshortformDetail}
+                            onClick={() => setVideoId(video.id.videoId)}
                         >
                             <div className='w-full h-full rounded-[.8rem] overflow-hidden'>
                                 <iframe
@@ -51,7 +50,15 @@ const VideoCarousel = (props: PropType) => {
                     ))}
                 </div>
             </div>
-
+            {video && <ShortformDetail video={video} setVideoId={setVideoId} />}
+            <PrevButton
+                onClick={onPrevButtonClick}
+                disabled={prevBtnDisabled}
+                className={cn(
+                    'hidden lg:absolute lg:block top-1/2 left-2 transform -translate-y-1/2 z-10 p-[1.2rem] rounded-4xl bg-moneed-gray-5',
+                    prevBtnDisabled && 'lg:hidden',
+                )}
+            />
             <NextButton
                 onClick={onNextButtonClick}
                 disabled={nextBtnDisabled}
