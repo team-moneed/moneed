@@ -34,8 +34,8 @@ export default function LogoutButton() {
     return (
         <button
             className={cn(
-                'text-[1.4rem] font-normal leading-[145%] text-moneed-gray-7',
-                isPending ? 'opacity-50 cursor-not-allowed' : 'hover:text-moneed-gray-9',
+                'text-[1.4rem] font-normal leading-[145%] text-moneed-red',
+                isPending ? 'opacity-50 cursor-not-allowed' : 'hover:text-moneed-red-hover',
             )}
             onClick={handleLogout}
             disabled={isPending}
