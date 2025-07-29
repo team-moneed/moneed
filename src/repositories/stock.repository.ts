@@ -9,11 +9,7 @@ export class StockRepository {
                 userId,
             },
             include: {
-                stock: {
-                    select: {
-                        name: true,
-                    },
-                },
+                stock: true,
             },
         });
     }

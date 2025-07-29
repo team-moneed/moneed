@@ -1,7 +1,4 @@
 import { MarketCode } from '@/types/kis';
-import { SelectedStock } from '@/generated/prisma';
-
-export type SelectedStock = SelectedStock & { name: string };
 
 export type HotStock = {
     symbol: string;
