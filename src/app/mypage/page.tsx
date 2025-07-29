@@ -40,9 +40,9 @@ export default function Mypage() {
                     <div className='p-[1.6rem] justify-center items-center rounded-[1.6rem] border border-solid bg-moneed-black-3 border-moneed-gray-5'>
                         <div className='flex mb-[1.6rem] justify-between'>
                             <h2 className='text-[2rem] font-semibold leading-[140%]'>내가 선택한 종목</h2>
-                            <div className='aspect-square w-[2.4rem]'>
+                            <Link className='aspect-square w-[2.4rem]' href={'/selectstocktype'}>
                                 <img src='/icon/icon-addcircle.svg' alt='' className='w-full h-full' />
-                            </div>
+                            </Link>
                         </div>
                         <div className='space-y-[.8rem]'>
                             {selectedStocks?.map(stock => <MyStockBox key={stock.id} stock={stock} />)}
