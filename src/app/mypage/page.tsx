@@ -5,10 +5,13 @@ import LogoutButton from '@/app/mypage/LogoutButton';
 import LeaveButton from './LeaveButton';
 import Link from 'next/link';
 import { useSelectedStock } from '@/hooks/useSelectedStock';
-import { useUser } from '@/queries/user.query';
+import { useUser, useUserComments, useUserPosts } from '@/queries/user.query';
 
 export default function Mypage() {
     const { data: selectedStocks } = useSelectedStock();
+    const { data: user } = useUser();
+    const { data: posts } = useUserPosts();
+    const { data: comments } = useUserComments();
 
     return (
         <div className='px-8 max-w-512 mx-auto'>
@@ -33,8 +36,8 @@ export default function Mypage() {
                         </div>
                     </div>
                     <div className='grid grid-cols-2 gap-x-[1.6rem] pb-[1.6rem]'>
-                        <MypageBox menu='내가 작성한 게시글' count={5} href={'/mypost'}></MypageBox>
-                        <MypageBox menu='내가 작성한 댓글' count={7} href={'/mycomment'}></MypageBox>
+                        <MypageBox menu='내가 작성한 게시글' count={posts?.length} href={'/mypost'}></MypageBox>
+                        <MypageBox menu='내가 작성한 댓글' count={comments?.length} href={'/mycomment'}></MypageBox>
                     </div>
                 </div>
                 <div className='flex flex-col gap-[1.6rem] flex-1'>

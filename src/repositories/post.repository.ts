@@ -4,6 +4,12 @@ import { BoardRankResponse } from '@/types/board';
 export default class PostRepository {
     private prisma = prisma;
 
+    async getUserPosts({ userId }: { userId: string }) {
+        return this.prisma.post.findMany({
+            where: { userId },
+        });
+    }
+
     /**
      * 종목별 게시글 조회
      * @param stockId 종목 ID
