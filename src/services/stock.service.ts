@@ -10,7 +10,7 @@ export class StockService {
 
     async getSelectedStock(userId: string) {
         const selectedStocks = await this.stockRepository.getSelectedStock(userId);
-        return selectedStocks.flatMap(stock => ({ ...stock, name: stock.stock.name }));
+        return selectedStocks.flatMap(stock => stock.stock);
     }
 
     async selectStock(userId: string, stockIds: number[]) {

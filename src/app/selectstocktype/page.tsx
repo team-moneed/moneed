@@ -18,18 +18,17 @@ function SelectStockTypeContent() {
     });
     const searchParams = useSearchParams();
 
-    const { data: mySelectedStockIds } = useSelectedStock<number[]>({
-        select: data => data.map(stock => stock.stockId),
-    });
+    const { data: mySelectedStocks } = useSelectedStock();
+    const mySelectedStockIds = mySelectedStocks?.flatMap(stock => stock.id);
 
     const { mutate: selectStock } = useMutation({
         mutationFn: (stockIds: number[]) => selectStockApi(stockIds),
     });
     const [stockIds, setStockIds] = useState<number[]>([]);
-    const selectedStock = [...stockIds, ...(mySelectedStockIds ?? [])];
+    const selectedStocks = [...stockIds, ...(mySelectedStockIds ?? [])];
 
     const toggleStock = (stockId: number) => {
-        if (selectedStock.includes(stockId)) {
+        if (selectedStocks.includes(stockId)) {
             setStockIds(stockIds.filter(stock => stock !== stockId));
         } else {
             setStockIds([...stockIds, stockId]);
@@ -37,7 +36,7 @@ function SelectStockTypeContent() {
     };
 
     const handleSubmit = async () => {
-        selectStock(selectedStock);
+        selectStock(selectedStocks);
         const url = searchParams.get('url') ?? '/';
         router.push(decodeURIComponent(url));
     };
@@ -51,20 +50,20 @@ function SelectStockTypeContent() {
                             label={name}
                             icon='/temp/sample3.png'
                             onClick={() => toggleStock(id)}
-                            active={selectedStock.includes(id)}
+                            active={selectedStocks.includes(id)}
                         />
                     </div>
                 ))}
             </div>
             <div className='bottom-0 fixed left-0 right-0 p-8 z-100 bg-white md:static md:max-w-140 md:mx-auto md:pb-0'>
                 <Button
-                    disabled={selectedStock.length === 0}
+                    disabled={selectedStocks.length === 0}
                     type='submit'
                     theme='primary'
                     textcolor='primary'
                     className='w-full text-[1.6rem] font-bold leading-[140%] rounded-[1.6rem] px-[1.6rem] py-[1.8rem]'
                 >
-                    {selectedStock.length}개 선택
+                    {selectedStocks.length}개 선택
                 </Button>
             </div>
         </form>
