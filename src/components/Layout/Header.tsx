@@ -55,9 +55,6 @@ const MenuHeader = () => {
     const router = useRouter();
     const { stocktype } = useParams();
     const pathname = usePathname();
-    const isWritePostPath = pathname.startsWith('/writepost');
-    const isEditPostPath = pathname.startsWith('/editpost');
-    const iscommentPath = pathname.startsWith('/comment');
     const [showModal, setShowModal] = useState(false);
 
     // 뒤로가기 버튼 클릭 시 동작
@@ -74,20 +71,14 @@ const MenuHeader = () => {
         setShowModal(false); // 모달에서 이어서 하기 클릭 시 모달 닫기
     };
 
-    const getHeaderTitle = () => {
-        if (isWritePostPath) {
-            return '게시판 글쓰기';
-        }
-
-        if (isEditPostPath) {
-            return '게시글 수정';
-        }
-
-        if (iscommentPath && stocktype) {
-            return `${decodeURIComponent(stocktype as string)} 커뮤니티`;
-        }
-
+    const getHeaderTitle = (pathname: string) => {
         switch (pathname) {
+            case '/leave':
+                return '탈퇴하기';
+            case '/writepost':
+                return '게시판 글쓰기';
+            case '/editpost':
+                return '게시글 수정';
             case '/searchstocktype':
                 return '게시판 선택';
             case '/community':
@@ -96,8 +87,38 @@ const MenuHeader = () => {
                 return '내가 작성한 게시글';
             case '/mycomment':
                 return '내가 작성한 댓글';
+            case '/posts':
+                return `${decodeURIComponent(stocktype as string)} 커뮤니티`;
             default:
                 return 'moneed';
+        }
+    };
+
+    const ExitButton = () => {
+        return (
+            <img
+                className='w-[2.4rem] h-[2.4rem] cursor-pointer'
+                onClick={() => router.push('/')}
+                src='/icon/icon-exit.svg'
+                alt=''
+            />
+        );
+    };
+
+    const AlarmButton = () => {
+        return <img className='w-[2.4rem] h-[2.4rem]' src='/icon/icon-alarm.svg' alt='' />;
+    };
+
+    const getHeaderRightButton = (pathname: string) => {
+        switch (pathname) {
+            case '/writepost':
+                return <ExitButton />;
+            case '/editpost':
+                return <ExitButton />;
+            case '/leave':
+                return <ExitButton />;
+            default:
+                return <AlarmButton />;
         }
     };
 
@@ -109,17 +130,8 @@ const MenuHeader = () => {
                 src='/icon/icon-arrow-back.svg'
                 alt=''
             />
-            <h1 className='text-[1.6rem] font-semibold text-moneed-gray-9'>{getHeaderTitle()}</h1>
-            {isWritePostPath || isEditPostPath ? (
-                <img
-                    className='w-[2.4rem] h-[2.4rem] cursor-pointer'
-                    onClick={() => router.push('/')}
-                    src='/icon/icon-exit.svg'
-                    alt=''
-                />
-            ) : (
-                <img className='w-[2.4rem] h-[2.4rem]' src='/icon/icon-alarm.svg' alt='' />
-            )}
+            <h1 className='text-[1.6rem] font-semibold text-moneed-gray-9'>{getHeaderTitle(pathname)}</h1>
+            {getHeaderRightButton(pathname)}
             {showModal && (
                 <Modal
                     leftButtontext='이어서 하기'
@@ -128,13 +140,14 @@ const MenuHeader = () => {
                     rightButtonevent={handleModalConfirm}
                     onClose={handleModalCancel}
                 >
-                    {isEditPostPath ? (
+                    {pathname === '/editpost' && (
                         <span>
                             수정하던 글은 저장되지않아요.
                             <br />
                             다음에 수정할까요?
                         </span>
-                    ) : (
+                    )}
+                    {pathname === '/writepost' && (
                         <span>
                             작성하던 글은 저장되지않아요.
                             <br />
@@ -156,7 +169,7 @@ const NoMenuHeader = () => {
 };
 
 const Header = () => {
-    const menuHeaderPaths = ['/mycomment', '/mypost', '/searchstocktype', '/writepost', '/editpost', '/post'];
+    const menuHeaderPaths = ['/mycomment', '/mypost', '/searchstocktype', '/writepost', '/editpost', '/post', '/leave'];
 
     const noMenuHeaderPaths = ['/onboarding', '/selectstocktype'];
 
