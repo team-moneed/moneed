@@ -24,9 +24,14 @@ export default function Leave() {
     });
 
     return (
-        <div className='flex flex-col items-center justify-between h-full w-full'>
-            <div className='flex flex-col items-start sm:items-center w-full'>
-                <h1 className='text-[2.4rem] font-bold leading-[140%]'>우리, 여기서 끝인가요...?</h1>
+        <div className='flex flex-col items-center justify-between h-full w-full sm:pt-[10rem] pt-[1rem] sm:pb-[4.8rem] pb-[2.4rem]'>
+            <div className='flex flex-col items-start w-full'>
+                <div className='sm:flex hidden w-full items-center justify-start'>
+                    <div className='bg-moneed-black rounded-full size-[6rem] flex items-center justify-center'>
+                        <img src='/icon/icon-logo.svg' alt='logo' className='size-[3.6rem]' />
+                    </div>
+                </div>
+                <h1 className='text-[2.4rem] font-bold leading-[140%] sm:mt-[2rem]'>우리, 여기서 끝인가요...?</h1>
                 <p className='text-md leading-[145%] mt-[1.2rem]'>
                     함께해주셔서 감사했어요. <br />
                     혹시 탈퇴 이유를 들려주실 수 있을까요?
@@ -38,7 +43,7 @@ export default function Leave() {
                     지금 탈퇴하면, 모든 기록이 사라져요
                 </p>
                 <Button
-                    variant='primary'
+                    variant='danger'
                     disabled={selectedReason === 0}
                     className='text-[1.6rem] font-bold leading-[140%] py-[1.8rem] w-full mt-[1rem]'
                     onClick={() => leaveKakao(LEAVE_REASON[selectedReason].reason || '')}
