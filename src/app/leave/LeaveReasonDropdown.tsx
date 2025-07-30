@@ -1,6 +1,6 @@
 import { cn } from '@/util/style';
 import { LEAVE_REASON } from '@/constants/leaveReason';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type LeaveReasonDropdownProps = {
     setSelectedReason: (reasonId: number) => void;
@@ -9,6 +9,7 @@ type LeaveReasonDropdownProps = {
 
 export default function LeaveReasonDropdown({ setSelectedReason, selectedReason }: LeaveReasonDropdownProps) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     const handleReasonSelect = (reasonId: number) => {
         setSelectedReason(reasonId);
@@ -20,8 +21,23 @@ export default function LeaveReasonDropdown({ setSelectedReason, selectedReason 
     };
 
     const selectedReasonText = LEAVE_REASON.find(reason => reason.id === selectedReason)?.reason || '';
+
+    useEffect(() => {
+        const handleOutsideClick = (e: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                e.stopPropagation();
+                setIsDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener('click', handleOutsideClick);
+        return () => {
+            document.removeEventListener('click', handleOutsideClick);
+        };
+    }, []);
+
     return (
-        <div className='relative w-full mt-[1.6rem]'>
+        <div className='relative w-full mt-[1.6rem]' ref={dropdownRef}>
             <button
                 type='button'
                 onClick={toggleDropdown}
