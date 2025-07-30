@@ -66,10 +66,9 @@ const BottomModal = ({ imageSrc, title, description, ButtonText, onButtonClick, 
                         </div>
                     )}
 
-                    <div className='mt-[2.4rem] flex justify-center'>
+                    <div className='mt-[2.4rem] flex flex-col justify-center items-center'>
                         <Button
-                            theme='primary'
-                            textcolor='primary'
+                            variant='primary'
                             className='text-[1.6rem] font-bold leading-[140%] px-58 py-[1.8rem]'
                             onClick={onButtonClick}
                         >

@@ -13,8 +13,7 @@ export default function MoveToCommunityButton({ selectedStock }: { selectedStock
         <div>
             <div className='flex justify-center sm:inline-block border-moneed-gray-5 border-[.1rem] py-[2.1rem] px-[4.1rem] rounded-[1.6rem] '>
                 <Button
-                    theme='ghost'
-                    textcolor='primary'
+                    variant='ghost'
                     onClick={() => movecommunity(selectedStock.stockId!)}
                     className='flex items-center gap-[.8rem] py-0 sm:pl-0'
                 >

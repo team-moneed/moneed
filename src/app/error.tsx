@@ -24,16 +24,14 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
             <div className='flex flex-col justify-center items-center my-16 gap-[1.2rem]'>
                 <Button
                     onClick={() => reset()}
-                    theme='primary'
-                    textcolor='primary'
+                    variant='primary'
                     className='text-[1.6rem] font-bold leading-[140%] px-58 py-[1.8rem] w-2xl'
                 >
                     다시 시도
                 </Button>
                 <Button
                     onClick={() => router.push('/')}
-                    theme='primary'
-                    textcolor='primary'
+                    variant='primary'
                     className='text-[1.6rem] font-bold leading-[140%] px-58 py-[1.8rem] w-2xl'
                 >
                     홈으로 돌아가기

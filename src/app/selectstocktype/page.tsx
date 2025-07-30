@@ -59,8 +59,7 @@ function SelectStockTypeContent() {
                 <Button
                     disabled={selectedStocks.length === 0}
                     type='submit'
-                    theme='primary'
-                    textcolor='primary'
+                    variant='primary'
                     className='w-full text-[1.6rem] font-bold leading-[140%] rounded-[1.6rem] px-[1.6rem] py-[1.8rem]'
                 >
                     {selectedStocks.length}개 선택
