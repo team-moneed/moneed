@@ -7,6 +7,7 @@ import { AxiosError } from 'axios';
 import { RequiredUserInfo, UserInfo } from '@/types/user';
 import { NicknameService } from '@/services/nickname.service';
 import { ProviderInfo } from '@/types/auth';
+import LeaveReasonRepository from '@/repositories/leaveReason.repository';
 
 // TODO: 추상화 (카카오 로그인 외 다른 로그인 추가 시 수정 필요)
 export class AuthService {
@@ -113,7 +114,8 @@ export class AuthService {
         }
     }
 
-    async leaveWithKakao(userId: string) {
+    async leaveWithKakao({ userId, reason }: { userId: string; reason: string }) {
+        const leaveReasonRepository = new LeaveReasonRepository();
         const providerInfo = await this.providerRepository.findProviderInfo(userId, 'kakao');
         if (!providerInfo) {
             await deleteSession();
@@ -142,6 +144,7 @@ export class AuthService {
 
             if (user) {
                 await this.leave(user.id);
+                await leaveReasonRepository.createLeaveReason(reason);
                 return {
                     ok: true,
                 };

@@ -34,6 +34,14 @@ model User {
   @@map("users")
 }
 
+model LeaveReason {
+  id        Int      @id @default(autoincrement())
+  reason    String
+  createdAt DateTime @default(now())
+
+  @@map("leave_reasons")
+}
+
 model Post {
   id             Int         @id @default(autoincrement())
   title          String
@@ -119,10 +127,6 @@ model Stock {
   summary        String
   symbol         String
   posts          Post[]
-  summary        String
-  sector         String
-  subSector      String
-  refUrl         String?
   selectedStocks SelectedStock[]
 
   @@map("stocks")
