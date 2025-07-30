@@ -2,7 +2,9 @@ import { getSession } from '@/lib/session';
 import { AuthService } from '@/services/auth.service';
 import { NextResponse } from 'next/server';
 
-export async function POST() {
+export async function POST(request: Request) {
+    const { reason } = await request.json();
+
     try {
         const session = await getSession();
 
@@ -11,7 +13,7 @@ export async function POST() {
         }
 
         const authService = new AuthService();
-        const result = await authService.leaveWithKakao(session.userId);
+        const result = await authService.leaveWithKakao({ userId: session.userId, reason });
 
         if (result.ok) {
             return NextResponse.json({ ok: true });

@@ -9,6 +9,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { createPost } from '@/api/post.api';
 import { REASON_CODES } from '@/constants/snackbar';
 import { CreatePostField } from '@/types/fieldData';
+import Button from '@/components/Button';
 
 // TODO: 리팩토링 필요 (searchStockType 페이지로 꼭 이동해야 할까?)
 const WritePost = () => {
@@ -186,9 +187,13 @@ const WritePost = () => {
             {isBottomModalOpen && (
                 <BottomModal
                     imageSrc='/post-warning.svg'
-                    title='이런 의견은 피해주세요'
+                    title={
+                        <h2 className='text-[2.4rem] text-center text-moneed-black font-bold leading-[140%]'>
+                            이런 의견은 피해주세요
+                        </h2>
+                    }
                     description={
-                        <>
+                        <div className='text-[1.6rem] text-center text-moneed-black font-semibold leading-[140%] mt-[3.8rem]'>
                             스팸홍보/도배글
                             <br />
                             욕설/음란물,
@@ -196,10 +201,17 @@ const WritePost = () => {
                             불법 투자 조장,
                             <br />
                             청소년에게 유해한 내용
-                        </>
+                        </div>
                     }
-                    ButtonText='확인'
-                    onButtonClick={() => setIsBottomModalOpen(false)}
+                    buttons={
+                        <Button
+                            variant='primary'
+                            className='text-[1.6rem] font-bold leading-[140%] px-58 py-[1.8rem] w-full'
+                            onClick={() => setIsBottomModalOpen(false)}
+                        >
+                            확인
+                        </Button>
+                    }
                     onClose={() => setIsBottomModalOpen(false)}
                 />
             )}
