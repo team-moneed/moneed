@@ -11,7 +11,9 @@ import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
 import { REASON_CODES } from '@/constants/snackbar';
 import { MyProfileSkeleton } from '@/components/Skeletons/MyProfileSkeleton';
+import { useDebounce } from '@/hooks/useDebounce';
 
+// TODO: 프로필 사진 업로드 기능
 const MyProfile = () => {
     const router = useRouter();
     const { data: user } = useSuspenseUser();
@@ -82,9 +84,9 @@ const MyProfile = () => {
         setShowProfileImage(false);
     };
 
-    const handleChangeNickname = (nickname: string) => {
+    const handleChangeNickname = useDebounce((nickname: string) => {
         checkDuplicateNicknameMutation({ nickname });
-    };
+    }, 500);
 
     return (
         <div className='w-full max-w-[480px] px-6 mx-auto'>
