@@ -17,6 +17,8 @@ const WritePost = () => {
     const stockId = searchParams.get('stockId');
     const stockName = searchParams.get('stockName');
     const [isBottomModalOpen, setIsBottomModalOpen] = useState(false);
+    const [image, setImage] = useState<File | null>(null);
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
 
     const router = useRouter();
 
@@ -24,7 +26,6 @@ const WritePost = () => {
         register,
         handleSubmit,
         watch,
-        setValue,
         formState: { errors },
     } = useForm<CreatePostField>();
     const content = watch('content', '');
@@ -65,6 +66,11 @@ const WritePost = () => {
 
     const movetoSearchStocktype = () => {
         router.push('/searchstocktype');
+    };
+
+    const handleDeleteFile = () => {
+        setImage(null);
+        setPreviewImage(null);
     };
 
     const handleFocus = (field: string) => {
@@ -119,6 +125,7 @@ const WritePost = () => {
         const res = await createPost({
             ...data,
             stockId: Number(stockId),
+            thumbnailImage: image,
         });
 
         if (res.status === 201) {
@@ -163,11 +170,28 @@ const WritePost = () => {
                     className={`h-[5.2rem] bg-white flex items-center justify-between transition-all duration-300 bottom-0 w-full`}
                 >
                     <ImageUploader
-                        id='thumbnailImage'
-                        imgClassName='object-cover w-full h-full'
-                        buttonpositionClassName='mr-0'
-                        setValue={setValue}
-                        {...register('thumbnailImage')}
+                        setImage={setImage}
+                        setPreviewUrl={setPreviewImage}
+                        preview={
+                            <div className='absolute flex gap-x-[9px] bottom-16 z-10'>
+                                {previewImage && (
+                                    <div className='relative size-[6rem]'>
+                                        <img
+                                            src={previewImage}
+                                            alt='thumbnail-preview'
+                                            className='object-cover w-full h-full'
+                                        />
+                                        <button
+                                            type='button'
+                                            onClick={() => handleDeleteFile()}
+                                            className='absolute top-0 right-0 bg-red-500 text-white rounded-full w-[20px] h-[20px] flex items-center justify-center'
+                                        >
+                                            x
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        }
                     />
                     <div className='text-right text-[1.4rem] text-moneed-gray-7 w-full mx-4'>
                         {content.length} / 1000자

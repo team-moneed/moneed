@@ -9,6 +9,7 @@ import {
 } from '@/types/post';
 import S3Service from './s3.service';
 import { urlToS3FileName } from '@/util/parser';
+import { isFile } from '@/util/typeChecker';
 
 export default class PostService {
     private readonly postRepository = new PostRepository();
@@ -167,13 +168,34 @@ export default class PostService {
         thumbnailImage,
         prevThumbnailImageUrl,
     }: UpdatePostRequest & { userId: string }) {
-        const thumbnailImageUrl = await this.getThumbnailImageUrl({
-            thumbnailImage,
-        });
-
-        // 썸네일 이미지를 교체했거나 제거한 경우 이전 썸네일 이미지 삭제
-        if (thumbnailImageUrl || thumbnailImage === null) {
-            await this.deletePrevThumbnailImage({ prevThumbnailImageUrl });
+        let thumbnailImageUrl: string | undefined | null;
+        if (thumbnailImage && prevThumbnailImageUrl) {
+            // 썸네일 교체
+            if (isFile(thumbnailImage)) {
+                thumbnailImageUrl = await this.getThumbnailImageUrl({
+                    thumbnailImage,
+                });
+            }
+            // 썸네일 유지 (이미 썸네일이 있던 상태)
+            else if (typeof thumbnailImage === 'string') {
+                thumbnailImageUrl = undefined;
+            }
+        } else if (thumbnailImage && !prevThumbnailImageUrl) {
+            // 썸네일 추가
+            if (isFile(thumbnailImage)) {
+                thumbnailImageUrl = await this.getThumbnailImageUrl({
+                    thumbnailImage,
+                });
+            }
+        } else if (!thumbnailImage && prevThumbnailImageUrl) {
+            // 썸네일 삭제
+            if (prevThumbnailImageUrl) {
+                thumbnailImageUrl = null;
+                await this.deletePrevThumbnailImage({ prevThumbnailImageUrl });
+            }
+        } else if (!thumbnailImage && !prevThumbnailImageUrl) {
+            // 썸네일 유지 (썸네일이 없던 상태)
+            thumbnailImageUrl = undefined;
         }
 
         return await this.postRepository.updatePost({
@@ -185,12 +207,9 @@ export default class PostService {
         });
     }
 
-    async getThumbnailImageUrl({ thumbnailImage }: { thumbnailImage?: File | null }) {
+    async getThumbnailImageUrl({ thumbnailImage }: { thumbnailImage: File }) {
         const s3Service = new S3Service();
-        if (thumbnailImage instanceof File) {
-            return await s3Service.uploadPostImage(thumbnailImage);
-        }
-        return thumbnailImage;
+        return await s3Service.uploadPostImage(thumbnailImage);
     }
 
     async deletePrevThumbnailImage({ prevThumbnailImageUrl }: { prevThumbnailImageUrl?: string | null }) {

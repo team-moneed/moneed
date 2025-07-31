@@ -97,13 +97,15 @@ export const updatePost = async ({
     formData.append('content', content);
     if (isFile(thumbnailImage)) {
         formData.append('thumbnailImage', thumbnailImage, thumbnailImage.name);
-    } else if (thumbnailImage === null) {
-        // 썸네일 이미지 삭제한 경우
-        formData.append('thumbnailImage', '');
     }
     if (prevThumbnailImageUrl) {
         formData.append('prevThumbnailImageUrl', prevThumbnailImageUrl);
     }
+    // 원래 썸네일이 있는 상태에서 추가/교체/삭제 없이 제출한 경우
+    if (typeof thumbnailImage === 'string') {
+        formData.append('thumbnailImage', thumbnailImage);
+    }
+
     return await http.put<UpdatePostResponse>(`/api/posts/${postId}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
