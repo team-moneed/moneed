@@ -135,18 +135,18 @@ const MyProfile = () => {
                 )}
             </div>
 
-            <div className='pt-24 flex justify-between'>
+            <div className='pt-24 flex justify-between gap-[1.6rem]'>
                 <Button
                     onClick={cancelChangeProfile}
                     variant='secondary'
-                    className='border border-solid border-moneed-gray-6 text-[1.6rem] font-bold leading-[140%] px-[2.4rem] py-[1.8rem]'
+                    className='border border-solid border-moneed-gray-6 text-[1.6rem] font-bold leading-[140%] py-[1.8rem] w-full flex-1/3'
                 >
                     취소
                 </Button>
                 <Button
                     onClick={handleSubmitNickname}
                     variant='primary'
-                    className='text-[1.6rem] font-bold leading-[140%] px-58 py-[1.8rem]'
+                    className='text-[1.6rem] font-bold leading-[140%] py-[1.8rem] w-full flex-2/3'
                     disabled={isPending}
                 >
                     {isPending ? '저장 중...' : '저장하기'}
