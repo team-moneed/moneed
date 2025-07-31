@@ -1,23 +1,17 @@
 'use client';
 import MyStockBox from '@/components/Mypage/MyStockBox';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { type Stock } from '@/generated/prisma';
 import Hangul from 'hangul-js';
 import { getStocks } from '@/api/stock.api';
 
 export default function SearchStockType() {
-    const router = useRouter();
     const [searchStockType, setsearchStockType] = useState('');
     const { data: stockData } = useQuery<Stock[]>({
         queryKey: ['stockData'],
         queryFn: () => getStocks(),
     });
-
-    const selectStocktype = (stock: Stock) => {
-        router.push(`/writepost?stockId=${stock.id}&stockName=${stock.name}`);
-    };
 
     const getInitialConsonant = (str: string) => {
         return Hangul.d(str)
@@ -59,11 +53,9 @@ export default function SearchStockType() {
                     {filteredStockData?.map(stock => (
                         <MyStockBox
                             key={stock.id}
-                            onClick={() => selectStocktype(stock)}
-                            className=''
-                            isSelectCategory={true}
-                            name={stock.name}
-                        ></MyStockBox>
+                            stock={stock}
+                            href={`/writepost?stockId=${stock.id}&stockName=${stock.name}`}
+                        />
                     ))}
                 </div>
             </div>

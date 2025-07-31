@@ -58,7 +58,9 @@ export default function Mypage() {
                                 </Link>
                             </div>
                             <div className='space-y-[.8rem]'>
-                                {selectedStocks?.map(stock => <MyStockBox key={stock.id} stock={stock} />)}
+                                {selectedStocks?.map(stock => (
+                                    <MyStockBox key={stock.id} stock={stock} href={`/community/${stock.name}`} />
+                                ))}
                             </div>
                         </div>
                         <div className='flex items-center sm:ml-auto sm:mr-0 ml-auto mr-auto gap-x-[1.6rem]'>
