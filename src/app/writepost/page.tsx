@@ -130,7 +130,7 @@ const WritePost = () => {
 
         if (res.status === 201) {
             const { postId } = res.data;
-            router.push(`/posts/${postId}?reason=${REASON_CODES.POST_CREATED}`);
+            router.replace(`/posts/${postId}?reason=${REASON_CODES.POST_CREATED}`);
         }
     };
 

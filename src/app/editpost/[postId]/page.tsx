@@ -101,7 +101,7 @@ const EditPostContent = ({ postId }: { postId: string }) => {
         });
 
         if (res.status === 200) {
-            router.push(`/posts/${postId}?reason=${REASON_CODES.POST_UPDATED}`);
+            router.replace(`/posts/${postId}?reason=${REASON_CODES.POST_UPDATED}`);
         }
     };
 
