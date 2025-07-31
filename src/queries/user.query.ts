@@ -16,14 +16,14 @@ export const useSuspenseUser = () => {
 };
 
 export const useUserPosts = () => {
-    return useQuery({
+    return useSuspenseQuery({
         queryKey: ['user', 'me', 'posts'],
         queryFn: () => fetchUserPosts(),
     });
 };
 
 export const useUserComments = () => {
-    return useQuery({
+    return useSuspenseQuery({
         queryKey: ['user', 'me', 'comments'],
         queryFn: () => fetchUserComments(),
     });

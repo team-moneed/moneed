@@ -1,18 +1,15 @@
 'use client';
 import { cn } from '@/util/style';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import BottomModal from '@/components/BottomModal';
-import { User } from '@/generated/prisma';
 import Button from '@/components/Button';
+import { useSuspenseUser } from '@/queries/user.query';
 
-interface LeaveButtonProps {
-    user?: User;
-}
-
-export default function LeaveButton({ user }: LeaveButtonProps) {
+function LeaveButton() {
     const router = useRouter();
     const [isBottomModalOpen, setIsBottomModalOpen] = useState(false);
+    const { data: user } = useSuspenseUser();
 
     const handleLeave = () => {
         setIsBottomModalOpen(false);
@@ -72,5 +69,13 @@ export default function LeaveButton({ user }: LeaveButtonProps) {
                 />
             )}
         </>
+    );
+}
+
+export default function LeaveButtonWithSuspense() {
+    return (
+        <Suspense fallback={<div className='h-[1.4rem] w-[5.6rem] rounded-[.8rem] bg-moneed-gray-5 animate-pulse' />}>
+            <LeaveButton />
+        </Suspense>
     );
 }
