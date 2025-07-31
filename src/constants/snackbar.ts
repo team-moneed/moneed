@@ -9,6 +9,7 @@ export const REASON_CODES = {
     POST_CREATED: 'post_created',
     POST_DELETED: 'post_deleted',
     POST_UPDATED: 'post_updated',
+    PROFILE_UPDATED: 'profile_updated',
 };
 
 export const REASONS: Record<string, SnackbarConfig> = {
@@ -24,4 +25,5 @@ export const REASONS: Record<string, SnackbarConfig> = {
     post_created: { message: '게시글이 작성되었습니다.', variant: 'action', position: 'bottom' },
     post_deleted: { message: '게시글이 삭제되었습니다.', variant: 'action', position: 'bottom' },
     post_updated: { message: '게시글이 수정되었습니다.', variant: 'action', position: 'bottom' },
+    profile_updated: { message: '프로필이 변경되었습니다.', variant: 'action', position: 'bottom' },
 };
