@@ -18,7 +18,9 @@ const MyProfile = () => {
     const router = useRouter();
     const { data: user } = useSuspenseUser();
     const [showProfileImage, setShowProfileImage] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(''); // 기본 이미지
+    const [selectedImage, setSelectedImage] = useState<string | null>(null); // 기본 이미지
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [image, setImage] = useState<File | null>(null);
 
     const {
         register,
@@ -67,7 +69,8 @@ const MyProfile = () => {
         clearErrors('nickname');
         updateUserProfileMutation({
             nickname: data.nickname,
-            profileImage: selectedImage || user.profileImage,
+            profileImage: image || selectedImage || user.profileImage,
+            prevProfileImageUrl: user.profileImage,
         });
     });
 
@@ -92,9 +95,9 @@ const MyProfile = () => {
         <div className='w-full max-w-[480px] px-6 mx-auto'>
             <div className='flex justify-center items-center rounded-full aspect-square w-56 mx-auto mt-24 relative'>
                 <img
-                    src={selectedImage || user.profileImage}
+                    src={previewUrl || selectedImage || user.profileImage}
                     alt='Selected Profile'
-                    className='w-full h-full object-cover rounded-full'
+                    className='w-full h-full object-cover rounded-full size-[14rem]'
                 />
                 <div
                     onClick={handleClickEditProfile}
@@ -104,7 +107,9 @@ const MyProfile = () => {
                 </div>
             </div>
 
-            {showProfileImage && <SelectProfileImage onSelect={handleImageSelect} />}
+            {showProfileImage && (
+                <SelectProfileImage onSelect={handleImageSelect} setPreviewUrl={setPreviewUrl} setImage={setImage} />
+            )}
 
             <div>
                 <div className='text-[1.6rem] font-normal leading-[140%] text-moneed-black mt-[6.9rem]'>닉네임</div>

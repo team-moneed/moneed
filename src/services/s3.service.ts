@@ -4,21 +4,21 @@ import { DeleteObjectCommand, GetObjectCommand, PutObjectCommand, waitUntilObjec
 export default class S3Service {
     private S3 = S3;
 
-    async uploadPostImage(thumbnailImage: File) {
+    async uploadImage(domain: 'posts' | 'profile', image: File) {
         let uploadedImageUrl: string | undefined;
 
-        // 썸네일 이미지가 있는 경우에만 S3에 업로드
-        if (thumbnailImage) {
-            const fileName = `posts/${Date.now()}-${thumbnailImage.name}`;
+        // 이미지가 있는 경우에만 S3에 업로드
+        if (image) {
+            const fileName = `${domain}/${Date.now()}-${image.name}`;
 
             // File 객체를 ArrayBuffer로 변환
-            const buffer = await thumbnailImage.arrayBuffer();
+            const buffer = await image.arrayBuffer();
 
             const command = new PutObjectCommand({
                 Bucket: process.env.AWS_BUCKET_NAME,
                 Key: fileName,
                 Body: new Uint8Array(buffer),
-                ContentType: thumbnailImage.type,
+                ContentType: image.type,
             });
 
             try {
@@ -35,7 +35,7 @@ export default class S3Service {
         return uploadedImageUrl;
     }
 
-    async getPostImage(fileName: string) {
+    async getImage(fileName: string) {
         const command = new GetObjectCommand({
             Bucket: process.env.AWS_BUCKET_NAME,
             Key: fileName,
@@ -50,7 +50,7 @@ export default class S3Service {
         }
     }
 
-    async deletePostImage(fileName: string) {
+    async deleteImage(fileName: string) {
         const command = new DeleteObjectCommand({
             Bucket: process.env.AWS_BUCKET_NAME,
             Key: fileName,

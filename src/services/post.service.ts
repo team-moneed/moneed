@@ -139,7 +139,7 @@ export default class PostService {
         const s3Service = new S3Service();
         let uploadedImageUrl: string | undefined;
         if (thumbnailImage) {
-            uploadedImageUrl = await s3Service.uploadPostImage(thumbnailImage);
+            uploadedImageUrl = await s3Service.uploadImage('posts', thumbnailImage);
         }
 
         const post = await this.postRepository.createPost({
@@ -153,9 +153,10 @@ export default class PostService {
     }
 
     async deletePost({ postId, userId }: { postId: number; userId: string }) {
+        const s3Service = new S3Service();
         const postImageUrl = await this.postRepository.getPostImageUrl({ postId });
         if (postImageUrl?.thumbnailImage) {
-            await this.deletePrevThumbnailImage({ prevThumbnailImageUrl: postImageUrl.thumbnailImage });
+            await s3Service.deleteImage(urlToS3FileName(postImageUrl.thumbnailImage));
         }
         return await this.postRepository.deletePost({ postId, userId });
     }
@@ -168,13 +169,13 @@ export default class PostService {
         thumbnailImage,
         prevThumbnailImageUrl,
     }: UpdatePostRequest & { userId: string }) {
+        const s3Service = new S3Service();
         let thumbnailImageUrl: string | undefined | null;
         if (thumbnailImage && prevThumbnailImageUrl) {
             // 썸네일 교체
             if (isFile(thumbnailImage)) {
-                thumbnailImageUrl = await this.getThumbnailImageUrl({
-                    thumbnailImage,
-                });
+                thumbnailImageUrl = await s3Service.uploadImage('posts', thumbnailImage);
+                await s3Service.deleteImage(urlToS3FileName(prevThumbnailImageUrl));
             }
             // 썸네일 유지 (이미 썸네일이 있던 상태)
             else if (typeof thumbnailImage === 'string') {
@@ -183,15 +184,13 @@ export default class PostService {
         } else if (thumbnailImage && !prevThumbnailImageUrl) {
             // 썸네일 추가
             if (isFile(thumbnailImage)) {
-                thumbnailImageUrl = await this.getThumbnailImageUrl({
-                    thumbnailImage,
-                });
+                thumbnailImageUrl = await s3Service.uploadImage('posts', thumbnailImage);
             }
         } else if (!thumbnailImage && prevThumbnailImageUrl) {
             // 썸네일 삭제
             if (prevThumbnailImageUrl) {
                 thumbnailImageUrl = null;
-                await this.deletePrevThumbnailImage({ prevThumbnailImageUrl });
+                await s3Service.deleteImage(urlToS3FileName(prevThumbnailImageUrl));
             }
         } else if (!thumbnailImage && !prevThumbnailImageUrl) {
             // 썸네일 유지 (썸네일이 없던 상태)
@@ -205,19 +204,6 @@ export default class PostService {
             content,
             thumbnailImageUrl,
         });
-    }
-
-    async getThumbnailImageUrl({ thumbnailImage }: { thumbnailImage: File }) {
-        const s3Service = new S3Service();
-        return await s3Service.uploadPostImage(thumbnailImage);
-    }
-
-    async deletePrevThumbnailImage({ prevThumbnailImageUrl }: { prevThumbnailImageUrl?: string | null }) {
-        const s3Service = new S3Service();
-        if (prevThumbnailImageUrl) {
-            const fileName = urlToS3FileName(prevThumbnailImageUrl);
-            await s3Service.deletePostImage(fileName);
-        }
     }
 
     async likePost({ postId, userId }: { postId: number; userId: string }) {

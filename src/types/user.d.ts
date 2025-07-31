@@ -9,3 +9,9 @@ export interface UserInfo {
 }
 
 export type RequiredUserInfo = Optional<User, 'id' | 'createdAt' | 'updatedAt' | 'role' | 'lastLoginAt'>;
+
+export interface UpdateUserProfileRequest {
+    nickname: string;
+    profileImage: File | string;
+    prevProfileImageUrl: string;
+}

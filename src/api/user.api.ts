@@ -1,5 +1,7 @@
 import { Comment, Post, User } from '@/generated/prisma';
 import { http } from './client';
+import { isFile } from '@/util/typeChecker';
+import { UpdateUserProfileRequest } from '@/types/user';
 
 export async function fetchMyInfo() {
     const res = await http.get<User>(`/api/users/me`);
@@ -16,8 +18,18 @@ export async function fetchUserComments() {
     return res.data;
 }
 
-export async function updateUserProfile({ nickname, profileImage }: { nickname: string; profileImage: string }) {
-    const res = await http.put<User>('/api/users/me', { nickname, profileImage });
+export async function updateUserProfile({ nickname, profileImage, prevProfileImageUrl }: UpdateUserProfileRequest) {
+    const formData = new FormData();
+    formData.append('nickname', nickname);
+    if (isFile(profileImage)) {
+        formData.append('profileImage', profileImage, profileImage.name);
+    } else if (typeof profileImage === 'string') {
+        formData.append('profileImage', profileImage);
+    }
+    formData.append('prevProfileImageUrl', prevProfileImageUrl);
+    const res = await http.put<User>('/api/users/me', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
     return res.data;
 }
 
