@@ -1,7 +1,8 @@
-import { Comment, Post, User } from '@/generated/prisma';
+import { Post, User } from '@/generated/prisma';
 import { http } from './client';
 import { isFile } from '@/util/typeChecker';
 import { UpdateUserProfileRequest } from '@/types/user';
+import { CommentWithUser } from '@/types/comment';
 
 export async function fetchMyInfo() {
     const res = await http.get<User>(`/api/users/me`);
@@ -13,8 +14,8 @@ export async function fetchUserPosts() {
     return res.data;
 }
 
-export async function fetchUserComments() {
-    const res = await http.get<Comment[]>('/api/users/me/comments');
+export async function fetchMyComments() {
+    const res = await http.get<CommentWithUser[]>('/api/users/me/comments');
     return res.data;
 }
 

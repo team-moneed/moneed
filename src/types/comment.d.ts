@@ -1,3 +1,5 @@
+import { Comment, User } from '@/generated/prisma';
+
 export type CommentDeleteResponse = {
     message: string;
 };
@@ -8,4 +10,8 @@ export type CommentUpdateResponse = {
 
 export type CommentCreateResponse = {
     message: string;
+};
+
+export type CommentWithUser = Comment & {
+    user: User;
 };

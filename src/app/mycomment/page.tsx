@@ -2,15 +2,14 @@
 
 import { useState } from 'react';
 import Comment from '@/components/Comment/Comment';
-import { useSuspenseUser, useUserComments } from '@/queries/user.query';
+import { useMyComments } from '@/queries/comments.query';
 import { cn } from '@/util/style';
 
 // TODO: 삭제된 댓글 -> "삭제된 댓글입니다" 표시
 const MyComment = () => {
     const [activeTab, setActiveTab] = useState<'thisWeek' | 'notThisWeek'>('thisWeek');
 
-    const { data: comments } = useUserComments();
-    const { data: user } = useSuspenseUser();
+    const { data: comments } = useMyComments();
 
     const thisweekComments = comments.filter(comment => {
         const now = new Date();
@@ -58,22 +57,16 @@ const MyComment = () => {
                     </button>
                 </div>
                 <div className='pt-[1.8rem]'>
-                    {currentTabComments.map(comment => {
-                        const myComment = {
-                            ...comment,
-                            user,
-                        };
-                        return (
-                            <div key={comment.id} className='pt-[1.8rem]'>
-                                <Comment
-                                    comment={myComment}
-                                    setEditContent={() => {}}
-                                    setIsEdit={() => {}}
-                                    setEditCommentId={() => {}}
-                                />
-                            </div>
-                        );
-                    })}
+                    {currentTabComments.map(comment => (
+                        <div key={comment.id} className='pt-[1.8rem]'>
+                            <Comment
+                                comment={comment}
+                                setEditContent={() => {}}
+                                setIsEdit={() => {}}
+                                setEditCommentId={() => {}}
+                            />
+                        </div>
+                    ))}
                     {currentTabComments.length === 0 && (
                         <div className='text-[1.6rem] font-normal leading-[140%] text-moneed-gray-7'>
                             최근에 작성한 댓글이 없어요

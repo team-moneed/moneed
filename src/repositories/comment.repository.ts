@@ -6,6 +6,9 @@ export default class CommentRepository {
     async getUserComments({ userId }: { userId: string }) {
         return this.prisma.comment.findMany({
             where: { userId },
+            include: {
+                user: true,
+            },
         });
     }
 
