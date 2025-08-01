@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { useUserPosts } from '@/queries/user.query';
+import { useMyPosts } from '@/queries/posts.query';
 import PostThumbnail from '../community/[stockId]/PostThumbnail';
 import { cn } from '@/util/style';
 
 const MyPost = () => {
     const [activeTab, setActiveTab] = useState<'thisWeek' | 'notThisWeek'>('thisWeek');
 
-    const { data: posts } = useUserPosts();
+    const { data: posts } = useMyPosts();
 
     const thisweekPosts = posts.filter(post => {
         const now = new Date();

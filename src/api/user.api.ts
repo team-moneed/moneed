@@ -9,7 +9,7 @@ export async function fetchMyInfo() {
     return res.data;
 }
 
-export async function fetchUserPosts() {
+export async function fetchMyPosts() {
     const res = await http.get<PostThumbnail[]>('/api/users/me/posts');
     return res.data;
 }

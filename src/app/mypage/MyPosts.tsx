@@ -1,10 +1,10 @@
 import MypageBox from '@/components/Mypage/MypageBox';
 import MyPageBoxSkeleton from '@/components/Skeletons/mypage/MyPageBoxSkeleton';
-import { useUserPosts } from '@/queries/user.query';
+import { useMyPosts } from '@/queries/posts.query';
 import { Suspense } from 'react';
 
 function MyPosts() {
-    const { data: posts } = useUserPosts();
+    const { data: posts } = useMyPosts();
 
     return <MypageBox menu='내가 작성한 게시글' count={posts.length} href={'/mypost'}></MypageBox>;
 }
