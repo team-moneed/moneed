@@ -1,9 +1,9 @@
-import { getSelectedStock } from '@/api/stock.api';
+import { getSelectedStocks } from '@/api/stock.api';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 export const useSelectedStock = () => {
     return useSuspenseQuery({
         queryKey: ['selectedStock'],
-        queryFn: () => getSelectedStock(),
+        queryFn: () => getSelectedStocks(),
     });
 };

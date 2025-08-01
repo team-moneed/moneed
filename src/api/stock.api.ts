@@ -12,7 +12,7 @@ export async function selectStock(stockIds: number[]) {
     return res.data;
 }
 
-export async function getSelectedStock() {
+export async function getSelectedStocks() {
     const res = await http.get<Stock[]>('/api/stocks/selected');
     return res.data;
 }
