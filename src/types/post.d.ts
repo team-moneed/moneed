@@ -91,8 +91,8 @@ export type UpdatePostRequest = {
     postId: number;
     title: string;
     content: string;
-    thumbnailImage?: File | null;
-    prevThumbnailImageUrl?: string;
+    thumbnailImage: File | string | null;
+    prevThumbnailImageUrl: string | null;
 };
 
 export type UpdatePostResponse = {

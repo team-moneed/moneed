@@ -1,7 +1,7 @@
 import PostService from '@/services/post.service';
 import { getSession } from '@/lib/session';
 import { NextRequest, NextResponse } from 'next/server';
-import { isFile } from '@/util/typeChecker';
+import { UpdatePostRequest } from '@/types/post';
 
 export async function GET(_: NextRequest, { params }: { params: Promise<{ postId: string }> }) {
     const { postId } = await params;
@@ -30,17 +30,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ post
     const formData = await req.formData();
     const title = formData.get('title') as string;
     const content = formData.get('content') as string;
-    const thumbnailImage = formData.get('thumbnailImage') as File | '' | null;
-    const prevThumbnailImageUrl = formData.get('prevThumbnailImageUrl') as string | null;
-
-    let parsedThumbnailImage: File | null | undefined;
-    if (isFile(thumbnailImage)) {
-        parsedThumbnailImage = thumbnailImage;
-    } else if (thumbnailImage === '') {
-        parsedThumbnailImage = null;
-    } else {
-        parsedThumbnailImage = undefined;
-    }
+    const thumbnailImage = formData.get('thumbnailImage') as UpdatePostRequest['thumbnailImage'];
+    const prevThumbnailImageUrl = formData.get('prevThumbnailImageUrl') as UpdatePostRequest['prevThumbnailImageUrl'];
 
     const payload = await getSession();
     if (!payload) {
@@ -52,8 +43,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ post
         userId: payload.userId,
         title,
         content,
-        thumbnailImage: parsedThumbnailImage,
-        prevThumbnailImageUrl: prevThumbnailImageUrl ?? undefined,
+        thumbnailImage: thumbnailImage,
+        prevThumbnailImageUrl: prevThumbnailImageUrl,
     });
     return NextResponse.json(
         { message: '게시글이 수정되었습니다.', stockId: post.stockId, postId: post.id },

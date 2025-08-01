@@ -9,9 +9,10 @@ type MyStockProps = {
     stock: Stock;
     children?: ReactNode;
     className?: string;
+    href: string;
 };
 
-const MyStockBox = ({ children, stock }: MyStockProps) => {
+const MyStockBox = ({ children, stock, href }: MyStockProps) => {
     const { data } = useOverseasStockPrice({ symbol: stock.symbol });
     const price =
         data &&
@@ -25,7 +26,7 @@ const MyStockBox = ({ children, stock }: MyStockProps) => {
         <>
             <Link
                 className='flex justify-between p-[.8rem] rounded-[.8rem] hover:bg-moneed-white cursor-pointer transition-colors`'
-                href={`/community/${stock.name}`}
+                href={href}
             >
                 <div className='flex items-center gap-[.6rem]'>
                     <div className='rounded-full overflow-hidden aspect-square w-7'>
