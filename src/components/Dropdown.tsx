@@ -36,12 +36,12 @@ export const PrimaryDropdown = ({ dropdownMenus, closeDropdown }: PrimaryDropdow
     return (
         <div className='relative z-2 pointer-events-auto'>
             <Dropdown onClose={closeDropdown}>
-                <div className='absolute flex flex-col gap-[2.4rem] px-[2.4rem] py-[3.6rem] top-0 right-10 z-50 bg-white shadow-custom rounded-[.8rem]'>
+                <div className='absolute flex flex-col py-[2.8rem] top-0 right-10 z-50 bg-white shadow-custom rounded-[.8rem] min-w-[22.6rem]'>
                     {dropdownMenus.map(menu => (
                         <button
                             key={menu.text}
                             type='button'
-                            className='cursor-pointer flex justify-center items-center whitespace-nowrap w-[20rem]'
+                            className='h-[4.8rem] cursor-pointer flex justify-center items-center whitespace-nowrap hover:bg-moneed-gray-4'
                             onClick={e => {
                                 e.stopPropagation();
                                 menu.onClick(e);
