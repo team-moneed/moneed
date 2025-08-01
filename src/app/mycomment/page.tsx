@@ -2,35 +2,32 @@
 
 import { useState } from 'react';
 import Comment from '@/components/Comment/Comment';
+import { useSuspenseUser, useUserComments } from '@/queries/user.query';
 
 const MyComment = () => {
-    const [activeTab, setActiveTab] = useState('thisWeek');
+    const [activeTab, setActiveTab] = useState<'thisWeek' | 'notThisWeek'>('thisWeek');
 
-    const comments = [
-        {
-            commentId: 1,
-            content: '좋은 정보 감사합니다!',
-            parentId: null,
-            userName: '사용자2',
-            createdAt: '2024-12-10T10:15:00Z',
-        },
-        {
-            commentId: 3,
-            content: '대댓글까지 만들 수 있다니 대단해요.',
-            parentId: null,
-            userName: '사용자4',
-            createdAt: '2024-12-10T10:25:00Z',
-        },
-    ];
+    const { data: comments } = useUserComments();
+    const { data: user } = useSuspenseUser();
 
-    const thisweekComments = comments.filter(comment => comment.commentId === 1);
+    const thisweekComments = comments.filter(comment => {
+        const now = new Date();
+        const commentDate = new Date(comment.createdAt);
+        const startOfWeek = new Date(now);
+        startOfWeek.setDate(now.getDate() - now.getDay());
+        startOfWeek.setHours(0, 0, 0, 0);
+
+        return commentDate >= startOfWeek;
+    });
 
     return (
         <>
             <div className='px-8 max-w-512 mx-auto'>
                 <div className='flex my-[1.8rem]'>
                     <div className='text-[1.8rem] font-semibold leading-[140%]'>댓글</div>
-                    <div className='ml-[.4rem] text-[1.8rem] font-semibold leading-[140%]'>7</div>
+                    <div className='ml-[.4rem] text-[1.8rem] font-semibold leading-[140%]'>
+                        {activeTab === 'thisWeek' ? thisweekComments.length : comments.length}
+                    </div>
                 </div>
                 <div className='border-b-2 border-solid border-moneed-gray-5'>
                     <button
@@ -44,9 +41,9 @@ const MyComment = () => {
                         이번주 게시글
                     </button>
                     <button
-                        onClick={() => setActiveTab('notthisWeek')}
+                        onClick={() => setActiveTab('notThisWeek')}
                         className={`${
-                            activeTab === 'notthisWeek'
+                            activeTab === 'notThisWeek'
                                 ? 'text-moneed-black border-b-4 border-solid border-moneed-black'
                                 : 'text-moneed-gray-7'
                         } pr-[1.2rem] text-[1.6rem] font-semibold leading-[140%]`}
@@ -56,29 +53,41 @@ const MyComment = () => {
                 </div>
                 {activeTab === 'thisWeek' ? (
                     <div className='pt-[1.8rem]'>
-                        {thisweekComments.map(comment => (
-                            <div key={comment.commentId} className='pt-[1.8rem]'>
-                                <Comment
-                                    {...comment}
-                                    onEditComment={() => {
-                                        console.log('아직안됐어요ㅠㅠ');
-                                    }}
-                                />
-                            </div>
-                        ))}
+                        {thisweekComments.map(comment => {
+                            const myComment = {
+                                ...comment,
+                                user,
+                            };
+                            return (
+                                <div key={comment.id} className='pt-[1.8rem]'>
+                                    <Comment
+                                        comment={myComment}
+                                        setEditContent={() => {}}
+                                        setIsEdit={() => {}}
+                                        setEditCommentId={() => {}}
+                                    />
+                                </div>
+                            );
+                        })}
                     </div>
                 ) : (
                     <div className='pt-[1.8rem]'>
-                        {comments.map(comment => (
-                            <div key={comment.commentId} className='pt-[1.8rem]'>
-                                <Comment
-                                    {...comment}
-                                    onEditComment={() => {
-                                        console.log('아직안됐어요ㅠㅠ');
-                                    }}
-                                />
-                            </div>
-                        ))}
+                        {comments.map(comment => {
+                            const myComment = {
+                                ...comment,
+                                user,
+                            };
+                            return (
+                                <div key={comment.id} className='pt-[1.8rem]'>
+                                    <Comment
+                                        comment={myComment}
+                                        setEditContent={() => {}}
+                                        setIsEdit={() => {}}
+                                        setEditCommentId={() => {}}
+                                    />
+                                </div>
+                            );
+                        })}
                     </div>
                 )}
             </div>
