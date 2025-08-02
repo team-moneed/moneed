@@ -2,14 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { PrimaryDropdown, PrimaryDropdownProps } from '@/components/Dropdown';
-import { useModal } from '@/context/ModalContext';
-import useSnackbarStore from '@/store/useSnackbarStore';
 import Image from 'next/image';
 import { Comment as TComment } from '@/types/post';
 import DateFormatter from '../Dateformatter';
-import { useMutation } from '@tanstack/react-query';
-import { deleteComment } from '@/api/comment.api';
-import { queryClient } from '../QueryClientProvider';
 import { getCookie } from '@/util/cookie';
 import { TOKEN_KEY } from '@/constants/token';
 import { decodeJwt } from 'jose';
@@ -17,88 +12,26 @@ import { TokenPayload } from '@/types/auth';
 
 type CommentType = {
     comment: TComment;
-    setEditContent: (content: string) => void;
-    setIsEdit: (isEdit: boolean) => void;
-    setEditCommentId: (commentId: number) => void;
+    actions: PrimaryDropdownProps['dropdownMenus'];
 };
 
-const Comment = ({ comment, setEditContent, setIsEdit, setEditCommentId }: CommentType) => {
-    const { content, createdAt, user, updatedAt, postId, id } = comment;
+const Comment = ({ comment, actions }: CommentType) => {
+    const { content, createdAt, user, updatedAt } = comment;
     const [decodedToken, setDecodedToken] = useState<TokenPayload | null>(null);
     const isMyComment = decodedToken?.userId === user.id;
 
     const [isDropdownOpen, setIsdropdownOpen] = useState(false);
     const isEdited = updatedAt !== createdAt;
 
-    const showSnackbar = useSnackbarStore(state => state.showSnackbar);
-    const { confirm } = useModal();
-    const { mutate: deleteCommentMutation } = useMutation({
-        mutationFn: deleteComment,
-        onSuccess: data => {
-            queryClient.invalidateQueries({ queryKey: ['post', Number(postId)] });
-            showSnackbar({
-                message: data.message,
-                variant: 'action',
-                position: 'bottom',
-                icon: '',
-            });
-        },
-    });
-
-    const handleEditComment = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        setIsEdit(true);
-        setEditContent(content);
-        setEditCommentId(id);
-        setIsdropdownOpen(prev => !prev);
-    };
-
     //댓글 수정/삭제 드롭다운
-    const handleOpenDropdown = (e: React.MouseEvent<HTMLDivElement>) => {
+    const openDropdown = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         setIsdropdownOpen(prev => !prev);
-    };
-
-    //댓글 삭제할건지 묻는 모달
-    const openCommentDeletemodal = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        const result = confirm(
-            <span>
-                삭제된 내용은 복구되지 않아요.
-                <br />
-                정말 삭제하실건가요?
-            </span>,
-        );
-        result.then(confirmed => {
-            if (confirmed) {
-                handleDeleteComment(e);
-            }
-        });
-        setIsdropdownOpen(prev => !prev);
-    };
-
-    //댓글 삭제 api 연동
-    const handleDeleteComment = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        deleteCommentMutation({ commentId: id });
     };
 
     const closeDropdown = () => {
         setIsdropdownOpen(false);
     };
-
-    const dropdownMenus: PrimaryDropdownProps['dropdownMenus'] = [
-        {
-            icon: '/icon/icon-scissors.svg',
-            text: '댓글 수정',
-            onClick: handleEditComment,
-        },
-        {
-            icon: '/icon/icon-trashcan.svg',
-            text: '댓글 삭제',
-            onClick: openCommentDeletemodal,
-        },
-    ];
 
     useEffect(() => {
         const accessToken = getCookie(TOKEN_KEY.ACCESS_TOKEN);
@@ -131,13 +64,11 @@ const Comment = ({ comment, setEditContent, setIsEdit, setEditCommentId }: Comme
                     <div className='relative'>
                         <div
                             className='relative cursor-pointer rounded-full overflow-hidden aspect-square w-[2.4rem] shrink-0 ml-auto'
-                            onClick={handleOpenDropdown}
+                            onClick={openDropdown}
                         >
                             <img src='/icon/icon-more.svg' alt='more' className='w-full h-full object-cover' />
                         </div>
-                        {isDropdownOpen && (
-                            <PrimaryDropdown dropdownMenus={dropdownMenus} closeDropdown={closeDropdown} />
-                        )}
+                        {isDropdownOpen && <PrimaryDropdown dropdownMenus={actions} closeDropdown={closeDropdown} />}
                     </div>
                 )}
             </div>

@@ -59,12 +59,7 @@ const MyComment = () => {
                 <div className='pt-[1.8rem]'>
                     {currentTabComments.map(comment => (
                         <div key={comment.id} className='pt-[1.8rem]'>
-                            <Comment
-                                comment={comment}
-                                setEditContent={() => {}}
-                                setIsEdit={() => {}}
-                                setEditCommentId={() => {}}
-                            />
+                            <Comment comment={comment} actions={[]} />
                         </div>
                     ))}
                     {currentTabComments.length === 0 && (

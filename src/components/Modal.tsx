@@ -57,9 +57,8 @@ const Modal = ({
                     <div className='mt-[2.4rem] flex justify-center gap-[3.9rem]'>
                         {leftvisible && (
                             <Button
-                                theme='secondary'
+                                variant='secondary'
                                 className='px-8 py-[1.2rem] text-[1.4rem] font-semibold leading-[140%] '
-                                textcolor='ghost'
                                 onClick={leftButtonevent}
                             >
                                 {leftButtontext}
@@ -67,8 +66,7 @@ const Modal = ({
                         )}
                         {rightvisible && (
                             <Button
-                                theme='secondary'
-                                textcolor='secondary'
+                                variant='secondary'
                                 className='px-8 py-[1.2rem] text-[1.4rem] font-semibold leading-[140%] text-moneed-black'
                                 onClick={rightButtonevent}
                             >
