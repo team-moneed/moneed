@@ -1,4 +1,6 @@
-import HotStocks from '@/app/community/HotStocks';
+'use client';
+
+import HotStockSection from '@/app/community/HotStockSection';
 import CommunityTabNav from '@/app/community/CommunityTabNav';
 import Vote from './Vote';
 import HotPostsSection from './HotPostsSection';
@@ -43,7 +45,7 @@ export default function CommunityPage() {
         <div>
             <CommunityTabNav tabs={communityTabs} />
             <Top5Section id={hashObj.top5} />
-            <HotStocks id={hashObj.category} />
+            <HotStockSection id={hashObj.category} />
             <Vote id={hashObj.vote} />
             <HotPostsSection id={hashObj.hotPosts} />
         </div>

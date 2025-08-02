@@ -1,10 +1,10 @@
 import MyStockBox from '@/components/Mypage/MyStockBox';
 import StockBoxSkeleton from '@/components/Skeletons/mypage/StockBoxSkeleton';
-import { useSelectedStock } from '@/hooks/useSelectedStock';
+import { useSelectedStocks } from '@/queries/stock.query';
 import { Suspense } from 'react';
 
 function SelectedStocks() {
-    const { data: selectedStocks } = useSelectedStock();
+    const { data: selectedStocks } = useSelectedStocks();
 
     return (
         <section className='space-y-[.8rem]'>

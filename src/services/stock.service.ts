@@ -33,4 +33,8 @@ export class StockService {
     async getOverseasStockPrice(symbol: string) {
         return await getOverseasStockPrice({ symbol });
     }
+
+    async getStocksBySymbols(symbols: string[]) {
+        return await this.stockRepository.getStocksBySymbols(symbols);
+    }
 }

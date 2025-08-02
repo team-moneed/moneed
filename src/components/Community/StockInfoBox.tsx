@@ -1,11 +1,10 @@
 'use client';
 
-import { getOverseasStockPrice } from '@/api/stock.api';
 import { Stock } from '@/generated/prisma';
 import { cn } from '@/util/style';
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { ReactNode, Suspense } from 'react';
 import StockInfoBoxSkeleton from '../Skeletons/StockInfoBoxSkeleton';
+import { useSuspenseOverseasStockPrice } from '@/queries/stock.query';
 
 type StockInfoProps = {
     infoBoxImgages?: string[] | string;
@@ -15,11 +14,7 @@ type StockInfoProps = {
 };
 
 const StockInfoBox = ({ stock, children }: StockInfoProps) => {
-    const { data } = useSuspenseQuery({
-        queryKey: ['stock', stock.symbol],
-        queryFn: () => getOverseasStockPrice({ symbol: stock.symbol }),
-        refetchInterval: 1000 * 60, // 1분마다 리패칭
-    });
+    const { data } = useSuspenseOverseasStockPrice({ symbol: stock.symbol });
 
     return (
         <>
@@ -31,7 +26,7 @@ const StockInfoBox = ({ stock, children }: StockInfoProps) => {
                     <div>
                         <h3 className='text-[1.4rem] font-semibold leading-[140%] text-moneed-black'>{stock.name}</h3>
                         <span className='text-[1.2rem] font-normal leading-[135%] text-moneed-gray-8'>
-                            {stock.symbol}|{stock.sector}
+                            {stock.symbol} | {stock.sector}
                         </span>
                     </div>
                 </div>
