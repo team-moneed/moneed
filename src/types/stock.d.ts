@@ -9,4 +9,6 @@ export type HotStock = {
     market: MarketCode;
     sign: '1' | '2' | '3';
     rank: number;
+    logoUrl: string;
+    sector: string;
 };

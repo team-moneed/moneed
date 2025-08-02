@@ -4,28 +4,14 @@ import { useParams } from 'next/navigation';
 import { ChipLink } from '@/components/Chip';
 import Icon from '@/components/Icon';
 import Link from 'next/link';
-import { useStocks } from '@/hooks/useStocks';
-import ChipSkeleton from '@/components/Skeletons/ChipSkeleton';
+import { useSelectedStocks } from '@/queries/stock.query';
+import { Suspense } from 'react';
+import StockTypeBarSkeleton from '@/components/Skeletons/community/StockTypeBarSkeleton';
 
-export default function StockTypeBar() {
+function StockTypeBar() {
     const params = useParams();
     const stockId = params ? Number(params.stockId) : undefined;
-    const { data: stocks, isLoading } = useStocks();
-
-    if (isLoading) {
-        return (
-            <div className='relative'>
-                <div className='flex gap-4 mb-6 overflow-x-auto whitespace-nowrap items-center'>
-                    <Link href='/selectstocktype' className='shrink-0'>
-                        <Icon iconUrl='/icon/icon-addcircle.svg' width={30} height={30} />
-                    </Link>
-                    {Array.from({ length: 15 }, (_, i) => (
-                        <ChipSkeleton key={i} />
-                    ))}
-                </div>
-            </div>
-        );
-    }
+    const { data: stocks } = useSelectedStocks();
 
     return (
         <div className='relative'>
@@ -46,3 +32,13 @@ export default function StockTypeBar() {
         </div>
     );
 }
+
+function StockTypeBarWithSuspense() {
+    return (
+        <Suspense fallback={<StockTypeBarSkeleton count={15} />}>
+            <StockTypeBar />
+        </Suspense>
+    );
+}
+
+export default StockTypeBarWithSuspense;

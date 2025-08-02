@@ -10,7 +10,7 @@ const MobileNav = () => {
 
     const hideMobileNavPaths = ['/selectstocktype', '/myprofile', '/welcome', '/writepost', '/editpost'];
 
-    if (hideMobileNavPaths.includes(pathname)) {
+    if (hideMobileNavPaths.some(path => pathname.startsWith(path))) {
         return null;
     }
 
