@@ -42,4 +42,12 @@ export class StockRepository {
             take: count,
         });
     }
+
+    async getStocksBySymbols(symbols: string[]) {
+        return this.prisma.stock.findMany({
+            where: {
+                symbol: { in: symbols },
+            },
+        });
+    }
 }
