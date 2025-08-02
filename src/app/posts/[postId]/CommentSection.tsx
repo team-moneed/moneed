@@ -1,5 +1,4 @@
 'use client';
-import { useState } from 'react';
 import { useModal } from '@/context/ModalContext';
 import { PrimaryDropdownProps } from '@/components/Dropdown';
 import Comment from '@/components/Comment/Comment';
@@ -9,6 +8,8 @@ import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/components/QueryClientProvider';
 import useSnackbarStore from '@/store/useSnackbarStore';
 import { Comment as TComment } from '@/types/post';
+import { useCommentStore } from '@/store/useCommentStore';
+import { useShallow } from 'zustand/react/shallow';
 
 interface CommentSectionProps {
     postId: string;
@@ -16,12 +17,15 @@ interface CommentSectionProps {
 }
 
 export default function CommentSection({ postId, comments }: CommentSectionProps) {
-    const [isEdit, setIsEdit] = useState(false);
-    const [editCommentId, setEditCommentId] = useState<number | null>(null);
-    const [editContent, setEditContent] = useState('');
-
     const { confirm } = useModal();
     const showSnackbar = useSnackbarStore(state => state.showSnackbar);
+    const { setEditCommentId, setEditCommentContent, setIsEditingComment } = useCommentStore(
+        useShallow(state => ({
+            setEditCommentId: state.setEditCommentId,
+            setEditCommentContent: state.setEditCommentContent,
+            setIsEditingComment: state.setIsEditingComment,
+        })),
+    );
 
     const { mutate: deleteCommentMutation } = useMutation({
         mutationFn: deleteComment,
@@ -39,8 +43,8 @@ export default function CommentSection({ postId, comments }: CommentSectionProps
     const handleEditComment =
         (commentId: number, commentContent: string) => (e: React.MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation();
-            setIsEdit(true);
-            setEditContent(commentContent);
+            setIsEditingComment(true);
+            setEditCommentContent(commentContent);
             setEditCommentId(commentId);
         };
 
@@ -102,14 +106,7 @@ export default function CommentSection({ postId, comments }: CommentSectionProps
             </div>
             {/* 모바일 UI 수정: 댓글 입력창이 가장 아래에 붙도록*/}
             <div className='order-3 lg:order-1 mt-16 lg:mt-4 relative flex items-center bg-moneed-gray-4 rounded-[1.2rem]'>
-                <CommentForm
-                    isEdit={isEdit}
-                    setIsEdit={setIsEdit}
-                    editContent={editContent}
-                    setEditContent={setEditContent}
-                    postId={Number(postId)}
-                    editCommentId={editCommentId}
-                />
+                <CommentForm postId={Number(postId)} />
             </div>
         </div>
     );
