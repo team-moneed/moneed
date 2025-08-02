@@ -8,7 +8,7 @@ import { Stock } from '@/generated/prisma';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useSelectedStock } from '@/hooks/useSelectedStock';
+import { useSelectedStocks } from '@/hooks/useSelectedStock';
 
 function SelectStockTypeContent() {
     const router = useRouter();
@@ -18,7 +18,7 @@ function SelectStockTypeContent() {
     });
     const searchParams = useSearchParams();
 
-    const { data: mySelectedStocks } = useSelectedStock();
+    const { data: mySelectedStocks } = useSelectedStocks();
     const mySelectedStockIds = mySelectedStocks?.flatMap(stock => stock.id);
 
     const { mutate: selectStock } = useMutation({
