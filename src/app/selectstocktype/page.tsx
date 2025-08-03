@@ -8,7 +8,7 @@ import { Stock } from '@/generated/prisma';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useSelectedStocks } from '@/hooks/useSelectedStock';
+import { useSelectedStocks } from '@/queries/stock.query';
 
 function SelectStockTypeContent() {
     const router = useRouter();

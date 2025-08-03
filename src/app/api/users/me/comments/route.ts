@@ -1,5 +1,5 @@
 import { getSession } from '@/lib/session';
-import UserService from '@/services/user.service';
+import CommentService from '@/services/comment.service';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
@@ -9,9 +9,9 @@ export async function GET() {
     }
 
     const { userId } = session;
-    const userService = new UserService();
+    const commentService = new CommentService();
 
-    const comments = await userService.getUserComments({ userId });
+    const comments = await commentService.getUserComments({ userId });
 
     return NextResponse.json(comments);
 }

@@ -1,13 +1,14 @@
 'use client';
 import LogoutButton from '@/app/mypage/LogoutButton';
-import LeaveButton from './LeaveButton';
 import Link from 'next/link';
 import { SnackbarTrigger } from '@/components/Snackbar';
 import { useSearchParams } from 'next/navigation';
-import MyPosts from './MyPosts';
-import MyComments from './MyComments';
-import UserInfo from './UserInfo';
-import SelectedStocks from './SelectedStocks';
+import dynamic from 'next/dynamic';
+const LeaveButton = dynamic(() => import('./LeaveButton'), { ssr: false });
+const UserInfo = dynamic(() => import('./UserInfo'), { ssr: false });
+const SelectedStocks = dynamic(() => import('./SelectedStocks'), { ssr: false });
+const MyPosts = dynamic(() => import('./MyPosts'), { ssr: false });
+const MyComments = dynamic(() => import('./MyComments'), { ssr: false });
 
 export default function Mypage() {
     const searchParams = useSearchParams();
