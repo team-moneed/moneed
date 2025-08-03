@@ -103,16 +103,16 @@ export default class PostService {
 
     async getPostsWithUserExtended({
         stockId,
-        cursor = new Date(),
-        limit = 15,
+        cursor,
+        limit,
         userId,
     }: {
-        stockId: number;
+        stockId?: number;
         cursor?: Date;
         limit?: number;
         userId?: string;
     }): Promise<PostThumbnail[]> {
-        const postList = await this.postRepository.getPostsWithUserExtended({ stockId, cursor, limit });
+        const postList = await this.postRepository.getPostsWithUserExtended({ stockId, cursor, limit, userId });
         const postThumbnailList: PostThumbnail[] = postList.map(post => ({
             id: post.id,
             title: post.title,

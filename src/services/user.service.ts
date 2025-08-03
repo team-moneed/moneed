@@ -1,4 +1,5 @@
 import PostRepository from '@/repositories/post.repository';
+import CommentRepository from '@/repositories/comment.repository';
 import { UserRepository } from '@/repositories/user.repository';
 import { isFile } from '@/util/typeChecker';
 import S3Service from './s3.service';
@@ -8,6 +9,7 @@ import { UpdateUserProfileRequest } from '@/types/user';
 class UserService {
     private userRepository = new UserRepository();
     private postRepository = new PostRepository();
+    private commentRepository = new CommentRepository();
 
     async getUserInfo({ userId }: { userId: string }) {
         return this.userRepository.findById(userId);
@@ -15,6 +17,10 @@ class UserService {
 
     async getUserPosts({ userId }: { userId: string }) {
         return this.postRepository.getUserPosts({ userId });
+    }
+
+    async getUserComments({ userId }: { userId: string }) {
+        return this.commentRepository.getUserComments({ userId });
     }
 
     async updateUserProfile({

@@ -17,8 +17,8 @@ export async function GET(req: NextRequest) {
 
         const postThumbnailList = await postService.getPostsWithUserExtended({
             stockId: Number(stockId),
-            limit: limit ? Number(limit) : undefined,
-            cursor: cursor ? new Date(cursor) : undefined,
+            limit: limit ? Number(limit) : 15,
+            cursor: cursor ? new Date(cursor) : new Date(),
             userId: payload?.userId,
         });
 

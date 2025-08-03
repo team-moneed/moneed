@@ -1,20 +1,14 @@
 'use client';
 
 import PostThumbnailCard from '@/components/PostThumbnailCard';
-import { getTopBoardPosts } from '@/api/post.api';
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { BoardRankResponse } from '@/types/board';
 import { useRouter } from 'next/navigation';
+import { useTop3Posts } from '@/queries/posts.query';
 
 export default function Top3Posts({ selectedStock }: { selectedStock: BoardRankResponse }) {
     const router = useRouter();
     const anHour = 1000 * 60 * 60;
-
-    const { data: postsWithUser } = useSuspenseQuery({
-        queryKey: ['posts', selectedStock.stockId],
-        queryFn: () => getTopBoardPosts({ boardId: selectedStock.stockId, limit: 3 }),
-        staleTime: anHour,
-    });
+    const { data: postsWithUser } = useTop3Posts({ boardId: selectedStock.stockId, staleTime: anHour });
 
     const moveToDetail = (stockId: number) => {
         router.push(`/posts/${stockId}`);
