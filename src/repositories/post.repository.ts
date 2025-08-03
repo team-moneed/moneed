@@ -7,6 +7,9 @@ export default class PostRepository {
     async getUserPosts({ userId }: { userId: string }) {
         return this.prisma.post.findMany({
             where: { userId },
+            include: {
+                postLikes: true,
+            },
         });
     }
 
@@ -169,14 +172,16 @@ export default class PostRepository {
         stockId,
         cursor,
         limit,
+        userId,
     }: {
-        stockId: number;
-        cursor: Date;
-        limit: number;
+        stockId?: number;
+        cursor?: Date;
+        limit?: number;
         userId?: string;
     }) {
         const posts = await this.prisma.post.findMany({
             where: {
+                userId,
                 stockId,
                 createdAt: {
                     lt: cursor,

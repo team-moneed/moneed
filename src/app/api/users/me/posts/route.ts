@@ -1,5 +1,5 @@
 import { getSession } from '@/lib/session';
-import UserService from '@/services/user.service';
+import PostService from '@/services/post.service';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
@@ -9,9 +9,9 @@ export async function GET() {
     }
 
     const { userId } = session;
-    const userService = new UserService();
+    const postService = new PostService();
 
-    const posts = await userService.getUserPosts({ userId });
+    const posts = await postService.getPostsWithUserExtended({ userId });
 
     return NextResponse.json(posts);
 }

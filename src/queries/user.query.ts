@@ -1,4 +1,4 @@
-import { fetchMyInfo, fetchUserComments, fetchUserPosts } from '@/api/user.api';
+import { fetchMyInfo, fetchUserComments } from '@/api/user.api';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 export const useUser = () => {
@@ -12,13 +12,6 @@ export const useSuspenseUser = () => {
     return useSuspenseQuery({
         queryKey: ['user', 'me'],
         queryFn: () => fetchMyInfo(),
-    });
-};
-
-export const useUserPosts = () => {
-    return useSuspenseQuery({
-        queryKey: ['user', 'me', 'posts'],
-        queryFn: () => fetchUserPosts(),
     });
 };
 

@@ -1,15 +1,16 @@
-import { Comment, Post, User } from '@/generated/prisma';
+import { Comment, User } from '@/generated/prisma';
 import { http } from './client';
 import { isFile } from '@/util/typeChecker';
 import { UpdateUserProfileRequest } from '@/types/user';
+import { PostThumbnail } from '@/types/post';
 
 export async function fetchMyInfo() {
     const res = await http.get<User>(`/api/users/me`);
     return res.data;
 }
 
-export async function fetchUserPosts() {
-    const res = await http.get<Post[]>('/api/users/me/posts');
+export async function fetchMyPosts() {
+    const res = await http.get<PostThumbnail[]>('/api/users/me/posts');
     return res.data;
 }
 
