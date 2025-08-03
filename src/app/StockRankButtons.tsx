@@ -17,7 +17,7 @@ export default function StockRankButtons({
     setSelectedStock: (stock: BoardRankResponse) => void;
 }) {
     return (
-        <div className='flex gap-4'>
+        <div className='flex gap-4 overflow-x-auto'>
             {stockList.map((stock, index) => {
                 return (
                     <ChipButton

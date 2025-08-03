@@ -22,7 +22,7 @@ export const ChipButton = ({ className, active, label, disabled, children, onCli
     return (
         <button
             className={cn(
-                'rounded-[1.2rem] px-[2.4rem] py-[1.2rem] flex items-center text-[1.4rem] font-semibold',
+                'rounded-[1.2rem] px-[2.4rem] py-[1.2rem] flex items-center text-[1.4rem] font-semibold whitespace-nowrap',
                 active ? 'bg-moneed-black text-white' : 'bg-moneed-gray-4 text-moneed-black',
                 className,
             )}
