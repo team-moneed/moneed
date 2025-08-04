@@ -4,23 +4,17 @@ import { use, useEffect, Suspense, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ImageUploader from '@/components/ImageUploader';
 import useSnackbarStore from '@/store/useSnackbarStore';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { getPost, updatePost } from '@/api/post.api';
+import { updatePost } from '@/api/post.api';
 import { REASON_CODES } from '@/constants/snackbar';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import EditPostSkeleton from '@/components/Skeletons/EditPostSkeleton';
 import { UpdatePostField } from '@/types/fieldData';
+import { usePost } from '@/queries/posts.query';
 
 const EditPostContent = ({ postId }: { postId: string }) => {
     const router = useRouter();
-
-    const { data: post } = useSuspenseQuery({
-        queryKey: ['edit-post', Number(postId)],
-        queryFn: () => getPost({ postId: Number(postId) }),
-        staleTime: 0,
-        gcTime: 0,
-    });
+    const { data: post } = usePost({ postId: Number(postId) });
 
     const [image, setImage] = useState<File | string | null>(post.thumbnailImage ?? null);
     const [previewImage, setPreviewImage] = useState<string | null>(post.thumbnailImage ?? null);

@@ -1,9 +1,8 @@
 'use client';
 
-import { getTopPosts } from '@/api/post.api';
 import PostCarousel from '@/components/Carousel/PostCarousel';
 import Top5Thumbnail from './Top5Thumbnail';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useTopPosts } from '@/queries/posts.query';
 
 export default function Top5() {
     const POSTOPTIONS = {
@@ -14,10 +13,7 @@ export default function Top5() {
         // containScroll: "keepSnaps",
     };
 
-    const { data: topPosts } = useSuspenseQuery({
-        queryKey: ['top-posts'],
-        queryFn: () => getTopPosts({ limit: 5 }),
-    });
+    const { data: topPosts } = useTopPosts({ limit: 5 });
 
     return (
         <PostCarousel options={POSTOPTIONS}>
