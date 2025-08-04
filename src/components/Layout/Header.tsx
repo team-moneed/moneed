@@ -77,8 +77,6 @@ const MenuHeader = () => {
                 return '탈퇴하기';
             case '/writepost':
                 return '게시판 글쓰기';
-            case '/editpost':
-                return '게시글 수정';
             case '/searchstocktype':
                 return '게시판 선택';
             case '/community':
@@ -113,8 +111,6 @@ const MenuHeader = () => {
         switch (pathname) {
             case '/writepost':
                 return <ExitButton />;
-            case '/editpost':
-                return <ExitButton />;
             case '/leave':
                 return <ExitButton />;
             default:
@@ -140,13 +136,6 @@ const MenuHeader = () => {
                     rightButtonevent={handleModalConfirm}
                     onClose={handleModalCancel}
                 >
-                    {pathname === '/editpost' && (
-                        <span>
-                            수정하던 글은 저장되지않아요.
-                            <br />
-                            다음에 수정할까요?
-                        </span>
-                    )}
                     {pathname === '/writepost' && (
                         <span>
                             작성하던 글은 저장되지않아요.
@@ -169,7 +158,7 @@ const NoMenuHeader = () => {
 };
 
 const Header = () => {
-    const menuHeaderPaths = ['/mycomment', '/mypost', '/searchstocktype', '/writepost', '/editpost', '/post', '/leave'];
+    const menuHeaderPaths = ['/mycomment', '/mypost', '/searchstocktype', '/writepost', '/post', '/leave'];
 
     const noMenuHeaderPaths = ['/onboarding', '/selectstocktype'];
 
