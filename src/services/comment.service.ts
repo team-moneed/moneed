@@ -4,7 +4,8 @@ export default class CommentService {
     private commentRepository = new CommentRepository();
 
     async getUserComments({ userId }: { userId: string }) {
-        return this.commentRepository.getUserComments({ userId });
+        const comments = await this.commentRepository.getUserComments({ userId });
+        return comments;
     }
 
     async createComment({ postId, content, userId }: { postId: number; content: string; userId: string }) {

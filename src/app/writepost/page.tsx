@@ -129,8 +129,8 @@ const WritePost = () => {
         });
 
         if (res.status === 201) {
-            const { postId } = res.data;
-            router.replace(`/posts/${postId}?reason=${REASON_CODES.POST_CREATED}`);
+            const { post } = res.data;
+            router.replace(`/community/${post.stock.symbol}/posts/${post.id}?reason=${REASON_CODES.POST_CREATED}`);
         }
     };
 

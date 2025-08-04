@@ -9,7 +9,8 @@ import { TokenPayload } from '@/types/auth';
 import { useEffect, useState } from 'react';
 
 export default function HotPostThumbnail({ post }: { post: THotPostThumbnail }) {
-    const { user, content, isLiked, id, thumbnailImage, likeCount, createdAt, title, commentCount } = post;
+    const { user, content, isLiked, id, thumbnailImage, likeCount, createdAt, title, commentCount, stock } = post;
+    const { symbol } = stock;
     const postImages = thumbnailImage ? [thumbnailImage] : [];
     const [decodedToken, setDecodedToken] = useState<TokenPayload | null>(null);
     const isMyPost = decodedToken?.userId === user.id;
@@ -24,7 +25,7 @@ export default function HotPostThumbnail({ post }: { post: THotPostThumbnail }) 
 
     const router = useRouter();
     const movetoDetail = ({ postId }: { postId: number }) => {
-        router.push(`/posts/${postId}`);
+        router.push(`/community/${symbol}/posts/${postId}`);
     };
 
     useEffect(() => {

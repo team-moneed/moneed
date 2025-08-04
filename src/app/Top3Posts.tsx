@@ -10,8 +10,8 @@ export default function Top3Posts({ selectedStock }: { selectedStock: BoardRankR
     const anHour = 1000 * 60 * 60;
     const { data: postsWithUser } = useTop3Posts({ boardId: selectedStock.stockId, staleTime: anHour });
 
-    const moveToDetail = (stockId: number) => {
-        router.push(`/posts/${stockId}`);
+    const moveToDetail = (postId: number) => {
+        router.push(`/community/${selectedStock.symbol}/posts/${postId}`);
     };
 
     return (

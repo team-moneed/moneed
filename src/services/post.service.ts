@@ -1,12 +1,5 @@
 import PostRepository from '@/repositories/post.repository';
-import {
-    CreatePostRequest,
-    HotPostThumbnail,
-    PostDetail,
-    PostThumbnail,
-    TopPostThumbnail,
-    UpdatePostRequest,
-} from '@/types/post';
+import { CreatePostRequest, PostDetail, PostThumbnail, TopPostThumbnail, UpdatePostRequest } from '@/types/post';
 import S3Service from './s3.service';
 import { urlToS3FileName } from '@/util/parser';
 import { isFile } from '@/util/typeChecker';
@@ -50,17 +43,14 @@ export default class PostService {
             stock: {
                 id: post.stock.id,
                 name: post.stock.name,
+                symbol: post.stock.symbol,
             },
         }));
 
         return postThumbnailList;
     }
 
-    async getHotPosts({
-        limit = 15,
-        cursor = 0,
-        userId,
-    }: { limit?: number; cursor?: number; userId?: string } = {}): Promise<HotPostThumbnail[]> {
+    async getHotPosts({ limit = 15, cursor = 0, userId }: { limit?: number; cursor?: number; userId?: string } = {}) {
         const postList = await this.postRepository.getPostsByScore({ limit, cursor });
 
         const postThumbnailList = postList.map(post => ({
@@ -68,12 +58,10 @@ export default class PostService {
             isLiked: post.postLikes.some(like => like.userId === userId),
             likeCount: post.postLikes.length,
             commentCount: post.comments.length,
-            stock: {
-                id: post.stock.id,
-                name: post.stock.name,
-            },
+            stock: post.stock,
             thumbnailImage: post.thumbnailImage ?? undefined,
         }));
+
         return postThumbnailList;
     }
 
@@ -89,15 +77,6 @@ export default class PostService {
             likeCount: post.postLikes.length,
             comments: post.comments,
             thumbnailImage: post.thumbnailImage ?? undefined,
-            user: {
-                id: post.user.id,
-                nickname: post.user.nickname,
-                profileImage: post.user.profileImage,
-            },
-            stock: {
-                id: post.stock.id,
-                name: post.stock.name,
-            },
         };
     }
 
@@ -121,16 +100,9 @@ export default class PostService {
             isLiked: post.postLikes.some(like => like.userId === userId),
             likeCount: post.postLikes.length,
             commentCount: post.comments.length,
-            stock: {
-                id: post.stock.id,
-                name: post.stock.name,
-            },
+            stock: post.stock,
             thumbnailImage: post.thumbnailImage ?? undefined,
-            user: {
-                id: post.user.id,
-                nickname: post.user.nickname,
-                profileImage: post.user.profileImage,
-            },
+            user: post.user,
         }));
         return postThumbnailList;
     }

@@ -19,13 +19,7 @@ export default function Top5() {
         <PostCarousel options={POSTOPTIONS}>
             {topPosts.map(post => (
                 <div key={post.id} className='shrink-0 w-[calc(85%-1.6rem)] lg:w-[calc(50%+.8rem)]'>
-                    <Top5Thumbnail
-                        user={post.user}
-                        content={post.content}
-                        title={post.title}
-                        createdAt={post.createdAt}
-                        postId={post.id}
-                    />
+                    <Top5Thumbnail posts={post} />
                 </div>
             ))}
         </PostCarousel>

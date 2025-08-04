@@ -89,6 +89,7 @@ export default class PostRepository {
                     select: {
                         id: true,
                         name: true,
+                        symbol: true,
                     },
                 },
                 comments: {
@@ -208,6 +209,7 @@ export default class PostRepository {
                     select: {
                         id: true,
                         name: true,
+                        symbol: true,
                     },
                 },
                 user: {
@@ -233,6 +235,7 @@ export default class PostRepository {
             SELECT 
                 p."stockId",
                 (SELECT s.name FROM stocks s WHERE s.id = p."stockId") as "stockName",
+                (SELECT s.symbol FROM stocks s WHERE s.id = p."stockId") as "symbol",
                 COUNT(DISTINCT p.id) as "postCount",
                 COALESCE(
                     (SELECT COUNT(pl.id) 
@@ -266,6 +269,7 @@ export default class PostRepository {
         `) as Array<{
             stockId: number;
             stockName: string;
+            symbol: string;
             postCount: bigint;
             totalViews: bigint;
             totalLikes: bigint;
@@ -276,6 +280,7 @@ export default class PostRepository {
         return boardsWithInHours.map(item => ({
             stockId: item.stockId,
             stockName: item.stockName,
+            symbol: item.symbol,
             postCount: Number(item.postCount),
             totalViews: Number(item.totalViews),
             totalLikes: Number(item.totalLikes),
@@ -287,7 +292,8 @@ export default class PostRepository {
         const boards = (await this.prisma.$queryRaw`
             SELECT 
                 p."stockId",
-                (SELECT s.name FROM stocks s WHERE s.id = p."stockId") as "stockName",
+                (SELECT s.name FROM stocks s WHERE s.id = p."stockId") as "stockName", 
+                (SELECT s.symbol FROM stocks s WHERE s.id = p."stockId") as "symbol",
                 COUNT(DISTINCT p.id) as "postCount",
                 COALESCE(
                     (SELECT COUNT(pl.id) 
@@ -318,6 +324,7 @@ export default class PostRepository {
         `) as Array<{
             stockId: number;
             stockName: string;
+            symbol: string;
             postCount: bigint;
             totalViews: bigint;
             totalLikes: bigint;
@@ -327,6 +334,7 @@ export default class PostRepository {
         return boards.map(item => ({
             stockId: item.stockId,
             stockName: item.stockName,
+            symbol: item.symbol,
             postCount: Number(item.postCount),
             totalViews: Number(item.totalViews),
             totalLikes: Number(item.totalLikes),
@@ -354,6 +362,15 @@ export default class PostRepository {
                 content,
                 stockId,
                 thumbnailImage,
+            },
+            include: {
+                stock: {
+                    select: {
+                        id: true,
+                        name: true,
+                        symbol: true,
+                    },
+                },
             },
         });
         return post;
@@ -435,6 +452,7 @@ export default class PostRepository {
                     select: {
                         id: true,
                         name: true,
+                        symbol: true,
                     },
                 },
                 user: {

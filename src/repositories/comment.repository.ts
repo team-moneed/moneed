@@ -8,6 +8,11 @@ export default class CommentRepository {
             where: { userId },
             include: {
                 user: true,
+                post: {
+                    include: {
+                        stock: true,
+                    },
+                },
             },
         });
     }

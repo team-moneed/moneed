@@ -8,10 +8,5 @@ export async function GET(request: NextRequest) {
     const limit = Number(request.nextUrl.searchParams.get('limit')) || 3;
 
     const boardRanks = await postService.getBoardRank({ limit });
-    const result = boardRanks.map(boardRank => ({
-        stockId: boardRank.stockId,
-        stockName: boardRank.stockName,
-    }));
-
-    return NextResponse.json(result);
+    return NextResponse.json(boardRanks);
 }

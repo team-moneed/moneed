@@ -1,24 +1,18 @@
 'use client';
 
 import PostThumbnailCard from '@/components/PostThumbnailCard';
-import { PostUser } from '@/types/post';
+import { TopPostThumbnail } from '@/types/post';
 import { useRouter } from 'next/navigation';
 
-type Top5ThumbnailProps = {
-    user: PostUser;
-    content: string;
-    title: string;
-    createdAt: string;
-    postId: number;
-};
-
-const Top5Thumbnail = ({ user, content, title, createdAt, postId }: Top5ThumbnailProps) => {
+const Top5Thumbnail = ({ posts }: { posts: TopPostThumbnail }) => {
+    const { user, content, title, createdAt, id, stock } = posts;
+    const { symbol } = stock;
     const router = useRouter();
-    const movetoDetail = (postId: number) => {
-        router.push(`/posts/${postId}`);
+    const movetoDetail = () => {
+        router.push(`/community/${symbol}/posts/${id}`);
     };
     return (
-        <PostThumbnailCard onClick={() => movetoDetail(postId)}>
+        <PostThumbnailCard onClick={movetoDetail}>
             <PostThumbnailCard.Body>
                 <PostThumbnailCard.Title title={title} />
                 <PostThumbnailCard.Content content={content} />

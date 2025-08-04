@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Button from '@/components/Button';
 import Link from 'next/link';
 import Logo from '@/app/onboarding/Logo';
@@ -51,7 +51,6 @@ const CommonHeader = () => {
 
 const MenuHeader = () => {
     const router = useRouter();
-    const { stocktype } = useParams();
     const pathname = usePathname();
 
     // 뒤로가기 버튼 클릭 시 동작
@@ -71,8 +70,6 @@ const MenuHeader = () => {
                 return '내가 작성한 게시글';
             case '/mycomment':
                 return '내가 작성한 댓글';
-            case '/posts':
-                return `${decodeURIComponent(stocktype as string)} 커뮤니티`;
             default:
                 return 'moneed';
         }
@@ -125,9 +122,10 @@ const NoMenuHeader = () => {
 };
 
 const Header = () => {
-    const menuHeaderPaths = ['/mycomment', '/mypost', '/searchstocktype', '/post', '/leave'];
+    const menuHeaderPaths = ['/mycomment', '/mypost', '/searchstocktype', '/leave'];
 
     const noMenuHeaderPaths = ['/onboarding', '/selectstocktype'];
+    const commonHeaderPaths = ['/'];
 
     const pathname = usePathname();
 
@@ -135,7 +133,7 @@ const Header = () => {
         return <NoMenuHeader />;
     } else if (menuHeaderPaths.some(path => pathname.startsWith(path))) {
         return <MenuHeader />;
-    } else {
+    } else if (commonHeaderPaths.some(path => pathname === path)) {
         return <CommonHeader />;
     }
 };

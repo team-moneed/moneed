@@ -51,7 +51,10 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(
-        { message: '게시글이 작성되었습니다.', stockId: post.stockId, postId: post.id },
+        {
+            message: '게시글이 작성되었습니다.',
+            post,
+        },
         { status: 201 },
     );
 }
