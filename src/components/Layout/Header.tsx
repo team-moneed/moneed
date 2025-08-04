@@ -3,8 +3,6 @@
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import Button from '@/components/Button';
 import Link from 'next/link';
-import { useState } from 'react';
-import Modal from '@/components/Modal';
 import Logo from '@/app/onboarding/Logo';
 import NavLink from '@/components/NavLink';
 
@@ -55,28 +53,16 @@ const MenuHeader = () => {
     const router = useRouter();
     const { stocktype } = useParams();
     const pathname = usePathname();
-    const [showModal, setShowModal] = useState(false);
 
     // 뒤로가기 버튼 클릭 시 동작
     const handleBackButtonClick = () => {
         router.back();
     };
 
-    const handleModalConfirm = () => {
-        setShowModal(false);
-        router.back(); // 모달에서 나가기를 클릭 시 뒤로가기
-    };
-
-    const handleModalCancel = () => {
-        setShowModal(false); // 모달에서 이어서 하기 클릭 시 모달 닫기
-    };
-
     const getHeaderTitle = (pathname: string) => {
         switch (pathname) {
             case '/leave':
                 return '탈퇴하기';
-            case '/writepost':
-                return '게시판 글쓰기';
             case '/searchstocktype':
                 return '게시판 선택';
             case '/community':
@@ -109,8 +95,6 @@ const MenuHeader = () => {
 
     const getHeaderRightButton = (pathname: string) => {
         switch (pathname) {
-            case '/writepost':
-                return <ExitButton />;
             case '/leave':
                 return <ExitButton />;
             default:
@@ -128,23 +112,6 @@ const MenuHeader = () => {
             />
             <h1 className='text-[1.6rem] font-semibold text-moneed-gray-9'>{getHeaderTitle(pathname)}</h1>
             {getHeaderRightButton(pathname)}
-            {showModal && (
-                <Modal
-                    leftButtontext='이어서 하기'
-                    rightButtontext='나가기'
-                    leftButtonevent={handleModalCancel}
-                    rightButtonevent={handleModalConfirm}
-                    onClose={handleModalCancel}
-                >
-                    {pathname === '/writepost' && (
-                        <span>
-                            작성하던 글은 저장되지않아요.
-                            <br />
-                            다음에 작성할까요?
-                        </span>
-                    )}
-                </Modal>
-            )}
         </header>
     );
 };
@@ -158,7 +125,7 @@ const NoMenuHeader = () => {
 };
 
 const Header = () => {
-    const menuHeaderPaths = ['/mycomment', '/mypost', '/searchstocktype', '/writepost', '/post', '/leave'];
+    const menuHeaderPaths = ['/mycomment', '/mypost', '/searchstocktype', '/post', '/leave'];
 
     const noMenuHeaderPaths = ['/onboarding', '/selectstocktype'];
 

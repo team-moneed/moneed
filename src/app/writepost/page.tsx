@@ -230,7 +230,7 @@ const WritePost = () => {
                     buttons={
                         <Button
                             variant='primary'
-                            className='text-[1.6rem] font-bold leading-[140%] px-58 py-[1.8rem] w-full'
+                            className='text-[1.6rem] font-bold leading-[140%] py-[1.8rem] w-full'
                             onClick={() => setIsBottomModalOpen(false)}
                         >
                             확인
