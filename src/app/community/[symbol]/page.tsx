@@ -4,6 +4,8 @@ import Vote from './Vote';
 import PostSection from './PostsSection';
 import { StockService } from '@/services/stock.service';
 import { SnackbarTrigger } from '@/components/Snackbar';
+import dynamic from 'next/dynamic';
+const StockTypeBar = dynamic(() => import('@/app/community/StockTypeBar'), { ssr: false });
 
 export default async function CommunityPage({
     params,
@@ -19,6 +21,7 @@ export default async function CommunityPage({
 
     return (
         <div>
+            <StockTypeBar />
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-y-[.6rem] gap-x-[1.6rem] mt-4 md:gap-y-[1.2rem] mb-[.6rem]'>
                 <StockInfoBox stock={stock} />
                 <CompanyInfoBox stock={stock} />
