@@ -12,6 +12,7 @@ import { AxiosError } from 'axios';
 import { REASON_CODES } from '@/constants/snackbar';
 import { MyProfileSkeleton } from '@/components/Skeletons/MyProfileSkeleton';
 import { useDebounce } from '@/hooks/useDebounce';
+import { useModal } from '@/context/ModalContext';
 
 // TODO: 프로필 사진 업로드 기능
 const MyProfile = () => {
@@ -38,6 +39,8 @@ const MyProfile = () => {
     });
 
     const nickname = watch('nickname');
+
+    const { confirm } = useModal();
 
     const { mutate: updateUserProfileMutation, isPending } = useMutation({
         mutationFn: updateUserProfile,
@@ -79,7 +82,21 @@ const MyProfile = () => {
     };
 
     const cancelChangeProfile = () => {
-        router.back();
+        confirm(
+            <span>
+                수정하던 내용은 저장되지 않아요.
+                <br />
+                다음에 수정할까요?
+            </span>,
+            {
+                leftButtontext: '이어서 하기',
+                rightButtontext: '나가기',
+            },
+        ).then(result => {
+            if (result) {
+                router.back();
+            }
+        });
     };
 
     const handleImageSelect = (img: string) => {
