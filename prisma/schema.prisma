@@ -125,7 +125,7 @@ model Stock {
   sector         String
   subSector      String
   summary        String
-  symbol         String
+  symbol         String          @unique
   posts          Post[]
   selectedStocks SelectedStock[]
 
