@@ -17,6 +17,7 @@ export interface PostThumbnail {
     stock: {
         id: number;
         name: string;
+        symbol: string;
     };
     thumbnailImage?: string;
     user: PostUser;
@@ -37,6 +38,7 @@ export interface PostDetail {
     stock: {
         id: number;
         name: string;
+        symbol: string;
     };
     user: PostUser;
     thumbnailImage?: string;
@@ -61,11 +63,12 @@ export type TopPostThumbnail = {
     stock: {
         id: number;
         name: string;
+        symbol: string;
     };
 };
 
 export type CreatePostRequest = {
-    stockId: number;
+    symbol: string;
     title: string;
     content: string;
     thumbnailImage?: File | null;
@@ -73,8 +76,7 @@ export type CreatePostRequest = {
 
 export type CreatePostResponse = {
     message: string;
-    stockId: number;
-    postId: number;
+    post: Post;
 };
 
 export type DeletePostRequest = {
@@ -83,7 +85,7 @@ export type DeletePostRequest = {
 
 export type DeletePostResponse = {
     message: string;
-    stockId: number;
+    stockSymbol: string;
     postId: number;
 };
 
@@ -97,7 +99,7 @@ export type UpdatePostRequest = {
 
 export type UpdatePostResponse = {
     message: string;
-    stockId: number;
+    stockSymbol: string;
     postId: number;
 };
 

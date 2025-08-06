@@ -8,8 +8,8 @@ export async function getStocks({ count = 30, cursor = 0 }: { count?: number; cu
     return res.data;
 }
 
-export async function selectStock(stockIds: number[]) {
-    const res = await http.post('/api/stocks/select', { stockIds });
+export async function selectStock(stockSymbols: string[]) {
+    const res = await http.post('/api/stocks/select', { stockSymbols });
     return res.data;
 }
 
@@ -29,5 +29,10 @@ export async function getHotStock({ market }: { market: MarketCode }) {
     const res = await http.get<HotStock[]>('/api/stocks/hot', {
         params: { market },
     });
+    return res.data;
+}
+
+export async function getStockBySymbol({ symbol }: { symbol: string }) {
+    const res = await http.get<Stock>(`/api/stocks/${symbol}`);
     return res.data;
 }

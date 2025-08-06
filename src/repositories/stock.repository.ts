@@ -14,11 +14,11 @@ export class StockRepository {
         });
     }
 
-    async selectStock(userId: string, stockIds: number[]) {
+    async selectStock(userId: string, stockSymbols: string[]) {
         return this.prisma.selectedStock.createMany({
-            data: stockIds.map(stockId => ({
+            data: stockSymbols.map(stockSymbol => ({
                 userId,
-                stockId,
+                stockSymbol,
             })),
             skipDuplicates: true,
         });
@@ -47,6 +47,14 @@ export class StockRepository {
         return this.prisma.stock.findMany({
             where: {
                 symbol: { in: symbols },
+            },
+        });
+    }
+
+    async getStockBySymbol(symbol: string) {
+        return this.prisma.stock.findFirst({
+            where: {
+                symbol,
             },
         });
     }

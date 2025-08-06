@@ -21,10 +21,10 @@ export default function StockRankButtons({
             {stockList.map((stock, index) => {
                 return (
                     <ChipButton
-                        key={stock.stockId}
+                        key={stock.symbol}
                         label={rankMedal(index) + stock.stockName}
                         onClick={() => setSelectedStock(stock)}
-                        active={selectedStock?.stockId === stock.stockId}
+                        active={selectedStock?.symbol === stock.symbol}
                     />
                 );
             })}

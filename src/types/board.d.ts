@@ -1,5 +1,6 @@
 export interface BoardRankResponse {
-    stockId: number;
+    stockSymbol: string;
+    symbol: string;
     stockName: string;
     postCount: number;
     totalViews: number;

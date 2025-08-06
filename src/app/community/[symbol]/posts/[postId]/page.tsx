@@ -7,6 +7,8 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import PostDetailSkeleton from '@/components/Skeletons/PostDetailSkeleton';
 import PostSection from './PostSection';
 import CommentSection from './CommentSection';
+import dynamic from 'next/dynamic';
+const StockTypeBar = dynamic(() => import('@/app/community/StockTypeBar'), { ssr: false });
 
 function PostDetail() {
     const searchParams = useSearchParams();
@@ -21,6 +23,7 @@ function PostDetail() {
 
     return (
         <>
+            <StockTypeBar />
             <div className='px-8 max-w-512 mx-auto'>
                 <div className='hidden lg:block font-semibold leading-[140%] text-[1.6rem] ml-[.4rem] text-moneed-gray-9 mb-4'>
                     {stock.name} 커뮤니티

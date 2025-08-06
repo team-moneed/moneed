@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useMyPosts } from '@/queries/posts.query';
-import PostThumbnail from '../community/[stockId]/PostThumbnail';
+import PostThumbnail from '../community/[symbol]/PostThumbnail';
 import { cn } from '@/util/style';
 
 const MyPost = () => {

@@ -11,7 +11,8 @@ import { TOKEN_KEY } from '@/constants/token';
 import { decodeJwt } from 'jose';
 
 const PostThumbnail = ({ post }: { post: TPostThumbnail }) => {
-    const { user, content, isLiked, id, thumbnailImage, likeCount, createdAt, title, commentCount } = post;
+    const { user, content, isLiked, id, thumbnailImage, likeCount, createdAt, title, commentCount, stock } = post;
+    const { symbol } = stock;
     const postImages = thumbnailImage ? [thumbnailImage] : [];
     const [decodedToken, setDecodedToken] = useState<TokenPayload | null>(null);
     const isMyPost = decodedToken?.userId === user.id;
@@ -25,8 +26,8 @@ const PostThumbnail = ({ post }: { post: TPostThumbnail }) => {
     };
 
     const router = useRouter();
-    const movetoDetail = (postId: number) => {
-        router.push(`/posts/${postId}`);
+    const movetoDetail = () => {
+        router.push(`/community/${symbol}/posts/${id}`);
     };
 
     useEffect(() => {
@@ -38,7 +39,7 @@ const PostThumbnail = ({ post }: { post: TPostThumbnail }) => {
 
     return (
         <>
-            <PostThumbnailCard onClick={() => movetoDetail(id)}>
+            <PostThumbnailCard onClick={movetoDetail}>
                 <PostThumbnailCard.Header>
                     <PostThumbnailCard.AuthorWithDate user={user} createdAt={new Date(createdAt)} />
                     {isMyPost && <PostThumbnailCard.Dropdown post={post} />}

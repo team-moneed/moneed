@@ -1,37 +1,32 @@
 'use client';
 
-import { getStocks } from '@/api/stock.api';
 import Button from '@/components/Button';
 import StockTypeChip from '@/components/create/StockTypeChip';
 import { selectStock as selectStockApi } from '@/api/stock.api';
-import { Stock } from '@/generated/prisma';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useSelectedStocks } from '@/queries/stock.query';
+import { useSelectedStocks, useStocks } from '@/queries/stock.query';
 
 function SelectStockTypeContent() {
     const router = useRouter();
-    const { data: stocks } = useQuery<Stock[]>({
-        queryKey: ['stocks'],
-        queryFn: () => getStocks(),
-    });
+    const { data: stocks } = useStocks();
     const searchParams = useSearchParams();
 
     const { data: mySelectedStocks } = useSelectedStocks();
-    const mySelectedStockIds = mySelectedStocks?.flatMap(stock => stock.id);
+    const mySelectedStockSymbols = mySelectedStocks?.flatMap(stock => stock.symbol);
 
     const { mutate: selectStock } = useMutation({
-        mutationFn: (stockIds: number[]) => selectStockApi(stockIds),
+        mutationFn: (stockSymbols: string[]) => selectStockApi(stockSymbols),
     });
-    const [stockIds, setStockIds] = useState<number[]>([]);
-    const selectedStocks = [...stockIds, ...(mySelectedStockIds ?? [])];
+    const [stockSymbols, setStockSymbols] = useState<string[]>([]);
+    const selectedStocks = [...stockSymbols, ...(mySelectedStockSymbols ?? [])];
 
-    const toggleStock = (stockId: number) => {
-        if (selectedStocks.includes(stockId)) {
-            setStockIds(stockIds.filter(stock => stock !== stockId));
+    const toggleStock = (stockSymbol: string) => {
+        if (selectedStocks.includes(stockSymbol)) {
+            setStockSymbols(stockSymbols.filter(symbol => symbol !== stockSymbol));
         } else {
-            setStockIds([...stockIds, stockId]);
+            setStockSymbols([...stockSymbols, stockSymbol]);
         }
     };
 
@@ -44,13 +39,13 @@ function SelectStockTypeContent() {
     return (
         <form action={handleSubmit}>
             <div className='flex flex-wrap gap-[.8rem] md:px-[10.6rem] md:max-h-[calc(38.5rem-10rem)] md:overflow-y-auto'>
-                {stocks?.map(({ id, name }) => (
+                {stocks?.map(({ id, name, symbol }) => (
                     <div key={id} className='mb-[.2rem]'>
                         <StockTypeChip
                             label={name}
                             icon='/temp/sample3.png'
-                            onClick={() => toggleStock(id)}
-                            active={selectedStocks.includes(id)}
+                            onClick={() => toggleStock(symbol)}
+                            active={selectedStocks.includes(symbol)}
                         />
                     </div>
                 ))}

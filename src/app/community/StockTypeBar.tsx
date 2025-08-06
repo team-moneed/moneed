@@ -10,7 +10,8 @@ import StockTypeBarSkeleton from '@/components/Skeletons/community/StockTypeBarS
 
 function StockTypeBar() {
     const params = useParams();
-    const stockId = params ? Number(params.stockId) : undefined;
+    const symbol = params ? params.symbol : undefined;
+    console.log(symbol);
     const { data: stocks } = useSelectedStocks();
 
     return (
@@ -19,13 +20,13 @@ function StockTypeBar() {
                 <Link href='/selectstocktype' className='shrink-0'>
                     <Icon iconUrl='/icon/icon-addcircle.svg' width={30} height={30} />
                 </Link>
-                <ChipLink label='전체' active={stockId ? false : true} href='/community' />
-                {stocks?.map(({ id, name }) => (
+                <ChipLink label='전체' active={symbol ? false : true} href='/community' />
+                {stocks?.map(stock => (
                     <ChipLink
-                        key={id}
-                        label={name}
-                        active={stockId ? stockId === id : false}
-                        href={`/community/${id}`}
+                        key={stock.symbol}
+                        label={stock.name}
+                        active={symbol ? symbol === stock.symbol : false}
+                        href={`/community/${stock.symbol}`}
                     />
                 ))}
             </div>

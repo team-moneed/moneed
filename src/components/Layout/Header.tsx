@@ -1,14 +1,12 @@
 'use client';
 
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Button from '@/components/Button';
 import Link from 'next/link';
-import { useState } from 'react';
-import Modal from '@/components/Modal';
 import Logo from '@/app/onboarding/Logo';
 import NavLink from '@/components/NavLink';
 
-const CommonHeader = () => {
+export const DesktopHeader = () => {
     const router = useRouter();
 
     const movetowritepost = () => {
@@ -16,7 +14,7 @@ const CommonHeader = () => {
     };
 
     return (
-        <header className='sticky top-0 z-10 bg-white flex items-center justify-between px-[4rem] pb-[1.8rem] pt-[3rem]'>
+        <header className='sticky top-0 z-10 hidden bg-white lg:flex items-center justify-between pb-[1.8rem] pt-[3rem]'>
             <Link href='/'>
                 <div className='flex'>
                     <div className='w-[2.8rem] h-[2.8rem] bg-moneed-black rounded-full flex items-center justify-center'>
@@ -51,34 +49,37 @@ const CommonHeader = () => {
     );
 };
 
+export const MobileHeader = () => {
+    return (
+        <header className='sticky top-0 z-10 flex bg-white lg:hidden items-center justify-between pb-[1.8rem] pt-[3rem] px-[1.8rem] lg:px-0'>
+            <Link href='/'>
+                <div className='flex'>
+                    <div className='w-[2.8rem] h-[2.8rem] bg-moneed-black rounded-full flex items-center justify-center'>
+                        <img className='w-[1.4rem] h-[1.2rem]' src='/icon/icon-logo.svg' alt='' />
+                    </div>
+                    <span className='font-semibold leading-[140%] text-[1.8rem] ml-[.8rem]'>moneed</span>
+                </div>
+            </Link>
+            <div className='flex items-center gap-[2.4rem] ml-auto'>
+                <img className='w-[2.4rem] h-[2.4rem]' src='/icon/icon-alarm.svg' alt='notification' />
+            </div>
+        </header>
+    );
+};
+
 const MenuHeader = () => {
     const router = useRouter();
-    const { stocktype } = useParams();
     const pathname = usePathname();
-    const [showModal, setShowModal] = useState(false);
 
     // 뒤로가기 버튼 클릭 시 동작
     const handleBackButtonClick = () => {
         router.back();
     };
 
-    const handleModalConfirm = () => {
-        setShowModal(false);
-        router.back(); // 모달에서 나가기를 클릭 시 뒤로가기
-    };
-
-    const handleModalCancel = () => {
-        setShowModal(false); // 모달에서 이어서 하기 클릭 시 모달 닫기
-    };
-
     const getHeaderTitle = (pathname: string) => {
         switch (pathname) {
             case '/leave':
                 return '탈퇴하기';
-            case '/writepost':
-                return '게시판 글쓰기';
-            case '/editpost':
-                return '게시글 수정';
             case '/searchstocktype':
                 return '게시판 선택';
             case '/community':
@@ -87,8 +88,6 @@ const MenuHeader = () => {
                 return '내가 작성한 게시글';
             case '/mycomment':
                 return '내가 작성한 댓글';
-            case '/posts':
-                return `${decodeURIComponent(stocktype as string)} 커뮤니티`;
             default:
                 return 'moneed';
         }
@@ -111,10 +110,6 @@ const MenuHeader = () => {
 
     const getHeaderRightButton = (pathname: string) => {
         switch (pathname) {
-            case '/writepost':
-                return <ExitButton />;
-            case '/editpost':
-                return <ExitButton />;
             case '/leave':
                 return <ExitButton />;
             default:
@@ -132,30 +127,6 @@ const MenuHeader = () => {
             />
             <h1 className='text-[1.6rem] font-semibold text-moneed-gray-9'>{getHeaderTitle(pathname)}</h1>
             {getHeaderRightButton(pathname)}
-            {showModal && (
-                <Modal
-                    leftButtontext='이어서 하기'
-                    rightButtontext='나가기'
-                    leftButtonevent={handleModalCancel}
-                    rightButtonevent={handleModalConfirm}
-                    onClose={handleModalCancel}
-                >
-                    {pathname === '/editpost' && (
-                        <span>
-                            수정하던 글은 저장되지않아요.
-                            <br />
-                            다음에 수정할까요?
-                        </span>
-                    )}
-                    {pathname === '/writepost' && (
-                        <span>
-                            작성하던 글은 저장되지않아요.
-                            <br />
-                            다음에 작성할까요?
-                        </span>
-                    )}
-                </Modal>
-            )}
         </header>
     );
 };
@@ -169,9 +140,10 @@ const NoMenuHeader = () => {
 };
 
 const Header = () => {
-    const menuHeaderPaths = ['/mycomment', '/mypost', '/searchstocktype', '/writepost', '/editpost', '/post', '/leave'];
+    const menuHeaderPaths = ['/mycomment', '/mypost', '/searchstocktype', '/leave'];
 
     const noMenuHeaderPaths = ['/onboarding', '/selectstocktype'];
+    const commonHeaderPaths = ['/'];
 
     const pathname = usePathname();
 
@@ -179,8 +151,8 @@ const Header = () => {
         return <NoMenuHeader />;
     } else if (menuHeaderPaths.some(path => pathname.startsWith(path))) {
         return <MenuHeader />;
-    } else {
-        return <CommonHeader />;
+    } else if (commonHeaderPaths.some(path => pathname === path)) {
+        return <DesktopHeader />;
     }
 };
 

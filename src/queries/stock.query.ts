@@ -1,4 +1,4 @@
-import { getHotStock, getOverseasStockPrice, getSelectedStocks, getStocks } from '@/api/stock.api';
+import { getHotStock, getOverseasStockPrice, getSelectedStocks, getStocks, getStockBySymbol } from '@/api/stock.api';
 import { MarketCode } from '@/types/kis';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 
@@ -37,5 +37,13 @@ export const useHotStocks = ({ market }: { market: MarketCode }) => {
     return useSuspenseQuery({
         queryKey: ['hot-stocks', market],
         queryFn: () => getHotStock({ market }),
+    });
+};
+
+export const useStockBySymbol = ({ symbol }: { symbol: string }) => {
+    return useQuery({
+        queryKey: ['stock-by-symbol', symbol],
+        queryFn: () => getStockBySymbol({ symbol }),
+        enabled: !!symbol,
     });
 };

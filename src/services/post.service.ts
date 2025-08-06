@@ -1,12 +1,5 @@
 import PostRepository from '@/repositories/post.repository';
-import {
-    CreatePostRequest,
-    HotPostThumbnail,
-    PostDetail,
-    PostThumbnail,
-    TopPostThumbnail,
-    UpdatePostRequest,
-} from '@/types/post';
+import { CreatePostRequest, PostDetail, PostThumbnail, TopPostThumbnail, UpdatePostRequest } from '@/types/post';
 import S3Service from './s3.service';
 import { urlToS3FileName } from '@/util/parser';
 import { isFile } from '@/util/typeChecker';
@@ -28,8 +21,8 @@ export default class PostService {
         }
     }
 
-    async getBoardTopPosts({ boardId, limit }: { boardId: number; limit: number }) {
-        const postList = await this.postRepository.getPostsWithUser({ stockId: boardId, limit });
+    async getBoardTopPosts({ symbol, limit }: { symbol: string; limit: number }) {
+        const postList = await this.postRepository.getPostsWithUser({ stockSymbol: symbol, limit });
         return postList;
     }
 
@@ -50,17 +43,14 @@ export default class PostService {
             stock: {
                 id: post.stock.id,
                 name: post.stock.name,
+                symbol: post.stock.symbol,
             },
         }));
 
         return postThumbnailList;
     }
 
-    async getHotPosts({
-        limit = 15,
-        cursor = 0,
-        userId,
-    }: { limit?: number; cursor?: number; userId?: string } = {}): Promise<HotPostThumbnail[]> {
+    async getHotPosts({ limit = 15, cursor = 0, userId }: { limit?: number; cursor?: number; userId?: string } = {}) {
         const postList = await this.postRepository.getPostsByScore({ limit, cursor });
 
         const postThumbnailList = postList.map(post => ({
@@ -68,12 +58,10 @@ export default class PostService {
             isLiked: post.postLikes.some(like => like.userId === userId),
             likeCount: post.postLikes.length,
             commentCount: post.comments.length,
-            stock: {
-                id: post.stock.id,
-                name: post.stock.name,
-            },
+            stock: post.stock,
             thumbnailImage: post.thumbnailImage ?? undefined,
         }));
+
         return postThumbnailList;
     }
 
@@ -89,30 +77,21 @@ export default class PostService {
             likeCount: post.postLikes.length,
             comments: post.comments,
             thumbnailImage: post.thumbnailImage ?? undefined,
-            user: {
-                id: post.user.id,
-                nickname: post.user.nickname,
-                profileImage: post.user.profileImage,
-            },
-            stock: {
-                id: post.stock.id,
-                name: post.stock.name,
-            },
         };
     }
 
     async getPostsWithUserExtended({
-        stockId,
+        stockSymbol,
         cursor,
         limit,
         userId,
     }: {
-        stockId?: number;
+        stockSymbol?: string;
         cursor?: Date;
         limit?: number;
         userId?: string;
     }): Promise<PostThumbnail[]> {
-        const postList = await this.postRepository.getPostsWithUserExtended({ stockId, cursor, limit, userId });
+        const postList = await this.postRepository.getPostsWithUserExtended({ stockSymbol, cursor, limit });
         const postThumbnailList: PostThumbnail[] = postList.map(post => ({
             id: post.id,
             title: post.title,
@@ -121,21 +100,14 @@ export default class PostService {
             isLiked: post.postLikes.some(like => like.userId === userId),
             likeCount: post.postLikes.length,
             commentCount: post.comments.length,
-            stock: {
-                id: post.stock.id,
-                name: post.stock.name,
-            },
+            stock: post.stock,
             thumbnailImage: post.thumbnailImage ?? undefined,
-            user: {
-                id: post.user.id,
-                nickname: post.user.nickname,
-                profileImage: post.user.profileImage,
-            },
+            user: post.user,
         }));
         return postThumbnailList;
     }
 
-    async createPost({ userId, title, content, stockId, thumbnailImage }: CreatePostRequest & { userId: string }) {
+    async createPost({ userId, title, content, symbol, thumbnailImage }: CreatePostRequest & { userId: string }) {
         const s3Service = new S3Service();
         let uploadedImageUrl: string | undefined;
         if (thumbnailImage) {
@@ -146,7 +118,7 @@ export default class PostService {
             userId,
             title,
             content,
-            stockId,
+            stockSymbol: symbol,
             thumbnailImage: uploadedImageUrl,
         });
         return post;

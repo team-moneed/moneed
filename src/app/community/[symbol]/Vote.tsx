@@ -5,7 +5,13 @@ export default function Vote() {
                 <h2 className='text-[2.2rem] leading-[145%] font-bold text-moneed-black lg:text-[2.4rem] lg:leading-[140%]'>
                     투표
                 </h2>
-                <span className='text-moneed-gray-7 text-[1.2rem] font-normal leading-[135%]'>12월 17일 8시 기준</span>
+                <span className='text-moneed-gray-7 text-[1.2rem] font-normal leading-[135%]'>
+                    {new Date().toLocaleDateString('ko-KR', {
+                        month: 'long',
+                        day: 'numeric',
+                    })}{' '}
+                    {new Date().getHours()}시 기준
+                </span>
             </div>
             <div className='bg-moneed-navy h-48 rounded-[.8rem] text-center  pt-16'>
                 <span className='text-[2rem] leading-[145%] font-bold text-moneed-white'>comming soon</span>

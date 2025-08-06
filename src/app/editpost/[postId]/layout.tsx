@@ -1,10 +1,10 @@
 'use client';
-import { Suspense } from 'react';
+
 import Modal from '@/components/Modal';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function WritePostLayout({ children }: { children: React.ReactNode }) {
+export default function EditPostLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const [showModal, setShowModal] = useState(false);
 
@@ -43,7 +43,7 @@ export default function WritePostLayout({ children }: { children: React.ReactNod
         <>
             <header className='sticky top-0 z-10 bg-white flex items-center justify-between px-[4rem] pb-[1.8rem] pt-[3rem]'>
                 <BackButton />
-                <h1 className='text-[1.6rem] font-semibold text-moneed-gray-9'>게시판 글쓰기</h1>
+                <h1 className='text-[1.6rem] font-semibold text-moneed-gray-9'>게시글 수정</h1>
                 <ExitButton />
                 {showModal && (
                     <Modal
@@ -54,14 +54,14 @@ export default function WritePostLayout({ children }: { children: React.ReactNod
                         onClose={handleModalCancel}
                     >
                         <span>
-                            작성하던 글은 저장되지않아요.
+                            수정하던 글은 저장되지않아요.
                             <br />
-                            다음에 작성할까요?
+                            다음에 수정할까요?
                         </span>
                     </Modal>
                 )}
             </header>
-            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+            {children}
         </>
     );
 }

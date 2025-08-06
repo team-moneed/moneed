@@ -13,8 +13,8 @@ export class StockService {
         return selectedStocks.flatMap(stock => stock.stock);
     }
 
-    async selectStock(userId: string, stockIds: number[]) {
-        await this.stockRepository.selectStock(userId, stockIds);
+    async selectStock(userId: string, stockSymbols: string[]) {
+        await this.stockRepository.selectStock(userId, stockSymbols);
     }
 
     async getStock(stockId: number) {
@@ -36,5 +36,13 @@ export class StockService {
 
     async getStocksBySymbols(symbols: string[]) {
         return await this.stockRepository.getStocksBySymbols(symbols);
+    }
+
+    async getStockBySymbol(symbol: string) {
+        const stock = await this.stockRepository.getStockBySymbol(symbol);
+        if (!stock) {
+            throw new Error('Stock not found');
+        }
+        return stock;
     }
 }

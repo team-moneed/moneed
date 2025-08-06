@@ -79,7 +79,7 @@ export default function Comments() {
                 setIsEditingComment(true);
                 setEditCommentId(comment.id);
                 setEditCommentContent(comment.content);
-                router.push(`/posts/${comment.postId}`);
+                router.push(`/community/${comment.post.stock.symbol}/posts/${comment.postId}`);
             },
         },
         {
