@@ -5,6 +5,9 @@ import CommunityTabNav from '@/app/community/CommunityTabNav';
 import Vote from './Vote';
 import HotPostsSection from './HotPostsSection';
 import Top5Section from './Top5Section';
+import { DesktopHeader, MobileHeader } from '@/components/Layout/Header';
+import dynamic from 'next/dynamic';
+const StockTypeBarWithSuspense = dynamic(() => import('./StockTypeBar'), { ssr: false });
 
 const hashObj = {
     top5: 'top5',
@@ -42,12 +45,17 @@ const communityTabs = [
 
 export default function CommunityPage() {
     return (
-        <div>
-            <CommunityTabNav tabs={communityTabs} />
-            <Top5Section id={hashObj.top5} />
-            <HotStockSection id={hashObj.category} />
-            <Vote id={hashObj.vote} />
-            <HotPostsSection id={hashObj.hotPosts} />
-        </div>
+        <>
+            <MobileHeader />
+            <DesktopHeader />
+            <StockTypeBarWithSuspense />
+            <div>
+                <CommunityTabNav tabs={communityTabs} />
+                <Top5Section id={hashObj.top5} />
+                <HotStockSection id={hashObj.category} />
+                <Vote id={hashObj.vote} />
+                <HotPostsSection id={hashObj.hotPosts} />
+            </div>
+        </>
     );
 }

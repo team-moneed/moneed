@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Logo from '@/app/onboarding/Logo';
 import NavLink from '@/components/NavLink';
 
-const CommonHeader = () => {
+export const DesktopHeader = () => {
     const router = useRouter();
 
     const movetowritepost = () => {
@@ -14,7 +14,7 @@ const CommonHeader = () => {
     };
 
     return (
-        <header className='sticky top-0 z-10 bg-white flex items-center justify-between px-[4rem] pb-[1.8rem] pt-[3rem]'>
+        <header className='sticky top-0 z-10 hidden bg-white lg:flex items-center justify-between pb-[1.8rem] pt-[3rem]'>
             <Link href='/'>
                 <div className='flex'>
                     <div className='w-[2.8rem] h-[2.8rem] bg-moneed-black rounded-full flex items-center justify-center'>
@@ -44,6 +44,24 @@ const CommonHeader = () => {
                     <img className='w-[1.8rem] h-[1.8rem]' src='/icon/icon-edit.svg' alt='' />
                     <span className='font-semibold leading-[135%] text-[1.4rem]'>포스팅</span>
                 </Button>
+            </div>
+        </header>
+    );
+};
+
+export const MobileHeader = () => {
+    return (
+        <header className='sticky top-0 z-10 flex bg-white lg:hidden items-center justify-between pb-[1.8rem] pt-[3rem] px-[1.8rem] lg:px-0'>
+            <Link href='/'>
+                <div className='flex'>
+                    <div className='w-[2.8rem] h-[2.8rem] bg-moneed-black rounded-full flex items-center justify-center'>
+                        <img className='w-[1.4rem] h-[1.2rem]' src='/icon/icon-logo.svg' alt='' />
+                    </div>
+                    <span className='font-semibold leading-[140%] text-[1.8rem] ml-[.8rem]'>moneed</span>
+                </div>
+            </Link>
+            <div className='flex items-center gap-[2.4rem] ml-auto'>
+                <img className='w-[2.4rem] h-[2.4rem]' src='/icon/icon-alarm.svg' alt='notification' />
             </div>
         </header>
     );
@@ -134,7 +152,7 @@ const Header = () => {
     } else if (menuHeaderPaths.some(path => pathname.startsWith(path))) {
         return <MenuHeader />;
     } else if (commonHeaderPaths.some(path => pathname === path)) {
-        return <CommonHeader />;
+        return <DesktopHeader />;
     }
 };
 
