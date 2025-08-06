@@ -21,8 +21,8 @@ export default class PostService {
         }
     }
 
-    async getBoardTopPosts({ boardId, limit }: { boardId: number; limit: number }) {
-        const postList = await this.postRepository.getPostsWithUser({ stockId: boardId, limit });
+    async getBoardTopPosts({ symbol, limit }: { symbol: string; limit: number }) {
+        const postList = await this.postRepository.getPostsWithUser({ stockSymbol: symbol, limit });
         return postList;
     }
 
@@ -81,17 +81,17 @@ export default class PostService {
     }
 
     async getPostsWithUserExtended({
-        stockId,
+        stockSymbol,
         cursor,
         limit,
         userId,
     }: {
-        stockId?: number;
+        stockSymbol?: string;
         cursor?: Date;
         limit?: number;
         userId?: string;
     }): Promise<PostThumbnail[]> {
-        const postList = await this.postRepository.getPostsWithUserExtended({ stockId, cursor, limit, userId });
+        const postList = await this.postRepository.getPostsWithUserExtended({ stockSymbol, cursor, limit });
         const postThumbnailList: PostThumbnail[] = postList.map(post => ({
             id: post.id,
             title: post.title,
@@ -107,7 +107,7 @@ export default class PostService {
         return postThumbnailList;
     }
 
-    async createPost({ userId, title, content, stockId, thumbnailImage }: CreatePostRequest & { userId: string }) {
+    async createPost({ userId, title, content, symbol, thumbnailImage }: CreatePostRequest & { userId: string }) {
         const s3Service = new S3Service();
         let uploadedImageUrl: string | undefined;
         if (thumbnailImage) {
@@ -118,7 +118,7 @@ export default class PostService {
             userId,
             title,
             content,
-            stockId,
+            stockSymbol: symbol,
             thumbnailImage: uploadedImageUrl,
         });
         return post;

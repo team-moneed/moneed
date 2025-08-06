@@ -11,9 +11,9 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: TOKEN_ERROR.INVALID_TOKEN }, { status: 401 });
         }
 
-        const { stockIds } = await req.json();
+        const { stockSymbols } = await req.json();
         const stockService = new StockService();
-        await stockService.selectStock(session.userId, stockIds);
+        await stockService.selectStock(session.userId, stockSymbols);
 
         return NextResponse.json({ message: 'Selected stocks updated' }, { status: 200 });
     } catch (error) {

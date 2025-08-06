@@ -4,11 +4,11 @@ import PostThumbnail from '@/app/community/[symbol]/PostThumbnail';
 import { useInfinitePosts } from '@/queries/posts.query';
 
 type PostsProps = {
-    stockId: number;
+    symbol: string;
 };
 
-const Posts = ({ stockId }: PostsProps) => {
-    const { data: posts, hasNextPage, fetchNextPage } = useInfinitePosts({ stockId });
+const Posts = ({ symbol }: PostsProps) => {
+    const { data: posts, hasNextPage, fetchNextPage } = useInfinitePosts({ symbol });
 
     const ref = useIntersectionObserver({
         onIntersect: () => {

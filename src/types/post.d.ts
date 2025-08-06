@@ -68,7 +68,7 @@ export type TopPostThumbnail = {
 };
 
 export type CreatePostRequest = {
-    stockId: number;
+    symbol: string;
     title: string;
     content: string;
     thumbnailImage?: File | null;
@@ -85,7 +85,7 @@ export type DeletePostRequest = {
 
 export type DeletePostResponse = {
     message: string;
-    stockId: number;
+    stockSymbol: string;
     postId: number;
 };
 
@@ -99,7 +99,7 @@ export type UpdatePostRequest = {
 
 export type UpdatePostResponse = {
     message: string;
-    stockId: number;
+    stockSymbol: string;
     postId: number;
 };
 

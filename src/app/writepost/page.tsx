@@ -14,7 +14,7 @@ import Button from '@/components/Button';
 // TODO: 리팩토링 필요 (searchStockType 페이지로 꼭 이동해야 할까?)
 const WritePost = () => {
     const searchParams = useSearchParams();
-    const stockId = searchParams.get('stockId');
+    const symbol = searchParams.get('symbol');
     const stockName = searchParams.get('stockName');
     const [isBottomModalOpen, setIsBottomModalOpen] = useState(false);
     const [image, setImage] = useState<File | null>(null);
@@ -74,7 +74,7 @@ const WritePost = () => {
     };
 
     const handleFocus = (field: string) => {
-        if (!stockId) {
+        if (!symbol) {
             showSnackbar({
                 message: '커뮤니티 종목을 먼저 선택해주세요.',
                 variant: 'normal',
@@ -92,7 +92,7 @@ const WritePost = () => {
     };
 
     const onSubmit = async (data: CreatePostField) => {
-        if (!stockId) {
+        if (!symbol) {
             showSnackbar({
                 message: '커뮤니티 종목을 선택해주세요.',
                 variant: 'normal',
@@ -124,7 +124,7 @@ const WritePost = () => {
 
         const res = await createPost({
             ...data,
-            stockId: Number(stockId),
+            symbol,
             thumbnailImage: image,
         });
 
@@ -142,7 +142,7 @@ const WritePost = () => {
                     onClick={movetoSearchStocktype}
                 >
                     <span
-                        className={`text-[1.4rem] font-normal ${stockId ? 'text-moneed-black' : 'text-moneed-gray-7'}`}
+                        className={`text-[1.4rem] font-normal ${symbol ? 'text-moneed-black' : 'text-moneed-gray-7'}`}
                     >
                         {stockName || '글을 쓸 커뮤니티 종목을 선택해주세요.'}
                     </span>

@@ -9,18 +9,18 @@ export const useMyPosts = () => {
     });
 };
 
-export const useTop3Posts = ({ boardId, staleTime = 0 }: { boardId: number; staleTime?: number }) => {
+export const useTop3Posts = ({ symbol, staleTime = 0 }: { symbol: string; staleTime?: number }) => {
     return useSuspenseQuery({
-        queryKey: ['posts', 'top3', boardId],
-        queryFn: () => getTopBoardPosts({ boardId, limit: 3 }),
+        queryKey: ['posts', 'top3', symbol],
+        queryFn: () => getTopBoardPosts({ symbol, limit: 3 }),
         staleTime,
     });
 };
 
-export const useInfinitePosts = ({ stockId }: { stockId: number }) => {
+export const useInfinitePosts = ({ symbol }: { symbol: string }) => {
     return useSuspenseInfiniteQuery({
-        queryKey: ['posts', stockId],
-        queryFn: ({ pageParam }) => getPosts({ stockId, cursor: pageParam }),
+        queryKey: ['posts', symbol],
+        queryFn: ({ pageParam }) => getPosts({ symbol, cursor: pageParam }),
         getNextPageParam: lastPage =>
             lastPage?.length > 0 ? new Date(lastPage[lastPage.length - 1].createdAt) : undefined,
         initialPageParam: new Date(),

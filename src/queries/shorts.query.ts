@@ -15,7 +15,7 @@ export const useInfiniteShorts = ({ q, count }: { q: string; count: number }) =>
         initialPageParam: '',
         getNextPageParam: lastPage => {
             const videos = lastPage.items;
-            return videos.length > 0 ? lastPage.nextPageToken : undefined;
+            return videos && videos.length > 0 ? lastPage.nextPageToken : undefined;
         },
         select: data => data.pages.flatMap(page => page.items),
     });

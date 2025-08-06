@@ -14,15 +14,15 @@ export default class PostRepository {
     }
 
     /**
-     * 종목별 게시글 조회
-     * @param stockId 종목 ID
+     * 특정 종목의 게시글 목록 조회
+     * @param stockSymbol 종목 심볼
      * @param limit 조회할 게시글 수
      * @returns 게시글 목록
      */
-    async getPostsWithUser({ stockId, limit }: { stockId: number; limit: number }) {
+    async getPostsWithUser({ stockSymbol, limit }: { stockSymbol: string; limit: number }) {
         const posts = await this.prisma.post.findMany({
             where: {
-                stockId,
+                stockSymbol,
             },
             select: {
                 id: true,
@@ -138,17 +138,18 @@ export default class PostRepository {
     }
 
     /**
-     * 종목별 게시글 조회
-     * @param stockId 종목 ID
+     * 특정 종목의 게시글 조회 (확장)
+     * @param stockSymbol 종목 심볼
      * @param limit 조회할 게시글 수
      * @returns 게시글 목록
      */
-    async getPostsWithUserByStockId({ stockId, limit }: { stockId: number; limit: number }) {
+    async getPostsWithUserByStockId({ stockSymbol, limit }: { stockSymbol: string; limit: number }) {
         const posts = await this.prisma.post.findMany({
             where: {
-                stockId,
+                stockSymbol,
             },
             select: {
+                id: true,
                 title: true,
                 content: true,
                 createdAt: true,
@@ -169,21 +170,25 @@ export default class PostRepository {
         return posts;
     }
 
+    /**
+     * 특정 종목의 게시글 조회 (확장 버전)
+     * @param stockSymbol 종목 심볼
+     * @param cursor 커서
+     * @param limit 조회할 게시글 수
+     * @returns 게시글 목록
+     */
     async getPostsWithUserExtended({
-        stockId,
+        stockSymbol,
         cursor,
         limit,
-        userId,
     }: {
-        stockId?: number;
+        stockSymbol?: string;
         cursor?: Date;
         limit?: number;
-        userId?: string;
     }) {
         const posts = await this.prisma.post.findMany({
             where: {
-                userId,
-                stockId,
+                stockSymbol,
                 createdAt: {
                     lt: cursor,
                 },
@@ -233,15 +238,15 @@ export default class PostRepository {
         const hoursAgo = new Date(Date.now() - 1000 * 60 * 60 * hours);
         const boardsWithInHours = (await this.prisma.$queryRaw`
             SELECT 
-                p."stockId",
-                (SELECT s.name FROM stocks s WHERE s.id = p."stockId") as "stockName",
-                (SELECT s.symbol FROM stocks s WHERE s.id = p."stockId") as "symbol",
+                p."stockSymbol",
+                (SELECT s.name FROM stocks s WHERE s.symbol = p."stockSymbol") as "stockName",
+                (SELECT s.symbol FROM stocks s WHERE s.symbol = p."stockSymbol") as "symbol",
                 COUNT(DISTINCT p.id) as "postCount",
                 COALESCE(
                     (SELECT COUNT(pl.id) 
                      FROM post_likes pl 
                      JOIN posts p2 ON pl."postId" = p2.id 
-                     WHERE p2."stockId" = p."stockId" 
+                     WHERE p2."stockSymbol" = p."stockSymbol" 
                      AND pl."createdAt" >= ${hoursAgo}), 
                     0
                 ) as "totalLikes",
@@ -249,7 +254,7 @@ export default class PostRepository {
                     (SELECT COUNT(pv.id) 
                      FROM post_views pv 
                      JOIN posts p2 ON pv."postId" = p2.id 
-                     WHERE p2."stockId" = p."stockId" 
+                     WHERE p2."stockSymbol" = p."stockSymbol" 
                      AND pv."createdAt" >= ${hoursAgo}), 
                     0
                 ) as "totalViews",
@@ -257,17 +262,17 @@ export default class PostRepository {
                     (SELECT COUNT(c.id) 
                      FROM comments c 
                      JOIN posts p2 ON c."postId" = p2.id 
-                     WHERE p2."stockId" = p."stockId" 
+                     WHERE p2."stockSymbol" = p."stockSymbol" 
                      AND p2."createdAt" >= ${hoursAgo}), 
                     0
                 ) as "totalComments"
             FROM posts p
             WHERE p."createdAt" >= ${hoursAgo}
-            GROUP BY p."stockId"
+            GROUP BY p."stockSymbol"
             ORDER BY "postCount" DESC, "totalViews" DESC, "totalLikes" DESC, "totalComments" DESC
             LIMIT ${limit}
         `) as Array<{
-            stockId: number;
+            stockSymbol: string;
             stockName: string;
             symbol: string;
             postCount: bigint;
@@ -278,7 +283,7 @@ export default class PostRepository {
 
         // BigInt를 number로 변환합니다
         return boardsWithInHours.map(item => ({
-            stockId: item.stockId,
+            stockSymbol: item.stockSymbol,
             stockName: item.stockName,
             symbol: item.symbol,
             postCount: Number(item.postCount),
@@ -291,38 +296,38 @@ export default class PostRepository {
     async getBoardRank({ offset, limit }: { offset: number; limit: number }): Promise<BoardRankResponse[]> {
         const boards = (await this.prisma.$queryRaw`
             SELECT 
-                p."stockId",
-                (SELECT s.name FROM stocks s WHERE s.id = p."stockId") as "stockName", 
-                (SELECT s.symbol FROM stocks s WHERE s.id = p."stockId") as "symbol",
+                p."stockSymbol",
+                (SELECT s.name FROM stocks s WHERE s.symbol = p."stockSymbol") as "stockName", 
+                (SELECT s.symbol FROM stocks s WHERE s.symbol = p."stockSymbol") as "symbol",
                 COUNT(DISTINCT p.id) as "postCount",
                 COALESCE(
                     (SELECT COUNT(pl.id) 
                      FROM post_likes pl 
                      JOIN posts p2 ON pl."postId" = p2.id 
-                     WHERE p2."stockId" = p."stockId"), 
+                     WHERE p2."stockSymbol" = p."stockSymbol"), 
                     0
                 ) as "totalLikes",
                 COALESCE(
                     (SELECT COUNT(pv.id) 
                      FROM post_views pv 
                      JOIN posts p2 ON pv."postId" = p2.id 
-                     WHERE p2."stockId" = p."stockId"), 
+                     WHERE p2."stockSymbol" = p."stockSymbol"), 
                     0
                 ) as "totalViews",
                 COALESCE(
                     (SELECT COUNT(c.id) 
                      FROM comments c 
                      JOIN posts p2 ON c."postId" = p2.id 
-                     WHERE p2."stockId" = p."stockId"), 
+                     WHERE p2."stockSymbol" = p."stockSymbol"), 
                     0
                 ) as "totalComments"
             FROM posts p
-            GROUP BY p."stockId"
+            GROUP BY p."stockSymbol"
             ORDER BY "postCount" DESC, "totalViews" DESC, "totalLikes" DESC, "totalComments" DESC
             OFFSET ${offset}
             LIMIT ${limit}
         `) as Array<{
-            stockId: number;
+            stockSymbol: string;
             stockName: string;
             symbol: string;
             postCount: bigint;
@@ -332,7 +337,7 @@ export default class PostRepository {
         }>;
 
         return boards.map(item => ({
-            stockId: item.stockId,
+            stockSymbol: item.stockSymbol,
             stockName: item.stockName,
             symbol: item.symbol,
             postCount: Number(item.postCount),
@@ -346,13 +351,13 @@ export default class PostRepository {
         userId,
         title,
         content,
-        stockId,
+        stockSymbol,
         thumbnailImage,
     }: {
         userId: string;
         title: string;
         content: string;
-        stockId: number;
+        stockSymbol: string;
         thumbnailImage?: string;
     }) {
         const post = await this.prisma.post.create({
@@ -360,7 +365,7 @@ export default class PostRepository {
                 userId,
                 title,
                 content,
-                stockId,
+                stockSymbol,
                 thumbnailImage,
             },
             include: {
@@ -369,6 +374,24 @@ export default class PostRepository {
                         id: true,
                         name: true,
                         symbol: true,
+                    },
+                },
+                user: {
+                    select: {
+                        id: true,
+                        nickname: true,
+                        profileImage: true,
+                    },
+                },
+                postLikes: {
+                    select: {
+                        id: true,
+                        userId: true,
+                    },
+                },
+                comments: {
+                    select: {
+                        id: true,
                     },
                 },
             },

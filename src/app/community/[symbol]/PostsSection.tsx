@@ -2,7 +2,7 @@ import PostThumbnailSkeleton from '@/components/Skeletons/PostThumbnailSkeleton'
 import { Suspense } from 'react';
 import Posts from './Posts';
 
-export default function PostSection({ stockId }: { stockId: number }) {
+export default function PostSection({ symbol }: { symbol: string }) {
     return (
         <section className='mt-[2.8rem]'>
             <div className='flex items-baseline gap-[.8rem] mb-4'>
@@ -10,12 +10,12 @@ export default function PostSection({ stockId }: { stockId: number }) {
                     게시글
                 </h2>
             </div>
-            <PostsWithSuspense stockId={stockId} />
+            <PostsWithSuspense symbol={symbol} />
         </section>
     );
 }
 
-function PostsWithSuspense({ stockId }: { stockId: number }) {
+function PostsWithSuspense({ symbol }: { symbol: string }) {
     return (
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-y-[.6rem] gap-x-[1.2rem] mt-4 md:gap-y-[1.6rem] mb-[.6rem]'>
             <Suspense
@@ -23,7 +23,7 @@ function PostsWithSuspense({ stockId }: { stockId: number }) {
                     <PostThumbnailSkeleton key={index} />
                 ))}
             >
-                <Posts stockId={stockId} />
+                <Posts symbol={symbol} />
             </Suspense>
         </div>
     );

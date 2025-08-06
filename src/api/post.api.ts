@@ -15,8 +15,8 @@ import {
 import { http } from './client';
 import { isFile } from '@/util/typeChecker';
 
-export const getTopBoardPosts = async ({ boardId, limit }: { boardId: number; limit?: number }) => {
-    const res = await http.get<TopBoardPostThumbnail[]>(`/api/posts/top/${boardId}`, {
+export const getTopBoardPosts = async ({ symbol, limit }: { symbol: string; limit?: number }) => {
+    const res = await http.get<TopBoardPostThumbnail[]>(`/api/posts/top/${symbol}`, {
         params: {
             limit,
         },
@@ -49,17 +49,17 @@ export const getPost = async ({ postId }: { postId: number }) => {
 };
 
 export const getPosts = async ({
-    stockId,
+    symbol,
     cursor = new Date(),
     limit = 15,
 }: {
-    stockId: number;
+    symbol: string;
     cursor?: Date;
     limit?: number;
 }) => {
     const res = await http.get<PostThumbnail[]>(`/api/posts`, {
         params: {
-            stockId,
+            symbol,
             cursor,
             limit,
         },
@@ -67,11 +67,11 @@ export const getPosts = async ({
     return res.data;
 };
 
-export const createPost = async ({ stockId, title, content, thumbnailImage }: CreatePostRequest) => {
+export const createPost = async ({ symbol, title, content, thumbnailImage }: CreatePostRequest) => {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('content', content);
-    formData.append('stockId', stockId.toString());
+    formData.append('symbol', symbol);
     if (thumbnailImage) {
         formData.append('thumbnailImage', thumbnailImage, thumbnailImage.name);
     }

@@ -54,7 +54,7 @@ export default function SearchStockType() {
                         <MyStockBox
                             key={stock.id}
                             stock={stock}
-                            href={`/writepost?stockId=${stock.id}&stockName=${stock.name}`}
+                            href={`/writepost?symbol=${stock.symbol}&stockName=${stock.name}`}
                         />
                     ))}
                 </div>

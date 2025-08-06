@@ -65,7 +65,7 @@ const EditPostContent = ({ postId }: { postId: string }) => {
     }, [post, setValue]);
 
     const onSubmit = async (data: UpdatePostField) => {
-        const formData = { ...data, stockId: post?.stock.id };
+        const formData = { ...data };
 
         if (errors.title) {
             showSnackbar({
