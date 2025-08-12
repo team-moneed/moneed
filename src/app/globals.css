@@ -39,6 +39,24 @@
     --text-lg: 1.8rem;
     --text-md: 1.6rem;
     --text-sm: 1.4rem;
+    --text-h1: 2.4rem;
+    --text-h1--line-height: 140%;
+    --text-h1--font-weight: 700;
+    --text-h2: 2.2rem;
+    --text-h2--line-height: 145%;
+    --text-h2--font-weight: 700;
+    --text-h3: 2rem;
+    --text-h3--line-height: 140%;
+    --text-h3--font-weight: 600;
+    --text-h4: 1.8rem;
+    --text-h4--line-height: 140%;
+    --text-h4--font-weight: 600;
+    --text-h5: 1.6rem;
+    --text-h5--line-height: 140%;
+    --text-h5--font-weight: 600;
+    --text-h6: 1.4rem;
+    --text-h6--line-height: 140%;
+    --text-h6--font-weight: 600;
 }
 
 @utility mask-right {

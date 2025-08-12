@@ -32,7 +32,7 @@ function LeaveButton() {
             {isBottomModalOpen && (
                 <BottomModal
                     title={
-                        <h2 className='text-2xl font-bold leading-[140%] w-full text-center'>
+                        <h2 className='text-h2 w-full text-center'>
                             이대로 떠나시겠어요,
                             <br />
                             <span className='text-moneed-brand'>{user?.nickname}</span>님?
