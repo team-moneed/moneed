@@ -55,7 +55,7 @@ export const MobileHeader = () => {
             <Link href='/'>
                 <div className='flex'>
                     <div className='w-[2.8rem] h-[2.8rem] bg-moneed-black rounded-full flex items-center justify-center'>
-                        <img className='w-[1.4rem] h-[1.2rem]' src='/icon/icon-logo.svg' alt='' />
+                        <img className='w-[1.4rem] h-[1.2rem]' src='/icon/icon-logo.svg' alt='back-button' />
                     </div>
                     <span className='font-semibold leading-[140%] text-[1.8rem] ml-[.8rem]'>moneed</span>
                 </div>
@@ -63,6 +63,25 @@ export const MobileHeader = () => {
             <div className='flex items-center gap-[2.4rem] ml-auto'>
                 <img className='w-[2.4rem] h-[2.4rem]' src='/icon/icon-alarm.svg' alt='notification' />
             </div>
+        </header>
+    );
+};
+
+export const BackNotificationHeader = ({ title }: { title: string }) => {
+    const router = useRouter();
+
+    const handleBackButtonClick = () => {
+        router.back();
+    };
+    return (
+        <header className='sticky top-0 z-10 bg-white flex items-center justify-between px-[4rem] pb-[1.8rem] pt-[3rem]'>
+            <button onClick={handleBackButtonClick}>
+                <img className='cursor-pointer w-[2.4rem] h-[2.4rem]' src='/icon/icon-arrow-back.svg' alt='' />
+            </button>
+            <h1 className='text-[1.6rem] font-semibold text-moneed-gray-9'>{title}</h1>
+            <Link href='/notification'>
+                <img className='w-[2.4rem] h-[2.4rem]' src='/icon/icon-alarm.svg' alt='notification' />
+            </Link>
         </header>
     );
 };
