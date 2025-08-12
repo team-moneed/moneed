@@ -9,12 +9,8 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ r
 
     return (
         <>
-            <div className='px-8 max-w-512 mx-auto pb-[8rem]'>
-                <div className='mt-[.7rem] lg:mt-4 aspect-350/106 rounded-[.8rem] overflow-hidden lg:aspect-941/151'>
-                    <img src='/temp/main-bn-m.png' alt='' className='w-full h-full object-cover lg:hidden' />
-                    <img src='/temp/main-bn-pc.png' alt='' className='hidden w-full h-full object-cover lg:block' />
-                </div>
-                <div className='mt-[3.6rem] lg:mt-[2.8rem]'>
+            <div className='px-8 max-w-512 mx-auto pb-[8rem] flex flex-col gap-[1.2rem] lg:gap-[4.4rem]'>
+                <section>
                     <div className='flex items-center gap-[.8rem] mb-[1.8rem] justify-between'>
                         <h2 className='text-moneed-black sm:text-2xl sm:leading-[140%]'>HOT 숏폼</h2>
                         <button className='flex items-center gap-[.8rem] self-stretch'>
@@ -30,9 +26,14 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ r
                         </button>
                     </div>
                     <MainShortforms />
-                </div>
+                </section>
 
-                <div className='mt-[3.6rem] lg:mt-[5.2rem]'>
+                <section className='aspect-350/106 rounded-[.8rem] overflow-hidden lg:aspect-941/151'>
+                    <img src='/smarttalk_m.svg' alt='' className='w-full h-full object-cover lg:hidden' />
+                    <img src='/smarttalk_pc.svg' alt='' className='hidden w-full h-full object-cover lg:block' />
+                </section>
+
+                <section>
                     <div className='flex items-center gap-[.8rem] mb-[1.8rem]'>
                         <h2 className='text-moneed-black sm:text-2xl sm:leading-[140%]'>TOP 3 종목 게시판</h2>
                         <span className='text-moneed-gray-6 text-[1.2rem] font-normal leading-[135%]'>
@@ -46,14 +47,14 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ r
                         </span>
                     </div>
                     <Top3 />
-                </div>
+                </section>
 
-                <div className='mt-[3.6rem] lg:mt-[5.2rem]'>
+                <section>
                     <div className='flex items-center gap-[.8rem] mb-[1.8rem]'>
                         <h2 className='text-moneed-black sm:text-2xl sm:leading-[140%]'>주요 뉴스</h2>
                     </div>
                     <MainNews />
-                </div>
+                </section>
             </div>
             <SnackbarTrigger reason={reason} />
         </>
