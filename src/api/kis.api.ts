@@ -5,6 +5,7 @@ import {
     OverseasStockConditionSearchResponse,
     MarketCode,
     OverseasStockPriceResponse,
+    OverseasStockInfoResponse,
 } from '@/types/kis';
 import axios from 'axios';
 
@@ -13,6 +14,7 @@ import axios from 'axios';
 const accessTokenUrl = '/oauth2/tokenP';
 const searchByConditionUrl = '/uapi/overseas-price/v1/quotations/inquire-search';
 const overseasStockPriceUrl = '/uapi/overseas-price/v1/quotations/price';
+const overseasStockInfoUrl = '/uapi/overseas-price/v1/quotations/search-info';
 
 /**
  * 접근토큰발급(P)[인증-001]
@@ -63,6 +65,23 @@ export const getOverseasStockPrice = async ({ symbol }: { symbol: string }) => {
         },
         headers: {
             tr_id: 'HHDFS00000300',
+        },
+    });
+    return response.data;
+};
+
+/**
+ * 해외주식 상품기본정보[v1_해외주식-034]
+ * {@link https://apiportal.koreainvestment.com/apiservice-apiservice?/uapi/overseas-price/v1/quotations/search-info API DOCS}
+ */
+export const getOverseasStockInfo = async ({ symbol }: { symbol: string }) => {
+    const response = await kis.get<OverseasStockInfoResponse>(overseasStockInfoUrl, {
+        params: {
+            PRDT_TYPE_CD: '512', // 상품 유형 코드(512: 미국 나스닥)
+            PDNO: symbol,
+        },
+        headers: {
+            tr_id: 'CTPF1702R',
         },
     });
     return response.data;

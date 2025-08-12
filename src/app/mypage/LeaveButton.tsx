@@ -1,10 +1,11 @@
 'use client';
 import { cn } from '@/util/style';
 import { useRouter } from 'next/navigation';
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import BottomModal from '@/components/BottomModal';
 import Button from '@/components/Button';
 import { useSuspenseUser } from '@/queries/user.query';
+import withSuspense from '@/components/HOC/withSuspense';
 
 function LeaveButton() {
     const router = useRouter();
@@ -72,10 +73,7 @@ function LeaveButton() {
     );
 }
 
-export default function LeaveButtonWithSuspense() {
-    return (
-        <Suspense fallback={<div className='h-[1.4rem] w-[5.6rem] rounded-[.8rem] bg-moneed-gray-5 animate-pulse' />}>
-            <LeaveButton />
-        </Suspense>
-    );
-}
+export default withSuspense(
+    LeaveButton,
+    <div className='h-[1.4rem] w-[5.6rem] rounded-[.8rem] bg-moneed-gray-5 animate-pulse' />,
+);

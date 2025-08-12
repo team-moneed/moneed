@@ -1,7 +1,7 @@
 import UserInfoSkeleton from '@/components/Skeletons/mypage/UserInfoSkeleton';
 import { useSuspenseUser } from '@/queries/user.query';
 import Link from 'next/link';
-import { Suspense } from 'react';
+import withSuspense from '@/components/HOC/withSuspense';
 
 function UserInfo() {
     const { data: user } = useSuspenseUser();
@@ -26,12 +26,4 @@ function UserInfo() {
     );
 }
 
-function UserInfoWithSuspense() {
-    return (
-        <Suspense fallback={<UserInfoSkeleton />}>
-            <UserInfo />
-        </Suspense>
-    );
-}
-
-export default UserInfoWithSuspense;
+export default withSuspense(UserInfo, <UserInfoSkeleton />);

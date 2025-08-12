@@ -1,7 +1,7 @@
 'use client';
 import CategoryRankBox from '@/components/Community/CategoryRankBox';
 import { useHotStocks } from '@/queries/stock.query';
-import { Suspense } from 'react';
+import withSuspense from '@/components/HOC/withSuspense';
 
 export default function HotStocks() {
     const { data: hotStocks } = useHotStocks({ market: 'NAS' });
@@ -14,10 +14,4 @@ export default function HotStocks() {
     );
 }
 
-export function HotStocksWithSuspense() {
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <HotStocks />
-        </Suspense>
-    );
-}
+export const HotStocksWithSuspense = withSuspense(HotStocks, <div>Loading...</div>);

@@ -3,22 +3,33 @@ import { CreatePostRequest, PostDetail, PostThumbnail, TopPostThumbnail, UpdateP
 import S3Service from './s3.service';
 import { urlToS3FileName } from '@/util/parser';
 import { isFile } from '@/util/typeChecker';
+import { StockService } from './stock.service';
+import { BoardRankResponse } from '@/types/board';
 
 export default class PostService {
     private readonly postRepository = new PostRepository();
+    private readonly stockService = new StockService();
 
     // 24시간 내 게시판 순위 조회 (게시글 수 > 조회수 > 좋아요수 > 댓글수)
     async getBoardRank({ limit }: { limit: number }) {
         const boardRankWithInHours = await this.postRepository.getBoardRankWithInHours({ limit, hours: 24 });
+        let result: BoardRankResponse[] = [];
         if (boardRankWithInHours.length === limit) {
-            return boardRankWithInHours;
+            result = boardRankWithInHours;
         } else {
             const boardRank = await this.postRepository.getBoardRank({
                 offset: boardRankWithInHours.length,
                 limit: limit - boardRankWithInHours.length,
             });
-            return [...boardRankWithInHours, ...boardRank];
+            result = [...boardRankWithInHours, ...boardRank];
         }
+        result = await Promise.all(
+            result.map(async item => ({
+                ...item,
+                stockName: await this.stockService.getKoreanStockName(item.stockSymbol),
+            })),
+        );
+        return result;
     }
 
     async getBoardTopPosts({ symbol, limit }: { symbol: string; limit: number }) {
@@ -29,23 +40,25 @@ export default class PostService {
     async getTopPosts({ limit = 5 }: { limit?: number } = {}): Promise<TopPostThumbnail[]> {
         const postList = await this.postRepository.getPostsByScore({ limit });
 
-        const postThumbnailList: TopPostThumbnail[] = postList.map(post => ({
-            id: post.id,
-            title: post.title,
-            content: post.content,
-            createdAt: post.createdAt,
-            user: {
-                id: post.user.id,
-                nickname: post.user.nickname,
-                profileImage: post.user.profileImage,
-            },
-            score: post.score,
-            stock: {
-                id: post.stock.id,
-                name: post.stock.name,
-                symbol: post.stock.symbol,
-            },
-        }));
+        const postThumbnailList = await Promise.all(
+            postList.map(async post => ({
+                id: post.id,
+                title: post.title,
+                content: post.content,
+                createdAt: post.createdAt,
+                user: {
+                    id: post.user.id,
+                    nickname: post.user.nickname,
+                    profileImage: post.user.profileImage,
+                },
+                score: post.score,
+                stock: {
+                    id: post.stock.id,
+                    symbol: post.stock.symbol,
+                    name: await this.stockService.getKoreanStockName(post.stock.symbol),
+                },
+            })),
+        );
 
         return postThumbnailList;
     }
@@ -53,14 +66,20 @@ export default class PostService {
     async getHotPosts({ limit = 15, cursor = 0, userId }: { limit?: number; cursor?: number; userId?: string } = {}) {
         const postList = await this.postRepository.getPostsByScore({ limit, cursor });
 
-        const postThumbnailList = postList.map(post => ({
-            ...post,
-            isLiked: post.postLikes.some(like => like.userId === userId),
-            likeCount: post.postLikes.length,
-            commentCount: post.comments.length,
-            stock: post.stock,
-            thumbnailImage: post.thumbnailImage ?? undefined,
-        }));
+        const postThumbnailList = await Promise.all(
+            postList.map(async post => ({
+                ...post,
+                isLiked: post.postLikes.some(like => like.userId === userId),
+                likeCount: post.postLikes.length,
+                commentCount: post.comments.length,
+                stock: {
+                    id: post.stock.id,
+                    symbol: post.stock.symbol,
+                    name: await this.stockService.getKoreanStockName(post.stock.symbol),
+                },
+                thumbnailImage: post.thumbnailImage ?? undefined,
+            })),
+        );
 
         return postThumbnailList;
     }
@@ -92,18 +111,24 @@ export default class PostService {
         userId?: string;
     }): Promise<PostThumbnail[]> {
         const postList = await this.postRepository.getPostsWithUserExtended({ stockSymbol, cursor, limit });
-        const postThumbnailList: PostThumbnail[] = postList.map(post => ({
-            id: post.id,
-            title: post.title,
-            content: post.content,
-            createdAt: post.createdAt.toISOString(),
-            isLiked: post.postLikes.some(like => like.userId === userId),
-            likeCount: post.postLikes.length,
-            commentCount: post.comments.length,
-            stock: post.stock,
-            thumbnailImage: post.thumbnailImage ?? undefined,
-            user: post.user,
-        }));
+        const postThumbnailList: PostThumbnail[] = await Promise.all(
+            postList.map(async post => ({
+                id: post.id,
+                title: post.title,
+                content: post.content,
+                createdAt: post.createdAt.toISOString(),
+                isLiked: post.postLikes.some(like => like.userId === userId),
+                likeCount: post.postLikes.length,
+                commentCount: post.comments.length,
+                stock: {
+                    id: post.stock.id,
+                    symbol: post.stock.symbol,
+                    name: await this.stockService.getKoreanStockName(post.stock.symbol),
+                },
+                thumbnailImage: post.thumbnailImage ?? undefined,
+                user: post.user,
+            })),
+        );
         return postThumbnailList;
     }
 

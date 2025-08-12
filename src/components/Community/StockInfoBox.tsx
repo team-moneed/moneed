@@ -2,9 +2,10 @@
 
 import { Stock } from '@/generated/prisma';
 import { cn } from '@/util/style';
-import { ReactNode, Suspense } from 'react';
+import { ReactNode } from 'react';
 import StockInfoBoxSkeleton from '../Skeletons/StockInfoBoxSkeleton';
 import { useSuspenseOverseasStockPrice } from '@/queries/stock.query';
+import withSuspense from '@/components/HOC/withSuspense';
 
 type StockInfoProps = {
     infoBoxImgages?: string[] | string;
@@ -51,12 +52,4 @@ const StockInfoBox = ({ stock, children }: StockInfoProps) => {
     );
 };
 
-const StockInfoBoxWithSuspense = ({ stock, children }: StockInfoProps) => {
-    return (
-        <Suspense fallback={<StockInfoBoxSkeleton />}>
-            <StockInfoBox stock={stock}>{children}</StockInfoBox>
-        </Suspense>
-    );
-};
-
-export default StockInfoBoxWithSuspense;
+export default withSuspense(StockInfoBox, <StockInfoBoxSkeleton />);

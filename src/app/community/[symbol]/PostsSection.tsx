@@ -1,6 +1,6 @@
 import PostThumbnailSkeleton from '@/components/Skeletons/PostThumbnailSkeleton';
-import { Suspense } from 'react';
 import Posts from './Posts';
+import withSuspense from '@/components/HOC/withSuspense';
 
 export default function PostSection({ symbol }: { symbol: string }) {
     return (
@@ -15,16 +15,11 @@ export default function PostSection({ symbol }: { symbol: string }) {
     );
 }
 
-function PostsWithSuspense({ symbol }: { symbol: string }) {
-    return (
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-y-[.6rem] gap-x-[1.2rem] mt-4 md:gap-y-[1.6rem] mb-[.6rem]'>
-            <Suspense
-                fallback={Array.from({ length: 15 }).map((_, index) => (
-                    <PostThumbnailSkeleton key={index} />
-                ))}
-            >
-                <Posts symbol={symbol} />
-            </Suspense>
-        </div>
-    );
-}
+const PostsWithSuspense = withSuspense(
+    Posts,
+    <div className='grid grid-cols-1 lg:grid-cols-2 gap-y-[.6rem] gap-x-[1.2rem] mt-4 md:gap-y-[1.6rem] mb-[.6rem]'>
+        {Array.from({ length: 15 }).map((_, index) => (
+            <PostThumbnailSkeleton key={index} />
+        ))}
+    </div>,
+);

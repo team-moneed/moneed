@@ -1,14 +1,13 @@
 import axios from 'axios';
 import 'server-only';
 import { ProviderRepository } from '@/repositories/provider.repository';
+import { KISTokenService } from '@/services/kis-token.service';
 import { deleteSession } from '@/lib/session';
 import { refreshKakaoToken } from './kakao.api';
 import { AxiosError } from 'axios';
-import { getAccessToken } from './kis.api';
-import { KISAccessTokenResponse } from '@/types/kis';
 
 const providerRepository = new ProviderRepository();
-let kisAccessToken: KISAccessTokenResponse | null = null;
+const kisTokenService = new KISTokenService();
 
 const getKisInstance = () => {
     const instance = axios.create({
@@ -21,14 +20,16 @@ const getKisInstance = () => {
     });
 
     instance.interceptors.request.use(async config => {
-        if (!kisAccessToken || new Date(kisAccessToken.access_token_token_expired) < new Date()) {
-            kisAccessToken = await getAccessToken();
-            kisAccessToken.access_token_token_expired = new Date(
-                Date.now() + kisAccessToken.expires_in * 1000,
-            ).toISOString();
+        try {
+            // 토큰 서비스를 통해 유효한 토큰 가져오기
+            const kisAccessToken = await kisTokenService.getValidToken();
+            const { access_token, token_type } = kisAccessToken;
+            config.headers.Authorization = `${token_type} ${access_token}`;
+        } catch (error) {
+            console.error('Failed to get KIS access token:', error);
+            throw error;
         }
-        const { access_token, token_type } = kisAccessToken;
-        config.headers.Authorization = `${token_type} ${access_token}`;
+
         return config;
     });
 
@@ -36,8 +37,19 @@ const getKisInstance = () => {
         async response => {
             return response;
         },
-        async error => {
-            console.error(error.response?.data);
+        async (error: AxiosError<{ msg_cd: string; rc_cd: string; msg1: string }>) => {
+            console.error('KIS API Error:', error.response?.data);
+
+            // msg_cd 가 EGW00201(초당 거래건수 초과) 이라면 1초 후 다시 요청
+            if (error.config && error.response && error.response.data.msg_cd === 'EGW00201') {
+                const config = error.config; // setTimeout 내부에서도 정상적으로 타입 추론이 되도록 로컬 변수로 추출
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve(instance.request(config));
+                    }, 1000);
+                });
+            }
+
             return Promise.reject(error);
         },
     );
@@ -104,5 +116,28 @@ const getKakaoInstance = () => {
     return instance;
 };
 
+const getYoutubeInstance = () => {
+    const instance = axios.create({
+        baseURL: process.env.YOUTUBE_BASE_URL,
+    });
+
+    instance.interceptors.request.use(config => {
+        return config;
+    });
+
+    instance.interceptors.response.use(
+        async response => {
+            return response;
+        },
+        async error => {
+            console.error(error.response?.data);
+            return Promise.reject(error);
+        },
+    );
+
+    return instance;
+};
+
 export const kis = getKisInstance();
 export const kakao = getKakaoInstance();
+export const youtube = getYoutubeInstance();

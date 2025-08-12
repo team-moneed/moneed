@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import Button from '@/components/Button';
 import SelectProfileImage from '@/components/Mypage/SelectProfileImage';
 import { useRouter } from 'next/navigation';
@@ -13,6 +13,7 @@ import { REASON_CODES } from '@/constants/snackbar';
 import { MyProfileSkeleton } from '@/components/Skeletons/MyProfileSkeleton';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useModal } from '@/context/ModalContext';
+import withSuspense from '@/components/HOC/withSuspense';
 
 // TODO: 프로필 사진 업로드 기능
 const MyProfile = () => {
@@ -173,12 +174,4 @@ const MyProfile = () => {
     );
 };
 
-const MyProfileWithSuspense = () => {
-    return (
-        <Suspense fallback={<MyProfileSkeleton />}>
-            <MyProfile />
-        </Suspense>
-    );
-};
-
-export default MyProfileWithSuspense;
+export default withSuspense(MyProfile, <MyProfileSkeleton />);

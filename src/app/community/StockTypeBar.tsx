@@ -5,13 +5,12 @@ import { ChipLink } from '@/components/Chip';
 import Icon from '@/components/Icon';
 import Link from 'next/link';
 import { useSelectedStocks } from '@/queries/stock.query';
-import { Suspense } from 'react';
 import StockTypeBarSkeleton from '@/components/Skeletons/community/StockTypeBarSkeleton';
+import withSuspense from '@/components/HOC/withSuspense';
 
 function StockTypeBar() {
     const params = useParams();
     const symbol = params ? params.symbol : undefined;
-    console.log(symbol);
     const { data: stocks } = useSelectedStocks();
 
     return (
@@ -34,12 +33,4 @@ function StockTypeBar() {
     );
 }
 
-function StockTypeBarWithSuspense() {
-    return (
-        <Suspense fallback={<StockTypeBarSkeleton count={15} />}>
-            <StockTypeBar />
-        </Suspense>
-    );
-}
-
-export default StockTypeBarWithSuspense;
+export default withSuspense(StockTypeBar, <StockTypeBarSkeleton count={15} />);

@@ -4,9 +4,11 @@ import Button from '@/components/Button';
 import StockTypeChip from '@/components/create/StockTypeChip';
 import { selectStock as selectStockApi } from '@/api/stock.api';
 import { useMutation } from '@tanstack/react-query';
-import { useState, Suspense } from 'react';
+import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useSelectedStocks, useStocks } from '@/queries/stock.query';
+import { useInfiniteStocks, useSelectedStocks } from '@/queries/stock.query';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+import withSuspense from '@/components/HOC/withSuspense';
 
 function SelectStockTypeContent() {
     const router = useRouter();
@@ -64,10 +66,4 @@ function SelectStockTypeContent() {
     );
 }
 
-export default function SelectStockType() {
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <SelectStockTypeContent />
-        </Suspense>
-    );
-}
+export default withSuspense(SelectStockTypeContent, <div>Loading...</div>);

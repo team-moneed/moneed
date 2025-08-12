@@ -1,4 +1,5 @@
-import { getOverseasStockPrice } from '@/api/kis.api';
+import { getOverseasStockInfo, getOverseasStockPrice } from '@/api/kis.api';
+import { Stock } from '@/generated/prisma';
 import { StockRepository } from '@/repositories/stock.repository';
 
 export class StockService {
@@ -8,9 +9,34 @@ export class StockService {
         this.stockRepository = new StockRepository();
     }
 
+    /**
+     * 단일 주식에 대한 정보를 가져와서 name 필드를 추가합니다.
+     */
+    async getKoreanStockName(symbol: string) {
+        try {
+            const info = await getOverseasStockInfo({ symbol });
+            return info.output.prdt_name;
+        } catch (error) {
+            console.error(`Failed to get stock info for ${symbol}:`, error);
+            return symbol;
+        }
+    }
+
+    /**
+     * 여러 주식에 대한 정보를 병렬로 가져와서 name 필드를 추가합니다.
+     */
+    async updateStockNamesToKorean(stocks: Stock[]) {
+        return await Promise.all(
+            stocks.map(async stock => ({
+                ...stock,
+                name: await this.getKoreanStockName(stock.symbol),
+            })),
+        );
+    }
+
     async getSelectedStock(userId: string) {
         const selectedStocks = await this.stockRepository.getSelectedStock(userId);
-        return selectedStocks.flatMap(stock => stock.stock);
+        return await this.updateStockNamesToKorean(selectedStocks.flatMap(stock => stock.stock));
     }
 
     async selectStock(userId: string, stockSymbols: string[]) {
@@ -22,12 +48,15 @@ export class StockService {
         if (!stock) {
             throw new Error('Stock not found');
         }
-        return stock;
+        return {
+            ...stock,
+            name: await this.getKoreanStockName(stock.symbol),
+        };
     }
 
     async getStocks(count: number, cursor: number) {
         const stocks = await this.stockRepository.getStocks(count, cursor);
-        return stocks;
+        return await this.updateStockNamesToKorean(stocks);
     }
 
     async getOverseasStockPrice(symbol: string) {
@@ -35,7 +64,8 @@ export class StockService {
     }
 
     async getStocksBySymbols(symbols: string[]) {
-        return await this.stockRepository.getStocksBySymbols(symbols);
+        const stocks = await this.stockRepository.getStocksBySymbols(symbols);
+        return await this.updateStockNamesToKorean(stocks);
     }
 
     async getStockBySymbol(symbol: string) {
@@ -43,6 +73,9 @@ export class StockService {
         if (!stock) {
             throw new Error('Stock not found');
         }
-        return stock;
+        return {
+            ...stock,
+            name: await this.getKoreanStockName(stock.symbol),
+        };
     }
 }

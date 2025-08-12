@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getBoardRank } from '@/api/board.api';
 import { BoardRankResponse } from '@/types/board';
@@ -9,6 +9,7 @@ import { StockRankButtonsSkeleton } from '@/components/Skeletons/StockRankButton
 import StockRankButtons from './StockRankButtons';
 import { Top3PostsSkeleton } from '@/components/Skeletons/Top3PostSkeleton';
 import Top3Posts from './Top3Posts';
+import withSuspense from '@/components/HOC/withSuspense';
 
 // TODO: 1시간마다 서버에서 업데이트 해야함
 const Top3 = () => {
@@ -38,19 +39,10 @@ const Top3 = () => {
     );
 };
 
-const Top3WithSuspense = () => {
-    return (
-        <Suspense
-            fallback={
-                <>
-                    <StockRankButtonsSkeleton count={3} />
-                    <Top3PostsSkeleton count={3} />
-                </>
-            }
-        >
-            <Top3 />
-        </Suspense>
-    );
-};
-
-export default Top3WithSuspense;
+export default withSuspense(
+    Top3,
+    <>
+        <StockRankButtonsSkeleton count={3} />
+        <Top3PostsSkeleton count={3} />
+    </>,
+);

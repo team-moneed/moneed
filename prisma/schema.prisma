@@ -169,3 +169,13 @@ enum Role {
   ADMIN
   USER
 }
+
+model ServerTokens {
+  id        Int      @id @default(autoincrement())
+  tokenKey    String   @unique
+  tokenValue  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("server_tokens")
+}
