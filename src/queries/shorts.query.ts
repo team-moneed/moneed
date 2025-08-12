@@ -1,5 +1,5 @@
 import { fetchShorts } from '@/api/shorts.api';
-import { useInfiniteQuery, useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery, useSuspenseInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 export const useShorts = ({ q, count }: { q: string; count: number }) => {
     return useQuery({
@@ -17,7 +17,20 @@ export const useSuspenseShorts = ({ q, count }: { q: string; count: number }) =>
 
 export const useInfiniteShorts = ({ q, count }: { q: string; count: number }) => {
     return useInfiniteQuery({
-        queryKey: ['shorts'],
+        queryKey: ['infinite-shorts', q, count],
+        queryFn: ({ pageParam = '' }) => fetchShorts({ q, count, page: pageParam }),
+        initialPageParam: '',
+        getNextPageParam: lastPage => {
+            const videos = lastPage.items;
+            return videos && videos.length > 0 ? lastPage.nextPageToken : undefined;
+        },
+        select: data => data.pages.flatMap(page => page.items),
+    });
+};
+
+export const useSuspenseInfiniteShorts = ({ q, count }: { q: string; count: number }) => {
+    return useSuspenseInfiniteQuery({
+        queryKey: ['infinite-shorts', q, count],
         queryFn: ({ pageParam = '' }) => fetchShorts({ q, count, page: pageParam }),
         initialPageParam: '',
         getNextPageParam: lastPage => {

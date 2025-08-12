@@ -1,12 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { useInfiniteShorts } from '@/queries/shorts.query';
+import { useSuspenseInfiniteShorts } from '@/queries/shorts.query';
 import ShortformDetail from './ShortformDetail';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+import { ShortformPageSkeleton } from '@/components/Skeletons/shortform/ShortformSkeleton';
+import withSuspense from '@/components/HOC/withSuspense';
 
-export default function ShortformPage() {
-    const { data: videos = [], isLoading, fetchNextPage } = useInfiniteShorts({ q: '주식 쇼츠', count: 20 });
+function ShortformPage() {
+    const { data: videos = [], isLoading, fetchNextPage } = useSuspenseInfiniteShorts({ q: '주식 쇼츠', count: 20 });
     const [videoId, setVideoId] = useState<string | null>(null);
     const video = videos?.find(video => video.id.videoId === videoId);
     const ref = useIntersectionObserver({ onIntersect: fetchNextPage });
@@ -38,3 +40,5 @@ export default function ShortformPage() {
         </div>
     );
 }
+
+export default withSuspense(ShortformPage, <ShortformPageSkeleton count={20} />);

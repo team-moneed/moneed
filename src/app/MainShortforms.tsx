@@ -4,7 +4,7 @@ import VideoCarousel from '@/components/Carousel/VideoCarousel';
 import { EmblaOptionsType } from 'embla-carousel';
 import { useSuspenseShorts } from '@/queries/shorts.query';
 import withSuspense from '@/components/HOC/withSuspense';
-import ShortformSkeleton from '@/components/Skeletons/shortform/ShortformSkeleton';
+import { ShortformCarouselSkeleton } from '@/components/Skeletons/shortform/ShortformSkeleton';
 
 const MainShortforms = () => {
     const VIDEOOPTIONS: EmblaOptionsType = {
@@ -25,4 +25,4 @@ const MainShortforms = () => {
     );
 };
 
-export default withSuspense(MainShortforms, <ShortformSkeleton count={10} />);
+export default withSuspense(MainShortforms, <ShortformCarouselSkeleton count={10} />);
