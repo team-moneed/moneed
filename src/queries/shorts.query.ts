@@ -1,9 +1,16 @@
 import { fetchShorts } from '@/api/shorts.api';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 export const useShorts = ({ q, count }: { q: string; count: number }) => {
     return useQuery({
-        queryKey: ['shorts'],
+        queryKey: ['shorts', q, count],
+        queryFn: () => fetchShorts({ q, count }),
+    });
+};
+
+export const useSuspenseShorts = ({ q, count }: { q: string; count: number }) => {
+    return useSuspenseQuery({
+        queryKey: ['shorts', q, count],
         queryFn: () => fetchShorts({ q, count }),
     });
 };
