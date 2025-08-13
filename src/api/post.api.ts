@@ -13,7 +13,7 @@ import {
     UnlikePostResponse,
 } from '@/types/post';
 import { http } from './client';
-import { isFile } from '@/util/typeChecker';
+import { isFile } from '@/utils/typeChecker';
 
 export const getTopBoardPosts = async ({ symbol, limit }: { symbol: string; limit?: number }) => {
     const res = await http.get<TopBoardPostThumbnail[]>(`/api/posts/top/${symbol}`, {

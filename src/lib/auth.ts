@@ -1,6 +1,6 @@
 import { DecodedToken } from '@/types/auth';
 import { decodeJwt } from 'jose';
-import { getCookie } from '@/util/cookie';
+import { getCookie } from '@/utils/cookie';
 
 export const decodeToken = (token?: string): DecodedToken | null => {
     const accessToken = token || getCookie('access_token');

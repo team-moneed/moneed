@@ -2,7 +2,7 @@
 
 import { TokenPayload } from '@/types/auth';
 import { decodeJwt } from 'jose';
-import { getCookie } from '@/util/cookie';
+import { getCookie } from '@/utils/cookie';
 import { useEffect, useState } from 'react';
 
 export default function RandomNickname() {

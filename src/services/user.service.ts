@@ -1,9 +1,9 @@
 import PostRepository from '@/repositories/post.repository';
 import CommentRepository from '@/repositories/comment.repository';
 import { UserRepository } from '@/repositories/user.repository';
-import { isFile } from '@/util/typeChecker';
+import { isFile } from '@/utils/typeChecker';
 import S3Service from './s3.service';
-import { urlToS3FileName } from '@/util/parser';
+import { urlToS3FileName } from '@/utils/parser';
 import { UpdateUserProfileRequest } from '@/types/user';
 
 class UserService {

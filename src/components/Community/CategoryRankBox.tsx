@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react';
 import { HotStock } from '@/types/stock';
-import { cn } from '@/util/style';
+import { cn } from '@/utils/style';
 
 type StockInfoProps = {
     stock: HotStock;
