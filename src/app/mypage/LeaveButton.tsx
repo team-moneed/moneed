@@ -1,5 +1,5 @@
 'use client';
-import { cn } from '@/util/style';
+import { cn } from '@/utils/style';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import BottomModal from '@/components/BottomModal';

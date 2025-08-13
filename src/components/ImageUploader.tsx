@@ -1,7 +1,7 @@
 'use client';
 
-import { compressImage, COMPRESSION_OPTIONS } from '@/util/optimizeImage';
-import { cn } from '@/util/style';
+import { compressImage, COMPRESSION_OPTIONS } from '@/utils/optimizeImage';
+import { cn } from '@/utils/style';
 import { forwardRef } from 'react';
 
 interface ImageUploaderProps {

@@ -2,7 +2,7 @@
 
 import { ReactNode, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { cn } from '@/util/style';
+import { cn } from '@/utils/style';
 
 type BottomModalProps = {
     imageSrc?: string;

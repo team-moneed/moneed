@@ -1,6 +1,6 @@
 import { User } from '@/generated/prisma';
 import { http } from './client';
-import { isFile } from '@/util/typeChecker';
+import { isFile } from '@/utils/typeChecker';
 import { UpdateUserProfileRequest } from '@/types/user';
 import { CommentWithUser } from '@/types/comment';
 import { PostThumbnail } from '@/types/post';

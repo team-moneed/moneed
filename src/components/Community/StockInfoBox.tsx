@@ -1,7 +1,7 @@
 'use client';
 
 import { Stock } from '@/generated/prisma';
-import { cn } from '@/util/style';
+import { cn } from '@/utils/style';
 import { ReactNode } from 'react';
 import StockInfoBoxSkeleton from '../Skeletons/StockInfoBoxSkeleton';
 import { useSuspenseOverseasStockPrice } from '@/queries/stock.query';

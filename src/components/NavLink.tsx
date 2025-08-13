@@ -2,7 +2,7 @@
 import { ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { cn } from '@/util/style';
+import { cn } from '@/utils/style';
 
 type NavLinkType = {
     className?: string;

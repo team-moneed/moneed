@@ -3,7 +3,7 @@
 import useSnackbarStore, { generateId } from '@/store/useSnackbarStore';
 import { cva } from 'class-variance-authority';
 import { SnackbarConfig } from '@/types/snackbar';
-import { cn } from '@/util/style';
+import { cn } from '@/utils/style';
 import ReactDOM from 'react-dom';
 import { useEffect, useState } from 'react';
 import { REASONS } from '@/constants/snackbar';

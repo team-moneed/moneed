@@ -1,7 +1,7 @@
 import { ServerTokenRepository } from '@/repositories/server-token.repository';
 import { getAccessToken } from '@/api/kis.api';
 import { KISAccessTokenResponse } from '@/types/kis';
-import { TokenUtils } from '@/util/token-utils';
+import { TokenUtils } from '@/utils/token-utils';
 
 export class KISTokenService {
     private serverTokenRepository: ServerTokenRepository;

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Comment from '@/components/Comment/Comment';
 import { useMyComments } from '@/queries/comments.query';
-import { cn } from '@/util/style';
+import { cn } from '@/utils/style';
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/components/QueryClientProvider';
 import { deleteComment } from '@/api/comment.api';

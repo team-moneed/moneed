@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { changeFormatDate } from '@/util/date';
+import { changeFormatDate } from '@/utils/date';
 
 type DateFormatterPropsType = {
     createdAt: Date;

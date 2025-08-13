@@ -1,4 +1,4 @@
-import { cn } from '@/util/style';
+import { cn } from '@/utils/style';
 import { useState } from 'react';
 import { PrimaryDropdown, PrimaryDropdownProps } from './Dropdown';
 import DateFormatter from '@/components/Dateformatter';

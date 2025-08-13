@@ -7,7 +7,7 @@ import { usePrevNextButtons } from '@/hooks/usePrevNextButtons';
 import { YouTubeSearchResult } from '@/types/youtube';
 import { useState } from 'react';
 import ShortformDetail from '@/app/shortform/ShortformDetail';
-import { cn } from '@/util/style';
+import { cn } from '@/utils/style';
 
 type PropType = {
     videos: YouTubeSearchResult[];
