@@ -12,11 +12,18 @@ function ShortformPage() {
         data: videos,
         fetchNextPage,
         isFetchingNextPage,
-    } = useSuspenseInfiniteShorts({ q: '주식 쇼츠', count: 20 });
+    } = useSuspenseInfiniteShorts({ q: '주식 투자', count: 20 });
     const [videoId, setVideoId] = useState<string | null>(null);
     const [isClient, setIsClient] = useState(false);
     const video = videos?.find(video => video.id.videoId === videoId);
-    const ref = useIntersectionObserver({ onIntersect: fetchNextPage });
+
+    const ref = useIntersectionObserver({
+        onIntersect: fetchNextPage,
+        options: {
+            rootMargin: '100px',
+            threshold: 0.1,
+        },
+    });
 
     useEffect(() => {
         setIsClient(true);
@@ -50,7 +57,7 @@ function ShortformPage() {
             </div>
             {video && <ShortformDetail video={video} setVideoId={setVideoId} />}
             {isFetchingNextPage && <ShortformPageSkeleton count={20} />}
-            <div ref={ref} />
+            <div ref={ref} className='h-[1px]' />
         </div>
     );
 }
