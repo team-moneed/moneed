@@ -1,10 +1,15 @@
 import { fetchShorts } from '@/api/shorts.api';
+import { getMsUntilMidnight } from '@/util/date';
 import { useInfiniteQuery, useQuery, useSuspenseInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
+
+const untilMidnight = getMsUntilMidnight();
 
 export const useShorts = ({ q, count }: { q: string; count: number }) => {
     return useQuery({
         queryKey: ['shorts', q, count],
         queryFn: () => fetchShorts({ q, count }),
+        staleTime: untilMidnight,
+        gcTime: untilMidnight,
     });
 };
 
@@ -12,6 +17,8 @@ export const useSuspenseShorts = ({ q, count }: { q: string; count: number }) =>
     return useSuspenseQuery({
         queryKey: ['shorts', q, count],
         queryFn: () => fetchShorts({ q, count }),
+        staleTime: untilMidnight,
+        gcTime: untilMidnight,
     });
 };
 
@@ -31,6 +38,8 @@ export const useInfiniteShorts = ({ q, count }: { q: string; count: number }) =>
             );
             return uniqueVideos;
         },
+        staleTime: untilMidnight,
+        gcTime: untilMidnight,
     });
 };
 
@@ -50,5 +59,7 @@ export const useSuspenseInfiniteShorts = ({ q, count }: { q: string; count: numb
             );
             return uniqueVideos;
         },
+        staleTime: untilMidnight,
+        gcTime: untilMidnight,
     });
 };
