@@ -4,13 +4,13 @@ import { EmblaOptionsType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
 import { NextButton, PrevButton } from '@/components/Carousel/CarouselArrowButton';
 import { usePrevNextButtons } from '@/hooks/usePrevNextButtons';
-import { YouTubeSearchResult } from '@/types/youtube';
 import { useState } from 'react';
 import ShortformDetail from '@/app/shortform/ShortformDetail';
 import { cn } from '@/utils/style';
+import { Shorts } from '@/generated/prisma';
 
 type PropType = {
-    videos: YouTubeSearchResult[];
+    videos: Shorts[];
     options?: EmblaOptionsType;
     slidesToShow?: number;
 };
@@ -24,7 +24,7 @@ const VideoCarousel = (props: PropType) => {
     });
     const { nextBtnDisabled, onNextButtonClick, prevBtnDisabled, onPrevButtonClick } = usePrevNextButtons(emblaApi);
     const [videoId, setVideoId] = useState<string | null>(null);
-    const video = videos.find(video => video.id.videoId === videoId);
+    const video = videos.find(video => video.videoId === videoId);
 
     return (
         <div className='relative lg:pr-[5.6rem]'>
@@ -35,13 +35,13 @@ const VideoCarousel = (props: PropType) => {
                             className='w-[calc(30%-1.6rem)] lg:w-[calc(20%-1.6rem)] shrink-0 cursor-pointer'
                             key={index}
                             style={{ aspectRatio: '9/16' }}
-                            onClick={() => setVideoId(video.id.videoId)}
+                            onClick={() => setVideoId(video.videoId)}
                         >
                             <div className='w-full h-full rounded-[.8rem] overflow-hidden'>
                                 <iframe
                                     className='w-full h-full pointer-events-none'
-                                    src={`https://www.youtube.com/embed/${video.id.videoId}?autoplay=0&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=${video.id.videoId}`}
-                                    title={video.snippet.title}
+                                    src={`https://www.youtube.com/embed/${video.videoId}?autoplay=0&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=${video.videoId}`}
+                                    title={video.title}
                                     allow='autoplay; encrypted-media'
                                     allowFullScreen
                                 />

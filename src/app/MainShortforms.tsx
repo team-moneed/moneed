@@ -15,12 +15,11 @@ const MainShortforms = () => {
         containScroll: 'trimSnaps',
     };
 
-    const { data } = useSuspenseShorts({ q: '주식 쇼츠', count: 10 });
-    const videos = data?.items;
+    const { data: shorts } = useSuspenseShorts({ cursor: 0, limit: 10 });
 
     return (
         <>
-            <div className='mt-4'>{videos && <VideoCarousel videos={videos} options={VIDEOOPTIONS} />}</div>
+            <div className='mt-4'>{shorts && <VideoCarousel videos={shorts} options={VIDEOOPTIONS} />}</div>
         </>
     );
 };

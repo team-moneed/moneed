@@ -1,7 +1,7 @@
 import { youtube } from '@/api/server';
 import { YouTubeSearchResponse } from '@/types/youtube';
 
-export const fetchVideos = async ({ q, count, page }: { q: string; count: number; page: string | null }) => {
+export const searchShorts = async ({ q, count, page }: { q: string; count: number; page: string | null }) => {
     const response = await youtube.get<YouTubeSearchResponse>('/v3/search', {
         params: {
             part: 'snippet',

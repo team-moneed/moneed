@@ -1,64 +1,55 @@
-import { fetchShorts } from '@/api/shorts.api';
+import { fetchShorts, fetchShort } from '@/api/shorts.api';
 import { getMsUntilMidnight } from '@/utils/date';
 import { useInfiniteQuery, useQuery, useSuspenseInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 const untilMidnight = getMsUntilMidnight();
 
-export const useShorts = ({ q, count }: { q: string; count: number }) => {
+export const useShort = ({ videoId = '' }: { videoId?: string }) => {
     return useQuery({
-        queryKey: ['shorts', q, count],
-        queryFn: () => fetchShorts({ q, count }),
+        queryKey: ['short', videoId],
+        queryFn: () => fetchShort({ videoId }),
         staleTime: untilMidnight,
         gcTime: untilMidnight,
     });
 };
 
-export const useSuspenseShorts = ({ q, count }: { q: string; count: number }) => {
+export const useShorts = ({ videoId = '', limit = 10 }: { videoId?: string; limit?: number }) => {
+    return useQuery({
+        queryKey: ['shorts', videoId, limit],
+        queryFn: () => fetchShorts({ cursor: videoId, limit }),
+        staleTime: untilMidnight,
+        gcTime: untilMidnight,
+    });
+};
+
+export const useSuspenseShorts = ({ videoId = '', limit = 10 }: { videoId?: string; limit?: number }) => {
     return useSuspenseQuery({
-        queryKey: ['shorts', q, count],
-        queryFn: () => fetchShorts({ q, count }),
+        queryKey: ['shorts', videoId, limit],
+        queryFn: () => fetchShorts({ cursor: videoId, limit }),
         staleTime: untilMidnight,
         gcTime: untilMidnight,
     });
 };
 
-export const useInfiniteShorts = ({ q, count }: { q: string; count: number }) => {
+export const useInfiniteShorts = ({ cursor = '', limit = 20 }: { cursor?: string; limit?: number }) => {
     return useInfiniteQuery({
-        queryKey: ['infinite-shorts', q, count],
-        queryFn: ({ pageParam = '' }) => fetchShorts({ q, count, page: pageParam }),
-        initialPageParam: '',
-        getNextPageParam: lastPage => {
-            const videos = lastPage.items;
-            return videos && videos.length > 0 ? lastPage.nextPageToken : undefined;
-        },
-        select: data => {
-            const videos = data.pages.flatMap(page => page.items);
-            const uniqueVideos = videos.filter(
-                (video, i) => videos.findIndex(v => v.id.videoId === video.id.videoId) === i,
-            );
-            return uniqueVideos;
-        },
+        queryKey: ['infinite-shorts', cursor, limit],
+        queryFn: ({ pageParam = cursor }) => fetchShorts({ cursor: pageParam, limit }),
+        initialPageParam: cursor,
+        getNextPageParam: lastPage => (lastPage.length > 0 ? lastPage.at(-1)?.videoId : undefined),
+        select: data => data.pages.flatMap(page => page),
         staleTime: untilMidnight,
         gcTime: untilMidnight,
     });
 };
 
-export const useSuspenseInfiniteShorts = ({ q, count }: { q: string; count: number }) => {
+export const useSuspenseInfiniteShorts = ({ cursor = '', limit = 20 }: { cursor?: string; limit?: number }) => {
     return useSuspenseInfiniteQuery({
-        queryKey: ['infinite-shorts', q, count],
-        queryFn: ({ pageParam = '' }) => fetchShorts({ q, count, page: pageParam }),
-        initialPageParam: '',
-        getNextPageParam: lastPage => {
-            const videos = lastPage.items;
-            return videos && videos.length > 0 ? lastPage.nextPageToken : undefined;
-        },
-        select: data => {
-            const videos = data.pages.flatMap(page => page.items);
-            const uniqueVideos = videos.filter(
-                (video, i) => videos.findIndex(v => v.id.videoId === video.id.videoId) === i,
-            );
-            return uniqueVideos;
-        },
+        queryKey: ['infinite-shorts', cursor, limit],
+        queryFn: ({ pageParam = cursor }) => fetchShorts({ cursor: pageParam, limit }),
+        initialPageParam: cursor,
+        getNextPageParam: lastPage => (lastPage.length > 0 ? lastPage.at(-1)?.videoId : undefined),
+        select: data => data.pages.flatMap(page => page),
         staleTime: untilMidnight,
         gcTime: untilMidnight,
     });
