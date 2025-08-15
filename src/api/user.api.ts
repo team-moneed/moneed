@@ -1,22 +1,22 @@
 import { User } from '@/generated/prisma';
-import { http } from './client';
+import { httpWithCredentials } from './client';
 import { isFile } from '@/utils/typeChecker';
 import { UpdateUserProfileRequest } from '@/types/user';
 import { CommentWithUser } from '@/types/comment';
 import { PostThumbnail } from '@/types/post';
 
 export async function fetchMyInfo() {
-    const res = await http.get<User>(`/api/users/me`);
+    const res = await httpWithCredentials.get<User>(`/api/users/me`);
     return res.data;
 }
 
 export async function fetchMyPosts() {
-    const res = await http.get<PostThumbnail[]>('/api/users/me/posts');
+    const res = await httpWithCredentials.get<PostThumbnail[]>('/api/users/me/posts');
     return res.data;
 }
 
 export async function fetchMyComments() {
-    const res = await http.get<CommentWithUser[]>('/api/users/me/comments');
+    const res = await httpWithCredentials.get<CommentWithUser[]>('/api/users/me/comments');
     return res.data;
 }
 
@@ -29,13 +29,15 @@ export async function updateUserProfile({ nickname, profileImage, prevProfileIma
         formData.append('profileImage', profileImage);
     }
     formData.append('prevProfileImageUrl', prevProfileImageUrl);
-    const res = await http.put<User>('/api/users/me', formData, {
+    const res = await httpWithCredentials.put<User>('/api/users/me', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
     return res.data;
 }
 
 export async function checkDuplicateNickname({ nickname }: { nickname: string }) {
-    const res = await http.post<{ message: string; nickname: string }>('/api/users/nickname/check', { nickname });
+    const res = await httpWithCredentials.post<{ message: string; nickname: string }>('/api/users/nickname/check', {
+        nickname,
+    });
     return res.data;
 }

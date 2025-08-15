@@ -6,12 +6,18 @@ import Icon from '@/components/Icon';
 import Link from 'next/link';
 import { useSelectedStocks } from '@/queries/stock.query';
 import StockTypeBarSkeleton from '@/components/Skeletons/community/StockTypeBarSkeleton';
-import withSuspense from '@/components/HOC/withSuspense';
+import { AxiosError } from 'axios';
 
 function StockTypeBar() {
     const params = useParams();
     const symbol = params ? params.symbol : undefined;
-    const { data: stocks } = useSelectedStocks();
+    const { data: stocks, isError, error, isLoading } = useSelectedStocks();
+
+    const is401Error = isError && error instanceof AxiosError && error.response?.status === 401;
+
+    if (isLoading) {
+        return <StockTypeBarSkeleton count={15} />;
+    }
 
     return (
         <div className='relative'>
@@ -20,17 +26,18 @@ function StockTypeBar() {
                     <Icon iconUrl='/icon/icon-addcircle.svg' width={30} height={30} />
                 </Link>
                 <ChipLink label='전체' active={symbol ? false : true} href='/community' />
-                {stocks?.map(stock => (
-                    <ChipLink
-                        key={stock.symbol}
-                        label={stock.name}
-                        active={symbol ? symbol === stock.symbol : false}
-                        href={`/community/${stock.symbol}`}
-                    />
-                ))}
+                {!is401Error &&
+                    stocks?.map(stock => (
+                        <ChipLink
+                            key={stock.symbol}
+                            label={stock.name}
+                            active={symbol ? symbol === stock.symbol : false}
+                            href={`/community/${stock.symbol}`}
+                        />
+                    ))}
             </div>
         </div>
     );
 }
 
-export default withSuspense(StockTypeBar, <StockTypeBarSkeleton count={15} />);
+export default StockTypeBar;

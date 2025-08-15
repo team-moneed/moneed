@@ -1,20 +1,52 @@
 import { getHotStock, getOverseasStockPrice, getSelectedStocks, getStocks, getStockBySymbol } from '@/api/stock.api';
 import { MarketCode } from '@/types/kis';
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 export const useStocks = () => {
-    const { data, isLoading, error } = useQuery({
+    return useQuery({
         queryKey: ['stocks'],
         queryFn: () => getStocks(),
     });
-
-    return { data, isLoading, error };
 };
 
+export const useInfiniteStocks = ({ count = 20 }: { count?: number }) => {
+    return useInfiniteQuery({
+        queryKey: ['stocks'],
+        queryFn: ({ pageParam = 0 }) => getStocks({ count, cursor: pageParam }),
+        getNextPageParam: lastPage => (lastPage.length > 0 ? (lastPage.at(-1)?.id ?? 0) : undefined),
+        initialPageParam: 0,
+        select: data => data.pages.flatMap(page => page),
+    });
+};
+
+// TODO: infinite query로 수정
 export const useSelectedStocks = () => {
+    return useQuery({
+        queryKey: ['selectedStocks'],
+        queryFn: getSelectedStocks,
+        retry: (failureCount, error: any) => {
+            // 401 에러인 경우 재시도하지 않음
+            if (error?.response?.status === 401) {
+                return false;
+            }
+            // 다른 에러의 경우 최대 3번 재시도
+            return failureCount < 3;
+        },
+    });
+};
+
+export const useSuspenseSelectedStocks = () => {
     return useSuspenseQuery({
         queryKey: ['selectedStocks'],
-        queryFn: () => getSelectedStocks(),
+        queryFn: getSelectedStocks,
+        retry: (failureCount, error: any) => {
+            // 401 에러인 경우 재시도하지 않음
+            if (error?.response?.status === 401) {
+                return false;
+            }
+            // 다른 에러의 경우 최대 3번 재시도
+            return failureCount < 3;
+        },
     });
 };
 

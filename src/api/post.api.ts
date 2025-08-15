@@ -12,7 +12,7 @@ import {
     LikePostResponse,
     UnlikePostResponse,
 } from '@/types/post';
-import { http } from './client';
+import { httpWithCredentials, http } from './client';
 import { isFile } from '@/utils/typeChecker';
 
 export const getTopBoardPosts = async ({ symbol, limit }: { symbol: string; limit?: number }) => {
@@ -76,13 +76,13 @@ export const createPost = async ({ symbol, title, content, thumbnailImage }: Cre
         formData.append('thumbnailImage', thumbnailImage, thumbnailImage.name);
     }
 
-    return await http.post<CreatePostResponse>(`/api/posts`, formData, {
+    return await httpWithCredentials.post<CreatePostResponse>(`/api/posts`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
 };
 
 export const deletePost = async ({ postId }: { postId: number }) => {
-    return await http.delete<DeletePostResponse>(`/api/posts/${postId}`);
+    return await httpWithCredentials.delete<DeletePostResponse>(`/api/posts/${postId}`);
 };
 
 export const updatePost = async ({
@@ -106,15 +106,15 @@ export const updatePost = async ({
         formData.append('thumbnailImage', thumbnailImage);
     }
 
-    return await http.put<UpdatePostResponse>(`/api/posts/${postId}`, formData, {
+    return await httpWithCredentials.put<UpdatePostResponse>(`/api/posts/${postId}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
 };
 
 export const likePost = async ({ postId }: { postId: number }) => {
-    return await http.post<LikePostResponse>(`/api/posts/${postId}/like`);
+    return await httpWithCredentials.post<LikePostResponse>(`/api/posts/${postId}/like`);
 };
 
 export const unlikePost = async ({ postId }: { postId: number }) => {
-    return await http.delete<UnlikePostResponse>(`/api/posts/${postId}/like`);
+    return await httpWithCredentials.delete<UnlikePostResponse>(`/api/posts/${postId}/like`);
 };

@@ -25,7 +25,7 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL(`/?reason=${REASON_CODES.LOGGED_IN}`, req.nextUrl));
     }
 
-    if (isProtectedRoute && !session?.userId) {
+    if (isProtectedRoute && (!session?.userId || (session.exp && session.exp < Date.now() / 1000))) {
         return NextResponse.redirect(new URL(`/onboarding?reason=${REASON_CODES.NO_SESSION}`, req.nextUrl));
     }
 

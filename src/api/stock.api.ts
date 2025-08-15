@@ -1,4 +1,4 @@
-import { http } from '@/api/client';
+import { httpWithCredentials, http } from '@/api/client';
 import { Stock } from '@/generated/prisma';
 import { MarketCode, OverseasStockPriceResponse } from '@/types/kis';
 import { HotStock } from '@/types/stock';
@@ -9,12 +9,12 @@ export async function getStocks({ count = 30, cursor = 0 }: { count?: number; cu
 }
 
 export async function selectStock(stockSymbols: string[]) {
-    const res = await http.post('/api/stocks/select', { stockSymbols });
+    const res = await httpWithCredentials.post('/api/stocks/select', { stockSymbols });
     return res.data;
 }
 
 export async function getSelectedStocks() {
-    const res = await http.get<Stock[]>('/api/stocks/selected');
+    const res = await httpWithCredentials.get<Stock[]>('/api/stocks/selected');
     return res.data;
 }
 
