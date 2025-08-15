@@ -1,6 +1,6 @@
 // import { decodeToken, isTokenExpired } from '@/lib/auth';
 // import { UserInfo } from '@/types/user';
-// import { getCookie } from '@/util/cookie';
+// import { getCookie } from '@/utils/cookie';
 // import { create } from 'zustand';
 
 // interface UserState {

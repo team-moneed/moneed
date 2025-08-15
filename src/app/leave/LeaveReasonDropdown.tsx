@@ -1,4 +1,4 @@
-import { cn } from '@/util/style';
+import { cn } from '@/utils/style';
 import { LEAVE_REASON } from '@/constants/leaveReason';
 import { useEffect, useRef, useState } from 'react';
 

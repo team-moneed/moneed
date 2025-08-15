@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma';
 import { KISAccessTokenResponse } from '@/types/kis';
-import { TokenUtils } from '@/util/token-utils';
+import { TokenUtils } from '@/utils/token-utils';
 
 export class ServerTokenRepository {
     private readonly TOKEN_KEY = 'kis_access_token';

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '@/util/style';
+import { cn } from '@/utils/style';
 
 const buttonVariants = cva('rounded-[1.6rem] disabled:pointer-events-none disabled:cursor-not-allowed', {
     variants: {

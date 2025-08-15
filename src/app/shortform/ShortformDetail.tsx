@@ -1,7 +1,7 @@
-import { YouTubeSearchResult } from '@/types/youtube';
+import { Shorts } from '@/generated/prisma';
 
 interface ShortformDetailProps {
-    video: YouTubeSearchResult;
+    video: Shorts;
     setVideoId: (videoId: string | null) => void;
 }
 
@@ -20,8 +20,8 @@ const ShortformDetail = (props: ShortformDetailProps) => {
                 <iframe
                     width='360'
                     height='640'
-                    src={`https://www.youtube.com/embed/${video.id.videoId}?autoplay=1&mute=0&controls=1&modestbranding=1&rel=0`}
-                    title={video.snippet.title}
+                    src={`https://www.youtube.com/embed/${video.videoId}?autoplay=1&mute=0&controls=1&modestbranding=1&rel=0`}
+                    title={video.title}
                     allow='autoplay; fullscreen; encrypted-media'
                     allowFullScreen
                     className='rounded-lg shadow-lg'

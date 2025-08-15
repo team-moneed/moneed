@@ -1,7 +1,7 @@
 'use client';
 
 import Logo from '@/app/onboarding/Logo';
-import { cn } from '@/util/style';
+import { cn } from '@/utils/style';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';

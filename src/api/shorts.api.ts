@@ -1,14 +1,19 @@
-import { YouTubeSearchResponse } from '@/types/youtube';
+import { Shorts } from '@/generated/prisma';
 import { http } from './client';
 
-export const fetchShorts = async ({ q, count, page }: { q: string; count: number; page?: string }) => {
-    const res = await http.get<YouTubeSearchResponse>('/api/videos', {
+export const fetchShorts = async ({ cursor, limit }: { cursor: string; limit: number }) => {
+    const res = await http.get<Shorts[]>('/api/shorts', {
         params: {
-            q,
-            count,
-            page,
+            cursor,
+            limit,
         },
     });
+
+    return res.data;
+};
+
+export const fetchShort = async ({ videoId }: { videoId: string }) => {
+    const res = await http.get<Shorts>(`/api/shorts/${videoId}`);
 
     return res.data;
 };

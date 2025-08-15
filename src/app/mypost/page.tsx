@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useMyPosts } from '@/queries/posts.query';
 import PostThumbnail from '../community/[symbol]/PostThumbnail';
-import { cn } from '@/util/style';
+import { cn } from '@/utils/style';
 
 const MyPost = () => {
     const [activeTab, setActiveTab] = useState<'thisWeek' | 'notThisWeek'>('thisWeek');

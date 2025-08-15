@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/util/style';
+import { cn } from '@/utils/style';
 import { useEffect, useState } from 'react';
 
 interface TabItem {

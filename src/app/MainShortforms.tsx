@@ -2,7 +2,9 @@
 
 import VideoCarousel from '@/components/Carousel/VideoCarousel';
 import { EmblaOptionsType } from 'embla-carousel';
-import { useShorts } from '@/queries/shorts.query';
+import { useSuspenseShorts } from '@/queries/shorts.query';
+import withSuspense from '@/components/HOC/withSuspense';
+import { ShortformCarouselSkeleton } from '@/components/Skeletons/shortform/ShortformSkeleton';
 
 const MainShortforms = () => {
     const VIDEOOPTIONS: EmblaOptionsType = {
@@ -13,14 +15,13 @@ const MainShortforms = () => {
         containScroll: 'trimSnaps',
     };
 
-    const { data } = useShorts({ q: '주식 쇼츠', count: 10 });
-    const videos = data?.items;
+    const { data: shorts } = useSuspenseShorts({ cursor: 0, limit: 10 });
 
     return (
         <>
-            <div className='mt-4'>{videos && <VideoCarousel videos={videos} options={VIDEOOPTIONS} />}</div>
+            <div className='mt-4'>{shorts && <VideoCarousel videos={shorts} options={VIDEOOPTIONS} />}</div>
         </>
     );
 };
 
-export default MainShortforms;
+export default withSuspense(MainShortforms, <ShortformCarouselSkeleton count={10} />);

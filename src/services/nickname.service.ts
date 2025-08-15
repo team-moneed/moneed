@@ -1,5 +1,5 @@
 import { UserRepository } from '@/repositories/user.repository';
-import { generateRandomNickname, generateRandomNicknameWithNumber } from '@/util/nickname-generator';
+import { generateRandomNickname, generateRandomNicknameWithNumber } from '@/utils/nickname-generator';
 
 export class NicknameService {
     private userRepository: UserRepository;

@@ -3,7 +3,7 @@ import { EmblaOptionsType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
 import { NextButton, PrevButton } from '@/components/Carousel/CarouselArrowButton';
 import { usePrevNextButtons } from '@/hooks/usePrevNextButtons';
-import { cn } from '@/util/style';
+import { cn } from '@/utils/style';
 
 type PropType = {
     options?: EmblaOptionsType;

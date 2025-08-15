@@ -1,8 +1,8 @@
 import PostRepository from '@/repositories/post.repository';
 import { CreatePostRequest, PostDetail, PostThumbnail, TopPostThumbnail, UpdatePostRequest } from '@/types/post';
 import S3Service from './s3.service';
-import { urlToS3FileName } from '@/util/parser';
-import { isFile } from '@/util/typeChecker';
+import { urlToS3FileName } from '@/utils/parser';
+import { isFile } from '@/utils/typeChecker';
 import { StockService } from './stock.service';
 import { BoardRankResponse } from '@/types/board';
 

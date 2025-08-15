@@ -1,7 +1,7 @@
 'use client';
 import { Stock } from '@/generated/prisma';
 import { useOverseasStockPrice } from '@/queries/stock.query';
-import { cn } from '@/util/style';
+import { cn } from '@/utils/style';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 

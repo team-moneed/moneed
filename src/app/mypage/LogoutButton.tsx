@@ -3,7 +3,7 @@
 import { logout } from '@/api/auth.api';
 import { REASON_CODES } from '@/constants/snackbar';
 import useSnackbarStore from '@/store/useSnackbarStore';
-import { cn } from '@/util/style';
+import { cn } from '@/utils/style';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
