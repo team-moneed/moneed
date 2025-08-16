@@ -1,36 +1,14 @@
-'use client';
+import { SnackbarTrigger } from '@/components/Snackbar';
+import KakaoLoginButton from './KakaoLoginButton';
 
-import KakaoLoginButton from '@/components/KakaoLoginButton';
-import useSnackBarStore, { SnackBarType } from '@/store/useSnackBarStore';
-import { useSearchParams } from 'next/navigation';
-import { Suspense, useEffect } from 'react';
-
-const reasons: Record<string, { message: string; type: SnackBarType }> = {
-    no_session: { message: '로그인이 필요합니다.', type: 'caution' },
-    expired_session: { message: '세션이 만료되었습니다. 다시 로그인해주세요.', type: 'caution' },
-    logout: { message: '로그아웃 되었습니다.', type: 'action' },
-};
-
-function Onboarding() {
-    const searchParams = useSearchParams();
-    const reason = searchParams.get('reason');
-    const showSnackBar = useSnackBarStore(state => state.showSnackBar);
-
-    useEffect(() => {
-        if (reason) {
-            showSnackBar(
-                reasons[reason as keyof typeof reasons].message,
-                reasons[reason as keyof typeof reasons].type,
-                'top',
-            );
-        }
-    }, [reason, showSnackBar]);
+export default async function Onboarding({ searchParams }: { searchParams: Promise<{ reason: string }> }) {
+    const reason = (await searchParams).reason;
 
     return (
         <>
             <div className="relative h-screen overflow-hidden px-[1.8rem] pt-8 bg-[url('/line-bg.png')] bg-size-[8rem_8rem] lg:bg-[url('/line-bg-pc.png')]">
                 <div className='pt-[14.3rem]'>
-                    <div className='relative z-2 text-[3.2rem] text-(--moneed-black) font-bold leading-[145%]'>
+                    <div className='relative z-2 text-[3.2rem] text-moneed-black font-bold leading-[145%]'>
                         당신의 니즈를
                         <br />
                         충족하는 투자의
@@ -52,14 +30,7 @@ function Onboarding() {
                     <img src='/onboarding-square2.svg' alt='' className='absolute right-[29.2rem] top-[64.6rem] w-88' />
                 </div>
             </div>
+            <SnackbarTrigger reason={reason} />
         </>
-    );
-}
-
-export default function OnBoardingWrapper() {
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <Onboarding />
-        </Suspense>
     );
 }

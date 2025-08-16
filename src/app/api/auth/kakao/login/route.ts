@@ -1,10 +1,16 @@
-import { getKakaoToken, getKakaoUserInfo } from '@/api/kakao.api';
 import { NextRequest, NextResponse } from 'next/server';
 import { AuthService } from '@/services/auth.service';
 import { JWTExpired } from 'jose/errors';
 import { TOKEN_ERROR } from '@/constants/token';
 import { AxiosError } from 'axios';
 import { createSession } from '@/lib/session';
+import { RequiredUserInfo } from '@/types/user';
+import { TokenPayload } from '@/types/auth';
+
+const getDefaultProfileImage = () => {
+    const randomNumber = Math.floor(Math.random() * 15) + 1;
+    return `${process.env.NEXT_PUBLIC_MONEED_BASE_URL}/profile/profile-${randomNumber}.svg`;
+};
 
 export async function POST(request: NextRequest) {
     try {
@@ -21,31 +27,71 @@ export async function POST(request: NextRequest) {
             return NextResponse.redirect(new URL('/auth/error?error=missing_code', request.url));
         }
 
-        // Access Token 요청 및 사용자 정보 조회
-        const kakaoToken = await getKakaoToken(code);
-        const {
-            access_token: kakaoAccessToken,
-            refresh_token: kakaoRefreshToken,
-            expires_in: kakaoAccessTokenExpiresInSec,
-            refresh_token_expires_in: kakaoRefreshTokenExpiresInSec,
-        } = kakaoToken;
-        const kakaoUserInfo = await getKakaoUserInfo(kakaoAccessToken);
-
         const authService = new AuthService();
 
-        // 기존 회원 여부 확인 및 등록
-        const { user, isExistingUser } = await authService.signInOrSignUpWithKakao(kakaoUserInfo, {
-            accessToken: kakaoAccessToken,
-            refreshToken: kakaoRefreshToken,
-            accessTokenExpiresIn: new Date(Date.now() + kakaoAccessTokenExpiresInSec * 1000),
-            refreshTokenExpiresIn: new Date(Date.now() + kakaoRefreshTokenExpiresInSec * 1000),
+        const tokenData = await authService.getTokenWithKakao(code);
+        const kakaoUserInfo = await authService.getKakaoUserInfo(tokenData.accessToken);
+
+        const existingUser = await authService.checkExistingUser({
+            userInfo: {
+                name: kakaoUserInfo.kakao_account.name,
+                email: kakaoUserInfo.kakao_account.email,
+                birthyear: kakaoUserInfo.kakao_account.birthyear,
+                birthday: kakaoUserInfo.kakao_account.birthday,
+            },
+            provider: {
+                provider: 'kakao',
+                providerUserId: kakaoUserInfo.id.toString(),
+            },
         });
 
-        const response = NextResponse.json({ isExistingUser }, { status: 200 });
+        let payload: TokenPayload = {
+            userId: '',
+            nickname: '',
+        };
 
-        await createSession(user.id);
+        if (existingUser.isExisting) {
+            const user = await authService.signIn(existingUser.user.id, {
+                provider: 'kakao',
+                providerUserId: kakaoUserInfo.id.toString(),
+                accessToken: tokenData.accessToken,
+                refreshToken: tokenData.refreshToken,
+                accessTokenExpiresIn: new Date(Date.now() + tokenData.accessTokenExpiresInSec * 1000),
+                refreshTokenExpiresIn: new Date(Date.now() + tokenData.refreshTokenExpiresInSec * 1000),
+            });
 
-        return response;
+            payload = {
+                userId: user.id,
+                nickname: user.nickname,
+            };
+        } else {
+            const user: Omit<RequiredUserInfo, 'nickname'> = {
+                name: kakaoUserInfo.kakao_account.name,
+                email: kakaoUserInfo.kakao_account.email,
+                birthyear: kakaoUserInfo.kakao_account.birthyear,
+                birthday: kakaoUserInfo.kakao_account.birthday,
+                profileImage: getDefaultProfileImage(),
+                ageRange: kakaoUserInfo.kakao_account.age_range,
+                gender: kakaoUserInfo.kakao_account.gender,
+            };
+            const newUser = await authService.signUp(user, {
+                provider: 'kakao',
+                providerUserId: kakaoUserInfo.id.toString(),
+                accessToken: tokenData.accessToken,
+                refreshToken: tokenData.refreshToken,
+                accessTokenExpiresIn: new Date(Date.now() + tokenData.accessTokenExpiresInSec * 1000),
+                refreshTokenExpiresIn: new Date(Date.now() + tokenData.refreshTokenExpiresInSec * 1000),
+            });
+
+            payload = {
+                userId: newUser.id,
+                nickname: newUser.nickname,
+            };
+        }
+
+        await createSession(payload);
+
+        return NextResponse.json({ isExistingUser: existingUser.isExisting }, { status: 200 });
     } catch (error) {
         if (error instanceof JWTExpired) {
             return NextResponse.json({ error: TOKEN_ERROR.EXPIRED_TOKEN }, { status: 401 });

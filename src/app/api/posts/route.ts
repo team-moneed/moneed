@@ -1,94 +1,77 @@
-import prisma from '@/lib/prisma';
+import { getSession } from '@/lib/session';
+import PostService from '@/services/post.service';
+import { StockService } from '@/services/stock.service';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
-    const stocktype = req.nextUrl.searchParams.get('stocktype');
-    const posts = [
-        {
-            postId: 1,
-            title: '1',
-            postImages: [
-                'https://via.placeholder.com/600x350/ff7f7f/333333',
-                'https://via.placeholder.com/600x350/7f7fff/333333',
-                'https://via.placeholder.com/600x350/7fff7f/333333',
-            ],
-            content:
-                '주식으로 돈벌래돈벌꺼야!!테슬라 주식 언제 사테슬라 주식 언제 사테슬라 주식 언제 사테슬라 주식 언제 사테슬라 주식 언제 사테슬라 주식 언제 사테슬라 주식 언제 사언제사야이득이야? 알려줘알려줘알려주라고!! ',
-            userName: '사용자1',
-            createdAt: '2024-12-10T10:00:00Z',
-            likes: 10,
-            stocktype: '테슬라',
-            category: '금융',
-            isliked: true,
-        },
-        {
-            postId: 2,
-            title: '2',
-            postImages: [],
-            content: '2',
-            userName: '사용자5',
-            createdAt: '2024-12-09T09:00:00Z',
-            likes: 7,
-            stocktype: '애플',
-            category: '정보기술',
-            isliked: false,
-        },
-        {
-            postId: 3,
-            title: '3',
-            postImages: [
-                'https://via.placeholder.com/600x350/ff7f7f/333333',
-                'https://via.placeholder.com/600x350/7f7fff/333333',
-                'https://via.placeholder.com/600x350/7fff7f/333333',
-            ],
-            content: '3 테슬라 언제 오르지?',
-            userName: '사용자6',
-            createdAt: '2024-12-09T09:00:00Z',
-            likes: 7,
-            stocktype: '테슬라',
-            category: '금융',
-            isliked: false,
-        },
-        {
-            postId: 4,
-            title: '4',
-            postImages: [
-                'https://via.placeholder.com/600x350/ff7f7f/333333',
-                'https://via.placeholder.com/600x350/7f7fff/333333',
-                'https://via.placeholder.com/600x350/7fff7f/333333',
-            ],
-            content: '4 테슬라 언제 오르지?',
-            userName: '사용자5',
-            createdAt: '2025-01-18T09:00:00Z',
-            likes: 7,
-            stocktype: '테슬라',
-            category: '금융',
-            isliked: false,
-        },
-    ];
-    if (stocktype) {
-        return NextResponse.json(posts.filter(post => post.stocktype === stocktype));
+    try {
+        const symbol = req.nextUrl.searchParams.get('symbol');
+        const cursor = req.nextUrl.searchParams.get('cursor');
+        const limit = req.nextUrl.searchParams.get('limit');
+        const payload = await getSession();
+
+        const postService = new PostService();
+        const stockService = new StockService();
+
+        if (!symbol) {
+            return NextResponse.json({ error: 'symbol is required' }, { status: 400 });
+        }
+
+        // symbol로 주식을 조회하여 stockId를 얻습니다
+        const stock = await stockService.getStockBySymbol(symbol);
+        if (!stock) {
+            return NextResponse.json({ error: 'Stock not found' }, { status: 404 });
+        }
+
+        const postThumbnailList = await postService.getPostsWithUserExtended({
+            stockSymbol: stock.symbol,
+            limit: limit ? Number(limit) : 15,
+            cursor: cursor ? new Date(cursor) : new Date(),
+            userId: payload?.userId,
+        });
+
+        return NextResponse.json(postThumbnailList);
+    } catch (error) {
+        console.error('게시글 조회 오류', error);
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
-    return NextResponse.json(posts);
 }
 
 // 게시글 작성
 export async function POST(req: NextRequest) {
-    const { title, content, stocktype } = await req.json();
-    try {
-        const post = await prisma.post.create({
-            data: {
-                authorId: 1, // 임시 작성자 id
-                title,
-                content,
-                stockType: stocktype,
-            },
-        });
-        console.log('게시글 작성', post);
-    } catch (error) {
-        console.error('게시글 작성 오류', error);
-        return NextResponse.json({ error: '게시글 작성 오류' }, { status: 500 });
+    const formData = await req.formData();
+    const title = formData.get('title') as string;
+    const content = formData.get('content') as string;
+    const symbol = formData.get('symbol') as string;
+    const thumbnailImage = formData.get('thumbnailImage') as File;
+
+    const payload = await getSession();
+    if (!payload) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const url = new URL(`/community/${stocktype}`, req.url);
-    return NextResponse.redirect(url);
+
+    const stockService = new StockService();
+    const postService = new PostService();
+
+    // symbol로 주식을 조회하여 stockId를 얻습니다
+    const stock = await stockService.getStockBySymbol(symbol);
+    if (!stock) {
+        return NextResponse.json({ error: 'Stock not found' }, { status: 404 });
+    }
+
+    const post = await postService.createPost({
+        userId: payload.userId,
+        title,
+        content,
+        symbol,
+        thumbnailImage,
+    });
+
+    return NextResponse.json(
+        {
+            message: '게시글이 작성되었습니다.',
+            post,
+        },
+        { status: 201 },
+    );
 }

@@ -1,53 +1,62 @@
+'use client';
+import { Stock } from '@/generated/prisma';
+import { useOverseasStockPrice } from '@/queries/stock.query';
+import { cn } from '@/utils/style';
+import Link from 'next/link';
 import { ReactNode } from 'react';
 
 type MyStockProps = {
-    infoBoxImgages?: string[] | string;
-    name?: string;
-    priceUSD?: number;
-    rate?: string;
+    stock: Stock;
     children?: ReactNode;
     className?: string;
-    englishName?: string;
-    onClick: () => void;
-    isSelectCategory?: boolean;
+    href: string;
 };
 
-const MyStockBox = ({ name, children, onClick, isSelectCategory = false }: MyStockProps) => {
-    // TODO: 종목 영어이름, 가격, 등락률, 이미지 추가
-    const englishName = 'apple';
-    const priceUSD = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-    }).format(504.99);
-    const rate = '16.3%';
+const MyStockBox = ({ children, stock, href }: MyStockProps) => {
+    const { data } = useOverseasStockPrice({ symbol: stock.symbol });
+    const price =
+        data &&
+        new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        }).format(Number(data.output.last));
+    const rate = data?.output.rate;
+    const sign = data?.output.sign;
     return (
         <>
-            <div
-                className='flex justify-between p-[.8rem] rounded-[.8rem] hover:bg-(--moneed-white) cursor-pointer transition-colors`'
-                onClick={onClick}
+            <Link
+                className='flex justify-between p-[.8rem] rounded-[.8rem] hover:bg-moneed-white cursor-pointer transition-colors`'
+                href={href}
             >
-                <div className='flex items-center gap-[.6rem]'>
-                    <div className='rounded-full overflow-hidden aspect-square w-7'>
-                        <img src='/temp/sample3.png' alt='' className='w-full h-full object-cover' />
+                <div className='flex items-center gap-[.6rem] flex-1'>
+                    <div className='rounded-full overflow-hidden size-[2rem] md:size-7 flex-shrink-0'>
+                        <img src={stock.logoUrl} alt={stock.name} className='w-full h-full object-cover' />
                     </div>
-                    <div className='rounded-[.8rem] bg-(--moneed-gray-4) py-[.2rem] px-[.4rem]'>
-                        <span className='text-[1.2rem] font-normal leading-[135%] text-(--moneed-gray-9)'>
-                            {englishName}
+                    <div className='rounded-[.8rem] bg-moneed-gray-4 py-[.2rem] px-[.4rem]'>
+                        <span className='text-[1.2rem] font-normal leading-[135%] text-moneed-gray-9'>
+                            {stock.symbol}
                         </span>
                     </div>
-                    <h3 className='text-[1.4rem] font-semibold leading-[140%] text-(--moneed-black)'>{name}</h3>
+                    <h3 className='flex-shrink-1 text-[1.2rem] md:text-[1.4rem] font-semibold md:leading-[140%] leading-[135%] text-moneed-black line-clamp-1 '>
+                        {stock.name}
+                    </h3>
                 </div>
-                {!isSelectCategory && (
-                    <div className='flex items-center gap-[.6rem]'>
-                        <div className='text-[1.4rem] font-semibold leading-[140%] text-(--moneed-black)'>
-                            {priceUSD}🇺🇸
-                        </div>
-                        <div className='text-[1.4rem] font-semibold leading-[140%] text-(--moneed-green) rounded-[.8rem] p-[.4rem]'>
-                            {rate}
-                        </div>
+                <div className='flex items-center gap-[.6rem]'>
+                    <div className='text-[1.2rem] md:text-[1.4rem] font-semibold leading-[135%] md:leading-[140%] text-moneed-black'>
+                        {price}
                     </div>
-                )}
-            </div>
+                    <div
+                        className={cn(
+                            'text-[1.2rem] md:text-[1.4rem] font-semibold leading-[135%] md:leading-[140%] rounded-[.8rem] p-[.4rem]',
+                            (sign === '1' || sign === '2') && 'text-moneed-red',
+                            sign === '3' && 'text-moneed-black',
+                            (sign === '4' || sign === '5') && 'text-moneed-blue',
+                        )}
+                    >
+                        {rate} %
+                    </div>
+                </div>
+            </Link>
             {children}
         </>
     );

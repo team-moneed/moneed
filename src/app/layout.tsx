@@ -1,13 +1,13 @@
 import { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import '@/app/globals.css';
-import '@/app/ui.base.css';
 import { ModalProvider } from '@/context/ModalContext';
 import Header from '@/components/Layout/Header';
 import MobileNav from '@/components/Layout/MobileNav';
-import SnackBar from '@/components/SnackBar';
+import { SnackbarProvider } from '@/components/Snackbar';
 import Footer from '@/components/Layout/Footer';
 import QueryClientProvider from '@/components/QueryClientProvider';
+import ReactQueryDevtools from '@/components/ReactQueryDevtools';
 
 export const metadata: Metadata = {
     title: 'Moneed',
@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
     width: 'device-width',
     initialScale: 1,
+    interactiveWidget: 'resizes-content',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -33,19 +34,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     ></iframe>
                 </noscript>
 
-                <div id='root'>
+                <div id='root' className='mx-auto h-screen max-w-7xl flex flex-col'>
                     <QueryClientProvider>
                         <ModalProvider>
-                            <div className='flex-1'>
-                                <div className='hidden lg:block sticky top-0 z-10 bg-white'>
-                                    <Header />
-                                </div>
-                                {children}
-                                <Footer />
-                            </div>
+                            <Header />
+                            <main className='flex-1'>{children}</main>
+                            <Footer />
                             <MobileNav />
-                            <SnackBar />
+                            <SnackbarProvider />
                         </ModalProvider>
+                        <ReactQueryDevtools />
                     </QueryClientProvider>
                 </div>
 

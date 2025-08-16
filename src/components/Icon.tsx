@@ -1,3 +1,5 @@
+'use client';
+
 type IconType = {
     className?: string;
     iconUrl: string;

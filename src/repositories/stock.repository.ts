@@ -9,22 +9,71 @@ export class StockRepository {
                 userId,
             },
             include: {
-                stock: {
-                    select: {
-                        name: true,
-                    },
-                },
+                stock: true,
             },
         });
     }
 
-    async selectStock(userId: string, stockIds: number[]) {
-        return this.prisma.selectedStock.createMany({
-            data: stockIds.map(stockId => ({
+    async getSelectedStockWithPagination(userId: string, count: number, cursor: number) {
+        return this.prisma.selectedStock.findMany({
+            where: {
                 userId,
-                stockId,
+                id: {
+                    gt: cursor,
+                },
+            },
+            include: {
+                stock: true,
+            },
+            take: count,
+            orderBy: {
+                id: 'asc',
+            },
+        });
+    }
+
+    async selectStock(userId: string, stockSymbols: string[]) {
+        return this.prisma.selectedStock.createMany({
+            data: stockSymbols.map(stockSymbol => ({
+                userId,
+                stockSymbol,
             })),
             skipDuplicates: true,
+        });
+    }
+
+    async getStock(stockId: number) {
+        return this.prisma.stock.findUnique({
+            where: {
+                id: stockId,
+            },
+        });
+    }
+
+    async getStocks(count: number, cursor: number) {
+        return this.prisma.stock.findMany({
+            where: {
+                id: {
+                    gt: cursor,
+                },
+            },
+            take: count,
+        });
+    }
+
+    async getStocksBySymbols(symbols: string[]) {
+        return this.prisma.stock.findMany({
+            where: {
+                symbol: { in: symbols },
+            },
+        });
+    }
+
+    async getStockBySymbol(symbol: string) {
+        return this.prisma.stock.findFirst({
+            where: {
+                symbol,
+            },
         });
     }
 }

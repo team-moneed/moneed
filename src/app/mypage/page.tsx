@@ -1,77 +1,49 @@
 'use client';
-import { useRouter } from 'next/navigation';
-import MypageBox from '@/components/Mypage/MypageBox';
-import MyStockBox from '@/components/Mypage/MyStockBox';
-import { useSelectedStock } from '@/hooks/useSelectedStock';
-import LogoutButton from './LogoutButton';
+import LogoutButton from '@/app/mypage/LogoutButton';
+import Link from 'next/link';
+import { SnackbarTrigger } from '@/components/Snackbar';
+import { useSearchParams } from 'next/navigation';
+import dynamic from 'next/dynamic';
+const LeaveButton = dynamic(() => import('./LeaveButton'), { ssr: false });
+const UserInfo = dynamic(() => import('./UserInfo'), { ssr: false });
+const SelectedStocks = dynamic(() => import('./SelectedStocks'), { ssr: false });
+const MyPosts = dynamic(() => import('./MyPosts'), { ssr: false });
+const MyComments = dynamic(() => import('./MyComments'), { ssr: false });
 
 export default function Mypage() {
-    const { data: selectedStocks } = useSelectedStock();
-
-    const router = useRouter();
-
-    const movetoMyProfile = () => {
-        router.push(`/myprofile`);
-    };
-
-    const movetoMyPost = () => {
-        router.push(`/mypost`);
-    };
-
-    const movetoMyComment = () => {
-        router.push(`/mycomment`);
-    };
-
-    const movetocommunity = (stockname: string) => {
-        router.push(`/community/${stockname}`);
-    };
+    const searchParams = useSearchParams();
+    const reason = searchParams.get('reason') || '';
 
     return (
-        <div className='px-8 max-w-512 mx-auto'>
-            <div className='lg:flex lg:gap-[2.4rem] lg:mt-[1.6rem]'>
-                <div className='space-y-[1.6rem] lg:w-[40%]'>
-                    <div className='p-[1.6rem] justify-center items-center rounded-[1.6rem] border border-solid border-(--moneed-gray-5)'>
-                        <div className='flex justify-center'>
-                            <div className='rounded-full overflow-hidden aspect-square w-[5.6rem]'>
-                                <img src='/temp/sample3.png' alt='' className='w-full h-full object-cover' />
-                            </div>
-                        </div>
-                        <div className='flex gap-4 justify-center items-center'>
-                            <div className='text-[2rem] my-[.8rem] font-bold leading-[145%] text-(--moneed-brand-color)'>
-                                내가본나의 피드
-                            </div>
-                            <div className='aspect-square w-[2.4rem] cursor-pointer' onClick={movetoMyProfile}>
-                                <img src='/icon/icon-setting.svg' alt='' className='w-full h-full' />
-                            </div>
-                        </div>
-                        <div className='text-center text-[1.4rem] font-normal leading-[145%] text-(--moneed-gray-7)'>
-                            연동된 계정: 카카오
-                        </div>
+        <>
+            <div className='px-8 max-w-512 mx-auto'>
+                <div className='lg:flex lg:gap-[2.4rem] lg:mt-[1.6rem]'>
+                    <div className='space-y-[1.6rem] lg:w-[40%]'>
+                        <UserInfo />
+                        <section className='grid grid-cols-2 gap-x-[1.6rem] pb-[1.6rem]'>
+                            <MyPosts />
+                            <MyComments />
+                        </section>
                     </div>
-                    <div className='grid grid-cols-2 gap-x-[1.6rem] pb-[1.6rem]'>
-                        <MypageBox menu='내가 작성한 게시글' count={5} onClick={movetoMyPost}></MypageBox>
-                        <MypageBox menu='내가 작성한 댓글' count={7} onClick={movetoMyComment}></MypageBox>
-                    </div>
-                </div>
-                <div className='flex flex-col gap-[1.6rem] flex-1'>
-                    <div className='p-[1.6rem] justify-center items-center rounded-[1.6rem] border border-solid bg-(--moneed-black-3) border-(--moneed-gray-5)'>
-                        <div className='flex mb-[1.6rem] justify-between'>
-                            <h2 className='text-[2rem] font-semibold leading-[140%]'>내가 선택한 종목</h2>
-                            <div className='aspect-square w-[2.4rem]'>
-                                <img src='/icon/icon-addcircle.svg' alt='' className='w-full h-full' />
+                    <div className='flex flex-col gap-[1.6rem] flex-1'>
+                        <div className='p-[1.6rem] justify-center items-center rounded-[1.6rem] border border-solid bg-moneed-black-3 border-moneed-gray-5'>
+                            <div className='flex mb-[1.6rem] justify-between'>
+                                <h2 className='text-[2rem] font-semibold leading-[140%]'>내가 선택한 종목</h2>
+                                <Link className='aspect-square w-[2.4rem]' href={'/selectstocktype'}>
+                                    <img src='/icon/icon-addcircle.svg' alt='' className='w-full h-full' />
+                                </Link>
                             </div>
+                            <SelectedStocks />
                         </div>
-                        <div className='space-y-[.8rem]'>
-                            {selectedStocks?.map(({ id, name }) => (
-                                <MyStockBox key={id} name={name} onClick={() => movetocommunity(name)} />
-                            ))}
+                        <div className='flex items-center sm:ml-auto sm:mr-0 ml-auto mr-auto gap-x-[1.6rem]'>
+                            <LogoutButton />
+                            <i className='w-[.2rem] h-[1.6rem] bg-moneed-gray-5'></i>
+                            <LeaveButton />
                         </div>
-                    </div>
-                    <div className='flex items-center ml-auto'>
-                        <LogoutButton />
                     </div>
                 </div>
             </div>
-        </div>
+            <SnackbarTrigger reason={reason} />
+        </>
     );
 }

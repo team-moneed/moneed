@@ -1,24 +1,57 @@
 'use client';
 
-import { type Video } from '@/types/video';
-import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useSuspenseInfiniteShorts } from '@/queries/shorts.query';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+import { ShortformPageSkeleton } from '@/components/Skeletons/shortform/ShortformSkeleton';
+
+export const dynamic = 'force-dynamic';
 
 export default function ShortformPage() {
-    const { data: videoList } = useQuery<Video[]>({
-        queryKey: ['videoList'],
-        queryFn: () => fetch('/api/videos').then(res => res.json()),
+    const router = useRouter();
+
+    const { data: videos, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteShorts({ limit: 20 });
+
+    const ref = useIntersectionObserver({
+        onIntersect: () => {
+            if (hasNextPage && !isFetchingNextPage) {
+                fetchNextPage();
+            }
+        },
+        options: {
+            rootMargin: '100px',
+            threshold: 0.1,
+        },
     });
+
+    // 동영상 클릭 핸들러
+    const handleVideoClick = (videoId: string) => {
+        router.push(`/shortform/${videoId}`);
+    };
+
     return (
-        <div className='px-8 max-w-512 mx-auto'>
+        <div className='h-full overflow-y-auto px-[1.8rem] lg:px-0 max-w-512 mx-auto'>
             <div className='grid grid-cols-2 lg:grid-cols-4 gap-y-[1.6rem] gap-x-[1.6rem] mt-4 md:gap-y-[1.6rem] mb-[.6rem]'>
-                {videoList?.map((video, index) => (
-                    <div className='shrink-0' key={`${index}-${video.videoUrl}`} style={{ aspectRatio: '9/16' }}>
-                        <video controls className='w-full h-full object-cover rounded-[.8rem]'>
-                            <source src={video.videoUrl} type='video/mp4' />
-                        </video>
+                {videos.map((video, index) => (
+                    <div
+                        key={`${video.videoId}-${index}`}
+                        className='overflow-hidden rounded-lg cursor-pointer'
+                        onClick={() => handleVideoClick(video.videoId)}
+                    >
+                        <div className='aspect-[9/16] min-h-[200px] relative hover:scale-105 transition-transform duration-200'>
+                            <iframe
+                                className='w-full h-full pointer-events-none'
+                                src={`https://www.youtube.com/embed/${video.videoId}?autoplay=0&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=${video.videoId}`}
+                                title={video.title}
+                                allow='autoplay; encrypted-media'
+                                allowFullScreen
+                            />
+                        </div>
                     </div>
                 ))}
             </div>
+            {isFetchingNextPage && <ShortformPageSkeleton count={20} />}
+            <div ref={ref} className='h-[1px]' />
         </div>
     );
 }

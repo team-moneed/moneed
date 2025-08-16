@@ -51,15 +51,14 @@ const Modal = ({
                     onClick={handleInsideClick}
                     className='bg-white w-full max-w-md p-[2.4rem] rounded-[.8rem] shadow-lg relative'
                 >
-                    <div className='text-[1.4rem] text-center text-(--moneed-black) font-semibold leading-[140%]'>
+                    <div className='text-[1.4rem] text-center text-moneed-black font-semibold leading-[140%]'>
                         {children}
                     </div>
                     <div className='mt-[2.4rem] flex justify-center gap-[3.9rem]'>
                         {leftvisible && (
                             <Button
-                                theme='secondary'
-                                className='px-8 py-[1.2rem] text-[1.4rem] font-semibold leading-[140%] '
-                                textcolor='ghost'
+                                variant='secondary'
+                                className='px-8 py-[1.2rem] text-[1.4rem] font-semibold leading-[140%] border-0 text-moneed-black'
                                 onClick={leftButtonevent}
                             >
                                 {leftButtontext}
@@ -67,9 +66,8 @@ const Modal = ({
                         )}
                         {rightvisible && (
                             <Button
-                                theme='secondary'
-                                textcolor='secondary'
-                                className='px-8 py-[1.2rem] text-[1.4rem] font-semibold leading-[140%] text-(--moneed-black)'
+                                variant='secondary'
+                                className='px-8 py-[1.2rem] text-[1.4rem] font-semibold leading-[140%] border-0 text-moneed-black'
                                 onClick={rightButtonevent}
                             >
                                 {rightButtontext}

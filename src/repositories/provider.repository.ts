@@ -1,5 +1,7 @@
 import { OAuthAccount } from '@/generated/prisma';
 import prisma from '@/lib/prisma';
+import { ProviderInfo } from '@/types/auth';
+import { Optional } from '@/types/util';
 
 export class ProviderRepository {
     private prisma = prisma;
@@ -31,7 +33,26 @@ export class ProviderRepository {
         });
     }
 
-    async updateToken(
+    async updateTokenData(
+        provider: ProviderInfo,
+        tokenData: Optional<
+            Pick<OAuthAccount, 'accessToken' | 'refreshToken' | 'accessTokenExpiresIn' | 'refreshTokenExpiresIn'>,
+            'refreshToken' | 'refreshTokenExpiresIn'
+        >,
+    ) {
+        return this.prisma.oAuthAccount.update({
+            where: {
+                provider_providerUserId: {
+                    provider: provider.provider,
+                    providerUserId: provider.providerUserId,
+                },
+            },
+            data: tokenData,
+        });
+    }
+
+    async upsert(
+        userId: string,
         providerData: Pick<
             OAuthAccount,
             | 'provider'
@@ -45,18 +66,31 @@ export class ProviderRepository {
         const { provider, providerUserId, accessToken, refreshToken, accessTokenExpiresIn, refreshTokenExpiresIn } =
             providerData;
 
-        return this.prisma.oAuthAccount.update({
+        return this.prisma.oAuthAccount.upsert({
             where: {
                 provider_providerUserId: {
                     provider,
                     providerUserId,
                 },
             },
-            data: {
+            update: {
                 accessToken,
                 refreshToken,
                 accessTokenExpiresIn,
                 refreshTokenExpiresIn,
+            },
+            create: {
+                provider,
+                providerUserId,
+                accessToken,
+                refreshToken,
+                accessTokenExpiresIn,
+                refreshTokenExpiresIn,
+                user: {
+                    connect: {
+                        id: userId,
+                    },
+                },
             },
         });
     }
