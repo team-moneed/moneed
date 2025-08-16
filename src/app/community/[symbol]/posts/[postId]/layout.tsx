@@ -3,10 +3,11 @@
 import Modal from '@/components/Modal';
 import { useCommentStore } from '@/store/useCommentStore';
 import { useParams, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { DesktopHeader } from '@/components/Layout/Header';
 import { useStockBySymbol } from '@/queries/stock.query';
+import PostDetailSkeleton from '@/components/Skeletons/PostDetailSkeleton';
 
 const MobileHeader = () => {
     const router = useRouter();
@@ -83,7 +84,7 @@ export default function PostDetailLayout({ children }: { children: React.ReactNo
         <>
             <MobileHeader />
             <DesktopHeader />
-            {children}
+            <Suspense fallback={<PostDetailSkeleton />}>{children}</Suspense>
         </>
     );
 }

@@ -4,9 +4,11 @@ import { useState } from 'react';
 import Hangul from 'hangul-js';
 import { useSelectedStocks } from '@/queries/stock.query';
 
-export default function SearchStockType() {
+export const dynamic = 'force-dynamic';
+
+function SearchStockTypeContent() {
     const [searchStockType, setsearchStockType] = useState('');
-    const { data: stocks = [] } = useSelectedStocks();
+    const { data: stocks = [], isLoading, error } = useSelectedStocks();
 
     const getInitialConsonant = (str: string) => {
         return Hangul.d(str)
@@ -26,6 +28,15 @@ export default function SearchStockType() {
             getInitialConsonant(stock.name).includes(getInitialConsonant(searchStockType))
         );
     });
+
+    if (isLoading) {
+        return <div className='px-8 max-w-512 mx-auto'>로딩중...</div>;
+    }
+
+    if (error) {
+        return <div className='px-8 max-w-512 mx-auto'>선택한 종목을 불러올 수 없습니다.</div>;
+    }
+
     return (
         <>
             <div className='px-8 max-w-512 mx-auto'>
@@ -59,3 +70,5 @@ export default function SearchStockType() {
         </>
     );
 }
+
+export default SearchStockTypeContent;

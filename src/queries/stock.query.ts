@@ -23,7 +23,25 @@ export const useInfiniteStocks = ({ count = 20 }: { count?: number }) => {
 export const useSelectedStocks = () => {
     return useQuery({
         queryKey: ['selectedStocks'],
-        queryFn: getSelectedStocks,
+        queryFn: () => getSelectedStocks(),
+        retry: (failureCount, error: any) => {
+            // 401 에러인 경우 재시도하지 않음
+            if (error?.response?.status === 401) {
+                return false;
+            }
+            // 다른 에러의 경우 최대 3번 재시도
+            return failureCount < 3;
+        },
+    });
+};
+
+export const useInfiniteSelectedStocks = ({ count = 20 }: { count?: number } = {}) => {
+    return useInfiniteQuery({
+        queryKey: ['selectedStocks', 'infinite'],
+        queryFn: ({ pageParam = 0 }) => getSelectedStocks({ count, cursor: pageParam }),
+        getNextPageParam: lastPage => (lastPage.length > 0 ? lastPage.at(-1)?.id : undefined),
+        initialPageParam: 0,
+        select: data => data.pages.flatMap(page => page),
         retry: (failureCount, error: any) => {
             // 401 에러인 경우 재시도하지 않음
             if (error?.response?.status === 401) {
@@ -38,7 +56,7 @@ export const useSelectedStocks = () => {
 export const useSuspenseSelectedStocks = () => {
     return useSuspenseQuery({
         queryKey: ['selectedStocks'],
-        queryFn: getSelectedStocks,
+        queryFn: () => getSelectedStocks(),
         retry: (failureCount, error: any) => {
             // 401 에러인 경우 재시도하지 않음
             if (error?.response?.status === 401) {
@@ -65,7 +83,7 @@ export const useSuspenseOverseasStockPrice = ({ symbol }: { symbol: string }) =>
     });
 };
 
-export const useHotStocks = ({ market }: { market: MarketCode }) => {
+export const useSuspenseHotStocks = ({ market }: { market: MarketCode }) => {
     return useSuspenseQuery({
         queryKey: ['hot-stocks', market],
         queryFn: () => getHotStock({ market }),

@@ -1,13 +1,10 @@
-'use client';
-
 import HotStockSection from '@/app/community/HotStockSection';
 import CommunityTabNav from '@/app/community/CommunityTabNav';
 import Vote from './Vote';
 import HotPostsSection from './HotPostsSection';
 import Top5Section from './Top5Section';
 import { DesktopHeader, MobileHeader } from '@/components/Layout/Header';
-import dynamic from 'next/dynamic';
-const StockTypeBarWithSuspense = dynamic(() => import('./StockTypeBar'), { ssr: false });
+import StockTypeBar from './StockTypeBar';
 
 const hashObj = {
     top5: 'top5',
@@ -48,7 +45,7 @@ export default function CommunityPage() {
         <>
             <MobileHeader />
             <DesktopHeader />
-            <StockTypeBarWithSuspense />
+            <StockTypeBar />
             <div>
                 <CommunityTabNav tabs={communityTabs} />
                 <Top5Section id={hashObj.top5} />

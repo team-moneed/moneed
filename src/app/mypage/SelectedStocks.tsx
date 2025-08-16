@@ -1,25 +1,36 @@
 import MyStockBox from '@/components/Mypage/MyStockBox';
-import StockBoxSkeleton from '@/components/Skeletons/mypage/StockBoxSkeleton';
-import { useSelectedStocks } from '@/queries/stock.query';
-import withSuspense from '@/components/HOC/withSuspense';
+import { StockBoxSkeletons } from '@/components/Skeletons/mypage/StockBoxSkeleton';
+import { useInfiniteSelectedStocks } from '@/queries/stock.query';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 
-function SelectedStocks() {
-    const { data: selectedStocks } = useSelectedStocks();
+export default function SelectedStocks() {
+    const {
+        data: selectedStocks = [],
+        fetchNextPage,
+        hasNextPage,
+        isLoading,
+        isFetchingNextPage,
+    } = useInfiniteSelectedStocks({ count: 10 });
+
+    const ref = useIntersectionObserver({
+        onIntersect: () => {
+            if (hasNextPage && !isFetchingNextPage) {
+                fetchNextPage();
+            }
+        },
+        options: {
+            rootMargin: '100px',
+            threshold: 0.1,
+        },
+    });
 
     return (
-        <section className='space-y-[.8rem]'>
+        <section className='space-y-[.8rem] overflow-y-auto h-full max-h-[500px]'>
             {selectedStocks.map(stock => (
                 <MyStockBox key={stock.id} stock={stock} href={`/community/${stock.symbol}`} />
             ))}
+            <div className='h-[10px]' ref={ref}></div>
+            {(isLoading || isFetchingNextPage) && <StockBoxSkeletons count={10} />}
         </section>
     );
 }
-
-export default withSuspense(
-    SelectedStocks,
-    <div className='space-y-[.8rem]'>
-        {Array.from({ length: 5 }).map((_, index) => (
-            <StockBoxSkeleton key={index} />
-        ))}
-    </div>,
-);

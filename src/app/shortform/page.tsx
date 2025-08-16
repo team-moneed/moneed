@@ -1,18 +1,23 @@
 'use client';
-import { useState, useEffect } from 'react';
+
 import { useRouter } from 'next/navigation';
 import { useSuspenseInfiniteShorts } from '@/queries/shorts.query';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { ShortformPageSkeleton } from '@/components/Skeletons/shortform/ShortformSkeleton';
-import withSuspense from '@/components/HOC/withSuspense';
 
-function ShortformPage() {
+export const dynamic = 'force-dynamic';
+
+export default function ShortformPage() {
     const router = useRouter();
-    const { data: videos, fetchNextPage, isFetchingNextPage } = useSuspenseInfiniteShorts({ limit: 20 });
-    const [isClient, setIsClient] = useState(false);
+
+    const { data: videos, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteShorts({ limit: 20 });
 
     const ref = useIntersectionObserver({
-        onIntersect: fetchNextPage,
+        onIntersect: () => {
+            if (hasNextPage && !isFetchingNextPage) {
+                fetchNextPage();
+            }
+        },
         options: {
             rootMargin: '100px',
             threshold: 0.1,
@@ -23,15 +28,6 @@ function ShortformPage() {
     const handleVideoClick = (videoId: string) => {
         router.push(`/shortform/${videoId}`);
     };
-
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
-
-    // 클라이언트에서만 렌더링하여 hydration mismatch 방지
-    if (!isClient) {
-        return <ShortformPageSkeleton count={20} />;
-    }
 
     return (
         <div className='h-full overflow-y-auto px-[1.8rem] lg:px-0 max-w-512 mx-auto'>
@@ -59,5 +55,3 @@ function ShortformPage() {
         </div>
     );
 }
-
-export default withSuspense(ShortformPage, <ShortformPageSkeleton count={20} />);

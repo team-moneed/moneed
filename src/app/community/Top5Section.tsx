@@ -1,7 +1,8 @@
-import PostCarousel from '@/components/Carousel/PostCarousel';
-import PostThumbnailSkeleton from '@/components/Skeletons/PostThumbnailSkeleton';
-import Top5 from './Top5';
-import withSuspense from '@/components/HOC/withSuspense';
+'use client';
+
+import dynamic from 'next/dynamic';
+
+const Top5 = dynamic(() => import('./Top5'), { ssr: false });
 
 export default function Top5Section({ id }: { id: string }) {
     const title = 'Top 5';
@@ -13,18 +14,7 @@ export default function Top5Section({ id }: { id: string }) {
                 <h2 className='text-moneed-black text-h2 sm:text-h1'>{title}</h2>
                 <span className='text-moneed-gray-7 text-[1.2rem] font-normal leading-[135%]'>{standardDate} 기준</span>
             </div>
-            <Top5WithSuspense />
+            <Top5 />
         </section>
     );
 }
-
-const Top5WithSuspense = withSuspense(
-    Top5,
-    <PostCarousel>
-        {Array.from({ length: 5 }).map((_, index) => (
-            <div key={index} className='shrink-0 w-[calc(85%-1.6rem)] lg:w-[calc(50%+.8rem)]'>
-                <PostThumbnailSkeleton />
-            </div>
-        ))}
-    </PostCarousel>,
-);

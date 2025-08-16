@@ -3,15 +3,13 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { SnackbarTrigger } from '@/components/Snackbar';
 import { getPost } from '@/api/post.api';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import PostDetailSkeleton from '@/components/Skeletons/PostDetailSkeleton';
 import PostSection from './PostSection';
 import CommentSection from './CommentSection';
 import dynamic from 'next/dynamic';
-import withSuspense from '@/components/HOC/withSuspense';
 
 const StockTypeBar = dynamic(() => import('@/app/community/StockTypeBar'), { ssr: false });
 
-function PostDetail() {
+export default function PostDetail() {
     const searchParams = useSearchParams();
     const { postId } = useParams<{ postId: string }>();
     const reason = searchParams.get('reason') ?? undefined;
@@ -38,5 +36,3 @@ function PostDetail() {
         </>
     );
 }
-
-export default withSuspense(PostDetail, <PostDetailSkeleton />);

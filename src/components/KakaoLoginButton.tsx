@@ -6,8 +6,7 @@ export default function KakaoLoginButton() {
         <form action={getKakaoAuthCode}>
             <Button
                 type='submit'
-                theme='primary'
-                textcolor='primary'
+                variant='primary'
                 className='w-full flex items-center justify-center h-[5.6rem] gap-[1.8rem] text-[1.6rem] px-16 font-bold leading-[140%] rounded-[1.6rem] lg:w-auto'
             >
                 <img src='/logo-kakao.svg' alt='kakao login button' />

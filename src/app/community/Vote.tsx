@@ -1,6 +1,13 @@
 const Vote = ({ id }: { id: string }) => {
     const title = '지금 핫한 투표';
-    const standardDate = '12월 17일 8시';
+    const standardDate =
+        new Date().toLocaleDateString('ko-KR', {
+            month: 'long',
+            day: 'numeric',
+        }) +
+        ' ' +
+        new Date().getHours() +
+        '시';
     return (
         <section id={id} className='mt-[2.8rem]'>
             <div className='flex items-baseline gap-[.8rem] mb-[1.8rem]'>

@@ -1,4 +1,8 @@
-import HotStocks from './HotStocks';
+'use client';
+
+import dynamic from 'next/dynamic';
+
+const HotStocks = dynamic(() => import('./HotStocks'), { ssr: false });
 
 export default function HotStockSection({ id }: { id: string }) {
     return (

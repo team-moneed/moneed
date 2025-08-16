@@ -16,7 +16,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
             return NextResponse.json({ error: 'Stock not found' }, { status: 404 });
         }
 
-        const postList = await postService.getBoardTopPosts({ boardId: stock.id, limit });
+        const postList = await postService.getBoardTopPosts({ symbol, limit });
 
         return NextResponse.json(postList);
     } catch (error) {

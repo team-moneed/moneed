@@ -39,6 +39,17 @@ export class StockService {
         return await this.updateStockNamesToKorean(selectedStocks.flatMap(stock => stock.stock));
     }
 
+    async getSelectedStockWithPagination(userId: string, count: number, cursor: number) {
+        const selectedStocks = await this.stockRepository.getSelectedStockWithPagination(userId, count, cursor);
+        const selectedStocksInKorean = await this.updateStockNamesToKorean(
+            selectedStocks.flatMap(stock => stock.stock),
+        );
+        return selectedStocksInKorean.map(stock => ({
+            ...stock,
+            id: selectedStocks.find(s => s.stock.symbol === stock.symbol)?.id,
+        }));
+    }
+
     async selectStock(userId: string, stockSymbols: string[]) {
         await this.stockRepository.selectStock(userId, stockSymbols);
     }

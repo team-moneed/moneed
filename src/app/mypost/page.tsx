@@ -1,14 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { useMyPosts } from '@/queries/posts.query';
 import PostThumbnail from '../community/[symbol]/PostThumbnail';
 import { cn } from '@/utils/style';
+import { useMyPosts } from '@/queries/posts.query';
+
+export const dynamic = 'force-dynamic';
 
 const MyPost = () => {
     const [activeTab, setActiveTab] = useState<'thisWeek' | 'notThisWeek'>('thisWeek');
 
-    const { data: posts } = useMyPosts();
+    const { data: posts = [], isLoading, error } = useMyPosts();
 
     const thisweekPosts = posts.filter(post => {
         const now = new Date();
@@ -21,6 +23,14 @@ const MyPost = () => {
     });
 
     const currentTabPosts = activeTab === 'thisWeek' ? thisweekPosts : posts;
+
+    if (isLoading) {
+        return <div className='px-8 max-w-512 mx-auto'>로딩중...</div>;
+    }
+
+    if (error) {
+        return <div className='px-8 max-w-512 mx-auto'>게시글을 불러올 수 없습니다.</div>;
+    }
 
     return (
         <>

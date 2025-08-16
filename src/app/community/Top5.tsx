@@ -3,8 +3,10 @@
 import PostCarousel from '@/components/Carousel/PostCarousel';
 import Top5Thumbnail from './Top5Thumbnail';
 import { useTopPosts } from '@/queries/posts.query';
+import PostThumbnailCarouselSkeleton from '@/components/Skeletons/community/PostThumbnailCarouselSkeleton';
+import withSuspense from '@/components/HOC/withSuspense';
 
-export default function Top5() {
+function Top5() {
     const POSTOPTIONS = {
         slidesToScroll: 1,
         loop: false,
@@ -13,7 +15,7 @@ export default function Top5() {
         // containScroll: "keepSnaps",
     };
 
-    const { data: topPosts } = useTopPosts({ limit: 5 });
+    const { data: topPosts = [] } = useTopPosts({ limit: 5 });
 
     return (
         <PostCarousel options={POSTOPTIONS}>
@@ -25,3 +27,5 @@ export default function Top5() {
         </PostCarousel>
     );
 }
+
+export default withSuspense(Top5, <PostThumbnailCarouselSkeleton count={5} />);

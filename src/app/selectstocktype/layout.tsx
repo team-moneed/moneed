@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 export default function SelectStockTypeLayout({ children }: { children: React.ReactNode }) {
     return (
         <div className='px-8 max-w-512 mx-auto md:bg-[#EFEFF3] md:pt-16 absolute top-[7.6rem] bottom-0 w-full'>
@@ -10,7 +12,7 @@ export default function SelectStockTypeLayout({ children }: { children: React.Re
                         *선택된 관심 종목 게시판이 보여집니다.
                     </p>
                 </div>
-                {children}
+                <Suspense>{children}</Suspense>
             </div>
         </div>
     );

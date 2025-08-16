@@ -8,15 +8,23 @@ import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useInfiniteStocks, useSelectedStocks } from '@/queries/stock.query';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
-import withSuspense from '@/components/HOC/withSuspense';
 
-function SelectStockTypeContent() {
+export default function SelectStockTypeContent() {
     const router = useRouter();
-    const { data: stocks } = useStocks();
+    const { data: stocks = [], fetchNextPage, hasNextPage } = useInfiniteStocks({ count: 50 });
     const searchParams = useSearchParams();
+    const ref = useIntersectionObserver({
+        onIntersect: () => {
+            if (hasNextPage) {
+                fetchNextPage();
+            }
+        },
+    });
 
-    const { data: mySelectedStocks } = useSelectedStocks();
-    const mySelectedStockSymbols = mySelectedStocks?.flatMap(stock => stock.symbol);
+    const { data: mySelectedStocks, error: selectedStocksError } = useSelectedStocks();
+    // 401 에러가 아닌 경우에만 선택된 주식 목록 사용
+    const is401Error = selectedStocksError?.response?.status === 401;
+    const mySelectedStockSymbols = !is401Error ? mySelectedStocks?.flatMap(stock => stock.symbol) : [];
 
     const { mutate: selectStock } = useMutation({
         mutationFn: (stockSymbols: string[]) => selectStockApi(stockSymbols),
@@ -41,16 +49,17 @@ function SelectStockTypeContent() {
     return (
         <form action={handleSubmit}>
             <div className='flex flex-wrap gap-[.8rem] md:px-[10.6rem] md:max-h-[calc(38.5rem-10rem)] md:overflow-y-auto'>
-                {stocks?.map(({ id, name, symbol }) => (
+                {stocks.map(({ id, name, symbol, logoUrl }) => (
                     <div key={id} className='mb-[.2rem]'>
                         <StockTypeChip
                             label={name}
-                            icon='/temp/sample3.png'
+                            icon={logoUrl ?? ''}
                             onClick={() => toggleStock(symbol)}
                             active={selectedStocks.includes(symbol)}
                         />
                     </div>
                 ))}
+                <div ref={ref} />
             </div>
             <div className='bottom-0 fixed left-0 right-0 p-8 z-100 bg-white md:static md:max-w-140 md:mx-auto md:pb-0'>
                 <Button
@@ -65,5 +74,3 @@ function SelectStockTypeContent() {
         </form>
     );
 }
-
-export default withSuspense(SelectStockTypeContent, <div>Loading...</div>);

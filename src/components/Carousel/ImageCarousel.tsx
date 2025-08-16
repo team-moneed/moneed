@@ -11,8 +11,8 @@ const ImageCarousel: React.FC<PropType> = props => {
     const [emblaRef] = useEmblaCarousel(options);
 
     return (
-        <section className=''>
-            <div className=' w-full overflow-hidden' ref={emblaRef}>
+        <section>
+            <div className='w-full overflow-hidden' ref={emblaRef}>
                 <div className='flex'>
                     {slides.map((imgUrl, index) => (
                         <div className='w-full h-64 shrink-0' key={index}>

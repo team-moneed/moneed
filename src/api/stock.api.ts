@@ -13,8 +13,10 @@ export async function selectStock(stockSymbols: string[]) {
     return res.data;
 }
 
-export async function getSelectedStocks() {
-    const res = await httpWithCredentials.get<Stock[]>('/api/stocks/selected');
+export async function getSelectedStocks({ count = 20, cursor = 0 }: { count?: number; cursor?: number } = {}) {
+    const res = await httpWithCredentials.get<Stock[]>('/api/stocks/selected', {
+        params: { count, cursor },
+    });
     return res.data;
 }
 

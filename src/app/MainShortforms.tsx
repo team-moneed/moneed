@@ -15,7 +15,7 @@ const MainShortforms = () => {
         containScroll: 'trimSnaps',
     };
 
-    const { data: shorts } = useSuspenseShorts({ cursor: 0, limit: 10 });
+    const { data: shorts } = useSuspenseShorts({ videoId: '', limit: 10 });
 
     return (
         <>

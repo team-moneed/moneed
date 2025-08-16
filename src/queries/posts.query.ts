@@ -1,8 +1,15 @@
 import { getHotPosts, getPost, getPosts, getTopBoardPosts, getTopPosts } from '@/api/post.api';
 import { fetchMyPosts } from '@/api/user.api';
-import { useSuspenseInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 export const useMyPosts = () => {
+    return useQuery({
+        queryKey: ['user', 'me', 'posts'],
+        queryFn: () => fetchMyPosts(),
+    });
+};
+
+export const useSuspenseMyPosts = () => {
     return useSuspenseQuery({
         queryKey: ['user', 'me', 'posts'],
         queryFn: () => fetchMyPosts(),
@@ -28,7 +35,7 @@ export const useInfinitePosts = ({ symbol }: { symbol: string }) => {
     });
 };
 
-export const useHotPosts = () => {
+export const useSuspenseHotPosts = () => {
     return useSuspenseInfiniteQuery({
         queryKey: ['hot-posts'],
         queryFn: ({ pageParam = 0 }) => getHotPosts({ limit: 15, cursor: pageParam }),

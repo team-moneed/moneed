@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@/utils/style';
 import Link from 'next/link';
 import { ReactNode } from 'react';

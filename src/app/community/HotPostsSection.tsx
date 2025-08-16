@@ -1,6 +1,8 @@
-import HotPosts from './HotPosts';
-import PostThumbnailSkeleton from '@/components/Skeletons/PostThumbnailSkeleton';
-import withSuspense from '@/components/HOC/withSuspense';
+'use client';
+
+import dynamic from 'next/dynamic';
+
+const HotPosts = dynamic(() => import('./HotPosts'), { ssr: false });
 
 export default function HotPostsSection({ id }: { id: string }) {
     const title = '인기 급상승 게시글';
@@ -12,16 +14,7 @@ export default function HotPostsSection({ id }: { id: string }) {
                     {title}
                 </h2>
             </div>
-            <HotPostsWithSuspense />
+            <HotPosts />
         </section>
     );
 }
-
-const HotPostsWithSuspense = withSuspense(
-    HotPosts,
-    <div className='grid grid-cols-1 md:grid-cols-2 gap-y-[.6rem] gap-x-[1.6rem] mt-4 md:gap-y-[1.2rem]'>
-        {Array.from({ length: 15 }).map((_, index) => (
-            <PostThumbnailSkeleton key={index} />
-        ))}
-    </div>,
-);

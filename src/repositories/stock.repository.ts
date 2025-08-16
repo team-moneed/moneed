@@ -14,6 +14,24 @@ export class StockRepository {
         });
     }
 
+    async getSelectedStockWithPagination(userId: string, count: number, cursor: number) {
+        return this.prisma.selectedStock.findMany({
+            where: {
+                userId,
+                id: {
+                    gt: cursor,
+                },
+            },
+            include: {
+                stock: true,
+            },
+            take: count,
+            orderBy: {
+                id: 'asc',
+            },
+        });
+    }
+
     async selectStock(userId: string, stockSymbols: string[]) {
         return this.prisma.selectedStock.createMany({
             data: stockSymbols.map(stockSymbol => ({

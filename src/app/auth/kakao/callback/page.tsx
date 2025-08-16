@@ -1,11 +1,11 @@
 'use client';
 
-import { Suspense, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { login } from '@/api/auth.api';
 import { useQuery } from '@tanstack/react-query';
 
-function KakaoCallback() {
+export default function KakaoCallback() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const code = searchParams.get('code');
@@ -36,12 +36,4 @@ function KakaoCallback() {
     }, [token, router]);
 
     return <div>리다이렉트 중...</div>;
-}
-
-export default function KakaoCallbackWrapper() {
-    return (
-        <Suspense>
-            <KakaoCallback />
-        </Suspense>
-    );
 }

@@ -1,11 +1,13 @@
 'use client';
 
+import { PostThumbnailSkeletons } from '@/components/Skeletons/PostThumbnailSkeleton';
 import HotPostThumbnail from './HotPostThumbnail';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
-import { useHotPosts } from '@/queries/posts.query';
+import { useSuspenseHotPosts } from '@/queries/posts.query';
+import withSuspense from '@/components/HOC/withSuspense';
 
-export default function HotPosts() {
-    const { data: posts, fetchNextPage, hasNextPage } = useHotPosts();
+function HotPosts() {
+    const { data: posts, fetchNextPage, hasNextPage } = useSuspenseHotPosts();
 
     const ref = useIntersectionObserver({
         onIntersect: () => {
@@ -16,11 +18,13 @@ export default function HotPosts() {
     });
 
     return (
-        <>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-y-[.6rem] gap-x-[1.6rem] mt-4 md:gap-y-[1.2rem]'>
             {posts.map(post => (
                 <HotPostThumbnail key={post.id} post={post} />
             ))}
             <div ref={ref}></div>
-        </>
+        </div>
     );
 }
+
+export default withSuspense(HotPosts, <PostThumbnailSkeletons count={15} />);

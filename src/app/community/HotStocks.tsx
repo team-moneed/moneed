@@ -1,10 +1,10 @@
 'use client';
 import CategoryRankBox from '@/components/Community/CategoryRankBox';
-import { useHotStocks } from '@/queries/stock.query';
+import { useSuspenseHotStocks } from '@/queries/stock.query';
 import withSuspense from '@/components/HOC/withSuspense';
 
-export default function HotStocks() {
-    const { data: hotStocks } = useHotStocks({ market: 'NAS' });
+export function HotStocks() {
+    const { data: hotStocks } = useSuspenseHotStocks({ market: 'NAS' });
     return (
         <>
             {hotStocks.map(stock => (
@@ -14,4 +14,4 @@ export default function HotStocks() {
     );
 }
 
-export const HotStocksWithSuspense = withSuspense(HotStocks, <div>Loading...</div>);
+export default withSuspense(HotStocks, <div>Loading...</div>);

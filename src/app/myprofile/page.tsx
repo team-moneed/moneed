@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Button from '@/components/Button';
 import SelectProfileImage from '@/components/Mypage/SelectProfileImage';
 import { useRouter } from 'next/navigation';
-import { useSuspenseUser } from '@/queries/user.query';
+import { useUser } from '@/queries/user.query';
 import { checkDuplicateNickname, updateUserProfile } from '@/api/user.api';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
@@ -13,12 +13,13 @@ import { REASON_CODES } from '@/constants/snackbar';
 import { MyProfileSkeleton } from '@/components/Skeletons/MyProfileSkeleton';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useModal } from '@/context/ModalContext';
-import withSuspense from '@/components/HOC/withSuspense';
+
+export const dynamic = 'force-dynamic';
 
 // TODO: 프로필 사진 업로드 기능
 const MyProfile = () => {
     const router = useRouter();
-    const { data: user } = useSuspenseUser();
+    const { data: user, isLoading, error } = useUser();
     const [showProfileImage, setShowProfileImage] = useState(false);
     const [selectedImage, setSelectedImage] = useState<string | null>(null); // 기본 이미지
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -34,8 +35,8 @@ const MyProfile = () => {
     } = useForm<{ nickname: string; profileImage: string }>({
         mode: 'onChange',
         defaultValues: {
-            nickname: user.nickname,
-            profileImage: user.profileImage,
+            nickname: user?.nickname || '',
+            profileImage: user?.profileImage || '',
         },
     });
 
@@ -73,8 +74,8 @@ const MyProfile = () => {
         clearErrors('nickname');
         updateUserProfileMutation({
             nickname: data.nickname,
-            profileImage: image || selectedImage || user.profileImage,
-            prevProfileImageUrl: user.profileImage,
+            profileImage: image || selectedImage || user?.profileImage || '',
+            prevProfileImageUrl: user?.profileImage || '',
         });
     });
 
@@ -109,11 +110,20 @@ const MyProfile = () => {
         checkDuplicateNicknameMutation({ nickname });
     }, 500);
 
+    if (isLoading) {
+        return <MyProfileSkeleton />;
+    }
+
+    if (error || !user) {
+        console.error('MyProfile error:', error);
+        return <div>Error loading profile</div>;
+    }
+
     return (
         <div className='w-full max-w-[480px] px-6 mx-auto'>
             <div className='flex justify-center items-center rounded-full aspect-square w-56 mx-auto mt-24 relative'>
                 <img
-                    src={previewUrl || selectedImage || user.profileImage}
+                    src={previewUrl || selectedImage || user?.profileImage || ''}
                     alt='Selected Profile'
                     className='w-full h-full object-cover rounded-full size-[14rem]'
                 />
@@ -146,7 +156,7 @@ const MyProfile = () => {
                         {errors.nickname.message}
                     </p>
                 )}
-                {nickname !== user.nickname && !errors.nickname && (
+                {nickname !== user?.nickname && !errors.nickname && (
                     <p className='text-[1.4rem] font-normal leading-[140%] text-moneed-green mt-[.8rem]'>
                         사용 가능한 닉네임입니다.
                     </p>
@@ -174,4 +184,4 @@ const MyProfile = () => {
     );
 };
 
-export default withSuspense(MyProfile, <MyProfileSkeleton />);
+export default MyProfile;
