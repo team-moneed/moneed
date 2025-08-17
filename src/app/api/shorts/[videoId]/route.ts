@@ -2,6 +2,8 @@ import ShortService from '@/services/short.service';
 import { ERROR_MSG } from '@/constants/errorMsg';
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(_: NextRequest, { params }: { params: Promise<{ videoId: string }> }) {
     try {
         const { videoId } = await params;

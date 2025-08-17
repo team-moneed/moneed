@@ -2,6 +2,8 @@ import { getSession } from '@/lib/session';
 import CommentService from '@/services/comment.service';
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 export async function DELETE(_: NextRequest, { params }: { params: Promise<{ commentId: string }> }) {
     const { commentId } = await params;
     const session = await getSession();

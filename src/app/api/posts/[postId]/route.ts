@@ -3,6 +3,8 @@ import { getSession } from '@/lib/session';
 import { NextRequest, NextResponse } from 'next/server';
 import { UpdatePostRequest } from '@/types/post';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(_: NextRequest, { params }: { params: Promise<{ postId: string }> }) {
     const { postId } = await params;
     const payload = await getSession();
