@@ -7,7 +7,7 @@ import { EmblaOptionsType } from 'embla-carousel';
 import { useModal } from '@/context/ModalContext';
 import { useRouter } from 'next/navigation';
 import { PostThumbnail } from '@/types/post';
-import { deletePost } from '@/api/post.api';
+import { deletePost } from '@/apis/post.api';
 import { REASON_CODES } from '@/constants/snackbar';
 import { queryClient } from './QueryClientProvider';
 import PostLikeButton from './Post/PostLikeButton';

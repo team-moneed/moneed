@@ -1,4 +1,4 @@
-import { getOverseasStockByCondition } from '@/api/kis.api';
+import { getOverseasStockByCondition } from '@/apis/kis.api';
 import { StockService } from '@/services/stock.service';
 import { MarketCode } from '@/types/kis';
 import { NextRequest, NextResponse } from 'next/server';

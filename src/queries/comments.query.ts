@@ -1,4 +1,4 @@
-import { fetchMyComments } from '@/api/user.api';
+import { fetchMyComments } from '@/apis/user.api';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 export const useMyComments = () => {

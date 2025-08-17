@@ -1,5 +1,5 @@
-import { getHotPosts, getPost, getPosts, getTopBoardPosts, getTopPosts } from '@/api/post.api';
-import { fetchMyPosts } from '@/api/user.api';
+import { getHotPosts, getPost, getPosts, getTopBoardPosts, getTopPosts } from '@/apis/post.api';
+import { fetchMyPosts } from '@/apis/user.api';
 import { useQuery, useSuspenseInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 export const useMyPosts = () => {

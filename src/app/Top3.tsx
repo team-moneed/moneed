@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { getBoardRank } from '@/api/board.api';
+import { getBoardRank } from '@/apis/board.api';
 import { BoardRankResponse } from '@/types/board';
 import MoveToCommunityButton from './MoveToCommunitButton';
 import { StockRankButtonsSkeleton } from '@/components/Skeletons/StockRankButtonSkeleton';

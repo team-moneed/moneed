@@ -1,4 +1,4 @@
-import { httpWithCredentials, http } from '@/api/client';
+import { httpWithCredentials, http } from '@/apis/client';
 import { Stock } from '@/generated/prisma';
 import { MarketCode, OverseasStockPriceResponse } from '@/types/kis';
 import { HotStock } from '@/types/stock';

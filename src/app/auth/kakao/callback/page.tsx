@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { login } from '@/api/auth.api';
+import { login } from '@/apis/auth.api';
 import { useQuery } from '@tanstack/react-query';
 
 export default function KakaoCallback() {

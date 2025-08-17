@@ -3,7 +3,7 @@ import { useModal } from '@/context/ModalContext';
 import { PrimaryDropdownProps } from '@/components/Dropdown';
 import Comment from '@/components/Comment/Comment';
 import CommentForm from '@/components/Comment/CommentForm';
-import { deleteComment } from '@/api/comment.api';
+import { deleteComment } from '@/apis/comment.api';
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/components/QueryClientProvider';
 import useSnackbarStore from '@/store/useSnackbarStore';

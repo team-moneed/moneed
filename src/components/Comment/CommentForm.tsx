@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import useSnackbarStore from '@/store/useSnackbarStore';
-import { createComment, updateComment } from '@/api/comment.api';
+import { createComment, updateComment } from '@/apis/comment.api';
 import { queryClient } from '@/components/QueryClientProvider';
 import { useMutation } from '@tanstack/react-query';
 import { useCommentStore } from '@/store/useCommentStore';

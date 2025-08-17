@@ -6,7 +6,7 @@ import { useMyComments } from '@/queries/comments.query';
 import { cn } from '@/utils/style';
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/components/QueryClientProvider';
-import { deleteComment } from '@/api/comment.api';
+import { deleteComment } from '@/apis/comment.api';
 import useSnackbarStore from '@/store/useSnackbarStore';
 import { useRouter } from 'next/navigation';
 import { useCommentStore } from '@/store/useCommentStore';

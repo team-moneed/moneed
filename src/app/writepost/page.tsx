@@ -6,7 +6,7 @@ import ImageUploader from '@/components/ImageUploader';
 import useSnackbarStore from '@/store/useSnackbarStore';
 import { useForm } from 'react-hook-form';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { createPost } from '@/api/post.api';
+import { createPost } from '@/apis/post.api';
 import { REASON_CODES } from '@/constants/snackbar';
 import { CreatePostField } from '@/types/fieldData';
 import Button from '@/components/Button';

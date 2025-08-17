@@ -1,4 +1,4 @@
-import { getOverseasStockInfo, getOverseasStockPrice } from '@/api/kis.api';
+import { getOverseasStockInfo, getOverseasStockPrice } from '@/apis/kis.api';
 import { Stock } from '@/generated/prisma';
 import { StockRepository } from '@/repositories/stock.repository';
 

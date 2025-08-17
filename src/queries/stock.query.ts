@@ -1,4 +1,4 @@
-import { getHotStock, getOverseasStockPrice, getSelectedStocks, getStocks, getStockBySymbol } from '@/api/stock.api';
+import { getHotStock, getOverseasStockPrice, getSelectedStocks, getStocks, getStockBySymbol } from '@/apis/stock.api';
 import { MarketCode } from '@/types/kis';
 import { useInfiniteQuery, useQuery, useSuspenseQuery } from '@tanstack/react-query';
 

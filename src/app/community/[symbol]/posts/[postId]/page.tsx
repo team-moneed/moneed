@@ -1,7 +1,7 @@
 'use client';
 import { useParams, useSearchParams } from 'next/navigation';
 import { SnackbarTrigger } from '@/components/Snackbar';
-import { getPost } from '@/api/post.api';
+import { getPost } from '@/apis/post.api';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import PostSection from './PostSection';
 import CommentSection from './CommentSection';
