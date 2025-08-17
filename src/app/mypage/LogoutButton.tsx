@@ -1,6 +1,6 @@
 'use client';
 
-import { logout } from '@/api/auth.api';
+import { logout } from '@/apis/auth.api';
 import { REASON_CODES } from '@/constants/snackbar';
 import useSnackbarStore from '@/store/useSnackbarStore';
 import { cn } from '@/utils/style';

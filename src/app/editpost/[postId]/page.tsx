@@ -4,7 +4,7 @@ import { use, useEffect, Suspense, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ImageUploader from '@/components/ImageUploader';
 import useSnackbarStore from '@/store/useSnackbarStore';
-import { updatePost } from '@/api/post.api';
+import { updatePost } from '@/apis/post.api';
 import { REASON_CODES } from '@/constants/snackbar';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';

@@ -2,7 +2,7 @@
 
 import Button from '@/components/Button';
 import StockTypeChip from '@/components/create/StockTypeChip';
-import { selectStock as selectStockApi } from '@/api/stock.api';
+import { selectStock as selectStockApi } from '@/apis/stock.api';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';

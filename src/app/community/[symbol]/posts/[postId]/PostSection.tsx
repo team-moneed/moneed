@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useModal } from '@/context/ModalContext';
 import DateFormatter from '@/components/Dateformatter';
 import { PrimaryDropdown, PrimaryDropdownProps } from '@/components/Dropdown';
-import { deletePost } from '@/api/post.api';
+import { deletePost } from '@/apis/post.api';
 import { REASON_CODES } from '@/constants/snackbar';
 import Image from 'next/image';
 import PostLikeButton from '@/components/Post/PostLikeButton';

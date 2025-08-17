@@ -1,7 +1,7 @@
 import { UserRepository } from '@/repositories/user.repository';
 import { OAuthAccount, User } from '@/generated/prisma';
 import { deleteSession } from '@/lib/session';
-import { getKakaoToken, getKakaoUserInfo, leaveKakao, logoutKakao } from '@/api/kakao.api';
+import { getKakaoToken, getKakaoUserInfo, leaveKakao, logoutKakao } from '@/apis/kakao.api';
 import { ProviderRepository } from '@/repositories/provider.repository';
 import { AxiosError } from 'axios';
 import { RequiredUserInfo, UserInfo } from '@/types/user';

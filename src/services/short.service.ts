@@ -1,4 +1,4 @@
-import { searchShorts } from '@/api/youtube.api';
+import { searchShorts } from '@/apis/youtube.api';
 import { ERROR_MSG } from '@/constants/errorMsg';
 import { Shorts } from '@/generated/prisma';
 import ShortRepository from '@/repositories/short.repository';

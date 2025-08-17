@@ -1,5 +1,5 @@
 'use client';
-import { leave } from '@/api/auth.api';
+import { leave } from '@/apis/auth.api';
 import { REASON_CODES } from '@/constants/snackbar';
 import Button from '@/components/Button';
 import { useMutation } from '@tanstack/react-query';

@@ -1,4 +1,4 @@
-import { fetchMyInfo, fetchMyComments, fetchMyPosts } from '@/api/user.api';
+import { fetchMyInfo, fetchMyComments, fetchMyPosts } from '@/apis/user.api';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 export const useUser = () => {

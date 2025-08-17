@@ -1,7 +1,7 @@
 'use client';
 import { useMutation } from '@tanstack/react-query';
 import Icon from '../Icon';
-import { likePost, unlikePost } from '@/api/post.api';
+import { likePost, unlikePost } from '@/apis/post.api';
 import { queryClient } from '../QueryClientProvider';
 
 export default function PostLikeButton({

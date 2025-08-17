@@ -5,7 +5,7 @@ import Button from '@/components/Button';
 import SelectProfileImage from '@/components/Mypage/SelectProfileImage';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/queries/user.query';
-import { checkDuplicateNickname, updateUserProfile } from '@/api/user.api';
+import { checkDuplicateNickname, updateUserProfile } from '@/apis/user.api';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
