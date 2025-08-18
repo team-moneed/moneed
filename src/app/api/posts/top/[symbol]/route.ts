@@ -2,6 +2,8 @@ import PostService from '@/services/post.service';
 import { StockService } from '@/services/stock.service';
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest, { params }: { params: Promise<{ symbol: string }> }) {
     try {
         const limit = Number(request.nextUrl.searchParams.get('limit')) || 10;
@@ -10,7 +12,6 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         const postService = new PostService();
         const stockService = new StockService();
 
-        // symbol로 주식을 조회하여 stockId를 얻습니다
         const stock = await stockService.getStockBySymbol(symbol);
         if (!stock) {
             return NextResponse.json({ error: 'Stock not found' }, { status: 404 });

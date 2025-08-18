@@ -1,6 +1,8 @@
 import { StockService } from '@/services/stock.service';
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(_: NextRequest, { params }: { params: Promise<{ symbol: string }> }) {
     try {
         const { symbol } = await params;
