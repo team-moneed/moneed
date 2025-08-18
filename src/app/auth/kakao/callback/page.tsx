@@ -4,6 +4,9 @@ import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { login } from '@/apis/auth.api';
 import { useQuery } from '@tanstack/react-query';
+import { BeatLoader } from 'react-spinners';
+
+export const dynamic = 'force-dynamic';
 
 export default function KakaoCallback() {
     const searchParams = useSearchParams();
@@ -35,5 +38,12 @@ export default function KakaoCallback() {
         }
     }, [token, router]);
 
-    return <div>리다이렉트 중...</div>;
+    return (
+        <div className='flex flex-col items-center justify-center min-h-screen'>
+            <div className='text-center'>
+                <BeatLoader loading={true} color='#C0FF00' size={15} />
+                <p className='text-white mt-4 text-lg'>로그인 처리 중...</p>
+            </div>
+        </div>
+    );
 }
