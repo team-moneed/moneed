@@ -4,10 +4,10 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(request: NextRequest, { params }: { params: Promise<{ symbol: string }> }) {
+export async function GET(request: NextRequest, context: { params: Promise<{ symbol: string }> | { symbol: string } }) {
     try {
         const limit = Number(request.nextUrl.searchParams.get('limit')) || 10;
-        const symbol = (await params).symbol;
+        const symbol = context.params instanceof Promise ? (await context.params).symbol : context.params.symbol;
 
         const postService = new PostService();
         const stockService = new StockService();
